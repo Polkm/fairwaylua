@@ -41,3 +41,20 @@ function UpgradeWeapon(ply,command,args)
 	end
 end
 concommand.Add("UpgradeWeapon",UpgradeWeapon)
+
+function AddWeaponToLocker(ply,weapon)
+	ply:Give(weapon)
+	local addtable = {
+	Weapon = tostring(weapon),
+	pwrlvl = 1,
+	acclvl = 1,
+	clplvl = 1, 
+	spdlvl = 1,
+	reslvl = 1,
+	CanSilence = false, 
+	ChangableFireRate = false, 
+	CanGrenade = false, 
+	Maxpoints = 15, 
+	}
+	table.insert(ply.Locker, addtable )
+end
