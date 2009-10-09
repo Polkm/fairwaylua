@@ -5,6 +5,7 @@ ENT.AdminSpawnable		= false
 function ENT:Initialize()
 	self.matIcon = Material("ammo_icon")
 	if self:GetNWString("type") == "health" then self.matIcon = Material("health_icon") end
+	if self:GetNWString("type") == "cash" then self.matIcon = Material("cash_icon") end
 	self.iconHieght = 25
 	self.iconMinHieght = 25
 	self.iconMaxHieght = 30

@@ -7,6 +7,7 @@ function ENT:Initialize()
 	if self.Type == "ammo" then self:SetModel("models/Items/BoxSRounds.mdl") end
 	if self.Type == "health" then self:SetModel("models/healthvial.mdl") end
 	if self.Type == "health" && self.Amount == "full" then self:SetModel("models/Items/HealthKit.mdl") end
+	if self.Type == "cash" then self:SetModel("models/props/cs_assault/Money.mdl") end
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
@@ -31,6 +32,9 @@ function ENT:Use(activator, caller)
 				activator:GiveAmmo(AmmoTypes[weapon:GetPrimaryAmmoType()][self.Amount], weapon:GetPrimaryAmmoType())
 			end
 		end
+		self:Remove()
+	elseif self.Type == "cash" then
+		activator:GiveCash(self.Amount, true)
 		self:Remove()
 	elseif self.Type == "health" && activator:Health() < 100 then
 		local AmountToAdd = 0
