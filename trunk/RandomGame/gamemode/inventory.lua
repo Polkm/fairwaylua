@@ -10,27 +10,27 @@ function UpgradeWeapon(ply,command,args)
 	local clp = upg[weapon].clplvl
 	local fis = upg[weapon].spdlvl
 	local res = upg[weapon].reslvl
-	if trait == "Power" && upg[weapon].pwrlvl != UpgradeLevels[weapon].MaxPower then
-		if cash >= UpgPrices[weapon].Power[pwr] then
+	if trait == "Power" && upg[weapon].pwrlvl != #Weapons[weapon].UpGrades.Power then
+		if cash >= Weapons[weapon].UpGrades.Power[pwr] then
 			ply:SetNWInt("Money", cash - UpgPrices[weapon].Power[pwr])			
 			upg[weapon].pwrlvl = upg[weapon].pwrlvl + 1
 		end
-	elseif trait == "Accuracy" && upg[weapon].accrlvl != UpgradeLevels[weapon].MaxAccuracy  then
+	elseif trait == "Accuracy" && upg[weapon].accrlvl != #Weapons[weapon].UpGrades.Accuracy then
 		if  cash >= UpgPrices[weapon].Accuracy[acc] then	
 		ply:SetNWInt("Money", cash - UpgPrices[weapon].Accuracy[acc])
 		upg[weapon].accrlvl = upg[weapon].accrlvl + 1
 		end
-	elseif trait == "ClipSize" && upg[weapon].clplvl != UpgradeLevels[weapon].MaxClipSize then
+	elseif trait == "ClipSize" && upg[weapon].clplvl != #Weapons[weapon].UpGrades.ClipSize then
 		if  cash >= UpgPrices[weapon].ClipSize[clp] then	
 			ply:SetNWInt("Money", cash - UpgPrices[weapon].ClipSize[clp])			
 			upg[weapon].clplvl = upg[weapon].clplvl + 1
 		end
-	elseif trait == "FiringSpeed" && upg[weapon].spdlvl != UpgradeLevels[weapon].MaxFiringSpeed  then
+	elseif trait == "FiringSpeed" && upg[weapon].spdlvl != #Weapons[weapon].UpGrades.FiringSpeed  then
 		if  cash >= UpgPrices[weapon].FiringSpeed[fis] then	
 			ply:SetNWInt("Money", cash - UpgPrices[weapon].FiringSpeed[fis])		
 			upg[weapon].spdlvl = upg[weapon].spdlvl + 1
 		end
-	elseif trait == "ReloadSpeed" && upg[weapon].spdlvl != UpgradeLevels[weapon].MaxReloadSpeed  then
+	elseif trait == "ReloadSpeed" && upg[weapon].spdlvl != #Weapons[weapon].UpGrades.ReloadSpeed  then
 		if  cash >= UpgPrices[weapon].FiringSpeed[res] then	
 			ply:SetNWInt("Money", cash - UpgPrices[weapon].FiringSpeed[res])		
 			upg[weapon].reslvl = upg[weapon].reslvl + 1
