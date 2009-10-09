@@ -16,6 +16,16 @@ SWEP.Primary.Sound			= Sound("Weapon_MP5Navy.Single")
 SWEP.Spawnable			= false
 SWEP.AdminSpawnable		= false
 
+SWEP.Primary.Recoil			= 0.8
+SWEP.Primary.Damage			= 20
+SWEP.Primary.NumShots		= 1
+SWEP.Primary.Cone			= 0.07
+SWEP.Primary.ClipSize		= 30
+SWEP.Primary.Delay			= 0.1 
+SWEP.Primary.DefaultClip	= 60
+SWEP.Primary.Automatic		= true
+SWEP.Primary.Ammo			= "pistol"
+
 SWEP.Primary.ClipSize		= 8					// Size of a clip
 SWEP.Primary.DefaultClip	= 32				// Default number of bullets in a clip
 SWEP.Primary.Automatic		= false				// Automatic/Semi Auto
@@ -25,6 +35,8 @@ SWEP.Secondary.ClipSize		= 8					// Size of a clip
 SWEP.Secondary.DefaultClip	= 32				// Default number of bullets in a clip
 SWEP.Secondary.Automatic	= false				// Automatic/Semi Auto
 SWEP.Secondary.Ammo			= "Pistol"
+
+SWEP.Item = "weapon_pistol"
 
 
 function SWEP:Initialize()
@@ -81,8 +93,7 @@ end
 function SWEP:Reload()
 	if self.Weapon:Clip1() >= self.Primary.ClipSize  then  return end
 		self.Weapon:DefaultReload(ACT_VM_RELOAD)
-		
-			self:SetIronsights( false )
+		self:SetIronsights( false )
 end
 function SWEP:Think()
 end
@@ -93,26 +104,28 @@ end
 
 function SWEP:Update()
 	if ( SERVER ) then
-		local pwr = self:GetOwner().Upgrades[self.Item].pwrlvl
-		local acc = self:GetOwner().Upgrades[self.Item].acclvl
-		local clip = self:GetOwner().Upgrades[self.Item].clplvl
-		local speed = self:GetOwner().Upgrades[self.Item].spdlvl
-		local res = self:GetOwner().Upgrades[self.Item].reslvl
-		self.Primary.Damage = UpgradeLevels[self.Item].Power[pwr]
-		self.Primary.Cone	= UpgradeLevels[self.Item].Accuracy[acc]
-		self.Primary.ClipSize = UpgradeLevels[self.Item].ClipSize[clip]
-		self.Primary.Delay = UpgradeLevels[self.Item].FiringSpeed[speed]
+		local pwr = self:GetOwner().Locker[self.Item].pwrlvl
+		local acc = self:GetOwner().Locker[self.Item].acclvl
+		local clip = self:GetOwner().Locker[self.Item].clplvl
+		local speed = self:GetOwner().Locker[self.Item].spdlvl
+		//local res = self:GetOwner().Locker[self.Item].reslvl
+		self.Primary.Damage = Weapons[self.Item].UpGrades.Power[pwr].Level
+		self.Primary.Cone	= Weapons[self.Item].UpGrades.Accuracy[acc].Level
+		self.Primary.ClipSize = Weapons[self.Item].UpGrades.ClipSize[clip].Level
+		self.Primary.Delay = Weapons[self.Item].UpGrades.FiringSpeed[speed].Level
+		//self.ReloadSpeed = res
 	end
 	if ( CLIENT ) then
-		local pwr = Upgrade[self.Item].pwrlvl
-		local acc = Upgrade[self.Item].acclvl
-		local clip = Upgrade[self.Item].clplvl
-		local speed = Upgrade[self.Item].spdlvl
-		local res = Upgrade[self.Item].reslvl
-		self.Primary.Damage = UpgradeLevels[self.Item].Power[pwr]
-		self.Primary.Cone	= UpgradeLevels[self.Item].Accuracy[acc]
-		self.Primary.ClipSize = UpgradeLevels[self.Item].ClipSize[clip]
-		self.Primary.Delay = UpgradeLevels[self.Item].FiringSpeed[speed]
+		local pwr = Locker[self.Item].pwrlvl
+		local acc = Locker[self.Item].acclvl
+		local clip = Locker[self.Item].clplvl
+		local speed = Locker[self.Item].spdlvl
+		//local res = Locker[self.Item].reslvl
+		self.Primary.Damage = Weapons[self.Item].UpGrades.Power[pwr].Level
+		self.Primary.Cone	= Weapons[self.Item].UpGrades.Accuracy[acc].Level
+		self.Primary.ClipSize = Weapons[self.Item].UpGrades.ClipSize[clip].Level
+		self.Primary.Delay = Weapons[self.Item].UpGrades.FiringSpeed[speed].Level
+		//self.ReloadSpeed = res
 	end
 	return true
 end
@@ -120,26 +133,28 @@ end
 function SWEP:Deploy()
 	self:SetIronsights( false )
 	if ( SERVER ) then
-		local pwr = self:GetOwner().Upgrades[self.Item].pwrlvl
-		local acc = self:GetOwner().Upgrades[self.Item].acclvl
-		local clip = self:GetOwner().Upgrades[self.Item].clplvl
-		local speed = self:GetOwner().Upgrades[self.Item].spdlvl
-		local res = self:GetOwner().Upgrades[self.Item].reslvl
-		self.Primary.Damage = UpgradeLevels[self.Item].Power[pwr]
-		self.Primary.Cone	= UpgradeLevels[self.Item].Accuracy[acc]
-		self.Primary.ClipSize = UpgradeLevels[self.Item].ClipSize[clip]
-		self.Primary.Delay = UpgradeLevels[self.Item].FiringSpeed[speed]
+		local pwr = self:GetOwner().Locker[self.Item].pwrlvl
+		local acc = self:GetOwner().Locker[self.Item].acclvl
+		local clip = self:GetOwner().Locker[self.Item].clplvl
+		local speed = self:GetOwner().Locker[self.Item].spdlvl
+		//local res = self:GetOwner().Locker[self.Item].reslvl
+		self.Primary.Damage = Weapons[self.Item].UpGrades.Power[pwr].Level
+		self.Primary.Cone	= Weapons[self.Item].UpGrades.Accuracy[acc].Level
+		self.Primary.ClipSize = Weapons[self.Item].UpGrades.ClipSize[clip].Level
+		self.Primary.Delay = Weapons[self.Item].UpGrades.FiringSpeed[speed].Level
+		//self.ReloadSpeed = res
 	end
 	if ( CLIENT ) then
-		local pwr = Upgrade[self.Item].pwrlvl
-		local acc = Upgrade[self.Item].acclvl
-		local clip = Upgrade[self.Item].clplvl
-		local speed = Upgrade[self.Item].spdlvl
-		local res = Upgrade[self.Item].reslvl
-		self.Primary.Damage = UpgradeLevels[self.Item].Power[pwr]
-		self.Primary.Cone	= UpgradeLevels[self.Item].Accuracy[acc]
-		self.Primary.ClipSize = UpgradeLevels[self.Item].ClipSize[clip]
-		self.Primary.Delay = UpgradeLevels[self.Item].FiringSpeed[speed]
+		local pwr = Locker[self.Item].pwrlvl
+		local acc = Locker[self.Item].acclvl
+		local clip = Locker[self.Item].clplvl
+		local speed = Locker[self.Item].spdlvl
+		//local res = Locker[self.Item].reslvl
+		self.Primary.Damage = Weapons[self.Item].UpGrades.Power[pwr].Level
+		self.Primary.Cone	= Weapons[self.Item].UpGrades.Accuracy[acc].Level
+		self.Primary.ClipSize = Weapons[self.Item].UpGrades.ClipSize[clip].Level
+		self.Primary.Delay = Weapons[self.Item].UpGrades.FiringSpeed[speed].Level
+		//self.ReloadSpeed = res
 	end
 	self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
 	return true

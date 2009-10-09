@@ -11,7 +11,7 @@ surface.CreateFont("csd",ScreenScale(30),500,true,true,"CSKillIcons")
 surface.CreateFont("csd",ScreenScale(60),500,true,true,"CSSelectIcons") 
 
 function SWEP:DrawHUD()
-	if self.Weapon:GetNetworkedBool( "Ironsights", false ) then return false; end
+	/*if self.Weapon:GetNetworkedBool( "Ironsights", false ) then return false; end
 
  	local x = ScrW() / 2.0 
  	local y = ScrH() / 2.0 
@@ -26,7 +26,7 @@ function SWEP:DrawHUD()
  	surface.DrawLine(x - length,y,x - gap,y) 
  	surface.DrawLine(x + length,y,x + gap,y) 
  	surface.DrawLine(x,y - length,x,y - gap) 
- 	surface.DrawLine(x,y + length,x,y + gap) 
+ 	surface.DrawLine(x,y + length,x,y + gap) */
 end
 
 function SWEP:DrawWeaponSelection(x,y,wide,tall,alpha) 
