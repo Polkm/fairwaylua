@@ -68,10 +68,10 @@ function GM:HUDPaint()
 	//surface.DrawText("Reload Speed")
 	
 	surface.SetDrawColor(255, 55, 55, 60)
-	surface.DrawRect(SW- 320, SH - 70, 280 / (table.Count(Weapons[Locker[1].Weapon].UpGrades.Power) / Locker[1].pwrlvl), 5)
-	surface.DrawRect(SW- 320, SH - 55, 280 / (table.Count(Weapons[Locker[1].Weapon].UpGrades.Accuracy) / Locker[1].acclvl), 5)
-	surface.DrawRect(SW- 320, SH - 40, 280 / (table.Count(Weapons[Locker[1].Weapon].UpGrades.FiringSpeed) / Locker[1].spdlvl), 5)
-	surface.DrawRect(SW- 320, SH - 25, 280 / (table.Count(Weapons[Locker[1].Weapon].UpGrades.ClipSize) / Locker[1].clplvl), 5)
+	surface.DrawRect(SW- 320, SH - 70, 280 / (table.Count(Weapons[Locker[client:GetNWInt("Weapon1")].Weapon].UpGrades.Power) / Locker[client:GetNWInt("Weapon1")].pwrlvl), 5)
+	surface.DrawRect(SW- 320, SH - 55, 280 / (table.Count(Weapons[Locker[client:GetNWInt("Weapon1")].Weapon].UpGrades.Accuracy) / Locker[client:GetNWInt("Weapon1")].acclvl), 5)
+	surface.DrawRect(SW- 320, SH - 40, 280 / (table.Count(Weapons[Locker[client:GetNWInt("Weapon1")].Weapon].UpGrades.FiringSpeed) / Locker[client:GetNWInt("Weapon1")].spdlvl), 5)
+	surface.DrawRect(SW- 320, SH - 25, 280 / (table.Count(Weapons[Locker[client:GetNWInt("Weapon1")].Weapon].UpGrades.ClipSize) / Locker[client:GetNWInt("Weapon1")].clplvl), 5)
 
 	//surface.DrawRect(SW- 320, SH - 10, 280 / ((UpgradeLevels[Locker[1].Weapon].MaxReloadSpeed)/(Weapons[Locker[1].Weapon].Upgrades[Locker[1].reslvl].Level)),5)
 end

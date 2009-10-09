@@ -39,21 +39,9 @@ function GM:PlayerSpawn(ply)
 end
 
 function GM:PlayerLoadout(ply)
-	ply:Give("weapon_pistol")
+	AddWeaponToLocker(ply,"weapon_pistol")
+	ply:SetNWInt("Weapon1",1)
 	ply:SelectWeapon("weapon_pistol")
-	local addtable = {
-	Weapon = "weapon_pistol",
-	pwrlvl = 1,
-	acclvl = 1,
-	clplvl = 1, 
-	spdlvl = 1,
-	reslvl = 1,
-	CanSilence = false, 
-	ChangableFireRate = false, 
-	CanGrenade = false, 
-	Maxpoints = 15, 
-	}
-	table.insert(ply.Locker, addtable )
 	PrintTable(ply.Locker)
 	SendDataToAClient(ply)
 	print("sent")
