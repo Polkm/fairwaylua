@@ -1,40 +1,38 @@
-include( 'shared.lua' )
-
--- Saving / Loading
 function Save(ply)
-	local Steam = string.Replace(ply:SteamID(),":",";")
+	local Steam = string.Replace(ply:SteamID(), ":", ";")
 	local FilePath1 = "SSG/"..Steam.."/playerinfo.txt"
 	local Savetable = {}
 	Savetable["Money"] = ply:GetNWInt("Money")
-	Savetable["Upgrades"] = ply.Upgrades
-	local StrindedItems = util.TableToKeyValues(Savetable)
-	file.Write(FilePath1,StrindedItems)
+	Savetable["Weapon1"] = ply:GetNWInt("Weapon1")
+	Savetable["Weapon2"] = ply:GetNWInt("Weapon2")
+	Savetable["Locker"] = ply.Locker
+	local StrindedInfo = util.TableToKeyValues(Savetable)
+	file.Write(FilePath1, StrindedInfo)
 end
-
 function Load(ply)
-	local Steam = string.Replace(ply:SteamID(),":",";")
+	local Steam = string.Replace(ply:SteamID(), ":", ";")
 	local FilePath1 = "SSG/"..Steam.."/playerinfo.txt"
 	if not file.Exists(FilePath1) then
-		ply:SetNWInt("Money",500)
+		ply:SetNWInt("Money", 500)
+		ply:SetNWInt("Weapon1", 0)
+		ply:SetNWInt("Weapon2", 0)
 		ply.Locker = {}
-		ply:SetNWInt("Weapon1",0)
-		ply:SetNWInt("Weapon2",0)
 	elseif file.Exists(FilePath1) then
-		local savetable = util.KeyValuesToTable(file.Read(FilePath1) )
-		local upg = savetable["upgrades"]
-		local muney = savetable["money"]
-		ply:SetNWInt("Money",tonumber(muney) )
+		local LoadTable = util.KeyValuesToTable(file.Read(FilePath1))
+		ply:SetNWInt("Money", tonumber(LoadTable["money"]))
+		ply:SetNWInt("Weapon1", tonumber(LoadTable["weapon1"]))
+		ply:SetNWInt("Weapon2", tonumber(LoadTable["weapon2"]))
+		ply.Locker = savetable["locker"]
 	end
 	SendDataToAClient(ply)
 end
-
 
 function GM:PlayerInitialSpawn(ply)
 	//Load(ply)
 end
 
 function GM:PlayerSpawn(ply)
-Load(ply)
+	Load(ply)
 	GAMEMODE:PlayerSetModel( ply )
 	GAMEMODE:PlayerLoadout(ply)
 	GAMEMODE:SetPlayerSpeed(ply,205,405)
