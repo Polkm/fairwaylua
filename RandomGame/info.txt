@@ -1,0 +1,13 @@
+"Gamemode"
+{
+	"name"		"RandomGame"
+	"version"	"1.0"
+
+	"author_name"	"Shell Shocked"
+	"author_email"	""
+	"author_url"	""
+	
+	"icon"		""
+	"info"		""
+	"hide"		"0"
+}
