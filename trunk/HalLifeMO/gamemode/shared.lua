@@ -48,13 +48,13 @@ AmmoTypes[4]["medium"] = 100
 AmmoTypes[4]["small"] = 50
 
 NPCData = {}
-NPCData["default"] = {BaseExp = 0.05, Armor = 1, level = 5, AmmoDrop = true, HealthDrop = true}
+NPCData["default"] = {BaseExp = 0.05, Armor = 1, level = 5, AmmoDrop = true, HealthDrop = true, CashDrop = true, CashToDrop = 5}
 NPCData["npc_headcrab"] = {BaseExp = 0.05, level = 1, AmmoDrop = false}
 NPCData["npc_headcrab_black"] = {BaseExp = 0.05, level = 2, AmmoDrop = false}
 NPCData["npc_headcrab_fast"] = {BaseExp = 0.05, level = 2, AmmoDrop = false}
 NPCData["npc_manhack"] = {BaseExp = 0.05, level = 1}
 NPCData["npc_poisonzombie"] = {BaseExp = 0.05}
-NPCData["npc_zombie"] = {BaseExp = 0.05, Armor = 1.5}
+NPCData["npc_zombie"] = {BaseExp = 0.05, Armor = 1.5, CashToDrop = 10}
 NPCData["npc_zombie_torso"] = {BaseExp = 0.05}
 NPCData["npc_fastzombie"] = {BaseExp = 0.05}
 NPCData["npc_metropolice"] = {BaseExp = 0.05}
