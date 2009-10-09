@@ -68,10 +68,11 @@ function PANEL:LoadPlayerWeapons()
 	self.YourWeaponsList:Clear()
 	local tblWeaponSlots = {}
 	for _, weapon in pairs(Client:GetWeapons()) do table.insert(tblWeaponSlots, weapon:GetClass()) end
-	PrintTable(Client:GetWeapons())
+	--PrintTable(Client:GetWeapons())
 	for i = 1, GAMEMODE.MaximumSlots - table.Count(Client:GetWeapons()) do table.insert(tblWeaponSlots, "default") end
 	for _, weapon in pairs(tblWeaponSlots) do
 		local strIconLetter = WeaponData[weapon].Letter or WeaponData["default"].Letter
+		local strPrintName = WeaponData[weapon].PrintName or WeaponData["default"].PrintName
 		local strDescription = WeaponData[weapon].Desc or WeaponData["default"].Desc
 		local boolSellable = WeaponData[weapon].Sellable or WeaponData["default"].Sellable
 		local intSellPrice = WeaponData[weapon].SellPrice or WeaponData["default"].SellPrice
@@ -83,16 +84,18 @@ function PANEL:LoadPlayerWeapons()
 			surface.SetTexture(txtUpGradTexture)
 			surface.DrawTexturedRect(0, 0, WeaponPanel:GetWide(), WeaponPanel:GetTall())
 		end
+		WeaponPanel:SetTooltip(strDescription)
 			local WeaponPicture = vgui.Create("DLabel", WeaponPanel)
 			WeaponPicture:SetFont("TitleFont")
 			WeaponPicture:SetText(strIconLetter)
 			WeaponPicture:SetPos(5, -5)
-			WeaponPicture:SetSize(100, 60)
-			local DescriptionLabel = vgui.Create("FMultiLineLabel", WeaponPanel)
-			DescriptionLabel:SetPos(80, 0)
-			DescriptionLabel:SetSize(155, 60)
-			DescriptionLabel:SetText(strDescription)
+			WeaponPicture:SetSize(150, 60)
+			local DescriptionLabel = vgui.Create("DLabel", WeaponPanel)
+			DescriptionLabel:SetFont("UiBold")
+			DescriptionLabel:SetText(strPrintName)
 			DescriptionLabel:SetColor(Color(200, 200, 200, 255))
+			DescriptionLabel:SetPos(115, 5)
+			DescriptionLabel:SetSize(120, 10)
 			if boolSellable then
 				local SellButton = vgui.Create("DButton", WeaponPanel)
 				SellButton:SetSize(80, 18)
@@ -127,9 +130,10 @@ function PANEL:LoadShopWeapons()
 			end
 		end
 	end
-	PrintTable(tblBuyWeapons)
+	--PrintTable(tblBuyWeapons)
 	for _, weapon in pairs(tblBuyWeapons) do
 		local strIconLetter = WeaponData[weapon].Letter or WeaponData["default"].Letter
+		local strPrintName = WeaponData[weapon].PrintName or WeaponData["default"].PrintName
 		local strDescription = WeaponData[weapon].Desc or WeaponData["default"].Desc
 		local intBuyPrice = WeaponData[weapon].BuyPrice or WeaponData["default"].BuyPrice
 		local WeaponPanel = vgui.Create("DPanel")
@@ -140,16 +144,18 @@ function PANEL:LoadShopWeapons()
 			surface.SetTexture(txtUpGradTexture)
 			surface.DrawTexturedRect(0, 0, WeaponPanel:GetWide(), WeaponPanel:GetTall())
 		end
+		WeaponPanel:SetTooltip(strDescription)
 			local WeaponPicture = vgui.Create("DLabel", WeaponPanel)
 			WeaponPicture:SetFont("TitleFont")
 			WeaponPicture:SetText(strIconLetter)
 			WeaponPicture:SetPos(5, -5)
-			WeaponPicture:SetSize(100, 60)
-			local DescriptionLabel = vgui.Create("FMultiLineLabel", WeaponPanel)
-			DescriptionLabel:SetPos(80, 0)
-			DescriptionLabel:SetSize(155, 60)
-			DescriptionLabel:SetText(strDescription)
+			WeaponPicture:SetSize(150, 60)
+			local DescriptionLabel = vgui.Create("DLabel", WeaponPanel)
+			DescriptionLabel:SetFont("UiBold")
+			DescriptionLabel:SetText(strPrintName)
 			DescriptionLabel:SetColor(Color(200, 200, 200, 255))
+			DescriptionLabel:SetPos(115, 5)
+			DescriptionLabel:SetSize(120, 10)
 			local BuyButton = vgui.Create("DButton", WeaponPanel)
 			BuyButton:SetSize(80, 18)
 			BuyButton:SetPos(152, 40)

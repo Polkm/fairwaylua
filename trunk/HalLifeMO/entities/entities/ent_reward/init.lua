@@ -26,10 +26,11 @@ end
 function ENT:Use(activator, caller)
 	if tostring(self:GetNWEntity("PropProtector")) != "[NULL Entity]" && self:GetNWEntity("PropProtector") != activator then return end
 	if self.Type == "ammo" then
+		local ShootingGuns = #activator:GetWeapons() -  1
 		for _, weapon in pairs(activator:GetWeapons()) do
 			if AmmoTypes[weapon:GetPrimaryAmmoType()] then
 				--print("giving ammo", AmmoTypes[weapon:GetPrimaryAmmoType()][self.Amount])
-				activator:GiveAmmo(AmmoTypes[weapon:GetPrimaryAmmoType()][self.Amount], weapon:GetPrimaryAmmoType())
+				activator:GiveAmmo(math.Round(AmmoTypes[weapon:GetPrimaryAmmoType()][self.Amount] / ShootingGuns), weapon:GetPrimaryAmmoType())
 			end
 		end
 		self:Remove()

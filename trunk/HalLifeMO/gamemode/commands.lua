@@ -17,7 +17,7 @@ end)
 function Player:BuyWeapon(strWeapon)
 	if !WeaponData[strWeapon].Buyable then return end
 	local intBuyCost = WeaponData[strWeapon].BuyPrice or WeaponData["default"].BuyPrice
-	print(self:GetNWInt("cash"), intBuyCost)
+	--print(self:GetNWInt("cash"), intBuyCost)
 	if self:GetNWInt("cash") < intBuyCost then return end
 	if self:AddWeaponToLoadOut(strWeapon) then
 		self:Give(strWeapon)
