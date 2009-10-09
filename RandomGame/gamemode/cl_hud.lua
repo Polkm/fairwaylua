@@ -1,4 +1,3 @@
-include( 'shared.lua' )
 
 function GM:HUDShouldDraw(Name)
 	if Name == "CHudHealth" or Name == "CHudBattery" or Name =="CHudSecondaryAmmo" or Name == "CHudAmmo" then
@@ -67,10 +66,12 @@ function GM:HUDPaint()
 	//local x,y = surface.GetTextSize("Reload Speed")
 	//surface.SetTextPos(SW - 320 ,SH - 10 - y )
 	//surface.DrawText("Reload Speed")
-	surface.SetDrawColor(255,55,55,60)
-	surface.DrawRect(SW- 320,SH - 70,280/((table.Count(Weapons[Locker[1].Weapon].Power))/(Weapons[Locker[1]].Power[Locker[1].pwrlvl].Level)),5)
-	surface.DrawRect(SW- 320,SH - 55,280/((table.Count(Weapons[Locker[1].Weapon].Accuracy))/(Weapons[Locker[1]].Accuracy[Locker[1].acclvl].Level)),5)
-	surface.DrawRect(SW- 320,SH - 40,280/((table.Count(Weapons[Locker[1].Weapon].FiringSpeed))/(Weapons[Locker[1]].FiringSpeed[Locker[1].spdlvl].Level)),5)
-	surface.DrawRect(SW- 320,SH - 25,280/((table.Count(Weapons[Locker[1].Weapon].ClipSize))/(Weapons[Locker[1]].ClipSize[Locker[1].clplvl].Level)),5)
-	//surface.DrawRect(SW- 320,SH - 10,280/((UpgradeLevels[Locker[1].Weapon].MaxReloadSpeed)/(Weapons[Locker[1]].Upgrades[Locker[1].reslvl].Level)),5)
+	
+	surface.SetDrawColor(255, 55, 55, 60)
+	surface.DrawRect(SW- 320, SH - 70, 280 / (table.Count(Weapons[Locker[1].Weapon].UpGrades.Power) / Locker[1].pwrlvl), 5)
+	surface.DrawRect(SW- 320, SH - 55, 280 / (table.Count(Weapons[Locker[1].Weapon].UpGrades.Accuracy) / Locker[1].acclvl), 5)
+	surface.DrawRect(SW- 320, SH - 40, 280 / (table.Count(Weapons[Locker[1].Weapon].UpGrades.FiringSpeed) / Locker[1].spdlvl), 5)
+	surface.DrawRect(SW- 320, SH - 25, 280 / (table.Count(Weapons[Locker[1].Weapon].UpGrades.ClipSize) / Locker[1].clplvl), 5)
+
+	//surface.DrawRect(SW- 320, SH - 10, 280 / ((UpgradeLevels[Locker[1].Weapon].MaxReloadSpeed)/(Weapons[Locker[1].Weapon].Upgrades[Locker[1].reslvl].Level)),5)
 end
