@@ -5,7 +5,6 @@ AddCSLuaFile("cl_menus.lua")
 include("shared.lua")
 include("player.lua")
 include("inventory.lua")
-GM.PlayerSpawnTime = {}
 require("datastream")
 -- DataStreams
 
