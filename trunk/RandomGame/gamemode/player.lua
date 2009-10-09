@@ -14,7 +14,7 @@ end
 function Load(ply)
 	local Steam = string.Replace(ply:SteamID(),":",";")
 	local FilePath1 = "REgmod/"..Steam.."/playerinfo.txt"
-	if not file.Exists(FilePath1) && not file.Exists(FilePath2) then
+	if not file.Exists(FilePath1) then
 		ply:SetNWInt("Money",500)
 		ply.Upgrades = {}
 		for k,v in pairs(Weapons) do
