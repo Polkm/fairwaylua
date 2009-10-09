@@ -5,7 +5,7 @@ GM.Website 		= ""
 GM.TeamBased 	= true
 
 Weapons = {}
-Weapons["weapon_pistol"] = {Weapon = "weapon_basegun",CanSilence = false, ChangableFireRate = false, CanGrenade = false}
+Weapons["weapon_pistol"] = {Weapon = "weapon_pistol",	CanSilence = false,ChangableFireRate = false,CanGrenade = false, }
 
 UpgPrices = {}
 
@@ -52,4 +52,4 @@ UpgradeLevels["weapon_pistol"].MaxPower = 4
 UpgradeLevels["weapon_pistol"].MaxAccuracy = 4
 UpgradeLevels["weapon_pistol"].MaxClipSize = 4
 UpgradeLevels["weapon_pistol"].MaxFiringSpeed = 4
-UpgradeLevels["weapon_pistol"].MaxReloadSpeed = 3
+UpgradeLevels["weapon_pistol"].MaxReloadSpeed = 1

@@ -19,19 +19,19 @@ function GM:HUDPaint()
 	surface.DrawRect(SW- 350, SH- 130,SW+ 350, SH+ 130)
 	surface.SetDrawColor(0,0,0,60)
 	surface.DrawOutlinedRect(SW- 350, SH- 130,SW+ 350 +1, SH+ 130 + 1)
-	--Weapon Box
+	-- Weapon Box
 	surface.SetTextColor(255,255,255,255)
 	surface.SetFont("TitleFont")
 	surface.SetTextPos(SW - 100,SH - 130)
 	surface.DrawText("d")--Pistol
 	surface.SetFont("DefaultSmallDropShadow")
 	surface.SetDrawColor(55,55,55,130)
-	--bullet Icons
+	-- bullet Icons
 	surface.SetTextColor(255,255,255,255)
 	surface.SetFont("CSKillIcons")
 	surface.SetTextPos(SW - 30 ,SH - 70)
 	surface.DrawText("M")
-	--Bullet mag out
+	-- Bullet mag out
 	surface.SetFont("UIBold")
 	local x,y = surface.GetTextSize(Mag_Out)
 	surface.SetTextPos(SW - 30  ,SH - 40 - y/2)
@@ -47,7 +47,7 @@ function GM:HUDPaint()
 	local x,y = surface.GetTextSize("Power")
 	surface.SetTextPos(SW - 320 ,SH - 70 - y )
 	surface.DrawText("Power")
-	--Accuracy
+	-- Accuracy
 	surface.DrawRect(SW- 320,SH - 55,280,5)
 	local x,y = surface.GetTextSize("Accuracy")
 	surface.SetTextPos(SW - 320 ,SH - 55 - y )
@@ -57,12 +57,12 @@ function GM:HUDPaint()
 	local x,y = surface.GetTextSize("Firing Speed")
 	surface.SetTextPos(SW - 320 ,SH - 40 - y )
 	surface.DrawText("Firing Speed")
-	--Clip Size
+	-- Clip Size
 	surface.DrawRect(SW- 320,SH - 25,280,5)
 	local x,y = surface.GetTextSize("Clip Size")
 	surface.SetTextPos(SW - 320 ,SH - 25 - y )
 	surface.DrawText("Clip Size")
-	--Reload speed
+	-- Reload speed
 	surface.DrawRect(SW- 320,SH - 10,280,5)
 	local x,y = surface.GetTextSize("Reload Speed")
 	surface.SetTextPos(SW - 320 ,SH - 10 - y )
