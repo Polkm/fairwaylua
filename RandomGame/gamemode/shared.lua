@@ -5,7 +5,7 @@ GM.Website 		= ""
 GM.TeamBased 	= true
 
 Weapons = {}
-Weapons["weapon_pistol"] = {Weapon = "weapon_basegun",}
+Weapons["weapon_pistol"] = {Weapon = "weapon_basegun",CanSilence = false, ChangableFireRate = false, CanGrenade = false}
 
 UpgPrices = {}
 
