@@ -9,7 +9,10 @@ function GM:PlayerInitialSpawn(ply)
 		ply:SetNWInt("cash", 0)
 	else
 		local LoadString = file.Read("HalfLifeRPG/" .. ply:UniqueID() .. ".txt")
-		ply.LoadOut = util.KeyValuesToTable(LoadString)["loadout"]
+		ply.LoadOut = {}
+		for _, weapon in pairs(util.KeyValuesToTable(LoadString)["loadout"]) do
+			table.insert(ply.LoadOut, weapon) 
+		end
 		ply:SetNWInt("exp", util.KeyValuesToTable(LoadString)["exp"])
 		ply:SetNWInt("cash", util.KeyValuesToTable(LoadString)["cash"])
 	end
@@ -36,7 +39,7 @@ function Player:RemoveWeaponFromLoadOut(strWeaponClass)
 	if !self:HasWeapon(strWeaponClass) then return false end
 	for k, weapon in pairs(self.LoadOut) do
 		if weapon == strWeaponClass then
-			self.LoadOut[tostring(k)] = nil
+			self.LoadOut[k] = nil
 			self:Save()
 			return true
 		end
@@ -56,13 +59,10 @@ function Player:GiveCash(intAmount, boolSave)
 end
 
 function Player:Save()
-	if self.LoadOut then
-		local SaveString = {}
-		SaveString["loadout"] = self.LoadOut
-		SaveString["exp"] = self:GetNWInt("exp")
-		SaveString["cash"] = self:GetNWInt("cash")
-		file.Write("HalfLifeRPG/" .. self:UniqueID() .. ".txt", util.TableToKeyValues(SaveString))
-		return true
-	end
+	local SaveString = {}
+	SaveString["loadout"] = self.LoadOut
+	SaveString["exp"] = self:GetNWInt("exp")
+	SaveString["cash"] = self:GetNWInt("cash")
+	file.Write("HalfLifeRPG/" .. self:UniqueID() .. ".txt", util.TableToKeyValues(SaveString))
 	return false
 end

@@ -9,31 +9,43 @@ GM.MaximumSlots = 3
 WeaponData = {}
 WeaponData["default"] = {
 	BaseDamage = 2, Letter = "",
-	Desc = "Empty Slot.",
+	Desc = "Empty Slot.", PrintName = "Empty",
 	Sellable = false, SellPrice = 10,
 	Buyable = false, BuyPrice = 15}
 	
 WeaponData["weapon_crowbar"] = {
-	BaseDamage = 5, Letter = "c",
+	BaseDamage = 5, Letter = "c", PrintName = "Crow Bar",
 	Desc = "Bash your enimies with this iconic weapon of psychopaths."}
 	
 WeaponData["weapon_pistol"] = {
-	BaseDamage = 5, Letter = "d",
+	BaseDamage = 5, Letter = "d", PrintName = "9mm Pistol",
 	Desc = "What it lacks in power, the pistol makes up for in quantity.",
 	Sellable = true, SellPrice = 150,
 	Buyable = true, BuyPrice = 150}
 	
 WeaponData["weapon_smg1"] = {
-	BaseDamage = 7, Letter = "a",
+	BaseDamage = 7, Letter = "a", PrintName = "SMG1",
 	Desc = "Turns flesh into hamburger.",
 	Sellable = true, SellPrice = 500,
-	Buyable = true, BuyPrice = 700}
+	Buyable = true, BuyPrice = 600}
+
+WeaponData["weapon_ar2"] = {
+	BaseDamage = 12, Letter = "l", PrintName = "AR2",
+	Desc = "The AR2 is mainly used by combine soldiers.",
+	Sellable = true, SellPrice = 700,
+	Buyable = true, BuyPrice = 900}
 	
 
 HealthSizes = {"half", "full"}
 AmmoSizes = {"small", "medium", "large"}
 --------
 AmmoTypes = {}
+--AR2
+AmmoTypes[1] = {}
+AmmoTypes[1]["full"] = 50
+AmmoTypes[1]["large"] = 30
+AmmoTypes[1]["medium"] = 25
+AmmoTypes[1]["small"] = 20
 --Pistol
 AmmoTypes[3] = {}
 AmmoTypes[3]["full"] = 100
@@ -43,9 +55,9 @@ AmmoTypes[3]["small"] = 20
 --SMG
 AmmoTypes[4] = {}
 AmmoTypes[4]["full"] = 200
-AmmoTypes[4]["large"] = 150
-AmmoTypes[4]["medium"] = 100
-AmmoTypes[4]["small"] = 50
+AmmoTypes[4]["large"] = 50
+AmmoTypes[4]["medium"] = 45
+AmmoTypes[4]["small"] = 30
 
 NPCData = {}
 NPCData["default"] = {BaseExp = 0.05, Armor = 1, level = 5, AmmoDrop = true, HealthDrop = true, CashDrop = true, CashToDrop = 5}
