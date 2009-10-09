@@ -6,12 +6,11 @@ include("shared.lua")
 include("player.lua")
 include("inventory.lua")
 require("datastream")
--- DataStreams
 
 function GM:Initialize()
 end
 
 function SendDataToAClient(ply) 
-datastream.StreamToClients(ply,"LockerTransfer", {Upg = ply.Locker,} ) 
+	datastream.StreamToClients(ply, "LockerTransfer", {LockerTable = ply.Locker}) 
 end
 concommand.Add("LockerUpdate",SendDataToAClient)
