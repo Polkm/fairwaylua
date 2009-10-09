@@ -11,6 +11,6 @@ function GM:Initialize()
 end
 
 function SendDataToAClient(ply) 
-datastream.StreamToClients(ply,"InvTransfer", {Inv = ply.inventory , Upg = ply.Upgrades, Chest = ply.Chest, SUpgs = ply.specialupgrades} ) 
+datastream.StreamToClients(ply,"LockerTransfer", {Upg = ply.Upgrades} ) 
 end
-concommand.Add("InvUpdate",SendDataToAClient)
+concommand.Add("LockerUpdate",SendDataToAClient)
