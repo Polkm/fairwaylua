@@ -12,7 +12,7 @@ GM.PlayerSpawnTime = {}
 function GM:Initialize()
 	----------------
 	timer.Simple(1, function() AfterLoad() end)
-	timer.Simple(5, function() SpawnARandomNPC() end)
+	--timer.Simple(5, function() SpawnARandomNPC() end)
 end
 
 function AfterLoad()
