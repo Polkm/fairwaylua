@@ -62,10 +62,12 @@ function GM:OnNPCKilled(victim, killer, weapon)
 end
 
 function SpawnARandomNPC()
-	local randomNode = NodesManifest[math.random(1, #NodesManifest)]
-	local zombie = ents.Create("npc_zombie")
-	zombie:SetPos(randomNode:GetPos())
-	zombie:SetKeyValue("spawnflags",tostring(512))
-	zombie:Spawn()
+	if #ents.FindByClass("npc_zombie") < 30 then
+		local randomNode = NodesManifest[math.random(1, #NodesManifest)]
+		local zombie = ents.Create("npc_zombie")
+		zombie:SetPos(randomNode:GetPos())
+		zombie:SetKeyValue("spawnflags",tostring(512))
+		zombie:Spawn()
+	end
 	timer.Simple(3, function() SpawnARandomNPC() end)
 end
