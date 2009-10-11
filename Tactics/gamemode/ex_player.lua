@@ -55,11 +55,21 @@ end
 
 function SwitchWeapon(plyTarget, strWeapon)
 	if plyTarget:GetNWInt("ActiveWeapon") == plyTarget:GetNWInt("Weapon1") then
-		plyTarget:SetNWInt("ActiveWeapon",plyTarget:GetNWInt("Weapon2"))
+		print("you have wep one")
+		plyTarget:SelectWeapon(plyTarget.Locker[plyTarget:GetNWInt("Weapon2")].Weapon)
+		print("sucsesfully switched to weapon two")
+		if plyTarget:GetActiveWeapon():GetClass() == plyTarget.Locker[plyTarget:GetNWInt("Weapon2")].Weapon then
+			
+			plyTarget:SetNWInt("ActiveWeapon", plyTarget:GetNWInt("Weapon2"))
+		end
 	elseif plyTarget:GetNWInt("ActiveWeapon") == plyTarget:GetNWInt("Weapon2") then
-		plyTarget:SetNWInt("ActiveWeapon",plyTarget:GetNWInt("Weapon1"))
+		print("you have wep two")
+		plyTarget:SelectWeapon(plyTarget.Locker[plyTarget:GetNWInt("Weapon1")].Weapon)
+		if plyTarget:GetActiveWeapon():GetClass() == plyTarget.Locker[plyTarget:GetNWInt("Weapon1")].Weapon then
+			print("sucsesfully switched to weapon one")
+			plyTarget:SetNWInt("ActiveWeapon", plyTarget:GetNWInt("Weapon1"))
+		end
 	end
-	plyTarget:SelectWeapon(plyTarget.Locker[plyTarget:GetNWInt("ActiveWeapon")].Weapon)
 end
 concommand.Add("FS_SwitchWep", function(ply, command, args) SwitchWeapon(ply, tostring(args[1])) end)
 
