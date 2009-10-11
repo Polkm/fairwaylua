@@ -2,6 +2,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 include("resoucre.lua")
+include("ex_player.lua")
 GM.PlayerSpawnTime = {}
 WeaponsManifest = {}
 NodesManifest = {}
@@ -27,7 +28,7 @@ function GM:Initialize()
 	end
 	----------------
 	timer.Simple(1, function() AfterLoad() end)
-	timer.Simple(10, function() SpawnARandomNPC() end)
+	timer.Simple(5, function() SpawnARandomNPC() end)
 end
 
 function AfterLoad()
@@ -53,6 +54,9 @@ function GM:PlayerLoadout(ply)
 	entity:SetRenderMode(RENDERMODE_NONE)
 	entity:SetSolid(SOLID_NONE)
 	ply:SetViewEntity(entity)
+	
+	ply:Give("weapon_pistol")
+	ply:Give("weapon_smg1")
 end
 
 function GM:OnNPCKilled(victim, killer, weapon)
@@ -104,5 +108,5 @@ function SpawnARandomNPC()
 	zombie:SetPos(randomNode:GetPos())
 	zombie:SetKeyValue("spawnflags",tostring(512))
 	zombie:Spawn()
-	timer.Simple(10, function() SpawnARandomNPC() end)
+	timer.Simple(3, function() SpawnARandomNPC() end)
 end
