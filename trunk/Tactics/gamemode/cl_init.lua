@@ -44,7 +44,9 @@ function GM:Think()
 		local tracedata = {}
 		tracedata.start = CammeraPosition
 		tracedata.endpos = CammeraPosition + (ply:GetCursorAimVector() * 4000)
-		tracedata.filter = ply
+		local filterTable = ents.FindByClass("func_brush")
+		table.insert(filterTable, ply)
+		tracedata.filter = filterTable
 		local trace = util.TraceLine(tracedata)
 		local Ang = (trace.HitPos - ply:EyePos()):Angle() -- Gets the angle between the two points
 		ply:SetEyeAngles(Ang) -- Sets the angle
