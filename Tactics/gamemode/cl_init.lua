@@ -10,6 +10,7 @@ datastream.Hook("LockerTransfer", RecieveDataFromServer)
 
 function GM:Initialize()
 	gui.EnableScreenClicker(true)
+	vgui.GetWorldPanel():SetCursor( "crosshair" )
 end
 
 function GM:GUIMousePressed(input)
@@ -37,17 +38,26 @@ function GM:HUDPaint()
 			elseif LocalPlayer():GetPos():Distance(v:GetPos()) >= 2000 then
 				DrawColor = Color(200, 200, 200, 0)
 			end
-			if v:GetNWInt("PvpFlag") then
+			if v:GetNWBool("PvpFlag") then
 				local PvPColor = Color(200, 100, 100, 0)
 				PvPColor.a = DrawColor.a
 				draw.SimpleText("PvP", "UIBold", pos.x, pos.y - 85, PvPColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			end
+			if v:GetNWBool("LockerZone") then
+				local LockerColor = Color(100, 200, 100, 0)
+				LockerColor.a = DrawColor.a
+				if !v:GetNWBool("PvpFlag") then
+					draw.SimpleText("Locker Zone", "UIBold", pos.x, pos.y - 85, LockerColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				else
+					draw.SimpleText("Locker Zone", "UIBold", pos.x, pos.y - 95, LockerColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				end
 			end
 			draw.SimpleText(v:Nick(), "UIBold", pos.x, pos.y - 70, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			draw.SimpleText("$" .. v:GetNWInt("cash"), "UIBold", pos.x, pos.y - 55, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 end
 
-function GM:Think()
+function GM:Tick()
 	local ply = LocalPlayer()
 	if CammeraPosition && ply:Alive() then
 		local tracedata = {}
@@ -63,6 +73,7 @@ function GM:Think()
 end
 
 function GM:CalcView(ply,origin,angles,fov)
+
 	if !CammeraPosition then CammeraPosition = ply:GetPos() end
 	if !CammeraAngle then CammeraAngle = Angle(0, 0, 0) end
 	if !ply.AddativeCamAngle then ply.AddativeCamAngle = 0 end

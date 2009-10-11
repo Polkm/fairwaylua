@@ -4,7 +4,7 @@ GM.Email 		= ""
 GM.Website 		= ""
 GM.TeamBased 	= false
 
-IdealCammeraDistance = 500
+IdealCammeraDistance = 350
 IdealCammeraPosition = Vector(-IdealCammeraDistance / 1.375, -IdealCammeraDistance / 1.375, IdealCammeraDistance)
 IdealCammeraAngle = Angle(45, 45, 0)
 CammeraSmoothness = 15

@@ -11,6 +11,7 @@ surface.CreateFont("csd",ScreenScale(30),500,true,true,"CSKillIcons")
 surface.CreateFont("csd",ScreenScale(60),500,true,true,"CSSelectIcons") 
 
 function SWEP:DrawHUD()
+
 end
 
 function SWEP:DrawWeaponSelection(x,y,wide,tall,alpha) 

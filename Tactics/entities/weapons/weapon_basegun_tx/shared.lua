@@ -16,6 +16,8 @@ SWEP.Primary.Sound			= Sound("Weapon_MP5Navy.Single")
 SWEP.Spawnable			= false
 SWEP.AdminSpawnable		= false
 
+SWEP.ReloadSpeed = 1
+
 SWEP.Primary.Recoil			= 0.8
 SWEP.Primary.Damage			= 20
 SWEP.Primary.NumShots		= 1
@@ -35,6 +37,13 @@ SWEP.Secondary.ClipSize		= 8					// Size of a clip
 SWEP.Secondary.DefaultClip	= 32				// Default number of bullets in a clip
 SWEP.Secondary.Automatic	= false				// Automatic/Semi Auto
 SWEP.Secondary.Ammo			= "Pistol"
+
+
+ReloadTable = {}
+ReloadTable["pistol"] = "reloadpistol"
+ReloadTable["ar2"] = "reload_ar2"
+ReloadTable["shotgun"] = "reload_shotgun"
+ReloadTable["smg1"] = "reload_smg1"
 
 function SWEP:Initialize()
     if SERVER then self:SetWeaponHoldType(self.HoldType) end
@@ -88,11 +97,35 @@ function SWEP:CheckReload()
 end
 
 function SWEP:Reload()
+	if self:GetNWBool("reloading") then return end
 	if self.Weapon:Clip1() >= self.Primary.ClipSize  then  return end
-		self.Weapon:DefaultReload(ACT_VM_RELOAD)
-		self:SetIronsights( false )
+	self:SetNWBool("reloading",true)
+		self:GetOwner():SetAnimation("RELOAD_PISTOL")
+//self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
+		timer.Simple(self.ReloadSpeed, function() 
+		if (self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1()) >= self.Primary.ClipSize then
+			if (SERVER) then
+				self:GetOwner():RemoveAmmo(self.Primary.ClipSize - self.Weapon:Clip1()  ,self.Primary.Ammo )
+				self.Weapon:SetClip1(self.Primary.ClipSize)
+				print(self:GetOwner():GetAmmoCount(self.Primary.Ammo))
+
+			end
+		else
+			if (SERVER) then
+				self.Weapon:SetClip1(self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1())
+				self:GetOwner():RemoveAmmo(self:GetOwner():GetAmmoCount(self.Primary.Ammo),self.Primary.Ammo)
+			end
+		end
+		self:SetNWBool("reloading",false)
+		end)
+	
 end
-function SWEP:Think()
+function SWEP:Think()	
+	if self:GetOwner():GetActiveWeapon() == self then
+		if self:GetNWBool("reloading") then 	
+		
+		end
+	end
 end
 function SWEP:Holster(wep)
 	self:SetIronsights( false )
@@ -105,45 +138,52 @@ function SWEP:Update()
 		local acc = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].acclvl
 		local clip = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].clplvl
 		local speed = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].spdlvl
+		local res = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].reslvl
 		self.Primary.Damage = Weapons[self:GetClass()].UpGrades.Power[pwr].Level
 		self.Primary.Cone	= Weapons[self:GetClass()].UpGrades.Accuracy[acc].Level
 		self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
 		self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
+		self.ReloadSpeed = Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
 	end
 	if ( CLIENT ) then
 		local pwr = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].pwrlvl
 		local acc = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].acclvl
 		local clip = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].clplvl
 		local speed = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].spdlvl
+		local res = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].reslvl
 		self.Primary.Damage = Weapons[self:GetClass()].UpGrades.Power[pwr].Level
 		self.Primary.Cone	= Weapons[self:GetClass()].UpGrades.Accuracy[acc].Level
 		self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
 		self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
+		self.ReloadSpeed =  Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
 	end
 	return true
 end
 
 function SWEP:Deploy()
 	if ( SERVER ) then
-		print(self:GetOwner():GetNWInt("ActiveWeapon"))
 		local pwr = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].pwrlvl
 		local acc = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].acclvl
 		local clip = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].clplvl
 		local speed = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].spdlvl
+		local res = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].reslvl
 		self.Primary.Damage = Weapons[self:GetClass()].UpGrades.Power[pwr].Level
 		self.Primary.Cone	= Weapons[self:GetClass()].UpGrades.Accuracy[acc].Level
 		self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
 		self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
+		self.ReloadSpeed = Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
 	end
 	if ( CLIENT ) then
 		local pwr = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].pwrlvl
 		local acc = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].acclvl
 		local clip = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].clplvl
 		local speed = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].spdlvl
+		local res = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].reslvl
 		self.Primary.Damage = Weapons[self:GetClass()].UpGrades.Power[pwr].Level
 		self.Primary.Cone	= Weapons[self:GetClass()].UpGrades.Accuracy[acc].Level
 		self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
 		self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
+		self.ReloadSpeed =  Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
 	end
 	self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
 	return true
