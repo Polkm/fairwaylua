@@ -39,22 +39,6 @@ function GM:CalcView(ply,origin,angles,fov)
 	if !ply.AddativeCamAngle then ply.AddativeCamAngle = 0 end
 	if !ply.AddativeCamPos then ply.AddativeCamPos = Vector(0, 0, 0) end
 	
-	--[[
-	local tracedata = {}
-	tracedata.start = CammeraPosition
-	tracedata.endpos = ply:GetPos() + Vector(0, 0, 40)
-	tracedata.filter = ply
-	local trace = util.TraceLine(tracedata)
-	if trace.HitWorld then 
-		ply.AddativeCamAngle = math.Clamp(ply.AddativeCamAngle + 1, 0, 45)
-		ply.AddativeCamPos.x = math.Clamp(ply.AddativeCamPos.x + 5, 0, 400)
-		ply.AddativeCamPos.y = math.Clamp(ply.AddativeCamPos.y + 5, 0, 400)
-	else 
-		ply.AddativeCamAngle = math.Clamp(ply.AddativeCamAngle - 1, 0, 45) 
-		ply.AddativeCamPos.x = math.Clamp(ply.AddativeCamPos.x - 1, 0, 400)
-		ply.AddativeCamPos.y = math.Clamp(ply.AddativeCamPos.y - 1, 0, 400)
-	end]]
-	
 	CammeraPosition = CammeraPosition + ((ply:GetIdealCamPos() - CammeraPosition) / CammeraSmoothness)
 	CammeraAngle = CammeraAngle + ((ply:GetIdealCamAngle() - CammeraAngle) * (1 / CammeraSmoothness))
 	
