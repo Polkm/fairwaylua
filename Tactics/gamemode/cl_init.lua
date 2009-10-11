@@ -40,8 +40,8 @@ function GM:HUDPaint()
 end
 
 function GM:Think()
+	local ply = LocalPlayer()
 	if CammeraPosition && ply:Alive() then
-		local ply = LocalPlayer()
 		local tracedata = {}
 		tracedata.start = CammeraPosition
 		tracedata.endpos = CammeraPosition + (ply:GetCursorAimVector() * 4000)

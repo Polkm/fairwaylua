@@ -19,5 +19,5 @@ function ENT:Draw()
 	render.SetMaterial(self.matIcon)
 	self.iconHieght = self.iconHieght + self.iconMoveSpeed
 	if self.iconHieght > self.iconMaxHieght or self.iconHieght < self.iconMinHieght then self.iconMoveSpeed = -self.iconMoveSpeed end
-	render.DrawSprite(self:GetPos() + Vector(0, 0, self.iconHieght), 16, 16, Color(255, 255, 255, 255))
+	render.DrawSprite(self:GetPos() + Vector(0, 0, self.iconHieght), 20, 20, Color(150, 255, 150, 255))
 end
