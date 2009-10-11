@@ -1,6 +1,6 @@
 "Gamemode"
 {
-	"name"		"Fiesta"
+	"name"		"Tactics"
 	"version"	"1.0"
 
 	"author_name"	"Shell Shocked"
