@@ -42,6 +42,8 @@ Weapons["weapon_p220_tx"] = {
 				{Price = 3100, Level = 0.08}},
 		ReloadSpeed = {{Price = 400, Level = 1.2}},
 	},
+	Icon = "y",	
+
 }
 Weapons["weapon_mp5_tx"] = {
 	Weapon = "weapon_mp5_tx",
@@ -67,6 +69,7 @@ Weapons["weapon_mp5_tx"] = {
 				{Price = 3100, Level = 0.04}},
 		ReloadSpeed = {{Price = 400, Level = 1.2}},
 	},
+	Icon = "x",
 }
 
 HealthSizes = {"half", "full"}

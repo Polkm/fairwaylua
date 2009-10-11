@@ -55,8 +55,28 @@ function GM:HUDPaint()
 				end
 			end
 			draw.SimpleText(v:Nick(), "UIBold", pos.x, pos.y - 70, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			draw.SimpleText("$" .. v:GetNWInt("cash"), "UIBold", pos.x, pos.y - 55, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			//draw.SimpleText("$" .. v:GetNWInt("cash"), "UIBold", pos.x, pos.y - 55, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
+	/*surface.SetDrawColor(255,255,255,100)
+	surface.DrawRect(SW - 100, SH- 100, 100 ,100)
+	surface.SetDrawColor(50,50,50,100)
+	surface.DrawOutlinedRect(SW - 101, SH- 101, 100 ,100)*/
+	surface.SetTextColor(255,255,255,255)
+	surface.SetFont("CSKillIcons")
+	surface.SetTextPos(SW - 100,SH - 130)
+	surface.DrawText(Weapons[client:GetActiveWeapon():GetClass()].Icon)--Pistol
+	surface.SetDrawColor(55,55,55,130)
+	if client:GetNWInt("Weapon1") == client:GetNWInt("ActiveWeapon") then 
+		surface.SetTextColor(255,255,255,255)
+		surface.SetTextPos(SW - 100,SH - 230)
+		surface.DrawText(Weapons[Locker[client:GetNWInt("Weapon2")].Weapon].Icon)--Pistol
+		surface.SetDrawColor(55,55,55,130)
+	elseif client:GetNWInt("Weapon2") == client:GetNWInt("ActiveWeapon") then 
+		surface.SetTextColor(255,255,255,255)
+		surface.SetTextPos(SW - 100,SH - 230)
+		surface.DrawText(Weapons[Locker[client:GetNWInt("Weapon1")].Weapon].Icon)--Pistol
+		surface.SetDrawColor(55,55,55,130)
+	end
 end
 
 function GM:Tick()
