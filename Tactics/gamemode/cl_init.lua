@@ -26,13 +26,13 @@ function GM:HUDPaint( )
 	local Money = client:GetNWInt("Cash")
 	for k,v in pairs(player.GetAll()) do
 		local pos = v:GetPos():ToScreen()
-		local DrawColor = Color(200,200,200,255)
+		local DrawColor = Color(200,200,200,255)--/math.Round(LocalPlayer():GetPos():Distance(v:GetPos()))*40)
 		if math.Round(LocalPlayer():GetPos():Distance(v:GetPos())) >= 1000 then
 			DrawColor = Color(200,200,200,0)
-		elseif math.Round(LocalPlayer():GetPos():Distance(v:GetPos())) <= 300 then
+		elseif math.Round(LocalPlayer():GetPos():Distance(v:GetPos())) <= 200 then
 			DrawColor = Color(200,200,200,255)
-		else
-		Color(200,200,200,255/math.Round(LocalPlayer():GetPos():Distance(v:GetPos()))*40)
+		elseif math.Round(LocalPlayer():GetPos():Distance(v:GetPos())) > 200 && math.Round(LocalPlayer():GetPos():Distance(v:GetPos())) < 1000 then
+			DrawColor = Color(200,200,200,100)
 		end
 		draw.SimpleText(v:Nick(),"UIBold",pos.x ,pos.y - 70,DrawColor,TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
