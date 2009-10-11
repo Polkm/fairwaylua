@@ -1,4 +1,5 @@
 include( 'shared.lua' )
+include( 'cl_menus.lua' )
 require("datastream")
 Locker = {}
 
