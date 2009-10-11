@@ -54,7 +54,7 @@ function GM:OnNPCKilled(victim, killer, weapon)
 				reward:SetAmount(drop.amount)
 				reward:SetNWEntity("PropProtector", killer)
 				reward:Spawn()
-				timer.Simple(10, function() if reward:IsValid() then reward:SetNWEntity("PropProtector", nil) end end)
+				timer.Simple(10, function() if reward:IsValid() then reward:SetNWEntity("PropProtector", "none") end end)
 				timer.Simple(40, function() if reward:IsValid() then reward:Remove() end end)
 			end
 		end
