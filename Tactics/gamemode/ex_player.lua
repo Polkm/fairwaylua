@@ -16,9 +16,11 @@ function GM:PlayerLoadout(ply)
 	entity:SetSolid(SOLID_NONE)
 	entity:SetNoDraw(true)
 	ply:SetViewEntity(entity)
-	
-	ply:Give("weapon_pistol")
-	ply:Give("weapon_smg1")
+	ply.Locker = {}
+	ply:AddWeaponToLocker("weapon_pistol")
+	ply:AddWeaponToLocker("weapon_smg1")
+	PrintTable(ply.Locker)
+	SendDataToAClient(ply) 
 end
 
 function Player:GiveCash(intAmount)
@@ -28,6 +30,23 @@ function Player:GiveCash(intAmount)
 	else
 		return false
 	end
+end
+
+function Player:AddWeaponToLocker(weapon)
+	self:Give(weapon)
+	local addtable = {
+	Weapon = tostring(weapon),
+	pwrlvl = 1,
+	acclvl = 1,
+	clplvl = 1, 
+	spdlvl = 1,
+	reslvl = 1,
+	CanSilence = false, 
+	ChangableFireRate = false, 
+	CanGrenade = false, 
+	Maxpoints = 15, 
+	}
+	table.insert(self.Locker, addtable )
 end
 
 function SwitchWeapon(plyTarget, strWeapon)
@@ -43,3 +62,5 @@ function GM:PlayerShouldTakeDamage( victim, attacker )
 	end
 	return true
 end
+
+
