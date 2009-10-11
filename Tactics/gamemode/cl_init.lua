@@ -19,7 +19,8 @@ function GM:OnSpawnMenuClose()
 		end
 	end
 end
-function GM:HUDPaint( ) 
+
+function GM:HUDPaint() 
 	local SW = ScrW()
 	local SH = ScrH()
 	local client = LocalPlayer()
@@ -27,19 +28,19 @@ function GM:HUDPaint( )
 	for k,v in pairs(player.GetAll()) do
 		if v != LocalPlayer() then 
 			local pos = v:GetPos():ToScreen()
-			local DrawColor = Color(200,200,200,255/math.Round( 1 + LocalPlayer():GetPos():Distance(v:GetPos()))*50)
+			local DrawColor = Color(200, 200, 200, 255 / math.Round(1 + LocalPlayer():GetPos():Distance(v:GetPos())) * 50)
 			if LocalPlayer():GetPos():Distance(v:GetPos()) <= 50 then
-				DrawColor = Color(200,200,200,255)
+				DrawColor = Color(200, 200, 200, 255)
 			elseif 	LocalPlayer():GetPos():Distance(v:GetPos()) >= 2000 then
-				DrawColor = Color(200,200,200,0)
+				DrawColor = Color(200, 200, 200, 0)
 			end
-		draw.SimpleText(v:Nick(),"UIBold",pos.x ,pos.y - 70,DrawColor,TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText(v:Nick(), "UIBold", pos.x, pos.y - 70, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	end
 end
 
 function GM:Think()
-	if CammeraPosition then
+	if CammeraPosition && ply:Alive() then
 		local ply = LocalPlayer()
 		local tracedata = {}
 		tracedata.start = CammeraPosition
