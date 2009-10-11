@@ -21,9 +21,7 @@ function GM:GUIMouseReleased(input)
 	if input == MOUSE_RIGHT then LocalPlayer():ConCommand("-attack2") end
 end
 function GM:OnSpawnMenuClose()
-	//if Locker[LocalPlayer():GetNWInt("GetActiveWeapon")].Weapon != LocalPlayer():GetActiveWeapon() then
-		RunConsoleCommand("FS_SwitchWep")
-	//end
+	RunConsoleCommand("FS_SwitchWep")
 end
 
 function GM:HUDPaint() 
