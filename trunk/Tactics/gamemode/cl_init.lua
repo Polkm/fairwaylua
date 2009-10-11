@@ -24,11 +24,17 @@ function GM:HUDPaint( )
 	local SH = ScrH()
 	local client = LocalPlayer()
 	local Money = client:GetNWInt("Cash")
-	local Mag_In = client:GetActiveWeapon():Clip1()
-	local Mag_Out = client:GetAmmoCount(client:GetActiveWeapon():GetPrimaryAmmoType())
 	for k,v in pairs(player.GetAll()) do
 		local pos = v:GetPos():ToScreen()
-		draw.SimpleText(v:Nick(),"UIBold",pos.x ,pos.y - 70,Color(200,200,200,math.Clamp(1000/math.Round(LocalPlayer():GetPos():Distance(v:GetPos())),255,0),TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		local DrawColor = Color(200,200,200,255)
+		if math.Round(LocalPlayer():GetPos():Distance(v:GetPos())) >= 1000 then
+			DrawColor = Color(200,200,200,0)
+		elseif math.Round(LocalPlayer():GetPos():Distance(v:GetPos())) <= 300 then
+			DrawColor = Color(200,200,200,255)
+		else
+		Color(200,200,200,255/math.Round(LocalPlayer():GetPos():Distance(v:GetPos()))*40)
+		end
+		draw.SimpleText(v:Nick(),"UIBold",pos.x ,pos.y - 70,DrawColor,TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
 end
 
