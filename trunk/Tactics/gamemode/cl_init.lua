@@ -23,7 +23,7 @@ function GM:HUDPaint( )
 	local SW = ScrW()
 	local SH = ScrH()
 	local client = LocalPlayer()
-	local Money = client:GetNWInt("Cash")
+	local Money = client:GetNWInt("cash")
 	for k,v in pairs(player.GetAll()) do
 		if v != LocalPlayer() then 
 			local pos = v:GetPos():ToScreen()
