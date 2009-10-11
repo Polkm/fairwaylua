@@ -19,6 +19,10 @@ function GM:PlayerLoadout(ply)
 	ply.Locker = {}
 	ply:AddWeaponToLocker("weapon_pistol")
 	ply:AddWeaponToLocker("weapon_smg1")
+	ply:SelectWeapon("weapon_pistol")
+	ply:SetNWInt("ActiveWeapon", 1)
+	ply:SetNWInt("Weapon1", 1)
+	ply:SetNWInt("Weapon2", 2)
 	PrintTable(ply.Locker)
 	SendDataToAClient(ply) 
 end
@@ -50,7 +54,12 @@ function Player:AddWeaponToLocker(weapon)
 end
 
 function SwitchWeapon(plyTarget, strWeapon)
-	plyTarget:SelectWeapon(strWeapon)
+	if plyTarget:GetNWInt("ActiveWeapon") == plyTarget:GetNWInt("Weapon1") then
+		plyTarget:SetNWInt("ActiveWeapon",plyTarget:GetNWInt("Weapon2"))
+	elseif plyTarget:GetNWInt("ActiveWeapon") == plyTarget:GetNWInt("Weapon2") then
+		plyTarget:SetNWInt("ActiveWeapon",plyTarget:GetNWInt("Weapon1"))
+	end
+	plyTarget:SelectWeapon(plyTarget.Locker[plyTarget:GetNWInt("ActiveWeapon")].Weapon)
 end
 concommand.Add("FS_SwitchWep", function(ply, command, args) SwitchWeapon(ply, tostring(args[1])) end)
 
