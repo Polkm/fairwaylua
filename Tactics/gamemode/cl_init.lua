@@ -1,11 +1,11 @@
-include( 'shared.lua' )
-include( 'cl_menus.lua' )
 require("datastream")
+include( 'shared.lua' )
+include( "cl_menus.lua" )
+
 Locker = {}
 
 function RecieveDataFromServer(handler, id, encoded, decoded)
 	Locker = decoded.LockerTable
-	PrintTable(Locker)
 end  
 datastream.Hook("LockerTransfer", RecieveDataFromServer)
 
@@ -31,16 +31,17 @@ function GM:HUDPaint()
 	local SH = ScrH()
 	local client = LocalPlayer()
 	local Money = client:GetNWInt("cash")
+	local PvPColor = Color(200, 100, 100, 0)
+	local LockerColor = Color(100, 200, 100, 0)
 		for k,v in pairs(player.GetAll()) do
 			local pos = v:GetPos():ToScreen()
-			local DrawColor = Color(200, 200, 200, 255 / math.Round(1 + LocalPlayer():GetPos():Distance(v:GetPos())) * 50)
+			local DrawColor = Color(200, 200, 200, (255 / math.Round(1 + LocalPlayer():GetPos():Distance(v:GetPos())) * 50))
 			if LocalPlayer():GetPos():Distance(v:GetPos()) <= 50 then
 				DrawColor = Color(200, 200, 200, 255)
 			elseif LocalPlayer():GetPos():Distance(v:GetPos()) >= 2000 then
 				DrawColor = Color(200, 200, 200, 0)
 			end
 			if v:GetNWBool("PvpFlag") then
-				local PvPColor = Color(200, 100, 100, 0)
 				PvPColor.a = DrawColor.a
 				draw.SimpleText("PvP", "UIBold", pos.x, pos.y - 85, PvPColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			end

@@ -1,3 +1,4 @@
+require("datastream")
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_menus.lua")
@@ -6,7 +7,7 @@ include("resoucre.lua")
 include("ex_player.lua")
 GM.PlayerSpawnTime = {}
 NodesManifest = {}
-require("datastream")
+
 
 
 function SendDataToAClient(ply) 
