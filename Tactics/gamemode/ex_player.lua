@@ -20,7 +20,7 @@ function GM:PlayerLoadout(ply)
 	ply:AddWeaponToLocker("weapon_p220_tx")
 	ply:AddWeaponToLocker("weapon_mp5_tx")
 	ply:SelectWeapon("weapon_p220_tx")
-	ply:SetNWInt("ActiveWeapon", 2)
+	ply:SetNWInt("ActiveWeapon", 1)
 	ply:SetNWInt("Weapon1", 1)
 	ply:SetNWInt("Weapon2", 2)
 	for _, weapon in pairs(ply:GetWeapons()) do
