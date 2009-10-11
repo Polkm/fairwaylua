@@ -1,5 +1,6 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("cl_menus.lua")
 include("shared.lua")
 include("resoucre.lua")
 include("ex_player.lua")
