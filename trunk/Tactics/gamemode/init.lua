@@ -8,8 +8,6 @@ include("ex_player.lua")
 GM.PlayerSpawnTime = {}
 NodesManifest = {}
 
-
-
 function SendDataToAClient(ply) 
 	datastream.StreamToClients(ply, "LockerTransfer", {LockerTable = ply.Locker}) 
 end

@@ -1,18 +1,12 @@
-surface.CreateFont("csd", ScreenScale(40), 500, true, true, "CSSelectIcons")
-
 function ToggleShop()
 	if !LockerMenu then
 		LockerMenu = vgui.Create("lockermenu")
 		LockerMenu:Center()
 		LockerMenu:SetVisible(true)
 		LockerMenu.Frame:SetVisible(true)
-		gui.EnableScreenClicker(true)
-		RestoreCursorPosition()
 	else
 		LockerMenu:SetVisible(false)
 		LockerMenu.Frame:SetVisible(false)
-		RememberCursorPosition()
-		gui.EnableScreenClicker(false)
 		LockerMenu = nil
 	end
 end

@@ -1,7 +1,7 @@
 require("datastream")
 include( 'shared.lua' )
 include( "cl_menus.lua" )
-
+surface.CreateFont("csd", ScreenScale(40), 500, true, true, "CSSelectIcons")
 Locker = {}
 
 function RecieveDataFromServer(handler, id, encoded, decoded)
@@ -61,21 +61,24 @@ function GM:HUDPaint()
 	surface.DrawRect(SW - 100, SH- 100, 100 ,100)
 	surface.SetDrawColor(50,50,50,100)
 	surface.DrawOutlinedRect(SW - 101, SH- 101, 100 ,100)*/
-	surface.SetTextColor(255,255,255,255)
-	surface.SetFont("CSKillIcons")
-	surface.SetTextPos(SW - 100,SH - 130)
-	surface.DrawText(Weapons[client:GetActiveWeapon():GetClass()].Icon)--Pistol
-	surface.SetDrawColor(55,55,55,130)
-	if client:GetNWInt("Weapon1") == client:GetNWInt("ActiveWeapon") then 
+	
+	if client:Health() > 0 then
 		surface.SetTextColor(255,255,255,255)
-		surface.SetTextPos(SW - 100,SH - 230)
-		surface.DrawText(Weapons[Locker[client:GetNWInt("Weapon2")].Weapon].Icon)--Pistol
+		surface.SetFont("CSSelectIcons")
+		surface.SetTextPos(SW - 100,SH - 130)
+		surface.DrawText(Weapons[client:GetActiveWeapon():GetClass()].Icon)--Pistol
 		surface.SetDrawColor(55,55,55,130)
-	elseif client:GetNWInt("Weapon2") == client:GetNWInt("ActiveWeapon") then 
-		surface.SetTextColor(255,255,255,255)
-		surface.SetTextPos(SW - 100,SH - 230)
-		surface.DrawText(Weapons[Locker[client:GetNWInt("Weapon1")].Weapon].Icon)--Pistol
-		surface.SetDrawColor(55,55,55,130)
+		if client:GetNWInt("Weapon1") == client:GetNWInt("ActiveWeapon") then 
+			surface.SetTextColor(255,255,255,255)
+			surface.SetTextPos(SW - 100,SH - 230)
+			surface.DrawText(Weapons[Locker[client:GetNWInt("Weapon2")].Weapon].Icon)--Pistol
+			surface.SetDrawColor(55,55,55,130)
+		elseif client:GetNWInt("Weapon2") == client:GetNWInt("ActiveWeapon") then 
+			surface.SetTextColor(255,255,255,255)
+			surface.SetTextPos(SW - 100,SH - 230)
+			surface.DrawText(Weapons[Locker[client:GetNWInt("Weapon1")].Weapon].Icon)--Pistol
+			surface.SetDrawColor(55,55,55,130)
+		end
 	end
 end
 
