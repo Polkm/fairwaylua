@@ -51,3 +51,4 @@ NPCData["npc_zombie"] = {CashToDrop = 10}
 NPCData["npc_zombie_torso"] = {}
 NPCData["npc_fastzombie"] = {}
 NPCData["npc_metropolice"] = {}
+NPCData["npc_combine_s"] = {}

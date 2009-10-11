@@ -38,5 +38,8 @@ concommand.Add("FS_SwitchWep", function(ply, command, args) SwitchWeapon(ply, to
  
 function GM:PlayerShouldTakeDamage( victim, attacker )
 	if victim == attacker then return true end
-	if attacker:IsPlayer() && victim:IsPlayer() && victim:GetNWBool("PvpFlag") != true then return false end
+	if attacker:IsPlayer() && victim:IsPlayer() then
+		if victim:GetNWBool("PvpFlag") != true || attacker:GetNWBool("PvpFlag") != true then return false end
+	end
+	return true
 end
