@@ -4,29 +4,9 @@ include("shared.lua")
 include("resoucre.lua")
 include("ex_player.lua")
 GM.PlayerSpawnTime = {}
-WeaponsManifest = {}
 NodesManifest = {}
 
 function GM:Initialize()
-	----------------
-	WeaponsManifest = weapons.GetList()
-	for k, Weapon in pairs(WeaponsManifest) do
-		if string.find(Weapon.ClassName, "base") then
-			table.remove(WeaponsManifest, k)
-		elseif Weapon.Spawnable && Weapon.Spawnable == false then
-			table.remove(WeaponsManifest, k)
-		elseif !Weapon.Spawnable then
-			Weapon.Spawnable = true
-		end
-	end
-	----------------
-	EntsManifest = {}
-	for k, Ent in pairs(scripted_ents.GetList()) do
-		if Ent.t.Spawnable && Ent.t.Spawnable == true then
-			table.insert(EntsManifest, Ent)
-		end
-	end
-	----------------
 	timer.Simple(1, function() AfterLoad() end)
 	timer.Simple(5, function() SpawnARandomNPC() end)
 end
@@ -36,28 +16,6 @@ function AfterLoad()
 	table.Add(NodesManifest, ents.FindByClass("path_corner"))
 	table.Add(NodesManifest, ents.FindByClass("ai_hint"))
 	--table.Add(NodesManifest, ents.FindByClass("info_node"))
-end
-
-function SwitchWeapon(plyTarget, strWeapon)
-	plyTarget:SelectWeapon(strWeapon)
-end
-concommand.Add("FS_SwitchWep", function(ply, command, args) SwitchWeapon(ply, tostring(args[1])) end)
-
-function GM:PlayerLoadout(ply)
-	local entity = ents.Create("prop_dynamic")
-	entity:SetModel("models/error.mdl")
-	entity:Spawn()
-	entity:SetAngles(ply:GetAngles())
-	entity:SetMoveType(MOVETYPE_NONE)
-	entity:SetParent(ply)
-	entity:SetPos(ply:GetPos())
-	entity:SetRenderMode(RENDERMODE_NONE)
-	entity:SetSolid(SOLID_NONE)
-	entity:SetNoDraw(true)
-	ply:SetViewEntity(entity)
-	
-	ply:Give("weapon_pistol")
-	ply:Give("weapon_smg1")
 end
 
 function GM:OnNPCKilled(victim, killer, weapon)
