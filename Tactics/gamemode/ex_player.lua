@@ -1,5 +1,9 @@
 local Player = FindMetaTable("Player")
 
+function GM:PlayerInitialSpawn(ply)
+	ply:SetNWBool("PvpFlag", false)
+end
+
 function GM:PlayerLoadout(ply)
 	local entity = ents.Create("prop_dynamic")
 	entity:SetModel("models/error.mdl")
@@ -30,3 +34,9 @@ function SwitchWeapon(plyTarget, strWeapon)
 	plyTarget:SelectWeapon(strWeapon)
 end
 concommand.Add("FS_SwitchWep", function(ply, command, args) SwitchWeapon(ply, tostring(args[1])) end)
+
+ 
+function GM:PlayerShouldTakeDamage( victim, attacker )
+	if victim == attacker then return true end
+	if attacker:IsPlayer() && victim:IsPlayer() && victim:GetNWBool("PvpFlag") != true then return false end
+end

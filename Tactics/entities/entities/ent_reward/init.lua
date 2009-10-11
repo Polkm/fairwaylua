@@ -24,7 +24,7 @@ function ENT:SetAmount(varAmount)
 end
 
 function ENT:Use(activator, caller)
-	if tostring(self:GetNWEntity("PropProtector")) != "[NULL Entity]" && self:GetNWEntity("PropProtector") != activator then return end
+	if self:GetNWEntity("PropProtector") != "none" && self:GetNWEntity("PropProtector") != activator then return end
 	if self.Type == "ammo" then
 		local ShootingGuns = #activator:GetWeapons() -  1
 		for _, weapon in pairs(activator:GetWeapons()) do

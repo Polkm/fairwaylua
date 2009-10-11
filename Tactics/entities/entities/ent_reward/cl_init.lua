@@ -15,7 +15,7 @@ end
 function ENT:Draw()
 	self:DrawModel()
 	local ply = LocalPlayer() 
-	if tostring(self:GetNWEntity("PropProtector")) != "[NULL Entity]" && self:GetNWEntity("PropProtector") != ply then return end
+	if self:GetNWEntity("PropProtector") != "none" && self:GetNWEntity("PropProtector") != ply then return end
 	render.SetMaterial(self.matIcon)
 	self.iconHieght = self.iconHieght + self.iconMoveSpeed
 	if self.iconHieght > self.iconMaxHieght or self.iconHieght < self.iconMinHieght then self.iconMoveSpeed = -self.iconMoveSpeed end
