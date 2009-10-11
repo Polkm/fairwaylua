@@ -53,6 +53,7 @@ function GM:PlayerLoadout(ply)
 	entity:SetPos(ply:GetPos())
 	entity:SetRenderMode(RENDERMODE_NONE)
 	entity:SetSolid(SOLID_NONE)
+	entity:SetNoDraw(true)
 	ply:SetViewEntity(entity)
 	
 	ply:Give("weapon_pistol")
