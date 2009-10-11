@@ -17,9 +17,9 @@ function GM:PlayerLoadout(ply)
 	entity:SetNoDraw(true)
 	ply:SetViewEntity(entity)
 	ply.Locker = {}
-	ply:AddWeaponToLocker("weapon_pistol")
-	ply:AddWeaponToLocker("weapon_smg1")
-	ply:SelectWeapon("weapon_pistol")
+	ply:AddWeaponToLocker("weapon_p220_tx")
+	ply:AddWeaponToLocker("weapon_mp5_tx")
+	ply:SelectWeapon("weapon_p220_tx")
 	ply:SetNWInt("ActiveWeapon", 1)
 	ply:SetNWInt("Weapon1", 1)
 	ply:SetNWInt("Weapon2", 2)
@@ -37,7 +37,6 @@ function Player:GiveCash(intAmount)
 end
 
 function Player:AddWeaponToLocker(weapon)
-	self:Give(weapon)
 	local addtable = {
 	Weapon = tostring(weapon),
 	pwrlvl = 1,
@@ -51,6 +50,7 @@ function Player:AddWeaponToLocker(weapon)
 	Maxpoints = 15, 
 	}
 	table.insert(self.Locker, addtable )
+	self:Give(weapon)
 end
 
 function SwitchWeapon(plyTarget, strWeapon)
