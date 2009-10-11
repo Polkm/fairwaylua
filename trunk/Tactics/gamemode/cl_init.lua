@@ -1,4 +1,12 @@
 include( 'shared.lua' )
+require("datastream")
+Locker = {}
+
+function RecieveDataFromServer(handler, id, encoded, decoded)
+	Locker = decoded.LockerTable
+	PrintTable(Locker)
+end  
+datastream.Hook("LockerTransfer", RecieveDataFromServer)
 
 function GM:Initialize()
 	gui.EnableScreenClicker(true)
@@ -25,18 +33,22 @@ function GM:HUDPaint()
 	local SH = ScrH()
 	local client = LocalPlayer()
 	local Money = client:GetNWInt("cash")
-	for k,v in pairs(player.GetAll()) do
-		if v != LocalPlayer() then 
+		for k,v in pairs(player.GetAll()) do
 			local pos = v:GetPos():ToScreen()
 			local DrawColor = Color(200, 200, 200, 255 / math.Round(1 + LocalPlayer():GetPos():Distance(v:GetPos())) * 50)
 			if LocalPlayer():GetPos():Distance(v:GetPos()) <= 50 then
 				DrawColor = Color(200, 200, 200, 255)
-			elseif 	LocalPlayer():GetPos():Distance(v:GetPos()) >= 2000 then
+			elseif LocalPlayer():GetPos():Distance(v:GetPos()) >= 2000 then
 				DrawColor = Color(200, 200, 200, 0)
 			end
+			if v:GetNWInt("PvpFlag") then
+				local PvPColor = Color(200, 100, 100, 0)
+				PvPColor.a = DrawColor.a
+				draw.SimpleText("PvP", "UIBold", pos.x, pos.y - 85, PvPColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			end
 			draw.SimpleText(v:Nick(), "UIBold", pos.x, pos.y - 70, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("$" .. v:GetNWInt("cash"), "UIBold", pos.x, pos.y - 55, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
-	end
 end
 
 function GM:Think()

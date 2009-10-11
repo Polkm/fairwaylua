@@ -5,6 +5,14 @@ include("resoucre.lua")
 include("ex_player.lua")
 GM.PlayerSpawnTime = {}
 NodesManifest = {}
+require("datastream")
+
+
+function SendDataToAClient(ply) 
+	datastream.StreamToClients(ply, "LockerTransfer", {LockerTable = ply.Locker}) 
+end
+concommand.Add("LockerUpdate",SendDataToAClient)
+
 
 function GM:Initialize()
 	timer.Simple(1, function() AfterLoad() end)
