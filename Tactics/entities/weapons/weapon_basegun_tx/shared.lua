@@ -99,16 +99,16 @@ end
 function SWEP:Reload()
 	if self:GetNWBool("reloading") then return end
 	if self.Weapon:Clip1() >= self.Primary.ClipSize  then  return end
-	self:SetNWBool("reloading",true)
-		self:GetOwner():SetAnimation("RELOAD_PISTOL")
-//self.Weapon:SendWeaponAnim( ACT_VM_RELOAD )
+
+	if self.Weapon:Clip1() < self.Primary.ClipSize && self:GetOwner():GetAmmoCount(self.Primary.Ammo) > 0  then
+		self:SetNWBool("reloading",true)
+		self:GetOwner():RestartGesture(self:GetOwner():Weapon_TranslateActivity(ACT_HL2MP_GESTURE_RELOAD))
+	end
 		timer.Simple(self.ReloadSpeed, function() 
 		if (self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1()) >= self.Primary.ClipSize then
 			if (SERVER) then
 				self:GetOwner():RemoveAmmo(self.Primary.ClipSize - self.Weapon:Clip1()  ,self.Primary.Ammo )
 				self.Weapon:SetClip1(self.Primary.ClipSize)
-				print(self:GetOwner():GetAmmoCount(self.Primary.Ammo))
-
 			end
 		else
 			if (SERVER) then
@@ -118,7 +118,6 @@ function SWEP:Reload()
 		end
 		self:SetNWBool("reloading",false)
 		end)
-	
 end
 function SWEP:Think()	
 	if self:GetOwner():GetActiveWeapon() == self then
