@@ -19,6 +19,18 @@ function GM:OnSpawnMenuClose()
 		end
 	end
 end
+function GM:HUDPaint( ) 
+	local SW = ScrW()
+	local SH = ScrH()
+	local client = LocalPlayer()
+	local Money = client:GetNWInt("Money")
+	local Mag_In = client:GetActiveWeapon():Clip1()
+	local Mag_Out = client:GetAmmoCount(client:GetActiveWeapon():GetPrimaryAmmoType())
+	for k,v in pairs(player.GetAll()) do
+		local pos = v:GetPos():ToScreen()
+		draw.SimpleText(v:Nick(),"UIBold",pos.x ,pos.y - 70,Color(200,200,200,255/math.Round(LocalPlayer():GetPos():Distance(v:GetPos()))),TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
+end
 
 function GM:Think()
 	if CammeraPosition then
