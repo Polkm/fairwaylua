@@ -57,7 +57,7 @@ function GM:HUDPaint()
 		surface.DrawOutlinedRect(SW - SW + 10 , SH- 38.5, 281 ,26)
 		surface.SetTextColor(255,255,255,255)
 		surface.SetFont("UIBold")
-		surface.SetDrawColor((100-client:Health())*2.55,client:Health()*2.55,0,95)
+		surface.SetDrawColor((100-client:Health())*2.55, client:Health()*2.55, 0, 95)
 		surface.DrawRect(SW - SW + 10 , SH- 37.5, 280/(100/client:Health()) ,25)
 		local x,y = surface.GetTextSize(client:Health().." %")
 		surface.SetTextPos(SW - SW + 130 +x/2,SH  - 25  - y/2)
@@ -91,19 +91,15 @@ function GM:HUDPaint()
 		surface.SetFont("CSHugeSelectIcons")
 		surface.SetTextPos(SW - 150,SH - 85)
 		surface.DrawText(Weapons[client:GetActiveWeapon():GetClass()].Icon)--Pistol
-		if client:GetNWInt("Weapon1") == client:GetNWInt("ActiveWeapon") then 
-			surface.SetFont("CSSelectIcons")
-			surface.SetTextColor(155,155,155,155)
-			surface.SetTextPos(SW - 80,SH - 130)
+		surface.SetFont("CSSelectIcons")
+		surface.SetTextColor(155,155,155,155)
+		surface.SetTextPos(SW - 80,SH - 130)
+		if client:GetNWInt("Weapon1") == client:GetNWInt("ActiveWeapon") && Locker[client:GetNWInt("Weapon2")].Weapon then 
 			surface.DrawText(Weapons[Locker[client:GetNWInt("Weapon2")].Weapon].Icon)--Pistol
-			surface.SetDrawColor(55,55,55,130)
-		elseif client:GetNWInt("Weapon2") == client:GetNWInt("ActiveWeapon") then 
-			surface.SetFont("CSSelectIcons")
-			surface.SetTextColor(155,155,155,155)
-			surface.SetTextPos(SW - 80,SH - 130)
+		elseif client:GetNWInt("Weapon2") == client:GetNWInt("ActiveWeapon") && Locker[client:GetNWInt("Weapon1")].Weapon  then 
 			surface.DrawText(Weapons[Locker[client:GetNWInt("Weapon1")].Weapon].Icon)--Pistol
-			surface.SetDrawColor(55,55,55,130)
 		end
+		surface.SetDrawColor(55,55,55,130)
 	end
 		for k,v in pairs(player.GetAll()) do
 			local pos = v:GetPos():ToScreen()

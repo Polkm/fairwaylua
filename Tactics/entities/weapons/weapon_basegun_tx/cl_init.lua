@@ -1,11 +1,11 @@
 include('shared.lua')
-SWEP.PrintName			= "Scripted Weapon"		// 'Nice' Weapon name (Shown on HUD)	
-SWEP.Slot				= 0						// Slot in the weapon selection menu
-SWEP.SlotPos			= 10					// Position in the slot
-SWEP.DrawAmmo			= true					// Should draw the default HL2 ammo counter
-SWEP.DrawCrosshair		= false					// Should draw the default crosshair
-SWEP.SwayScale			= 1.0					// The scale of the viewmodel sway
-SWEP.BobScale			= 1.0					// The scale of the viewmodel bob
+SWEP.PrintName			= "Scripted Weapon"
+SWEP.Slot				= 0
+SWEP.SlotPos			= 10
+SWEP.DrawAmmo			= true
+SWEP.DrawCrosshair		= false
+SWEP.SwayScale			= 1.0
+SWEP.BobScale			= 1.0
 SWEP.RenderGroup 		= RENDERGROUP_OPAQUE
 surface.CreateFont("csd",ScreenScale(30),500,true,true,"CSKillIcons") 
 surface.CreateFont("csd",ScreenScale(60),500,true,true,"CSSelectIcons") 

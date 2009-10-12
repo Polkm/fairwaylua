@@ -35,7 +35,7 @@ function SWEP:NPCShoot_Primary( ShootPos, ShootDir )
 	self:PrimaryAttack()
 end
 
-function SWEP:TossWeaponSound ( )
+function SWEP:TossWeaponSound()
 end
 
 // These tell the NPC how to use the weapon
