@@ -55,6 +55,7 @@ function GM:PlayerLoadout(ply)
 	ply:SetNWInt("Weapon2", 2)
 	ply.CanUse = true
 	for _, weapon in pairs(ply:GetWeapons()) do
+		if tostring(weapon:GetClass()) == "weapon_crowbar" then break end
 		ply:GiveAmmo(AmmoTypes[weapon:GetPrimaryAmmoType()]["full"], weapon:GetPrimaryAmmoType())
 	end
 	PrintTable(ply.Locker)
