@@ -87,7 +87,7 @@ function GM:HUDPaint()
 		surface.DrawRect(SW - 150 , SH  - 90, 200 ,90)
 		surface.SetDrawColor(70,70,70,100)
 		surface.DrawOutlinedRect(SW - 150 - 1 , SH- 91, 201 ,91)
-		if client:GetNWInt("ActiveWeapon") != 0 then
+		if client:GetNWInt("ActiveWeapon") != 0 && client:GetNWInt("ActiveWeapon") != -1 then
 			surface.SetTextColor(255,255,255,125)
 			surface.SetFont("CSHugeSelectIcons")
 			surface.SetTextPos(SW - 150,SH - 85)
