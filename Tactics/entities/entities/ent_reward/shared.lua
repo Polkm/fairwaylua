@@ -6,4 +6,7 @@ ENT.Contact			= ""
 ENT.Purpose			= ""
 ENT.Instructions	= ""
 ------------------------------------
+ENT.HealthIcon		= "health_icon"
+ENT.CashIcon		= "cash_icon"
+ENT.AmmoIcon		= "ammo_icon"
 
