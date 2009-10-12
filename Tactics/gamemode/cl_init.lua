@@ -55,19 +55,19 @@ function GM:HUDPaint()
 		surface.SetTextColor(255,255,255,255)
 		surface.SetFont("UIBold")
 		local x,y = surface.GetTextSize(Mag_Out)
-		surface.SetTextPos(SW - 110 - x/2 ,SH - 80 - y/2)
+		surface.SetTextPos(SW - 15 - x/2 ,SH - 60 - y/2)
 		surface.DrawText(Mag_Out)
 		--Mag in
-		surface.SetFont("UIBold")
+		surface.SetFont("CloseCaption_Bold")
 		local x,y = surface.GetTextSize(Mag_In)
-		surface.SetTextPos(SW - 15 - x/2 ,SH - 80 - y/2)
+		surface.SetTextPos(SW - 110 - x/2 ,SH - 60 - y/2)
 		surface.DrawText(Mag_In)
 		-- Health Box
 		surface.SetTextColor(255,255,255,255)
 		surface.SetFont("UIBold")
 		local x,y = surface.GetTextSize("% "..client:Health())
 		surface.SetTextPos(SW - 140 -x/2,SH - 25 - y/2)
-		surface.DrawText("% "..client:Health())
+		surface.DrawText(client:Health().." %")
 		surface.SetFont("CSSelectIcons")
 		surface.SetDrawColor(55,55,55,160)
 		-- Primary Item
@@ -76,7 +76,7 @@ function GM:HUDPaint()
 		surface.SetDrawColor(70,70,70,100)
 		surface.DrawOutlinedRect(SW - 130 - 1 , SH- 101, 201 ,51)
 		surface.SetTextColor(255,255,255,155)
-		surface.SetFont("CSSelectIcons")
+		surface.SetFont("csd")
 		surface.SetTextPos(SW - 100,SH - 95)
 		surface.DrawText(Weapons[client:GetActiveWeapon():GetClass()].Icon)--Pistol
 		surface.SetDrawColor((100-client:Health())*2.55,client:Health()*2.55,0,95)
@@ -103,19 +103,19 @@ function GM:HUDPaint()
 			end
 			if v:GetNWBool("PvpFlag") then
 				PvPColor.a = DrawColor.a
-				draw.SimpleText("PvP", "UIBold", pos.x, pos.y - 95, PvPColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				draw.SimpleText("PvP", "Trebuchet20", pos.x, pos.y - 115, PvPColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			end
 			if v:GetNWBool("LockerZone") then
 				local LockerColor = Color(100, 200, 100, 0)
 				LockerColor.a = DrawColor.a
 				if !v:GetNWBool("PvpFlag") then
-					draw.SimpleText("Locker Zone", "UIBold", pos.x, pos.y - 95, LockerColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+					draw.SimpleText("Locker Zone", "Trebuchet20", pos.x, pos.y - 115, LockerColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 				else
-					draw.SimpleText("Locker Zone", "UIBold", pos.x, pos.y - 105, LockerColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+					draw.SimpleText("Locker Zone", "Trebuchet20", pos.x, pos.y - 125, LockerColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 				end
 			end
-			draw.SimpleText(v:Nick(), "UIBold", pos.x, pos.y - 80, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			//draw.SimpleText("$" .. v:GetNWInt("cash"), "UIBold", pos.x, pos.y - 65, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText(v:Nick(), "Trebuchet20", pos.x, pos.y - 100, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			//draw.SimpleText("$" .. v:GetNWInt("cash"), "Trebuchet20", pos.x, pos.y - 85, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 end
 
