@@ -4,45 +4,51 @@ include('shared.lua')
 
 function ENT:Initialize()
 	self:SetModel("models/props_junk/PopCan01a.mdl")
-	if self.Type == "ammo" then self:SetModel("models/Items/BoxSRounds.mdl") end
-	if self.Type == "health" then self:SetModel("models/healthvial.mdl") end
-	if self.Type == "health" && self.Amount == "full" then self:SetModel("models/Items/HealthKit.mdl") end
-	if self.Type == "cash" then self:SetModel("models/props/cs_assault/Money.mdl") end
+	if self:GetNWString("type") == "ammo" then self:SetModel("models/Items/BoxSRounds.mdl") end
+	if self:GetNWString("type") == "health" then self:SetModel("models/healthvial.mdl") end
+	if self:GetNWString("type") == "health" && self:GetNWString("amount") == "full" then self:SetModel("models/Items/HealthKit.mdl") end
+	if self:GetNWString("type") == "cash" then self:SetModel("models/props/cs_assault/Money.mdl") end
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)
 	self:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-	self:GetPhysicsObject():ApplyForceCenter(Vector(math.random(-10, 10), math.random(-10, 10), 200))
+	self:GetPhysicsObject():ApplyForceCenter(Vector(math.random(-50, 50), math.random(-50, 50), 300))
 end
 
 function ENT:SetType(strType)
-	self.Type = strType or "ammo"
-	self:SetNWString("type", self.Type)
+	self:SetNWString("type", tostring(strType) or "ammo")
 end
 function ENT:SetAmount(varAmount)
-	self.Amount = varAmount or "small"
+	self:GetNWString("amount", tostring(varAmount) or "small")
 end
 
 function ENT:Use(activator, caller)
 	if self:GetNWEntity("PropProtector") != "none" && self:GetNWEntity("PropProtector") != activator then return end
-	if self.Type == "ammo" then
-		local ShootingGuns = #activator:GetWeapons() -  1
+	local strType = self:GetNWString("type")
+	local strAmount = self:GetNWString("amount")
+	if strType == "ammo" then
+		local intShootingGuns = #activator:GetWeapons()
 		for _, weapon in pairs(activator:GetWeapons()) do
 			if AmmoTypes[weapon:GetPrimaryAmmoType()] then
-				--print("giving ammo", AmmoTypes[weapon:GetPrimaryAmmoType()][self.Amount])
-				activator:GiveAmmo(math.Round(AmmoTypes[weapon:GetPrimaryAmmoType()][self.Amount] / ShootingGuns), weapon:GetPrimaryAmmoType())
+				local intAmmoToGive = math.Round(AmmoTypes[weapon:GetPrimaryAmmoType()][strAmount] / intShootingGuns)
+				ply:GiveAmmo(intAmmoToGive, weapon:GetPrimaryAmmoType())
 			end
 		end
 		self:Remove()
-	elseif self.Type == "cash" then
-		activator:GiveCash(self.Amount, true)
-		self:Remove()
-	elseif self.Type == "health" && activator:Health() < 100 then
-		local AmountToAdd = 0
-		if self.Amount == "full" then AmountToAdd = 50
-		elseif self.Amount == "half" then AmountToAdd = 100
+		return
+	elseif strType == "cash" then
+		local intAmountToGive = tonumber(strAmount)
+		if intAmountToGive > 0 then
+			activator:GiveCash(intAmountToGive)
+			self:Remove()
 		end
-		activator:SetHealth(math.Clamp((activator:Health() + AmountToAdd), 0, 100))
+		return
+	elseif strType == "health" && activator:Health() < 100 then
+		local intAmountToAdd = 50
+		if strAmount == "full" then intAmountToAdd = 100 end
+		local intNewHealth = math.Clamp((activator:Health() + intAmountToAdd), 0, 100)
+		activator:SetHealth(intNewHealth)
 		self:Remove()
+		return
 	end
 end
