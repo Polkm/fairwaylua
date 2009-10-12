@@ -17,8 +17,38 @@ function GM:PlayerLoadout(ply)
 	entity:SetNoDraw(true)
 	ply:SetViewEntity(entity)
 	ply.Locker = {}
+	
+	ply.Locker[0] = {
+	Weapon = "none",
+	pwrlvl = 1,
+	acclvl = 1,
+	clplvl = 1, 
+	spdlvl = 1,
+	reslvl = 1,
+	CanSilence = false, 
+	ChangableFireRate = false, 
+	CanGrenade = false, 
+	Maxpoints = 15, 
+	}
+	
+	ply.Locker[-1] = {
+	Weapon = "none",
+	pwrlvl = 1,
+	acclvl = 1,
+	clplvl = 1, 
+	spdlvl = 1,
+	reslvl = 1,
+	CanSilence = false, 
+	ChangableFireRate = false, 
+	CanGrenade = false, 
+	Maxpoints = 15, 
+	}
+	
 	ply:AddWeaponToLocker("weapon_p220_tx")
 	ply:AddWeaponToLocker("weapon_mp5_tx")
+	ply:Give("weapon_p220_tx")
+	ply:Give("weapon_mp5_tx")
+	ply:Give("weapon_crowbar")
 	ply:SelectWeapon("weapon_p220_tx")
 	ply:SetNWInt("ActiveWeapon", 1)
 	ply:SetNWInt("Weapon1", 1)
@@ -54,7 +84,6 @@ function Player:AddWeaponToLocker(weapon)
 	Maxpoints = 15, 
 	}
 	table.insert(self.Locker, addtable )
-	self:Give(weapon)
 end
 
 function SwitchWeapon(plyTarget, strWeapon)
