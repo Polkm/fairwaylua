@@ -72,8 +72,8 @@ Weapons["weapon_mp5_tx"] = {
 	Icon = "x",
 }
 
-HealthSizes = {"half", "full"}
-AmmoSizes = {"small", "medium", "large"}
+HealthSizes = {"half", "full",}
+AmmoSizes = {"small", "medium", "large",}
 --------
 AmmoTypes = {}
 --AR2
