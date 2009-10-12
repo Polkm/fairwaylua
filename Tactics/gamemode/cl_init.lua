@@ -1,7 +1,7 @@
 require("datastream")
 include( 'shared.lua' )
 include( "cl_menus.lua" )
-surface.CreateFont("csd", ScreenScale(40), 500, true, true, "CSSelectIcons")
+surface.CreateFont("CSKillIcons", ScreenScale(40), 500, true, true, "csd")
 Locker = {}
 
 function RecieveDataFromServer(handler, id, encoded, decoded)
