@@ -7,6 +7,7 @@ Locker = {}
 
 function RecieveDataFromServer(handler, id, encoded, decoded)
 	Locker = decoded.LockerTable
+	Updated = true
 end  
 datastream.Hook("LockerTransfer", RecieveDataFromServer)
 
@@ -35,6 +36,7 @@ function GM:HUDShouldDraw(Name)
 end
 
 function GM:HUDPaint() 
+	if !Updated then return end
 	local SW = ScrW()
 	local SH = ScrH()
 	local client = LocalPlayer()
