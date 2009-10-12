@@ -19,7 +19,7 @@ function ENT:SetType(strType)
 	self:SetNWString("type", tostring(strType) or "ammo")
 end
 function ENT:SetAmount(varAmount)
-	self:GetNWString("amount", tostring(varAmount) or "small")
+	self:SetNWString("amount", tostring(varAmount) or "small")
 end
 
 function ENT:Use(activator, caller)
@@ -31,7 +31,7 @@ function ENT:Use(activator, caller)
 		for _, weapon in pairs(activator:GetWeapons()) do
 			if AmmoTypes[weapon:GetPrimaryAmmoType()] then
 				local intAmmoToGive = math.Round(AmmoTypes[weapon:GetPrimaryAmmoType()][strAmount] / intShootingGuns)
-				ply:GiveAmmo(intAmmoToGive, weapon:GetPrimaryAmmoType())
+				activator:GiveAmmo(intAmmoToGive, weapon:GetPrimaryAmmoType())
 			end
 		end
 		self:Remove()
