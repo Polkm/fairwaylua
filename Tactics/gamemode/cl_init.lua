@@ -87,17 +87,19 @@ function GM:HUDPaint()
 		surface.DrawRect(SW - 150 , SH  - 90, 200 ,90)
 		surface.SetDrawColor(70,70,70,100)
 		surface.DrawOutlinedRect(SW - 150 - 1 , SH- 91, 201 ,91)
-		if client:GetNWInt("ActiveWeapon") != 0 && client:GetNWInt("ActiveWeapon") != -1 then
+		if client:GetNWInt("ActiveWeapon") != 0 && client:GetNWInt("ActiveWeapon") != 1337 then
 			surface.SetTextColor(255,255,255,125)
 			surface.SetFont("CSHugeSelectIcons")
 			surface.SetTextPos(SW - 150,SH - 85)
-			surface.DrawText(Weapons[client:GetActiveWeapon():GetClass()].Icon)--Pistol
+			if client:GetActiveWeapon():GetClass() != "weapon_crowbar" then
+				surface.DrawText(Weapons[client:GetActiveWeapon():GetClass()].Icon)--Pistol
+			end
 			surface.SetTextColor(155,155,155,155)
 			surface.SetTextPos(SW - 80,SH - 130)
 			surface.SetFont("CSSelectIcons")
-			if client:GetNWInt("Weapon1") == client:GetNWInt("ActiveWeapon")  && client:GetNWInt("Weapon2") != 0 && client:GetNWInt("Weapon2") != -1 then 
+			if client:GetNWInt("Weapon1") == client:GetNWInt("ActiveWeapon")  && client:GetNWInt("Weapon2") != 0 && client:GetNWInt("Weapon2") != 1337 then 
 				surface.DrawText(Weapons[Locker[client:GetNWInt("Weapon2")].Weapon].Icon)--Pistol
-			elseif client:GetNWInt("Weapon2") == client:GetNWInt("ActiveWeapon") && client:GetNWInt("Weapon1") != 0 && client:GetNWInt("Weapon1") != -1 then 
+			elseif client:GetNWInt("Weapon2") == client:GetNWInt("ActiveWeapon") && client:GetNWInt("Weapon1") != 0 && client:GetNWInt("Weapon1") != 1337 then 
 				surface.DrawText(Weapons[Locker[client:GetNWInt("Weapon1")].Weapon].Icon)--Pistol
 			end
 			surface.SetDrawColor(55,55,55,130)
