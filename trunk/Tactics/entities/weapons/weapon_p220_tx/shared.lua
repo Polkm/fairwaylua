@@ -18,15 +18,15 @@ SWEP.Base				= "weapon_basegun_tx"
 
 SWEP.ViewModelFOV		= 62
 SWEP.ViewModelFlip		= true
-SWEP.ViewModel = "models/weapons/v_pist_p220.mdl"
-SWEP.WorldModel = "models/weapons/w_pist_p220.mdl"
+SWEP.ViewModel = 		"models/weapons/v_pist_p220.mdl"
+SWEP.WorldModel = 		"models/weapons/w_pist_p228.mdl"
 SWEP.HoldType 			= "pistol"
 
 SWEP.Weight				= 5
 SWEP.AutoSwitchTo		= false
 SWEP.AutoSwitchFrom		= false
 
-SWEP.Primary.Sound			= Sound("weapons/p220/p228-1.wav")
+SWEP.Primary.Sound			= Sound("weapons/p228/p228-1.wav")
 SWEP.Primary.Recoil			= 0.6
 SWEP.Primary.Damage			= 10
 SWEP.Primary.NumShots		= 1

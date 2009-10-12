@@ -9,9 +9,9 @@ SWEP.ViewModel		= "models/weapons/v_pistol.mdl"
 SWEP.WorldModel		= "models/weapons/w_357.mdl"
 SWEP.AnimPrefix		= "python"
 
-SWEP.HoldType 			= "pistol"
+SWEP.HoldType 		= "pistol"
 
-SWEP.Primary.Sound			= Sound("Weapon_MP5Navy.Single")
+SWEP.Primary.Sound	= Sound("Weapon_MP5Navy.Single")
 
 SWEP.Spawnable			= false
 SWEP.AdminSpawnable		= false
@@ -59,6 +59,7 @@ function SWEP:PrimaryAttack()
 	end
 	
 	self:CSShootBullet(self.Primary.Damage,self.Primary.Recoil,self.Primary.NumShots,self.Primary.Cone)
+	
 	self.Owner:ViewPunch(Angle( math.Rand(-0.2,-0.1) * self.Primary.Recoil,math.Rand(-0.1,0.1) *self.Primary.Recoil,0)) 
 	self.Weapon:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 	self:TakePrimaryAmmo(1)
