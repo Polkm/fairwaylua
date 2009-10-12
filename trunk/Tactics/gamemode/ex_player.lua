@@ -31,7 +31,7 @@ function GM:PlayerLoadout(ply)
 	Maxpoints = 15, 
 	}
 	
-	ply.Locker[-1] = {
+	ply.Locker[1337] = {
 	Weapon = "none",
 	pwrlvl = 1,
 	acclvl = 1,

@@ -57,7 +57,7 @@ function PANEL:LoadWeapons()
 	self.EquiptedWeaponsList:Clear()
 	self.LockerWeaponsList:Clear()
 	for k, weaponTable in pairs(Locker) do
-		if k != 0 && k != -1 then 
+		if k != 0 && k != 1337 then 
 			local ProperList = self.LockerWeaponsList
 			if k == Client:GetNWInt("Weapon1") or k == Client:GetNWInt("Weapon2") then
 				ProperList = self.EquiptedWeaponsList
