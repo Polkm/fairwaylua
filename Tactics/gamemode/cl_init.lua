@@ -4,6 +4,8 @@ include( "cl_menus.lua" )
 surface.CreateFont("csd", ScreenScale(40), 500, true, true, "CSSelectIcons")
 Locker = {}
 
+
+
 function RecieveDataFromServer(handler, id, encoded, decoded)
 	Locker = decoded.LockerTable
 end  
@@ -26,6 +28,13 @@ function GM:OnSpawnMenuClose()
 	RunConsoleCommand("FS_SwitchWep")
 end
 
+function GM:HUDShouldDraw(Name)
+	if Name == "CHudHealth" or Name == "CHudBattery" or Name =="CHudSecondaryAmmo" or Name == "CHudAmmo" then
+		return false
+	end	
+	return true
+end
+
 function GM:HUDPaint() 
 	local SW = ScrW()
 	local SH = ScrH()
@@ -43,31 +52,44 @@ function GM:HUDPaint()
 			end
 			if v:GetNWBool("PvpFlag") then
 				PvPColor.a = DrawColor.a
-				draw.SimpleText("PvP", "UIBold", pos.x, pos.y - 85, PvPColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				draw.SimpleText("PvP", "UIBold", pos.x, pos.y - 95, PvPColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			end
 			if v:GetNWBool("LockerZone") then
 				local LockerColor = Color(100, 200, 100, 0)
 				LockerColor.a = DrawColor.a
 				if !v:GetNWBool("PvpFlag") then
-					draw.SimpleText("Locker Zone", "UIBold", pos.x, pos.y - 85, LockerColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-				else
 					draw.SimpleText("Locker Zone", "UIBold", pos.x, pos.y - 95, LockerColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				else
+					draw.SimpleText("Locker Zone", "UIBold", pos.x, pos.y - 105, LockerColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 				end
 			end
-			draw.SimpleText(v:Nick(), "UIBold", pos.x, pos.y - 70, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			//draw.SimpleText("$" .. v:GetNWInt("cash"), "UIBold", pos.x, pos.y - 55, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText(v:Nick(), "UIBold", pos.x, pos.y - 80, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			//draw.SimpleText("$" .. v:GetNWInt("cash"), "UIBold", pos.x, pos.y - 65, DrawColor, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
-	/*surface.SetDrawColor(255,255,255,100)
-	surface.DrawRect(SW - 100, SH- 100, 100 ,100)
+
+	surface.SetDrawColor(90,90,90,100)
+	surface.DrawRect(SW - SW , SH  - 100, 300 ,100)
 	surface.SetDrawColor(50,50,50,100)
-	surface.DrawOutlinedRect(SW - 101, SH- 101, 100 ,100)*/
-	
+	surface.DrawOutlinedRect(SW - SW - 1 , SH- 101, 301 ,101)
+	surface.SetDrawColor(50,50,50,100)
+	surface.DrawRect(SW - SW + 10 , SH- 75, 280 ,50)
+	surface.SetDrawColor(50,50,50,100)
+	surface.DrawRect(SW - SW + 9 , SH- 75, 281 ,51)
 	if client:Health() > 0 then
 		surface.SetTextColor(255,255,255,255)
 		surface.SetFont("CSSelectIcons")
 		surface.SetTextPos(SW - 100,SH - 130)
 		surface.DrawText(Weapons[client:GetActiveWeapon():GetClass()].Icon)--Pistol
+		surface.SetDrawColor((100-client:Health())*2.55,client:Health()*2.55,0,100)
+		surface.DrawRect(SW - SW + 10 , SH- 75, 280/(100/client:Health()) ,50)
+		surface.SetTextColor(255,255,255,255)
+		surface.SetFont("UIBold")
+		local x,y = surface.GetTextSize("% "..client:Health())
+		surface.SetTextPos(SW - SW + 140 -x/2,SH - 50 - y/2)
+		surface.DrawText("% "..client:Health())
+		surface.SetFont("CSSelectIcons")
 		surface.SetDrawColor(55,55,55,130)
+		
 		if client:GetNWInt("Weapon1") == client:GetNWInt("ActiveWeapon") then 
 			surface.SetTextColor(255,255,255,255)
 			surface.SetTextPos(SW - 100,SH - 230)
