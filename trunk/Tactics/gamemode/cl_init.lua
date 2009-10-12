@@ -42,8 +42,7 @@ function GM:HUDPaint()
 	local PvPColor = Color(200, 100, 100, 0)
 	local LockerColor = Color(100, 200, 100, 0)
 
-	if client:Health() > 0 && client:Alive() then
-	
+	if client:Health() > 0 && client:Alive() && client:GetActiveWeapon() then
 		local Mag_In = client:GetActiveWeapon():Clip1()
 		local Mag_Out = client:GetAmmoCount(client:GetActiveWeapon():GetPrimaryAmmoType())
 		-- Health Box
