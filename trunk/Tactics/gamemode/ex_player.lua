@@ -23,6 +23,7 @@ function GM:PlayerLoadout(ply)
 	ply:SetNWInt("ActiveWeapon", 1)
 	ply:SetNWInt("Weapon1", 1)
 	ply:SetNWInt("Weapon2", 2)
+	ply.CanUse = true
 	for _, weapon in pairs(ply:GetWeapons()) do
 		ply:GiveAmmo(AmmoTypes[weapon:GetPrimaryAmmoType()]["full"], weapon:GetPrimaryAmmoType())
 	end
@@ -85,4 +86,13 @@ function GM:PlayerShouldTakeDamage( victim, attacker )
 	return true
 end
 
+function GM:PlayerUse( ply, ent )
+	if !ply.CanUse then return end
+	if ply:GetNWBool("LockerZone") then
+		ply:ConCommand("tx_Locker")
+	end
+	ply.CanUse = false
+	timer.Simple(0.3, function() ply.CanUse = true end)
+	return true
+end
 
