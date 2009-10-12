@@ -203,7 +203,8 @@ function SWEP:CSShootBullet(dmg,recoil,numbul,cone)
 	bullet.Damage	= dmg 
 	self.Owner:FireBullets(bullet) 
 	self.Weapon:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
-	self.Owner:SetAnimation(PLAYER_ATTACK1)
+	self:GetOwner():RestartGesture(self:GetOwner():Weapon_TranslateActivity(ACT_HL2MP_GESTURE_RANGE_ATTACK))
+	--self.Owner:SetAnimation(PLAYER_ATTACK1)
 	self.Owner:MuzzleFlash()
 	if self.Owner:IsNPC() then return end 
 	if (SinglePlayer() && SERVER) || (!SinglePlayer() && CLIENT) then 
