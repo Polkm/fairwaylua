@@ -2,9 +2,12 @@ require("datastream")
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_menus.lua")
+AddCSLuaFile("cl_hud.lua")
+AddCSLuaFile("cl_scoreboard.lua")
 include("shared.lua")
-include("resoucre.lua")
+include("player.lua")
 include("ex_player.lua")
+include("resoucre.lua")
 GM.PlayerSpawnTime = {}
 NodesManifest = {}
 

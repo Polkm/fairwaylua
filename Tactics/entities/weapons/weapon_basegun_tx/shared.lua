@@ -152,29 +152,32 @@ function SWEP:Update()
 end
 
 function SWEP:Deploy()
-	if ( SERVER ) then
-		local pwr = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].pwrlvl
-		local acc = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].acclvl
-		local clip = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].clplvl
-		local speed = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].spdlvl
-		local res = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].reslvl
-		self.Primary.Damage = Weapons[self:GetClass()].UpGrades.Power[pwr].Level
-		self.Primary.Cone	= Weapons[self:GetClass()].UpGrades.Accuracy[acc].Level
-		self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
-		self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
-		self.ReloadSpeed = Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
-	end
-	if ( CLIENT ) then
-		local pwr = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].pwrlvl
-		local acc = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].acclvl
-		local clip = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].clplvl
-		local speed = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].spdlvl
-		local res = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].reslvl
-		self.Primary.Damage = Weapons[self:GetClass()].UpGrades.Power[pwr].Level
-		self.Primary.Cone	= Weapons[self:GetClass()].UpGrades.Accuracy[acc].Level
-		self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
-		self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
-		self.ReloadSpeed =  Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
+	local intActiveWeaponNumber = tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))
+	if intActiveWeaponNumber != 1337 && intActiveWeaponNumber!= 0 then
+		if SERVER then
+			local pwr = self:GetOwner().Locker[intActiveWeaponNumber].pwrlvl
+			local acc = self:GetOwner().Locker[intActiveWeaponNumber].acclvl
+			local clip = self:GetOwner().Locker[intActiveWeaponNumber].clplvl
+			local speed = self:GetOwner().Locker[intActiveWeaponNumber].spdlvl
+			local res = self:GetOwner().Locker[intActiveWeaponNumber].reslvl
+			self.Primary.Damage = Weapons[self:GetClass()].UpGrades.Power[pwr].Level
+			self.Primary.Cone = Weapons[self:GetClass()].UpGrades.Accuracy[acc].Level
+			self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
+			self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
+			self.ReloadSpeed = Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
+		end
+		if CLIENT then
+			local pwr = Locker[intActiveWeaponNumber].pwrlvl
+			local acc = Locker[intActiveWeaponNumber].acclvl
+			local clip = Locker[intActiveWeaponNumber].clplvl
+			local speed = Locker[intActiveWeaponNumber].spdlvl
+			local res = Locker[intActiveWeaponNumber].reslvl
+			self.Primary.Damage = Weapons[self:GetClass()].UpGrades.Power[pwr].Level
+			self.Primary.Cone	= Weapons[self:GetClass()].UpGrades.Accuracy[acc].Level
+			self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
+			self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
+			self.ReloadSpeed =  Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
+		end
 	end
 	return true
 end
