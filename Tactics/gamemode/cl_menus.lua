@@ -1,4 +1,4 @@
-function ToggleShop()
+function ToggleLocker()
 	if !LockerMenu then
 		LockerMenu = vgui.Create("lockermenu")
 		LockerMenu:Center()
@@ -10,7 +10,7 @@ function ToggleShop()
 		LockerMenu = nil
 	end
 end
-concommand.Add("tx_locker", ToggleShop)
+concommand.Add("tx_locker", ToggleLocker)
 
 PANEL = {}
 PANEL.Frame = nil
@@ -120,8 +120,7 @@ function PANEL:LoadWeapons()
 				MoveButton:SetDrawBackground(false)
 				MoveButton:SetText("Deposit")
 				MoveButton.DoClick = function(MoveButton)
-					print(k)
-					RunConsoleCommand("DepositWeapon", k)
+					RunConsoleCommand("tx_depositWeapon", k)
 					timer.Simple(0.1, function() self:LoadWeapons() end)
 				end
 			else
@@ -131,8 +130,7 @@ function PANEL:LoadWeapons()
 				MoveButton:SetDrawBackground(false)
 				MoveButton:SetText("Withdraw")
 				MoveButton.DoClick = function(MoveButton)
-					print(k)
-					RunConsoleCommand("WithdrawWeapon", k)
+					RunConsoleCommand("tx_withdrawWeapon", k)
 					timer.Simple(0.1, function() self:LoadWeapons() end)
 				end
 			end
