@@ -3,52 +3,47 @@ AddCSLuaFile("shared.lua")
 include('shared.lua')
 
 function ENT:Initialize()
-	self:SetModel("models/props_junk/PopCan01a.mdl")
-	if self:GetNWString("type") == "ammo" then self:SetModel("models/Items/BoxSRounds.mdl") end
-	if self:GetNWString("type") == "health" then self:SetModel("models/healthvial.mdl") end
-	if self:GetNWString("type") == "health" && self:GetNWString("amount") == "full" then self:SetModel("models/Items/HealthKit.mdl") end
-	if self:GetNWString("type") == "cash" then self:SetModel("models/props/cs_assault/Money.mdl") end
-	self:PhysicsInit(SOLID_VPHYSICS)
-	self:SetMoveType(MOVETYPE_VPHYSICS)
+	self:SetModel("models/props_lab/lockers.mdl")
+	self:PhysicsInit(0)
+	self:SetMoveType(0)
 	self:SetSolid(SOLID_VPHYSICS)
-	self:SetCollisionGroup(COLLISION_GROUP_DEBRIS)
-	self:GetPhysicsObject():ApplyForceCenter(Vector(math.random(-50, 50), math.random(-50, 50), 300))
+	self.LockerDoor1 = ents.Create("prop_physics")
+	self.LockerDoor1:SetModel("models/props_lab/lockerdoorleft.mdl")
+	self.LockerDoor1:SetPos(self:GetPos() + Vector(10,0,38))
+	self.LockerDoor1:SetMoveType(0)
+	self.LockerDoor1:SetAngles(self:GetAngles())
+	self.LockerDoor1:SetSolid(0)
+	self.LockerDoor1:Spawn()
+	self.LockerDoor1:SetKeyValue( "spawnflags", 8)
+	self.LockerDoor2 = ents.Create("prop_physics")
+	self.LockerDoor2:SetModel("models/props_lab/lockerdoorleft.mdl")
+	self.LockerDoor2:SetPos(self:GetPos() + Vector(10,-15,38))
+	self.LockerDoor2:SetMoveType(0)
+	self.LockerDoor2:SetAngles(self:GetAngles())
+	self.LockerDoor2:SetSolid(0)
+	self.LockerDoor2:SetKeyValue( "spawnflags", 8)
+	self.LockerDoor2:Spawn()
+	self.LockerDoor3 = ents.Create("prop_physics")
+	self.LockerDoor3:SetMoveType(0)
+	self.LockerDoor3:SetSolid(0)
+	self.LockerDoor3:SetAngles(self:GetAngles())
+	self.LockerDoor3:SetKeyValue( "spawnflags", 8)
+	self.LockerDoor3:SetModel("models/props_lab/lockerdoorsingle.mdl")
+	self.LockerDoor3:SetPos(self:GetPos() + Vector(10,16,38))
+	self.LockerDoor3:Spawn()
+	
 end
 
 function ENT:SetType(strType)
-	self:SetNWString("type", tostring(strType) or "ammo")
 end
+
 function ENT:SetAmount(varAmount)
-	self:SetNWString("amount", tostring(varAmount) or "small")
 end
 
 function ENT:Use(activator, caller)
-	if self:GetNWEntity("PropProtector") != "none" && self:GetNWEntity("PropProtector") != activator then return end
-	local strType = self:GetNWString("type")
-	local strAmount = self:GetNWString("amount")
-	if strType == "ammo" then
-		local intShootingGuns = #activator:GetWeapons()
-		for _, weapon in pairs(activator:GetWeapons()) do
-			if AmmoTypes[weapon:GetPrimaryAmmoType()] then
-				local intAmmoToGive = math.Round(AmmoTypes[weapon:GetPrimaryAmmoType()][strAmount] / intShootingGuns)
-				activator:GiveAmmo(intAmmoToGive, weapon:GetPrimaryAmmoType())
-			end
-		end
-		self:Remove()
-		return
-	elseif strType == "cash" then
-		local intAmountToGive = tonumber(strAmount)
-		if intAmountToGive > 0 then
-			activator:GiveCash(intAmountToGive)
-			self:Remove()
-		end
-		return
-	elseif strType == "health" && activator:Health() < 100 then
-		local intAmountToAdd = 50
-		if strAmount == "full" then intAmountToAdd = 100 end
-		local intNewHealth = math.Clamp((activator:Health() + intAmountToAdd), 0, 100)
-		activator:SetHealth(intNewHealth)
-		self:Remove()
-		return
+	if activator:IsPlayer()  && activator:GetNWBool("LockerZone") && activator.CanUse then
+		activator:ConCommand("tx_locker")
+		activator.CanUse = false
+		timer.Simple(0.3, function() activator.CanUse = true end)
 	end
 end
