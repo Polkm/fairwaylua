@@ -13,7 +13,6 @@ function SendDataToAClient(ply)
 end
 concommand.Add("LockerUpdate",SendDataToAClient)
 
-
 function GM:Initialize()
 	timer.Simple(1, function() AfterLoad() end)
 	timer.Simple(5, function() SpawnARandomNPC() end)
@@ -80,72 +79,6 @@ function SpawnARandomNPC()
 	timer.Simple(3, function() SpawnARandomNPC() end)
 end
 
--- Lockers
-
-function DepositWeapon(ply,command,args)
-	local lock = ply.Locker
-	local weaponid = tonumber(args[1])
-	local wep1 = ply:GetNWInt("Weapon1")
-	local wep2 = ply:GetNWInt("Weapon2")
-	if wep1 == weaponid then
-		ply:StripWeapon(lock[weaponid].Weapon)
-		ply:SetNWInt("Weapon1", 0)
-		if wep1 == ply:GetNWInt("ActiveWeapon") && wep2 > 0 && wep2 != 1337  then 
-			ply:SetNWInt("ActiveWeapon", 0)
-			ply:ConCommand("FS_SwitchWep")
-		elseif wep1 == ply:GetNWInt("ActiveWeapon") && wep2 < 0 && wep2 != 1337 then 
-			ply:SetNWInt("ActiveWeapon", 1337)
-			ply:SelectWeapon(lock[ply:GetNWInt("ActiveWeapon")].Weapon)
-		end
-	elseif wep2 == weaponid then
-		ply:StripWeapon(lock[weaponid].Weapon)
-		ply:SetNWInt("Weapon2", 0)
-		if wep2 == ply:GetNWInt("ActiveWeapon") && wep1 > 0 && wep1 != 1337 then 
-			ply:SetNWInt("ActiveWeapon", 0)
-			ply:ConCommand("FS_SwitchWep")
-		elseif wep2 == ply:GetNWInt("ActiveWeapon") && wep1 < 0 && wep1 != 1337 then 
-			ply:SetNWInt("ActiveWeapon", 1337)
-			ply:SelectWeapon(lock[ply:GetNWInt("ActiveWeapon")].Weapon)
-		end
-	else 
-		return
-	end
-	SendDataToAClient(ply)
-end
-concommand.Add("DepositWeapon",DepositWeapon)
-
-function WithdrawWeapon(ply,command,args)
-	local lock = ply.Locker
-	local weaponid = tonumber(args[1])
-	local wep1 = ply:GetNWInt("Weapon1")
-	local wep2 = ply:GetNWInt("Weapon2")
-	if wep1 == 0 || wep1 == 1337 then
-		ply:Give(lock[weaponid].Weapon)
-		ply:SetNWInt("Weapon1", weaponid)
-		if wep1 == ply:GetNWInt("ActiveWeapon") && wep2 > 0 && wep2 != 1337 then 
-			ply:SetNWInt("ActiveWeapon", 0)
-		else
-			ply:ConCommand("FS_SwitchWep")
-		end
-	elseif wep2 == 0 || wep2 == 1337 && wep1 > 0 then
-		ply:Give(lock[weaponid].Weapon)
-		ply:SetNWInt("Weapon2", weaponid)
-		if wep2 == ply:GetNWInt("ActiveWeapon") && wep1 > 0 && wep1 != 1337 then 
-			ply:SetNWInt("ActiveWeapon", 0)
-		else
-			ply:ConCommand("FS_SwitchWep")
-		end
-	else 
-		return
-	end
-	SendDataToAClient(ply)
-end
-concommand.Add("WithdrawWeapon",WithdrawWeapon)
-
-
-
-
-
 function UpgradeWeapon(ply,command,args)
 	local upg = ply.Locker
 	local weapon = args[1]
@@ -186,4 +119,4 @@ function UpgradeWeapon(ply,command,args)
 		ply:GetActiveWeapon():Update()
 	end
 end
-concommand.Add("UpgradeWeapon",UpgradeWeapon)
+concommand.Add("UpgradeWeapon", UpgradeWeapon)
