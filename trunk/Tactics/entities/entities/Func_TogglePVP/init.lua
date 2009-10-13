@@ -3,11 +3,11 @@ AddCSLuaFile( "shared.lua" )
 include('shared.lua')
 function ENT:StartTouch(ent) 
 	if ent:IsPlayer() then 
-		ent:SetNWBool("PvpFlag", true)
+		ent:SetNWBool("LockerZone", true)
 	end
 end
 function ENT:EndTouch(ent)
 	if ent:IsPlayer() then 
-		ent:SetNWBool("PvpFlag", false)
+		ent:SetNWBool("LockerZone", false)
 	end
 end
