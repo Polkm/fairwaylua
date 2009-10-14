@@ -9,8 +9,9 @@ Locker = {}
 Perks = {}
 
 function RecieveDataFromServer(handler, id, encoded, decoded)
-	Locker = decoded.LockerTable
-	Perks = decoded.PerkTable
+	local decod = decoded
+	Locker = decod.LockerTable
+	Perks = decod.PerkTable
 end  
 datastream.Hook("LockerTransfer", RecieveDataFromServer)
 
