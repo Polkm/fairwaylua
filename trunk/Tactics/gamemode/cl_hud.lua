@@ -18,7 +18,7 @@ function GM:HUDPaint()
 	local clrPVPText = Color(200, 100, 100, 0)
 	local clrLockerText = Color(100, 200, 100, 0)
 	for _, player in pairs(player.GetAll()) do
-		if !GAMEMODE.ShowScoreboard then
+		if !GAMEMODE.ShowScoreboard && player != client then
 			local vecPlayerPos = player:GetPos():ToScreen()
 			local intDrawAlpha =  55
 			clrNameText.a = intDrawAlpha
@@ -60,7 +60,7 @@ function GM:HUDPaint()
 	surface.SetFont("UIBold")
 	local x,y = surface.GetTextSize("$ " .. intCash)
 	surface.SetTextPos(5, SH - (intHealthBoxHieght + (intCashBoxHieght)) + 4)
-	surface.DrawText("$ " .. intCash)
+	surface.DrawText("$" .. intCash)
 	if client:GetActiveWeapon() && client:GetActiveWeapon():IsValid() && client:GetActiveWeapon():GetClass() != "weapon_crowbar" then
 		if Locker then
 			----Primary Item Box----

@@ -10,6 +10,7 @@ function GM:HUDDrawScoreBoard()
 		local intDrawAlpha = 255 --/ ((client:GetPos():Distance(player:GetPos()) / 500) + 1)
 		clrNameText.a = intDrawAlpha
 		draw.SimpleText(player:Nick(), "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y - 20, clrNameText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw.SimpleText("$"..player:GetNWInt("Cash"), "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y , clrNameText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)		
 		if player:GetNWBool("PvpFlag") then
 			clrPVPText.a = intDrawAlpha
 			draw.SimpleText("PvP", "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y - 35, clrPVPText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
