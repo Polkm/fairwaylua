@@ -18,7 +18,6 @@ concommand.Add("LockerUpdate",SendDataToAClient)
 
 function GM:Initialize()
 	timer.Simple(1, function() AfterLoad() end)
-	timer.Simple(5, function() SpawnARandomNPC() end)
 end
 
 function AfterLoad()
@@ -69,17 +68,6 @@ function GM:OnNPCKilled(victim, killer, weapon)
 			end
 		end
 	end
-end
-
-function SpawnARandomNPC()
-	if #ents.FindByClass("npc_zombie") < 30 then
-		local randomNode = NodesManifest[math.random(1, #NodesManifest)]
-		local zombie = ents.Create("npc_zombie")
-		zombie:SetPos(randomNode:GetPos())
-		zombie:SetKeyValue("spawnflags",tostring(512))
-		zombie:Spawn()
-	end
-	timer.Simple(3, function() SpawnARandomNPC() end)
 end
 
 function UpgradeWeapon(ply,command,args)
