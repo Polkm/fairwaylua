@@ -14,6 +14,29 @@ function GM:HUDPaint()
 	----Health Box----
 	local intHealthBoxWidth = 300
 	local intHealthBoxHieght = 40
+	local clrNameText = Color(200, 200, 200, 0)
+	local clrPVPText = Color(200, 100, 100, 0)
+	local clrLockerText = Color(100, 200, 100, 0)
+	for _, player in pairs(player.GetAll()) do
+		if !GAMEMODE.ShowScoreboard then
+			local vecPlayerPos = player:GetPos():ToScreen()
+			local intDrawAlpha =  55
+			clrNameText.a = intDrawAlpha
+			draw.SimpleText(player:Nick(), "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y - 90, clrNameText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			if player:GetNWBool("PvpFlag") then
+				clrPVPText.a = intDrawAlpha
+				draw.SimpleText("PvP", "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y - 105, clrPVPText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			end
+			if player:GetNWBool("LockerZone") then
+				clrLockerText.a = intDrawAlpha
+				if !player:GetNWBool("PvpFlag") then
+					draw.SimpleText("Locker Zone", "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y - 105, clrLockerText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				else
+					draw.SimpleText("Locker Zone", "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y - 115, clrLockerText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				end
+			end
+		end
+	end
 	surface.SetDrawColor(clrHUDBox.r, clrHUDBox.g, clrHUDBox.b, clrHUDBox.a)
 	surface.DrawRect(0, SH - intHealthBoxHieght, intHealthBoxWidth, intHealthBoxHieght)
 	surface.SetDrawColor(clrHUDBox_Boarder.r, clrHUDBox_Boarder.g, clrHUDBox_Boarder.b, clrHUDBox_Boarder.a)
