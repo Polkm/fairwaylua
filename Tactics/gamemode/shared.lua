@@ -106,3 +106,35 @@ NPCData["npc_zombie_torso"] = {}
 NPCData["npc_fastzombie"] = {}
 NPCData["npc_metropolice"] = {}
 NPCData["npc_combine_s"] = {}
+
+PlayerPerk = {}
+PlayerPerk["perk_ammoup"] = { 
+Name = "Lead Currency",
+Desc = "Increases the amount of ammo you recieve, but cuts the amount of money recieved in half",
+Function = function(ply)  end,
+Active = false,
+}
+PlayerPerk["perk_leech"] = { 
+Name = "Leech",
+Desc = "You are awarded health for hitting enemies, but take %30 more damage",
+Function = function(ply)  end,
+Active = false,
+}
+PlayerPerk["perk_tank"] = { 
+Name = "Tank",
+Desc = "You're max health increases by %50, but your movement speed is decreased",
+Function = function(ply) ply:SetNWInt("MaxHp", ply:GetNWInt("MaxHp") + 50)	GAMEMODE:SetPlayerSpeed(ply,160,200) end,
+Active = false,
+}
+PlayerPerk["perk_gamble"] = { 
+Name = "Gambling Addiction",
+Desc = "When picking up money, you may either gain 2x more money, or lose the money you should've picked up",
+Function = function(ply)  end,
+Active = false,
+}
+PlayerPerk["perk_bonk"] = { 
+Name = "Bonk!",
+Desc = "You have a %25 speed increase, at the cost of health",
+Function = function(ply) ply:SetNWInt("MaxHp", ply:GetNWInt("MaxHp") - 25)	GAMEMODE:SetPlayerSpeed(ply,225,255)  end,
+Active = false,
+}

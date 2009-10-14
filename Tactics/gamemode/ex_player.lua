@@ -96,3 +96,24 @@ function Player:WithdrawWeapon(intWeapon)
 	SendDataToAClient(self)
 end
 concommand.Add("tx_withdrawWeapon", function(ply, command, args) ply:WithdrawWeapon(tonumber(args[1]))  end)
+
+--Perks
+function Player:ActivatePerk(PerkToActivate)
+	PerkToActivate = "perk_ammoup"
+	local tblLocker = self.Locker
+	if self.Perks[PerkToActivate] then
+		self.Perks[PerkToActivate].Active = true
+	end
+	SendDataToAClient(self)
+end
+concommand.Add("tx_ActivatePerk", function(ply, command, args) ply:ActivatePerk(tostring(args[1]))  end)
+
+function Player:DeactivatePerk(PerkToDeactivate)
+	PerkToDeactivate = "perk_ammoup"
+	local tblLocker = self.Locker
+	if self.Perks[PerkToDeactivate] then
+		self.Perks[PerkToDeactivate].Active = false
+	end
+	SendDataToAClient(self)
+end
+concommand.Add("tx_DeactivatePerk", function(ply, command, args) ply:DeactivatePerk(tostring(args[1]))  end)
