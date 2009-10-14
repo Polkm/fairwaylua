@@ -57,7 +57,7 @@ function ENT:Use(activator, caller)
 			else
 				activator:GiveCash(intAmountToGive)
 			end
-			self:Remove()
+			self:Remove() 
 		end
 		return
 	elseif strType == "health" && activator:Health() < activator:GetNWInt("MaxHp")  then
