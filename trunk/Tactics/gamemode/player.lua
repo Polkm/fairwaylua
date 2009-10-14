@@ -13,9 +13,23 @@ function GM:PlayerInitialSpawn(ply)
 	ply:SetNWInt("ActiveWeapon", 1)
 	ply:SetNWInt("Weapon1", 1)
 	ply:SetNWInt("Weapon2", 2)
+	ply.Perks = {}
+	ply.Perks["perk_ammoup"] = { 
+Name = "Lead Currency",
+Desc = "Increases the amount of ammo you recieve, but cuts the amount of money recieved in half",
+Function = function(ply)  end,
+Active = false,
+}
 end
 
 function GM:PlayerLoadout(ply)
+	ply:SetNWInt("MaxHp", 100)
+	GAMEMODE:SetPlayerSpeed(ply,200,230)
+	for k,v in pairs(ply.Perks) do
+		if v.Active then
+			v.Function(ply)
+		end
+	end
 	local entity = ents.Create("prop_dynamic")
 	entity:SetModel("models/error.mdl")
 	entity:Spawn()

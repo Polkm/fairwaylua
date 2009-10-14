@@ -12,7 +12,7 @@ GM.PlayerSpawnTime = {}
 NodesManifest = {}
 
 function SendDataToAClient(ply) 
-	datastream.StreamToClients(ply, "LockerTransfer", {LockerTable = ply.Locker}) 
+	datastream.StreamToClients(ply, "LockerTransfer", {LockerTable = ply.Locker, PerkTable = ply.Perks}) 
 end
 concommand.Add("LockerUpdate",SendDataToAClient)
 
@@ -66,44 +66,44 @@ function GM:OnNPCKilled(victim, killer, weapon)
 				timer.Simple(10, function() if reward:IsValid() then reward:SetNWEntity("PropProtector", "none") end end)
 				timer.Simple(40, function() if reward:IsValid() then reward:Remove() end end)
 			end
-		end
+		end 
 	end
 end
 
 function UpgradeWeapon(ply,command,args)
-	local upg = ply.Locker
+	local lock = ply.Locker
 	local weapon = args[1]
 	local trait = args[2]
 	local cash = tonumber(ply:GetNWInt("Money") + 500000)
-	local pwr = upg[weapon].pwrlvl
-	local acc = upg[weapon].accrlvl
-	local clp = upg[weapon].clplvl
-	local fis = upg[weapon].spdlvl
-	local res = upg[weapon].reslvl
-	if trait == "Power" && upg[weapon].pwrlvl != #Weapons[weapon].UpGrades.Power then
-		if cash >= Weapons[weapon].UpGrades.Power[pwr] then
-			ply:SetNWInt("Money", cash - Weapons[weapon].Upgrades[Power].Price[pwr])			
-			upg[weapon].pwrlvl = upg[weapon].pwrlvl + 1
+	local pwr = lock[weapon].pwrlvl
+	local acc = lock[weapon].accrlvl
+	local clp = lock[weapon].clplvl
+	local fis = lock[weapon].spdlvl
+	local res = lock[weapon].reslvl
+	if trait == "Power" && lock[weapon].pwrlvl != #Weapons[weapon].lockrades.Power then
+		if cash >= Weapons[weapon].lockrades.Power[pwr] then
+			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[Power].Price[pwr])			
+			lock[weapon].pwrlvl = lock[weapon].pwrlvl + 1
 		end
-	elseif trait == "Accuracy" && upg[weapon].acclvl != #Weapons[weapon].UpGrades.Accuracy then
-		if  cash >= UpgPrices[weapon].Accuracy[acc] then	
-		ply:SetNWInt("Money", cash - Weapons[weapon].Upgrades[Accuracy].Price[acc])
-		upg[weapon].accrlvl = upg[weapon].accrlvl + 1
+	elseif trait == "Accuracy" && lock[weapon].acclvl != #Weapons[weapon].lockrades.Accuracy then
+		if  cash >= lockPrices[weapon].Accuracy[acc] then	
+		ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[Accuracy].Price[acc])
+		lock[weapon].accrlvl = lock[weapon].accrlvl + 1
 		end
-	elseif trait == "ClipSize" && upg[weapon].clplvl != #Weapons[weapon].UpGrades.ClipSize then
-		if  cash >= UpgPrices[weapon].ClipSize[clp] then	
-			ply:SetNWInt("Money", cash - Weapons[weapon].Upgrades[ClipSize].Price[clp])			
-			upg[weapon].clplvl = upg[weapon].clplvl + 1
+	elseif trait == "ClipSize" && lock[weapon].clplvl != #Weapons[weapon].lockrades.ClipSize then
+		if  cash >= lockPrices[weapon].ClipSize[clp] then	
+			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[ClipSize].Price[clp])			
+			lock[weapon].clplvl = lock[weapon].clplvl + 1
 		end
-	elseif trait == "FiringSpeed" && upg[weapon].spdlvl != #Weapons[weapon].UpGrades.FiringSpeed  then
-		if  cash >= UpgPrices[weapon].FiringSpeed[fis] then	
-			ply:SetNWInt("Money", cash - Weapons[weapon].UpGrades[FiringSpeed].Price[fis])		
-			upg[weapon].spdlvl = upg[weapon].spdlvl + 1
+	elseif trait == "FiringSpeed" && lock[weapon].spdlvl != #Weapons[weapon].lockrades.FiringSpeed  then
+		if  cash >= lockPrices[weapon].FiringSpeed[fis] then	
+			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[FiringSpeed].Price[fis])		
+			lock[weapon].spdlvl = lock[weapon].spdlvl + 1
 		end
-	elseif trait == "ReloadSpeed" && upg[weapon].spdlvl != #Weapons[weapon].UpGrades.ReloadSpeed  then
-		if  cash >= UpgPrices[weapon].FiringSpeed[res] then	
-			ply:SetNWInt("Money", cash - Weapons[weapon].UpGrades[ReloadSpeed].Price[res])		
-			upg[weapon].reslvl = upg[weapon].reslvl + 1
+	elseif trait == "ReloadSpeed" && lock[weapon].spdlvl != #Weapons[weapon].lockrades.ReloadSpeed  then
+		if  cash >= lockPrices[weapon].FiringSpeed[res] then	
+			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[ReloadSpeed].Price[res])		
+			lock[weapon].reslvl = lock[weapon].reslvl + 1
 		end
 	end
 	if ply:GetActiveWeapon():GetClass() == Weapons[weapon].Weapon then

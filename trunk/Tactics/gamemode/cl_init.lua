@@ -6,9 +6,11 @@ include("cl_scoreboard.lua")
 surface.CreateFont("csd", ScreenScale(40), 500, true, true, "CSSelectIcons")
 surface.CreateFont("csd", ScreenScale(120), 500, true, true,"CSHugeSelectIcons" )
 Locker = {}
+Perks = {}
 
 function RecieveDataFromServer(handler, id, encoded, decoded)
 	Locker = decoded.LockerTable
+	Perks = decoded.PerkTable
 end  
 datastream.Hook("LockerTransfer", RecieveDataFromServer)
 
