@@ -68,20 +68,31 @@ function SWEP:SecondaryAttack()
 	if !self:CanSecondaryAttack() then return end
 	if self.NextSecondaryAttack > CurTime() then return end
 	self.NextSecondaryAttack = CurTime() + 4
-	--[[
+	
 	self:GetOwner():RestartGesture(ACT_ITEM_DROP)
-	local vecNadePos = self.Owner:EyePos() + (self.Owner:GetAimVector() * 14)
-	local intNadeDur = 3
 	local entNade = ents.Create("npc_grenade_frag")
 	timer.Simple(1, function()
-		entNade:SetOwner(self.Owner)
+		local vecNadePos = self:GetOwner():EyePos() + (self:GetOwner():GetAimVector() * 14)
+		local intNadeDur = 3
+		entNade:SetOwner(self:GetOwner())
 		entNade:Fire("SetTimer", intNadeDur)
 		entNade:SetPos(vecNadePos)
-		entNade:SetAngles(self.Owner:EyeAngles())
+		entNade:SetAngles(self:GetOwner():EyeAngles())
 		entNade:Spawn()
+		local tblTraceTable = {}
+		tblTraceTable.start = self:GetOwner():EyePos()
+		tblTraceTable.endpos = tblTraceTable.start + (self:GetOwner():GetCursorAimVector() * 4096 * 4)
+		local tblFilterTable = ents.FindByClass("func_brush")
+		table.insert(tblFilterTable, self:GetOwner())
+		table.insert(tblFilterTable, self:GetOwner():GetActiveWeapon())
+		table.insert(tblFilterTable, entNade)
+		tblTraceTable.filter = tblFilterTable
+		local trcPlayerTrace = util.TraceLine(tblTraceTable)
+		local intPower = trcPlayerTrace.HitPos:Distance(self:GetOwner():GetPos())
+		print(intPower)
 		local phys = entNade:GetPhysicsObject()
-		phys:ApplyForceCenter(self.Owner:GetAimVector():GetNormalized() * 450)
-	end)]]
+		phys:ApplyForceCenter(self:GetOwner():GetAimVector():GetNormalized() * math.Clamp(intPower * 1.2, 1, 700))
+	end)
 end
 
 function SWEP:Think()
@@ -124,34 +135,6 @@ function SWEP:Holster(wep)
 end
 
 function SWEP:Update()
-	if ( SERVER ) then
-		local pwr = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].pwrlvl
-		local acc = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].acclvl
-		local clip = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].clplvl
-		local speed = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].spdlvl
-		local res = self:GetOwner().Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].reslvl
-		self.Primary.Damage = Weapons[self:GetClass()].UpGrades.Power[pwr].Level
-		self.Primary.Cone	= Weapons[self:GetClass()].UpGrades.Accuracy[acc].Level
-		self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
-		self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
-		self.ReloadSpeed = Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
-	end
-	if ( CLIENT ) then
-		local pwr = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].pwrlvl
-		local acc = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].acclvl
-		local clip = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].clplvl
-		local speed = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].spdlvl
-		local res = Locker[tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))].reslvl
-		self.Primary.Damage = Weapons[self:GetClass()].UpGrades.Power[pwr].Level
-		self.Primary.Cone	= Weapons[self:GetClass()].UpGrades.Accuracy[acc].Level
-		self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
-		self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
-		self.ReloadSpeed =  Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
-	end
-	return true
-end
-
-function SWEP:Deploy()
 	local intActiveWeaponNumber = tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))
 	if intActiveWeaponNumber != 1337 && intActiveWeaponNumber!= 0 then
 		if SERVER then
@@ -179,6 +162,11 @@ function SWEP:Deploy()
 			self.ReloadSpeed =  Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
 		end
 	end
+	return true
+end
+
+function SWEP:Deploy()
+	self:Update()
 	return true
 end
 
