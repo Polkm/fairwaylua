@@ -79,6 +79,7 @@ function SWEP:SecondaryAttack()
 		entNade:SetPos(vecNadePos)
 		entNade:SetAngles(self:GetOwner():EyeAngles())
 		entNade:Spawn()
+		--Figur out the distance
 		local tblTraceTable = {}
 		tblTraceTable.start = self:GetOwner():EyePos()
 		tblTraceTable.endpos = tblTraceTable.start + (self:GetOwner():GetCursorAimVector() * 4096 * 4)
@@ -89,9 +90,15 @@ function SWEP:SecondaryAttack()
 		tblTraceTable.filter = tblFilterTable
 		local trcPlayerTrace = util.TraceLine(tblTraceTable)
 		local intPower = trcPlayerTrace.HitPos:Distance(self:GetOwner():GetPos())
+		
+		local ent = ents.Create("prop_physics")
+		ent:SetModel("models/props_junk/PopCan01a.mdl")
+		ent:SetPos(trcPlayerTrace.HitPos)
+		ent:Spawn()
 		print(intPower)
+		
 		local phys = entNade:GetPhysicsObject()
-		phys:ApplyForceCenter(self:GetOwner():GetAimVector():GetNormalized() * math.Clamp(intPower * 1.2, 1, 700))
+		phys:ApplyForceCenter(self:GetOwner():GetAimVector():GetNormalized() * math.Clamp(intPower * 1.5, 1, 700))
 	end)
 end
 
@@ -179,12 +186,13 @@ function SWEP:TacticsShootBullet(dmg, numbul, cone)
 	bullet.Src 		= self.Owner:GetShootPos()
 	bullet.Dir 		= self.Owner:GetAimVector()
 	bullet.Spread 	= Vector(cone,cone,0)
-	bullet.Tracer	= 10
+	bullet.Tracer	= 0
 	bullet.Force	= dmg
 	bullet.Damage	= dmg
 	self.Owner:FireBullets(bullet)
-	self.Weapon:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
+	
 	self:GetOwner():RestartGesture(self:GetOwner():Weapon_TranslateActivity(ACT_HL2MP_GESTURE_RANGE_ATTACK))
+	
 	self.Owner:MuzzleFlash()
 end
 
