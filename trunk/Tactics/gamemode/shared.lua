@@ -20,9 +20,7 @@ end
 Weapons = {}
 Weapons["weapon_p220_tx"] = {
 	Weapon = "weapon_p220_tx",
-	CanSilence = false,
-	ChangableFireRate = false,
-	CanGrenade = false,
+	Icon = "y",
 	UpGrades = {
 		Power = {{Price = 600, Level = 17},
 				{Price = 1500, Level = 20},
@@ -42,13 +40,10 @@ Weapons["weapon_p220_tx"] = {
 				{Price = 3100, Level = 0.08}},
 		ReloadSpeed = {{Price = 400, Level = 1.2}},
 	},
-	Icon = "y",
 }
 Weapons["weapon_mp5_tx"] = {
 	Weapon = "weapon_mp5_tx",
-	CanSilence = false,
-	ChangableFireRate = false,
-	CanGrenade = false,
+	Icon = "x",
 	UpGrades = {
 		Power = {{Price = 600, Level = 22},
 				{Price = 1500, Level = 25},
@@ -68,73 +63,72 @@ Weapons["weapon_mp5_tx"] = {
 				{Price = 3100, Level = 0.04}},
 		ReloadSpeed = {{Price = 400, Level = 1.2}},
 	},
-	Icon = "x",
 }
 
 HealthSizes = {"half", "full",}
-AmmoSizes = {"small", "medium", "large",}
+AmmoSizes = {"small", "medium", "large", "full"}
 --------
 AmmoTypes = {}
 --AR2
 AmmoTypes[1] = {}
 AmmoTypes[1]["full"] = 50
-AmmoTypes[1]["large"] = 30
-AmmoTypes[1]["medium"] = 25
-AmmoTypes[1]["small"] = 20
+AmmoTypes[1]["large"] = 25
+AmmoTypes[1]["medium"] = 20
+AmmoTypes[1]["small"] = 10
 --Pistol
 AmmoTypes[3] = {}
-AmmoTypes[3]["full"] = 100
-AmmoTypes[3]["large"] = 70
-AmmoTypes[3]["medium"] = 50
-AmmoTypes[3]["small"] = 20
+AmmoTypes[3]["full"] = 70
+AmmoTypes[3]["large"] = 35
+AmmoTypes[3]["medium"] = 20
+AmmoTypes[3]["small"] = 10
 --SMG
 AmmoTypes[4] = {}
-AmmoTypes[4]["full"] = 200
+AmmoTypes[4]["full"] = 100
 AmmoTypes[4]["large"] = 50
-AmmoTypes[4]["medium"] = 45
-AmmoTypes[4]["small"] = 30
+AmmoTypes[4]["medium"] = 30
+AmmoTypes[4]["small"] = 15
 
 NPCData = {}
-NPCData["default"] = {AmmoDrop = true, HealthDrop = true, CashDrop = true, CashToDrop = 5}
+NPCData["default"] = {AmmoDrop = true, HealthDrop = true, CashDrop = true, CashToDrop = 3}
 NPCData["npc_headcrab"] = {AmmoDrop = false}
 NPCData["npc_headcrab_black"] = {AmmoDrop = false}
 NPCData["npc_headcrab_fast"] = {AmmoDrop = false}
 NPCData["npc_manhack"] = {}
 NPCData["npc_poisonzombie"] = {}
-NPCData["npc_zombie"] = {CashToDrop = 10}
+NPCData["npc_zombie"] = {CashToDrop = 5}
 NPCData["npc_zombie_torso"] = {}
 NPCData["npc_fastzombie"] = {}
 NPCData["npc_metropolice"] = {}
-NPCData["npc_combine_s"] = {}
+NPCData["npc_combine_s"] = {CashToDrop = 15}
 
 PlayerPerk = {}
-PlayerPerk["perk_ammoup"] = { 
-Name = "Lead Currency",
-Desc = "Increases the amount of ammo you recieve, but cuts the amount of money recieved in half",
-Function = function(ply)  end,
-Active = false,
+PlayerPerk["perk_ammoup"] = {
+	Name = "Lead Currency",
+	Desc = "Increases the amount of ammo you recieve, but cuts the amount of money recieved in half",
+	Function = function(ply)  end,
+	Active = false,
 }
-PlayerPerk["perk_leech"] = { 
-Name = "Leech",
-Desc = "You are awarded health for hitting enemies, but take %30 more damage",
-Function = function(ply)  end,
-Active = false,
+PlayerPerk["perk_leech"] = {
+	Name = "Leech",
+	Desc = "You are awarded health for hitting enemies, but take %30 more damage",
+	Function = function(ply)  end,
+	Active = false,
 }
-PlayerPerk["perk_tank"] = { 
-Name = "Tank",
-Desc = "You're max health increases by %50, but your movement speed is decreased",
-Function = function(ply) ply:SetNWInt("MaxHp", ply:GetNWInt("MaxHp") + 50)	GAMEMODE:SetPlayerSpeed(ply,160,200) end,
-Active = false,
+PlayerPerk["perk_tank"] = {
+	Name = "Tank",
+	Desc = "You're max health increases by %50, but your movement speed is decreased",
+	Function = function(ply) ply:SetNWInt("MaxHp", ply:GetNWInt("MaxHp") + 50)	GAMEMODE:SetPlayerSpeed(ply,160,200) end,
+	Active = false,
 }
-PlayerPerk["perk_gamble"] = { 
-Name = "Gambling Addiction",
-Desc = "When picking up money, you may either gain 2x more money, or lose the money you should've picked up",
-Function = function(ply)  end,
-Active = false,
+PlayerPerk["perk_gamble"] = {
+	Name = "Gambling Addiction",
+	Desc = "When picking up money, you may either gain 2x more money, or lose the money you should've picked up",
+	Function = function(ply)  end,
+	Active = false,
 }
-PlayerPerk["perk_bonk"] = { 
-Name = "Bonk!",
-Desc = "You have a %25 speed increase, at the cost of health",
-Function = function(ply) ply:SetNWInt("MaxHp", ply:GetNWInt("MaxHp") - 25)	GAMEMODE:SetPlayerSpeed(ply,225,255)  end,
-Active = false,
+PlayerPerk["perk_bonk"] = {
+	Name = "Bonk!",
+	Desc = "You have a %25 speed increase, at the cost of health",
+	Function = function(ply) ply:SetNWInt("MaxHp", ply:GetNWInt("MaxHp") - 25)	GAMEMODE:SetPlayerSpeed(ply,225,255)  end,
+	Active = false,
 }

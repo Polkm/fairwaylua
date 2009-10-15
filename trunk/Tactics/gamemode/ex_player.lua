@@ -1,42 +1,72 @@
 local Player = FindMetaTable("Player")
 
 function Player:GiveCash(intAmount)
-	local Amount = tonumber(intAmount) or 0
-	if self:GetNWInt("cash") + Amount >= 0 then 
-		self:SetNWInt("cash", self:GetNWInt("cash") + Amount)
+	local intAmountToGive = tonumber(intAmount) or 0
+	if self.Perks["perk_ammoup"] then
+		intAmountToGive = intAmountToGive / 2
+	elseif self.Perks["perk_gamble"] then
+		local chance = math.random(1, 2)
+		if chance == 1 then
+			intAmountToGive = intAmountToGive * -1
+		else
+			intAmountToGive = intAmountToGive * 2
+		end
+	end
+	intAmountToGive = math.Round(intAmountToGive)
+	if self:GetNWInt("cash") + intAmountToGive >= 0 then 
+		self:SetNWInt("cash", self:GetNWInt("cash") + intAmountToGive)
 		return true
 	else
 		return false
 	end
 end
 
+function Player:GiveAmmoAmount(strAmount)
+	local strAmmoAmount = tostring(strAmount) or "small"
+	for _, weapon in pairs(self:GetWeapons()) do
+		if AmmoTypes[weapon:GetPrimaryAmmoType()] then
+			local intAmmoToGive = AmmoTypes[weapon:GetPrimaryAmmoType()][strAmmoAmount]
+			if self.Perks["perk_ammoup"] then
+				intAmmoToGive = math.Round(intAmmoToGive * 1.5)
+			end
+			local intMaxToAdd = AmmoTypes[weapon:GetPrimaryAmmoType()]["full"] - self:GetAmmoCount(weapon:GetPrimaryAmmoType())
+			self:GiveAmmo(math.Clamp(intAmmoToGive, 0, intMaxToAdd), weapon:GetPrimaryAmmoType())
+		end
+	end
+end
+
 function Player:AddWeaponToLocker(strWeapon, intMaxPoints)
-	local WeaponClass = tostring(strWeapon) or "weapon_crowbar"
-	local MaximumPoints = intMaxPoints or 15
+	local strWeaponClass = tostring(strWeapon) or "weapon_crowbar"
+	local intMaximumPoints = tonumber(intMaxPoints) or 15
 	local tblNewWeaponTable = {
-		Weapon = WeaponClass,
+		Weapon = strWeaponClass,
+		Maxpoints = intMaximumPoints,
 		pwrlvl = 1,
 		acclvl = 1,
-		clplvl = 1, 
+		clplvl = 1,
 		spdlvl = 1,
 		reslvl = 1,
-		CanSilence = false,
-		ChangableFireRate = false,
-		CanGrenade = false,
-		Maxpoints = MaximumPoints,
 	}
 	table.insert(self.Locker, tblNewWeaponTable)
 end
 
 function Player:SwitchWeapon()
 	if self:GetNWInt("ActiveWeapon") == self:GetNWInt("Weapon1") then
-		self:SelectWeapon(self.Locker[self:GetNWInt("Weapon2")].Weapon)
-		if self:GetActiveWeapon():GetClass() == self.Locker[self:GetNWInt("Weapon2")].Weapon then
+		local strWeaponClass = "weapon_crowbar"
+		if self.Locker[self:GetNWInt("Weapon2")] then
+			strWeaponClass = self.Locker[self:GetNWInt("Weapon2")].Weapon
+		end
+		self:SelectWeapon(strWeaponClass)
+		if self:GetActiveWeapon():GetClass() == strWeaponClass then
 			self:SetNWInt("ActiveWeapon", self:GetNWInt("Weapon2"))
 		end
 	elseif self:GetNWInt("ActiveWeapon") == self:GetNWInt("Weapon2") then
-		self:SelectWeapon(self.Locker[self:GetNWInt("Weapon1")].Weapon)
-		if self:GetActiveWeapon():GetClass() == self.Locker[self:GetNWInt("Weapon1")].Weapon then
+		local strWeaponClass = "weapon_crowbar"
+		if self.Locker[self:GetNWInt("Weapon1")] then
+			strWeaponClass = self.Locker[self:GetNWInt("Weapon1")].Weapon
+		end
+		self:SelectWeapon(strWeaponClass)
+		if self:GetActiveWeapon():GetClass() == strWeaponClass then
 			self:SetNWInt("ActiveWeapon", self:GetNWInt("Weapon1"))
 		end
 	end
@@ -49,60 +79,51 @@ function Player:DepositWeapon(intWeapon)
 	local strNWInt = nil
 	local strNWIntOp = nil
 	if self:GetNWInt("Weapon1") == intWeaponID then strNWInt = "Weapon1" strNWIntOp = "Weapon2"
-	elseif self:GetNWInt("Weapon2") == intWeaponID then strNWInt = "Weapon2" strNWIntOp = "Weapon1" end
+	elseif self:GetNWInt("Weapon2") == intWeaponID then strNWInt = "Weapon2" strNWIntOp = "Weapon1"
+	else return	end
 	if strNWInt then
 		self:StripWeapon(tblLocker[intWeaponID].Weapon)
 		self:SetNWInt(strNWInt, 0)
-		self:SetNWInt("ActiveWeapon", 0)
-		if self:GetNWInt(strNWIntOp) != 0 && self:GetNWInt(strNWIntOp) != 1337 then
+		self:SetNWInt("ActiveWeapon", self:GetNWInt(strNWInt))
+		if self:GetNWInt(strNWIntOp) != 0 then
 			self:ConCommand("tx_switchWeapon")
 		else
-			self:SetNWInt("ActiveWeapon", 1337)
-			self:SelectWeapon(self.Locker[1337].Weapon)
-			if self:GetNWInt(strNWIntOp) == 0 then
-				self:SetNWInt(strNWInt, 1337)
-			end
+			self:Give("weapon_crowbar")
+			self:SelectWeapon("weapon_crowbar")
 		end
-	else
-		return
+		SendDataToAClient(self)
 	end
-	SendDataToAClient(self)
 end
 concommand.Add("tx_depositWeapon", function(ply, command, args) ply:DepositWeapon(tonumber(args[1]))  end)
 
 function Player:WithdrawWeapon(intWeapon)
 	local tblLocker = self.Locker
 	local intWeaponID = intWeapon or 0
-	local strNWInt = nil
-	local strNWIntOp = nil
-	if self:GetNWInt("Weapon1") == 0 or self:GetNWInt("Weapon1") == 1337 then strNWInt = "Weapon1" strNWIntOp = "Weapon2"
-	elseif self:GetNWInt("Weapon2") == 0 or self:GetNWInt("Weapon2") == 1337 then strNWInt = "Weapon2" strNWIntOp = "Weapon1" end
-	if strNWInt then
+	local strNWCurrentWep = nil
+	local strNWSecondaryWep = nil
+	if self:GetNWInt("Weapon1") == 0 then strNWCurrentWep = "Weapon1" strNWSecondaryWep = "Weapon2"
+	elseif self:GetNWInt("Weapon2") == 0 then strNWCurrentWep = "Weapon2" strNWSecondaryWep = "Weapon1" 
+	else return end
+	print(self:GetNWInt("Weapon1"), self:GetNWInt("Weapon2"))
+	if strNWCurrentWep then
 		print("Atteping withdraw")
-		print(self:GetNWInt("Weapon1"), self:GetNWInt("Weapon2"), self:GetNWInt("ActiveWeapon"))
 		self:Give(tblLocker[intWeaponID].Weapon)
-		self:SetNWInt(strNWInt, intWeaponID)
-		print(self:GetNWInt("Weapon1"), self:GetNWInt("Weapon2"), self:GetNWInt("ActiveWeapon"))
-		if self:GetNWInt(strNWIntOp) != 0 then
-			self:ConCommand("tx_switchWeapon")
-		else
-			self:SetNWInt("ActiveWeapon", intWeaponID)
-			self:SelectWeapon(self.Locker[intWeaponID].Weapon)
-			self:SetNWInt(strNWIntOp, 0)
+		self:SetNWInt(strNWCurrentWep, intWeaponID)
+		self:SetNWInt("ActiveWeapon", intWeaponID)
+		self:SelectWeapon(self.Locker[intWeaponID].Weapon)
+		if self:HasWeapon("weapon_crowbar") then
+			self:StripWeapon("weapon_crowbar")
 		end
-	else
-		return
+		SendDataToAClient(self)
 	end
-	SendDataToAClient(self)
 end
 concommand.Add("tx_withdrawWeapon", function(ply, command, args) ply:WithdrawWeapon(tonumber(args[1]))  end)
 
 --Perks
 function Player:ActivatePerk(PerkToActivate)
 	PerkToActivate = "perk_ammoup"
-	local tblLocker = self.Locker
-	if self.Perks[PerkToActivate] then
-		self.Perks[PerkToActivate].Active = true
+	if self.Perks[PerkToActivate] != nil then
+		self.Perks[PerkToActivate] = true
 	end
 	SendDataToAClient(self)
 end
@@ -110,9 +131,8 @@ concommand.Add("tx_ActivatePerk", function(ply, command, args) ply:ActivatePerk(
 
 function Player:DeactivatePerk(PerkToDeactivate)
 	PerkToDeactivate = "perk_ammoup"
-	local tblLocker = self.Locker
-	if self.Perks[PerkToDeactivate] then
-		self.Perks[PerkToDeactivate].Active = false
+	if self.Perks[PerkToDeactivate] != nil then
+		self.Perks[PerkToDeactivate] = false
 	end
 	SendDataToAClient(self)
 end

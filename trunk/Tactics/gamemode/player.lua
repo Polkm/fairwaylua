@@ -1,34 +1,20 @@
 function GM:PlayerInitialSpawn(ply)
 	ply:SetNWBool("PvpFlag", false)
 	ply.Locker = {}
-	ply.Locker[0] = {
-		Weapon = "none",
-	}
-	ply.Locker[1337] = {
-		Weapon = "weapon_crowbar",
-	}
 	ply:AddWeaponToLocker("weapon_mp5_tx")
 	ply:AddWeaponToLocker("weapon_p220_tx")
-	ply:SelectWeapon(ply.Locker[1].Weapon)
 	ply:SetNWInt("ActiveWeapon", 1)
 	ply:SetNWInt("Weapon1", 1)
 	ply:SetNWInt("Weapon2", 2)
 	ply.Perks = {}
-	ply.Perks["perk_ammoup"] = { 
-Name = "Lead Currency",
-Desc = "Increases the amount of ammo you recieve, but cuts the amount of money recieved in half",
-Function = function(ply)  end,
-Active = false,
-}
+	ply.Perks["perk_ammoup"] = false
 end
 
 function GM:PlayerLoadout(ply)
 	ply:SetNWInt("MaxHp", 100)
 	GAMEMODE:SetPlayerSpeed(ply,200,230)
-	for k,v in pairs(ply.Perks) do
-		if v.Active then
-			v.Function(ply)
-		end
+	for perk, active in pairs(ply.Perks) do
+		if active then PlayerPerk[perk].Function(ply) end
 	end
 	local entity = ents.Create("prop_dynamic")
 	entity:SetModel("models/error.mdl")
@@ -41,19 +27,19 @@ function GM:PlayerLoadout(ply)
 	entity:SetSolid(SOLID_NONE)
 	entity:SetNoDraw(true)
 	ply:SetViewEntity(entity)
-	ply.CanUse = true
 	for k, weapon in pairs(ply.Locker) do
-		if k != 0 then
-			ply:Give(weapon.Weapon)
-		end
+		ply:Give(weapon.Weapon)
 	end
-	ply:SelectWeapon(ply.Locker[ply:GetNWInt("ActiveWeapon")].Weapon)
-	for _, weapon in pairs(ply:GetWeapons()) do
-		if tostring(weapon:GetClass()) == "weapon_crowbar" then break end
-		ply:GiveAmmo(AmmoTypes[weapon:GetPrimaryAmmoType()]["full"], weapon:GetPrimaryAmmoType())
+	if ply:GetNWInt("Weapon1") == 0 && ply:GetNWInt("Weapon2") == 0 then
+		ply:Give("weapon_crowbar")
+		ply:SelectWeapon("weapon_crowbar")
+	else
+		ply:SelectWeapon(ply.Locker[ply:GetNWInt("ActiveWeapon")].Weapon)
 	end
+	ply:GiveAmmoAmount("full")
 	PrintTable(ply.Locker)
-	SendDataToAClient(ply) 
+	PrintTable(ply.Perks)
+	SendDataToAClient(ply)
 end
 
 function GM:PlayerShouldTakeDamage(victim, attacker)

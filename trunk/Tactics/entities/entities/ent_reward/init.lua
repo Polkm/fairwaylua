@@ -27,38 +27,13 @@ function ENT:Use(activator, caller)
 	local strType = self:GetNWString("type")
 	local strAmount = self:GetNWString("amount")
 	if strType == "ammo" then
-		local intShootingGuns = #activator:GetWeapons()
-		for _, weapon in pairs(activator:GetWeapons()) do
-			if AmmoTypes[weapon:GetPrimaryAmmoType()] then
-				local intAmmoToGive = math.Round(AmmoTypes[weapon:GetPrimaryAmmoType()][strAmount] / intShootingGuns)
-				if activator.Perks["perk_ammoup"] != nil && activator.Perks["perk_ammoup"].Active then
-					activator:GiveAmmo(math.Round(intAmmoToGive*1.5), weapon:GetPrimaryAmmoType())
-					print("perked")
-				else
-					activator:GiveAmmo(intAmmoToGive , weapon:GetPrimaryAmmoType())
-				end				
-			end
-		end
+		activator:GiveAmmoAmount(strAmount)
 		self:Remove()
 		return
 	elseif strType == "cash" then
 		local intAmountToGive = tonumber(strAmount)
-		if intAmountToGive > 0 then
-			if activator.Perks["perk_ammoup"] != nil && activator.Perks["perk_ammoup"].Active  then
-				activator:GiveCash(math.Round(intAmountToGive/2))
-				print("perkedm")
-			elseif activator.Perks["perk_gamble"] != nil && activator.Perks["perk_gamble"].Active then
-				local chance = math.random(1,2)
-				if chance == 1 then
-					activator:GiveCash(-1*intAmountToGive)
-				else
-					activator:GiveCash(2*intAmountToGive)
-				end
-			else
-				activator:GiveCash(intAmountToGive)
-			end
-			self:Remove()
-		end
+		activator:GiveCash(intAmountToGive)
+		self:Remove()
 		return
 	elseif strType == "health" && activator:Health() < activator:GetNWInt("MaxHp")  then
 		local intAmountToAdd = 50
