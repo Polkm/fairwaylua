@@ -8,10 +8,7 @@ function GM:PlayerInitialSpawn(ply)
 	ply:SetNWInt("Weapon2", 2)
 	ply.Perks = {}
 	ply.Perks["perk_ammoup"] = false
-	ply.Perks["perk_leech"] = {	Name = "Leech",
-	Desc = "You are awarded health for hitting enemies, but take %30 more damage",
-	Active = true,
-	}
+	ply.Perks["perk_leech"] = false
 	ply.CanUse = true
 end
 
