@@ -1,8 +1,18 @@
+SWEP.Author			= ""
+SWEP.Contact		= ""
+SWEP.Purpose		= ""
+SWEP.Instructions	= ""
+
+SWEP.ViewModelFOV	= 62
+SWEP.ViewModelFlip	= false
+SWEP.ViewModel		= "models/weapons/v_pistol.mdl"
 SWEP.WorldModel		= "models/weapons/w_357.mdl"
 SWEP.AnimPrefix		= "python"
+
 SWEP.HoldType 		= "pistol"
 
-SWEP.RecievedInfo			= false
+SWEP.Spawnable			= false
+SWEP.AdminSpawnable		= false
 
 SWEP.ReloadSpeed 			= 1
 
@@ -17,17 +27,19 @@ SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "pistol"
 SWEP.Primary.Sound			= Sound("Weapon_MP5Navy.Single")
 
-SWEP.Primary.ClipSize		= 8
-SWEP.Primary.DefaultClip	= 32
-SWEP.Primary.Automatic		= false
+SWEP.Primary.ClipSize		= 8					// Size of a clip
+SWEP.Primary.DefaultClip	= 32				// Default number of bullets in a clip
+SWEP.Primary.Automatic		= false				// Automatic/Semi Auto
 SWEP.Primary.Ammo			= "Pistol"
 
-SWEP.Secondary.ClipSize		= 8
-SWEP.Secondary.DefaultClip	= 32
-SWEP.Secondary.Automatic	= false
+SWEP.Secondary.ClipSize		= 8					// Size of a clip
+SWEP.Secondary.DefaultClip	= 32				// Default number of bullets in a clip
+SWEP.Secondary.Automatic	= false				// Automatic/Semi Auto
 SWEP.Secondary.Ammo			= "Pistol"
 
 SWEP.NextSecondaryAttack = 0
+
+SWEP.ReloadSpeed = 1
 
 function SWEP:Initialize()
     if SERVER then
@@ -38,75 +50,87 @@ end
 function SWEP:Precache() end
 
 function SWEP:PrimaryAttack()
-	if !self:CanPrimaryAttack() then return false end
-	self:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+	if !self:CanPrimaryAttack() then return end
+	self.Weapon:EmitSound(self.Primary.Sound, 100, 100)
 	self:TacticsShootBullet(self.Primary.Damage, self.Primary.NumShots, self.Primary.Cone)
+	self.Weapon:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+	self:TakePrimaryAmmo(1)
  	if (SinglePlayer() && SERVER) || CLIENT then 
- 		self:SetNetworkedFloat("LastShootTime",CurTime()) 
+ 		self.Weapon:SetNetworkedFloat("LastShootTime",CurTime()) 
  	end 
 end
 
 function SWEP:SecondaryAttack()
-	if !self:CanSecondaryAttack() then return false end
-	self:SetNextSecondaryFire(CurTime() + 4)
+	if !self:CanSecondaryAttack() then return end
+	if self.NextSecondaryAttack > CurTime() then return end
+	self.NextSecondaryAttack = CurTime() + 4
+	
 	self:GetOwner():RestartGesture(ACT_ITEM_DROP)
-	if SERVER then
-		self:SetNWBool("reloading", true)
-		local entNade = ents.Create("npc_grenade_frag")
-		timer.Simple(1, function()
-			local vecNadePos = self:GetOwner():EyePos() + (self:GetOwner():GetAimVector() * 14)
-			local intNadeDur = 3
-			entNade:SetOwner(self:GetOwner())
-			entNade:Fire("SetTimer", intNadeDur)
-			entNade:SetPos(vecNadePos)
-			entNade:SetAngles(self:GetOwner():EyeAngles())
-			entNade:Spawn()
-			--Figur out the distance
-			local tblTraceTable = {}
-			tblTraceTable.start = self:GetOwner():EyePos()
-			tblTraceTable.endpos = tblTraceTable.start + (self:GetOwner():GetCursorAimVector() * 4096 * 4)
-			local tblFilterTable = ents.FindByClass("func_brush")
-			table.insert(tblFilterTable, self:GetOwner())
-			table.insert(tblFilterTable, self:GetOwner():GetActiveWeapon())
-			table.insert(tblFilterTable, entNade)
-			tblTraceTable.filter = tblFilterTable
-			local trcPlayerTrace = util.TraceLine(tblTraceTable)
-			local intPower = trcPlayerTrace.HitPos:Distance(self:GetOwner():GetPos())
-			local phys = entNade:GetPhysicsObject()
-			phys:ApplyForceCenter(self:GetOwner():GetAimVector():GetNormalized() * math.Clamp(intPower * 1.5, 1, 700))
-			self:SetNWBool("reloading", false)
-		end)
-	end
+	local entNade = ents.Create("npc_grenade_frag")
+	timer.Simple(1, function()
+		local vecNadePos = self:GetOwner():EyePos() + (self:GetOwner():GetAimVector() * 14)
+		local intNadeDur = 3
+		entNade:SetOwner(self:GetOwner())
+		entNade:Fire("SetTimer", intNadeDur)
+		entNade:SetPos(vecNadePos)
+		entNade:SetAngles(self:GetOwner():EyeAngles())
+		entNade:Spawn()
+		--Figur out the distance
+		local tblTraceTable = {}
+		tblTraceTable.start = self:GetOwner():EyePos()
+		tblTraceTable.endpos = tblTraceTable.start + (self:GetOwner():GetCursorAimVector() * 4096 * 4)
+		local tblFilterTable = ents.FindByClass("func_brush")
+		table.insert(tblFilterTable, self:GetOwner())
+		table.insert(tblFilterTable, self:GetOwner():GetActiveWeapon())
+		table.insert(tblFilterTable, entNade)
+		tblTraceTable.filter = tblFilterTable
+		local trcPlayerTrace = util.TraceLine(tblTraceTable)
+		local intPower = trcPlayerTrace.HitPos:Distance(self:GetOwner():GetPos())
+		
+		local ent = ents.Create("prop_physics")
+		ent:SetModel("models/props_junk/PopCan01a.mdl")
+		ent:SetPos(trcPlayerTrace.HitPos)
+		ent:Spawn()
+		print(intPower)
+		
+		local phys = entNade:GetPhysicsObject()
+		phys:ApplyForceCenter(self:GetOwner():GetAimVector():GetNormalized() * math.Clamp(intPower * 1.5, 1, 700))
+	end)
 end
 
-function SWEP:Think() end
-function SWEP:OnRestore() end
+function SWEP:Think()
+
+end
+
+function SWEP:OnRestore()
+	self.NextSecondaryAttack = 0
+end
+
 function SWEP:CheckReload() end
 
 function SWEP:Reload()
-	if self:GetNWBool("reloading") then return false end
-	if self:Clip1() >= self.Primary.ClipSize then return false end
-	if self:Clip1() < self.Primary.ClipSize && self:GetOwner():GetAmmoCount(self.Primary.Ammo) > 0  then
-		print(self.ReloadSpeed)
+	if self:GetNWBool("reloading") then return end
+	if self.Weapon:Clip1() >= self.Primary.ClipSize then return end
+	if self.Weapon:Clip1() < self.Primary.ClipSize && self:GetOwner():GetAmmoCount(self.Primary.Ammo) > 0  then
 		self:SetNWBool("reloading", true)
+		self:DefaultReload(ACT_VM_RELOAD) 
 		self:GetOwner():RestartGesture(self:GetOwner():Weapon_TranslateActivity(ACT_HL2MP_GESTURE_RELOAD))
-		self:SetNextPrimaryFire(CurTime() + self.ReloadSpeed)
-		self:SetNextSecondaryFire(CurTime() + self.ReloadSpeed)
-		timer.Simple(self.ReloadSpeed, function() 
-			if (self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1()) >= self.Primary.ClipSize then
-				if SERVER then
-					self:GetOwner():RemoveAmmo(self.Primary.ClipSize - self.Weapon:Clip1()  ,self.Primary.Ammo )
-					self.Weapon:SetClip1(self.Primary.ClipSize)
-				end
-			else
-				if SERVER then
-					self.Weapon:SetClip1(self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1())
-					self:GetOwner():RemoveAmmo(self:GetOwner():GetAmmoCount(self.Primary.Ammo),self.Primary.Ammo)
-				end
-			end
-			self:SetNWBool("reloading", false)
-		end)
 	end
+	print(self.ReloadSpeed)
+	timer.Simple(self.ReloadSpeed, function() 
+		if (self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1()) >= self.Primary.ClipSize then
+			if (SERVER) then
+				self:GetOwner():RemoveAmmo(self.Primary.ClipSize - self.Weapon:Clip1()  ,self.Primary.Ammo )
+				self.Weapon:SetClip1(self.Primary.ClipSize)
+			end
+		else
+			if (SERVER) then
+				self.Weapon:SetClip1(self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1())
+				self:GetOwner():RemoveAmmo(self:GetOwner():GetAmmoCount(self.Primary.Ammo),self.Primary.Ammo)
+			end
+		end
+		self:SetNWBool("reloading",false)
+	end)
 end
 
 function SWEP:Holster(wep)
@@ -115,9 +139,8 @@ end
 
 function SWEP:Update()
 	local intActiveWeaponNumber = tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))
-	if intActiveWeaponNumber!= 0 then
+	if intActiveWeaponNumber != 1337 && intActiveWeaponNumber!= 0 then
 		if SERVER then
-			print("serverLoading")
 			local pwr = self:GetOwner().Locker[intActiveWeaponNumber].pwrlvl
 			local acc = self:GetOwner().Locker[intActiveWeaponNumber].acclvl
 			local clip = self:GetOwner().Locker[intActiveWeaponNumber].clplvl
@@ -128,11 +151,8 @@ function SWEP:Update()
 			self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
 			self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
 			self.ReloadSpeed = Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
-			self.RecievedInfo = true
-			print("serverLoaded")
 		end
 		if CLIENT then
-			print("clientLoading")
 			local pwr = Locker[intActiveWeaponNumber].pwrlvl
 			local acc = Locker[intActiveWeaponNumber].acclvl
 			local clip = Locker[intActiveWeaponNumber].clplvl
@@ -143,10 +163,7 @@ function SWEP:Update()
 			self.Primary.ClipSize = Weapons[self:GetClass()].UpGrades.ClipSize[clip].Level
 			self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
 			self.ReloadSpeed =  Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
-			self.RecievedInfo = true
-			print("clientLoaded")
 		end
-		
 	end
 	return true
 end
@@ -169,9 +186,9 @@ function SWEP:TacticsShootBullet(dmg, numbul, cone)
 	bullet.Force	= dmg
 	bullet.Damage	= dmg
 	self.Owner:FireBullets(bullet)
-	self:EmitSound(self.Primary.Sound, 100, 100)
-	self:TakePrimaryAmmo(self.Primary.NumShots)
+	
 	self:GetOwner():RestartGesture(self:GetOwner():Weapon_TranslateActivity(ACT_HL2MP_GESTURE_RANGE_ATTACK))
+	
 	self.Owner:MuzzleFlash()
 end
 
@@ -193,9 +210,10 @@ function SWEP:TakeSecondaryAmmo(num)
 end
 
 function SWEP:CanPrimaryAttack()
-	if !self.RecievedInfo then self:Update() return false end
 	if self:GetNWBool("reloading") then return false end
-	if self:Clip1() <= 0 then
+	if self.Weapon:Clip1() <= 0 then
+		self:EmitSound("Weapon_Pistol.Empty")
+		self:SetNextPrimaryFire(CurTime() + 0.2)
 		self:Reload()
 		return false
 	end
@@ -203,7 +221,7 @@ function SWEP:CanPrimaryAttack()
 end
 
 function SWEP:CanSecondaryAttack()
-	if self:GetNWBool("reloading") then return false end 
+	if self.Weapon:GetNetworkedBool("reloading") then return end 
 	return true
 end
 

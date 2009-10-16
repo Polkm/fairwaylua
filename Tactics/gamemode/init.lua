@@ -12,7 +12,7 @@ GM.PlayerSpawnTime = {}
 NodesManifest = {}
 
 function SendDataToAClient(ply) 
-	datastream.StreamToClients(ply, "LockerTransfer", {LockerTable = ply.Locker, PerkTable = ply.Perks}) 
+	datastream.StreamToClients(ply, "LockerTransfer", {LockerTable = ply.Locker, PerkPerkPerk = ply.Perks}) 
 end
 concommand.Add("LockerUpdate",SendDataToAClient)
 

@@ -1,13 +1,18 @@
 function GM:PlayerInitialSpawn(ply)
 	ply:SetNWBool("PvpFlag", false)
 	ply.Locker = {}
-	ply:AddWeaponToLocker("weapon_mp5_tx")
-	ply:AddWeaponToLocker("weapon_p220_tx")
+	ply:AddWeaponToLocker("weapon_m4_tx")
+	ply:AddWeaponToLocker("weapon_deagle_tx")
 	ply:SetNWInt("ActiveWeapon", 1)
 	ply:SetNWInt("Weapon1", 1)
 	ply:SetNWInt("Weapon2", 2)
 	ply.Perks = {}
 	ply.Perks["perk_ammoup"] = false
+	ply.Perks["perk_leech"] = {	Name = "Leech",
+	Desc = "You are awarded health for hitting enemies, but take %30 more damage",
+	Active = true,
+	}
+	ply.CanUse = true
 end
 
 function GM:PlayerLoadout(ply)
@@ -50,3 +55,16 @@ function GM:PlayerShouldTakeDamage(victim, attacker)
 	return true
 end
 
+function GM:EntityTakeDamage( ent, inflictor, attacker, amount, dmginfo )
+	if attacker:IsPlayer() && attacker.Perks["perk_leech"].Active then
+ 		dmginfo:ScaleDamage( 1.0 ) 
+		if dmginfo:GetDamage()/20 + attacker:Health() >= attacker:GetNWInt("MaxHp") then
+			attacker:SetHealth(attacker:GetNWInt("MaxHp"))
+		else
+			attacker:SetHealth(math.Round(attacker:Health() + dmginfo:GetDamage()/20))
+		end
+	end
+	if ent:IsPlayer() && ent.Perks["perk_leech"].Active then
+ 		dmginfo:ScaleDamage( 1.3 )    		
+	end
+end
