@@ -56,7 +56,7 @@ function GM:PlayerShouldTakeDamage(victim, attacker)
 end
 
 function GM:EntityTakeDamage( ent, inflictor, attacker, amount, dmginfo )
-	if attacker:IsPlayer() && attacker.Perks["perk_leech"].Active then
+	if attacker:IsPlayer() && attacker.Perks["perk_leech"] then
  		dmginfo:ScaleDamage( 1.0 ) 
 		if dmginfo:GetDamage()/20 + attacker:Health() >= attacker:GetNWInt("MaxHp") then
 			attacker:SetHealth(attacker:GetNWInt("MaxHp"))
@@ -64,7 +64,7 @@ function GM:EntityTakeDamage( ent, inflictor, attacker, amount, dmginfo )
 			attacker:SetHealth(math.Round(attacker:Health() + dmginfo:GetDamage()/20))
 		end
 	end
-	if ent:IsPlayer() && ent.Perks["perk_leech"].Active then
+	if ent:IsPlayer() && ent.Perks["perk_leech"] then
  		dmginfo:ScaleDamage( 1.3 )    		
 	end
 end
