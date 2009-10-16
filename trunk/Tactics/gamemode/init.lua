@@ -80,27 +80,29 @@ function UpgradeWeapon(ply,command,args)
 	local clp = lock[weapon].clplvl
 	local fis = lock[weapon].spdlvl
 	local res = lock[weapon].reslvl
-	if trait == "Power" && lock[weapon].pwrlvl != #Weapons[weapon].lockrades.Power then
+	local maxpoints = lock[weapon].Maxpoints 
+	local totalpoints = pwr + acc + clp + fis + res
+	if trait == "Power" && lock[weapon].pwrlvl != #Weapons[weapon].lockrades.Power && totalpoints < maxpoints then
 		if cash >= Weapons[weapon].lockrades.Power[pwr] then
 			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[Power].Price[pwr])			
 			lock[weapon].pwrlvl = lock[weapon].pwrlvl + 1
 		end
-	elseif trait == "Accuracy" && lock[weapon].acclvl != #Weapons[weapon].lockrades.Accuracy then
+	elseif trait == "Accuracy" && lock[weapon].acclvl != #Weapons[weapon].lockrades.Accuracy && totalpoints < maxpoints then
 		if  cash >= lockPrices[weapon].Accuracy[acc] then	
 		ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[Accuracy].Price[acc])
 		lock[weapon].accrlvl = lock[weapon].accrlvl + 1
 		end
-	elseif trait == "ClipSize" && lock[weapon].clplvl != #Weapons[weapon].lockrades.ClipSize then
+	elseif trait == "ClipSize" && lock[weapon].clplvl != #Weapons[weapon].lockrades.ClipSize && totalpoints < maxpoints then
 		if  cash >= lockPrices[weapon].ClipSize[clp] then	
 			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[ClipSize].Price[clp])			
 			lock[weapon].clplvl = lock[weapon].clplvl + 1
 		end
-	elseif trait == "FiringSpeed" && lock[weapon].spdlvl != #Weapons[weapon].lockrades.FiringSpeed  then
+	elseif trait == "FiringSpeed" && lock[weapon].spdlvl != #Weapons[weapon].lockrades.FiringSpeed && totalpoints < maxpoints  then
 		if  cash >= lockPrices[weapon].FiringSpeed[fis] then	
 			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[FiringSpeed].Price[fis])		
 			lock[weapon].spdlvl = lock[weapon].spdlvl + 1
 		end
-	elseif trait == "ReloadSpeed" && lock[weapon].spdlvl != #Weapons[weapon].lockrades.ReloadSpeed  then
+	elseif trait == "ReloadSpeed" && lock[weapon].spdlvl != #Weapons[weapon].lockrades.ReloadSpeed && totalpoints < maxpoints then
 		if  cash >= lockPrices[weapon].FiringSpeed[res] then	
 			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[ReloadSpeed].Price[res])		
 			lock[weapon].reslvl = lock[weapon].reslvl + 1
