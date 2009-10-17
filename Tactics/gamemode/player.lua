@@ -31,6 +31,7 @@ function GM:PlayerLoadout(ply)
 	ply:SetViewEntity(entity)
 	for k, weapon in pairs(ply.Locker) do
 		ply:Give(weapon.Weapon)
+		ply:GetWeapon(weapon.Weapon):SetNWInt("id", k)
 	end
 	if ply:GetNWInt("Weapon1") == 0 && ply:GetNWInt("Weapon2") == 0 then
 		ply:Give("weapon_crowbar")
