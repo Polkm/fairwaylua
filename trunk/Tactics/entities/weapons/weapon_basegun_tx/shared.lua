@@ -32,6 +32,13 @@ function SWEP:Initialize()
     if SERVER then
 		self:SetWeaponHoldType(self.HoldType)
 	end
+	timer.Simple(1, function()
+		self:Update()
+	end)
+end
+
+function SWEP:Deploy()
+	return true
 end
 
 function SWEP:Precache() end
@@ -114,7 +121,7 @@ end
 
 function SWEP:Update()
 	local intActiveWeaponNumber = self:GetNWInt("id")
-	if intActiveWeaponNumber!= 0 then
+	if intActiveWeaponNumber != 0 then
 		if SERVER then
 			local pwr = self:GetOwner().Locker[intActiveWeaponNumber].pwrlvl
 			local acc = self:GetOwner().Locker[intActiveWeaponNumber].acclvl
@@ -141,12 +148,18 @@ function SWEP:Update()
 			self.ReloadSpeed =  Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
 			self.RecievedInfo = true
 		end
+		if (self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1()) >= self.Primary.ClipSize then
+			if SERVER then
+				self:GetOwner():RemoveAmmo(self.Primary.ClipSize - self.Weapon:Clip1()  ,self.Primary.Ammo )
+				self.Weapon:SetClip1(self.Primary.ClipSize)
+			end
+		else
+			if SERVER then
+				self.Weapon:SetClip1(self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1())
+				self:GetOwner():RemoveAmmo(self:GetOwner():GetAmmoCount(self.Primary.Ammo),self.Primary.Ammo)
+			end
+		end
 	end
-	return true
-end
-
-function SWEP:Deploy()
-	self:Update()
 	return true
 end
 
@@ -187,7 +200,7 @@ function SWEP:TakeSecondaryAmmo(num)
 end
 
 function SWEP:CanPrimaryAttack()
-	if !self.RecievedInfo then self:Update() return false end
+	if !self.RecievedInfo then return false end
 	if self:GetNWBool("reloading") then return false end
 	if self:Clip1() <= 0 then
 		self:Reload()

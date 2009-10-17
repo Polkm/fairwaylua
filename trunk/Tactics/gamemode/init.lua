@@ -8,7 +8,7 @@ AddCSLuaFile("cl_scoreboard.lua")
 include("shared.lua")
 include("player.lua")
 include("ex_player.lua")
-include("ex_player.lua")
+include("commands.lua")
 include("resoucre.lua")
 GM.PlayerSpawnTime = {}
 NodesManifest = {}

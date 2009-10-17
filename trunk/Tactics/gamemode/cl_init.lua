@@ -14,7 +14,7 @@ function RecieveDataFromServer(handler, id, encoded, decoded)
 	Locker = decod.LockerTable
 	Perks = decod.PerkPerkPerk
 	RunConsoleCommand("tx_updateweapons")
-end  
+end
 datastream.Hook("LockerTransfer", RecieveDataFromServer)
 
 function GM:Initialize()

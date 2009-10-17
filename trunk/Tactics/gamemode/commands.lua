@@ -48,6 +48,16 @@ function UpgradeWeapon(ply, command, args)
 end
 concommand.Add("tx_upgradeweapon", UpgradeWeapon)
 
+concommand.Add("tx_updateweapons", function(ply, command, args)
+	for k, weapon in pairs(ply.Locker) do
+		if ply:HasWeapon(weapon.Weapon) then
+			ply:GetWeapon(weapon.Weapon):SetNWInt("id", k)
+			ply:GetWeapon(weapon.Weapon):Update()
+			print("sending updating " .. weapon.Weapon)
+		end
+	end
+end)
+
 function SellWeapon(ply,command,args)
 	local lock = ply.Locker
 	local weapon = tonumber(args[1])
@@ -91,11 +101,3 @@ function BuyWeapon(ply,command,args)
 	SendDataToAClient(ply)
 end
 concommand.Add("tx_buyweapon", BuyWeapon)
-
-concommand.Add("tx_updateweapons", function(ply, command, args)
-	for k, weapon in pairs(ply.Locker) do
-		if ply:HasWeapon(weapon.Weapon) then
-			ply:GetWeapon(weapon.Weapon):Update(k)
-		end
-	end
-end)
