@@ -20,10 +20,10 @@ function UpgradeWeapon(ply, command, args)
 			--end
 		elseif strTrait == "Accuracy" && intAccuracyLevel < #Weapons[strWeapon].UpGrades.Accuracy then
 			local intPrice = Weapons[strWeapon].UpGrades.Accuracy[intAccuracyLevel].Price
-			if intCash >= intPrice then
-				ply:SetNWInt("cash", intCash - intPrice)
+			--if intCash >= intPrice then
+				--ply:SetNWInt("cash", intCash - intPrice)
 				tblLocker[intWeapon].accrlvl = tblLocker[intWeapon].accrlvl + 1
-			end
+			--end
 		elseif strTrait == "ClipSize" && intClipSizeLevel < #Weapons[strWeapon].UpGrades.ClipSize then
 			local intPrice = Weapons[strWeapon].UpGrades.ClipSize[intClipSizeLevel].Price
 			--if intCash >= intPrice then
@@ -32,16 +32,16 @@ function UpgradeWeapon(ply, command, args)
 			--end
 		elseif strTrait == "FiringSpeed" && intFiringSpeedLevel < #Weapons[strWeapon].UpGrades.FiringSpeed then
 			local intPrice = Weapons[strWeapon].UpGrades.FiringSpeed[intFiringSpeedLevel].Price
-			if intCash >= intPrice then
-				ply:SetNWInt("cash", intCash - intPrice)
+			--if intCash >= intPrice then
+				--ply:SetNWInt("cash", intCash - intPrice)
 				tblLocker[intWeapon].spdlvl = tblLocker[intWeapon].spdlvl + 1
-			end
+			--end
 		elseif strTrait == "ReloadSpeed" && intReloadSpeedLevel < #Weapons[strWeapon].UpGrades.ReloadSpeed then
 			local intPrice = Weapons[strWeapon].UpGrades.ReloadSpeed[intReloadSpeedLevel].Price
-			if intCash >= intPrice then
-				ply:SetNWInt("cash", intCash - intPrice)
+			--if intCash >= intPrice then
+				--ply:SetNWInt("cash", intCash - intPrice)
 				tblLocker[intWeapon].reslvl = tblLocker[intWeapon].reslvl + 1
-			end
+			--end
 		end
 		SendDataToAClient(ply)
 	end
@@ -53,7 +53,7 @@ concommand.Add("tx_updateweapons", function(ply, command, args)
 		if ply:HasWeapon(weapon.Weapon) then
 			ply:GetWeapon(weapon.Weapon):SetNWInt("id", k)
 			ply:GetWeapon(weapon.Weapon):Update()
-			print("sending updating " .. weapon.Weapon)
+			--print("sending updating " .. weapon.Weapon)
 		end
 	end
 end)
