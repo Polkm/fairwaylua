@@ -21,6 +21,7 @@ Weapons = {}
 Weapons["weapon_p220_tx"] = {
 	Weapon = "weapon_p220_tx",
 	Icon = "y",
+	Price = 1,
 	UpGrades = {
 		Power = {{Price = 600, Level = 5},
 				{Price = 1500, Level = 8},
@@ -44,6 +45,7 @@ Weapons["weapon_p220_tx"] = {
 Weapons["weapon_mp5_tx"] = {
 	Weapon = "weapon_mp5_tx",
 	Icon = "x",
+	Price = 1,
 	UpGrades = {
 		Power = {{Price = 600, Level = 3},
 				{Price = 1500, Level = 5},
@@ -67,6 +69,7 @@ Weapons["weapon_mp5_tx"] = {
 Weapons["weapon_ump_tx"] = {
 	Weapon = "weapon_ump_tx",
 	Icon = "q",
+	Price = 1,
 	UpGrades = {
 		Power = {{Price = 600, Level = 5},
 				{Price = 1500, Level = 7},
@@ -90,6 +93,7 @@ Weapons["weapon_ump_tx"] = {
 Weapons["weapon_aug_tx"] = {
 	Weapon = "weapon_aug_tx",
 	Icon = "e",
+	Price = 1,
 	UpGrades = {
 		Power = {{Price = 600, Level = 8},
 				{Price = 1500, Level = 10},
@@ -113,6 +117,7 @@ Weapons["weapon_aug_tx"] = {
 Weapons["weapon_m4_tx"] = {
 	Weapon = "weapon_m4_tx",
 	Icon = "w",
+	Price = 1,
 	UpGrades = {
 		Power = {{Price = 600, Level = 7},
 				{Price = 1500, Level = 9},
@@ -136,6 +141,7 @@ Weapons["weapon_m4_tx"] = {
 Weapons["weapon_deagle_tx"] = {
 	Weapon = "weapon_deagle_tx",
 	Icon = "f",
+	Price = 1,
 	UpGrades = {
 		Power = {{Price = 600, Level = 12},
 				{Price = 1500, Level = 14},
@@ -159,6 +165,7 @@ Weapons["weapon_deagle_tx"] = {
 Weapons["weapon_glock18_tx"] = {
 	Weapon = "weapon_glock18_tx",
 	Icon = "c",
+	Price = 1,
 	UpGrades = {
 		Power = {{Price = 600, Level = 4},
 				{Price = 1500, Level = 6},
@@ -182,6 +189,7 @@ Weapons["weapon_glock18_tx"] = {
 Weapons["weapon_p90_tx"] = {
 	Weapon = "weapon_p90_tx",
 	Icon = "m",
+	Price = 1,
 	UpGrades = {
 		Power = {{Price = 600, Level = 3},
 				{Price = 1500, Level = 5},
@@ -205,6 +213,7 @@ Weapons["weapon_p90_tx"] = {
 Weapons["weapon_ak47_tx"] = {
 	Weapon = "weapon_ak47_tx",
 	Icon = "b",
+	Price = 1,
 	UpGrades = {
 		Power = {{Price = 600, Level = 8},
 				{Price = 1500, Level = 10},
