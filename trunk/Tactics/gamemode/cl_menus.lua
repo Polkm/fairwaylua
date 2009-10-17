@@ -64,43 +64,7 @@ function PANEL:LoadWeapons()
 			end
 			local WeaponPanel = vgui.Create("DPanel")
 			WeaponPanel:SetSize(self.EquiptedWeaponsList:GetWide() - 10, 100)
-			WeaponPanel.Paint = function()
-				draw.RoundedBox(4, 0, 0, WeaponPanel:GetWide(), WeaponPanel:GetTall(), Color(100, 100, 100, 150))
-					surface.SetTextColor(255,255,255,255)
-					-- Power
-					surface.SetFont("DefaultSmallDropShadow")
-					surface.DrawRect(120,80,100,5)
-					local x,y = surface.GetTextSize("Power")
-					surface.SetTextPos(120 ,  80 - y )
-					surface.DrawText("Power")
-					-- Accuracy
-					surface.DrawRect(120,  65,100,5)
-					local x,y = surface.GetTextSize("Accuracy")
-					surface.SetTextPos(120 ,  65 - y )
-					surface.DrawText("Accuracy")
-					--Firing Speed
-					surface.DrawRect(120,  50,100,5)
-					local x,y = surface.GetTextSize("Firing Speed")
-					surface.SetTextPos(120 ,  50 - y )
-					surface.DrawText("Firing Speed")
-					-- Clip Size
-					surface.DrawRect(120,  35,100,5)
-					local x,y = surface.GetTextSize("Clip Size")
-					surface.SetTextPos(120 ,  35 - y )
-					surface.DrawText("Clip Size")
-					-- Reload speed
-					surface.DrawRect(120,  20,100,5)
-					local x,y = surface.GetTextSize("Reload Speed")
-					surface.SetTextPos(120 ,  20 - y )
-					surface.DrawText("Reload Speed")
-					
-					surface.SetDrawColor(255, 55, 55, 60)
-					surface.DrawRect(120,   80, 100 / (table.Count(Weapons[Locker[k].Weapon].UpGrades.Power) / Locker[k].pwrlvl), 5)
-					surface.DrawRect(120,   65, 100 / (table.Count(Weapons[Locker[k].Weapon].UpGrades.Accuracy) / Locker[k].acclvl), 5)
-					surface.DrawRect(120,   50, 100 / (table.Count(Weapons[Locker[k].Weapon].UpGrades.FiringSpeed) / Locker[k].spdlvl), 5)
-					surface.DrawRect(120,   35, 100 / (table.Count(Weapons[Locker[k].Weapon].UpGrades.ClipSize) / Locker[k].clplvl), 5)
-					surface.DrawRect(120,   20, 100 / (table.Count(Weapons[Locker[k].Weapon].UpGrades.ReloadSpeed)/Locker[k].reslvl),5)
-			end
+			WeaponPanel.Paint = function() PaintWeaponItem(WeaponPanel, k, true) end
 			WeaponPanel:SetTooltip(strDescription)
 			local WeaponPicture = vgui.Create("DLabel", WeaponPanel)
 			WeaponPicture:SetFont("CSSelectIcons")

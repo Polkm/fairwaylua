@@ -68,3 +68,80 @@ function GM:CalcView(ply,origin,angles,fov)
 	view.angles = CammeraAngle
 	return view
 end
+
+function PaintWeaponItem(weaponPanel, intWeapon, boolShowBars)
+	draw.RoundedBox(4, 0, 0, weaponPanel:GetWide(), weaponPanel:GetTall(), Color(100, 100, 100, 150))
+	if boolShowBars then
+		local strWeapon = intWeapon
+		if Locker[intWeapon] then strWeapon = Locker[intWeapon].Weapon end
+		local intXPosition = 110
+		local intBarWidth = weaponPanel:GetWide() - 10 - intXPosition
+		local YOffset = 5
+		surface.SetTextColor(255, 255, 255, 255)
+		-- Power
+		surface.SetFont("DefaultSmallDropShadow")
+		local x, y = surface.GetTextSize("Power")
+		surface.SetTextPos(intXPosition, YOffset)
+		surface.DrawText("Power")
+		YOffset = YOffset + y
+		surface.SetDrawColor(200, 200, 200, 60)
+		surface.DrawRect(intXPosition, YOffset, intBarWidth, 5)
+		surface.SetDrawColor(255, 55, 55, 100)
+		local PowerLevel = 1
+		if Locker[intWeapon] then PowerLevel = Locker[intWeapon].pwrlvl end
+		surface.DrawRect(intXPosition, YOffset, intBarWidth / (table.Count(Weapons[strWeapon].UpGrades.Power) / PowerLevel), 5)
+		YOffset = YOffset + 5
+		-- Accuracy
+		surface.SetFont("DefaultSmallDropShadow")
+		local x, y = surface.GetTextSize("Power")
+		surface.SetTextPos(intXPosition, YOffset)
+		surface.DrawText("Accuracy")
+		YOffset = YOffset + y
+		surface.SetDrawColor(200, 200, 200, 60)
+		surface.DrawRect(intXPosition, YOffset, intBarWidth, 5)
+		surface.SetDrawColor(255, 55, 55, 100)
+		local AccuracyLevel = 1
+		if Locker[intWeapon] then AccuracyLevel = Locker[intWeapon].acclvl end
+		surface.DrawRect(intXPosition, YOffset, intBarWidth / (table.Count(Weapons[strWeapon].UpGrades.Accuracy) / AccuracyLevel), 5)
+		YOffset = YOffset + 5
+		--Firing Speed
+		surface.SetFont("DefaultSmallDropShadow")
+		local x, y = surface.GetTextSize("Power")
+		surface.SetTextPos(intXPosition, YOffset)
+		surface.DrawText("Firing Speed")
+		YOffset = YOffset + y
+		surface.SetDrawColor(200, 200, 200, 60)
+		surface.DrawRect(intXPosition, YOffset, intBarWidth, 5)
+		surface.SetDrawColor(255, 55, 55, 100)
+		local FiringSpeedLevel = 1
+		if Locker[intWeapon] then FiringSpeedLevel = Locker[intWeapon].spdlvl end
+		surface.DrawRect(intXPosition, YOffset, intBarWidth / (table.Count(Weapons[strWeapon].UpGrades.FiringSpeed) / FiringSpeedLevel), 5)
+		YOffset = YOffset + 5
+		-- Clip Size
+		surface.SetFont("DefaultSmallDropShadow")
+		local x, y = surface.GetTextSize("Power")
+		surface.SetTextPos(intXPosition, YOffset)
+		surface.DrawText("Clip Size")
+		YOffset = YOffset + y
+		surface.SetDrawColor(200, 200, 200, 60)
+		surface.DrawRect(intXPosition, YOffset, intBarWidth, 5)
+		surface.SetDrawColor(255, 55, 55, 100)
+		local ClipSizeLevel = 1
+		if Locker[intWeapon] then ClipSizeLevel = Locker[intWeapon].clplvl end
+		surface.DrawRect(intXPosition, YOffset, intBarWidth / (table.Count(Weapons[strWeapon].UpGrades.ClipSize) / ClipSizeLevel), 5)
+		YOffset = YOffset + 5
+		-- Reload speed
+		surface.SetFont("DefaultSmallDropShadow")
+		local x, y = surface.GetTextSize("Power")
+		surface.SetTextPos(intXPosition, YOffset)
+		surface.DrawText("Reload Speed")
+		YOffset = YOffset + y
+		surface.SetDrawColor(200, 200, 200, 60)
+		surface.DrawRect(intXPosition, YOffset, intBarWidth, 5)
+		surface.SetDrawColor(255, 55, 55, 100)
+		local ReloadSpeedLevel = 1
+		if Locker[intWeapon] then ReloadSpeedLevel = Locker[intWeapon].reslvl end
+		surface.DrawRect(intXPosition, YOffset, intBarWidth / (table.Count(Weapons[strWeapon].UpGrades.ReloadSpeed) / ReloadSpeedLevel), 5)
+		YOffset = YOffset + 5
+	end
+end
