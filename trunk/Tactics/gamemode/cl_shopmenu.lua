@@ -72,6 +72,7 @@ function PANEL:LoadYourWeapons()
 end
 
 function PANEL:AddWeapon(lstWeaponList, strWeapon, intWeapon)
+	local Client = LocalPlayer()
 	local WeaponPanel = vgui.Create("DPanel")
 	WeaponPanel:SetSize(self.YourWeaponsList:GetWide() - 10, 100)
 	if lstWeaponList != self.ShopWeaponsList then
@@ -97,7 +98,7 @@ function PANEL:AddWeapon(lstWeaponList, strWeapon, intWeapon)
 		BuyButton:SetSize(80, 18)
 		BuyButton:SetPos(5, 73)
 		BuyButton:SetDrawBackground(false)
-		BuyButton:SetText("Buy")
+		BuyButton:SetText("Buy For $" .. Weapons[strWeapon].Price)
 		BuyButton.DoClick = function(BuyButton)
 			RunConsoleCommand("tx_buyweapon", strWeapon)
 			BuyButton:SetDisabled(true)
@@ -112,7 +113,7 @@ function PANEL:AddWeapon(lstWeaponList, strWeapon, intWeapon)
 		SellButton:SetSize(80, 18)
 		SellButton:SetPos(5, 73)
 		SellButton:SetDrawBackground(false)
-		SellButton:SetText("Sell")
+		SellButton:SetText("Sell For $" .. Client:GetWeaponValue(intWeapon))
 		SellButton.DoClick = function(SellButton)
 			RunConsoleCommand("tx_sellweapon", intWeapon)
 			SellButton:SetDisabled(true)
@@ -127,6 +128,9 @@ function PANEL:AddWeapon(lstWeaponList, strWeapon, intWeapon)
 		UpgradeButton:SetPos(5, 100)
 		UpgradeButton:SetDrawBackground(false)
 		UpgradeButton:SetText("Upgrade")
+		if Client:GetTotalPoints(intWeapon) >= Locker[intWeapon].Maxpoints then
+			UpgradeButton:SetDisabled(true)
+		end
 		UpgradeButton.DoClick = function(UpgradeButton)
 			local MenuButtonOptions = DermaMenu()
 			local function UpgradCommand(stringCommand)
@@ -138,14 +142,22 @@ function PANEL:AddWeapon(lstWeaponList, strWeapon, intWeapon)
 					UpgradeButton:SetDisabled(false)
 				end)
 			end
-			MenuButtonOptions:AddOption("Power", function() UpgradCommand("Power") end)
-			MenuButtonOptions:AddOption("Accuracy", function() UpgradCommand("Accuracy") end)
-			MenuButtonOptions:AddOption("FiringSpeed", function() UpgradCommand("FiringSpeed") end)
-			MenuButtonOptions:AddOption("ClipSize", function() UpgradCommand("ClipSize") end)
-			MenuButtonOptions:AddOption("ReloadSpeed", function() UpgradCommand("ReloadSpeed") end)
+			if Weapons[strWeapon].UpGrades.Power[Locker[intWeapon].pwrlvl + 1] then
+				MenuButtonOptions:AddOption("Power For $" .. Weapons[strWeapon].UpGrades.Power[Locker[intWeapon].pwrlvl + 1].Price, function() UpgradCommand("Power") end)
+			end
+			if Weapons[strWeapon].UpGrades.Accuracy[Locker[intWeapon].acclvl + 1] then
+				MenuButtonOptions:AddOption("Accuracy For $" .. Weapons[strWeapon].UpGrades.Accuracy[Locker[intWeapon].acclvl + 1].Price, function() UpgradCommand("Accuracy") end)
+			end
+			if Weapons[strWeapon].UpGrades.FiringSpeed[Locker[intWeapon].spdlvl + 1] then
+				MenuButtonOptions:AddOption("Firing Speed For $" .. Weapons[strWeapon].UpGrades.FiringSpeed[Locker[intWeapon].spdlvl + 1].Price, function() UpgradCommand("FiringSpeed") end)
+			end
+			if Weapons[strWeapon].UpGrades.ClipSize[Locker[intWeapon].clplvl + 1] then
+				MenuButtonOptions:AddOption("Clip Size For $" .. Weapons[strWeapon].UpGrades.ClipSize[Locker[intWeapon].clplvl + 1].Price, function() UpgradCommand("ClipSize") end)
+			end
+			if Weapons[strWeapon].UpGrades.ReloadSpeed[Locker[intWeapon].reslvl + 1] then
+				MenuButtonOptions:AddOption("Reload Speed For $" .. Weapons[strWeapon].UpGrades.ReloadSpeed[Locker[intWeapon].reslvl + 1].Price, function() UpgradCommand("ReloadSpeed") end)
+			end
 			MenuButtonOptions:Open()
-			
-
 		end
 	end
 	lstWeaponList:AddItem(WeaponPanel)

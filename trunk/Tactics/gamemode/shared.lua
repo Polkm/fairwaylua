@@ -308,3 +308,62 @@ PlayerPerk["perk_bonk"] = {
 	Function = function(ply) ply:SetNWInt("MaxHp", ply:GetNWInt("MaxHp") - 25)	GAMEMODE:SetPlayerSpeed(ply,225,255)  end,
 	Active = false,
 }
+
+local Player = FindMetaTable("Player")
+function Player:GetWeaponValue(intWeapon)
+	local tblLocker = nil
+	if SERVER then
+		tblLocker = self.Locker
+	else
+		tblLocker = Locker
+	end
+	local intWeapon = intWeapon or 0
+	local strWeapon = tblLocker[intWeapon].Weapon
+	local intPowerLevel = tblLocker[intWeapon].pwrlvl - 1
+	local intPowerCost = 0
+	if intPowerLevel > 0 then
+		intPowerCost = Weapons[strWeapon].UpGrades.Power[intPowerLevel + 1].Price / 2
+	end
+	local intAccuracyLevel = tblLocker[intWeapon].acclvl - 1
+	local intAccuracyCost = 0
+	if intAccuracyLevel > 0 then
+		intAccuracyCost = Weapons[strWeapon].UpGrades.Accuracy[intAccuracyLevel + 1].Price / 2
+	end
+	local intClipSizeLevel = tblLocker[intWeapon].clplvl - 1
+	local intClipSizeCost = 0
+	if intClipSizeLevel > 0 then
+		intClipSizeCost = Weapons[strWeapon].UpGrades.ClipSize[intClipSizeLevel + 1].Price / 2
+	end
+	local intFiringSpeedLevel = tblLocker[intWeapon].spdlvl - 1
+	local intFiringSpeedCost = 0
+	if intFiringSpeedLevel > 0 then
+		intFiringSpeedCost = Weapons[strWeapon].UpGrades.FiringSpeed[intFiringSpeedLevel + 1].Price / 2
+	end
+	local intReloadSpeedLevel = tblLocker[intWeapon].reslvl - 1
+	local intReloadSpeedCost = 0
+	if intReloadSpeedLevel > 0 then
+		intReloadSpeedCost = Weapons[strWeapon].UpGrades.ReloadSpeed[intReloadSpeedLevel + 1].Price / 2
+	end
+	local intValue = Weapons[strWeapon].Price / 2
+	intValue = intValue + intPowerCost + intAccuracyCost + intClipSizeCost + intFiringSpeedCost + intReloadSpeedCost
+	intValue = math.Round(intValue)
+	return intValue
+end
+
+function Player:GetTotalPoints(intWeapon)
+	local tblLocker = nil
+	if SERVER then
+		tblLocker = self.Locker
+	else
+		tblLocker = Locker
+	end
+	local intWeapon = intWeapon or 0
+	local strWeapon = tblLocker[intWeapon].Weapon
+	local intPowerLevel = tblLocker[intWeapon].pwrlvl
+	local intAccuracyLevel = tblLocker[intWeapon].acclvl
+	local intClipSizeLevel = tblLocker[intWeapon].clplvl
+	local intFiringSpeedLevel = tblLocker[intWeapon].spdlvl
+	local intReloadSpeedLevel = tblLocker[intWeapon].reslvl
+	local intTotalLevel = intPowerLevel + intAccuracyLevel + intClipSizeLevel + intFiringSpeedLevel + intReloadSpeedLevel
+	return intTotalLevel
+end

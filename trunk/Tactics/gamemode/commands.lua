@@ -59,32 +59,14 @@ concommand.Add("tx_updateweapons", function(ply, command, args)
 end)
 
 function SellWeapon(ply,command,args)
-	local lock = ply.Locker
-	local weapon = tonumber(args[1])
-	local cash = tonumber(ply:GetNWInt("cash"))
-	PrintTable(lock[weapon])
-	local pwr = lock[weapon].pwrlvl
-	local acc = lock[weapon].acclvl
-	local clp = lock[weapon].clplvl
-	local fis = lock[weapon].spdlvl
-	local res = lock[weapon].reslvl
-	local pwraddition = 0
-	local accaddition = 0
-	local clpaddition = 0
-	local fisaddition = 0
-	if pwr > 1 then
-		pwraddition = Weapons[weapon].Power[pwr] / 2 
-	elseif acc > 1 then
-		accaddition = Weapons[weapon].Accuracy[acc] / 2 
-	elseif clp > 1 then
-		clpaddition = Weapons[weapon].ClipSize[clp] / 2 
-	elseif fis > 1 then
-		fisaddition = Weapons[weapon].FiringSpeed[fis] / 2 
-	end
-	local price = Weapons[lock[weapon].Weapon].Price / 2 + pwraddition + accaddition + clpaddition + fisaddition
-	ply:StripWeapon(lock[weapon].Weapon)
-	ply:SetNWInt("cash", cash + price)
-	lock[weapon] = nil
+	local tblLocker = ply.Locker
+	local intWeapon = tonumber(args[1])
+	local intCash = tonumber(ply:GetNWInt("cash"))
+	local intValue = ply:GetWeaponValue(intWeapon)
+	ply:DepositWeapon(intWeapon)
+	ply:StripWeapon(tblLocker[intWeapon].Weapon)
+	ply:SetNWInt("cash", intCash + intValue)
+	tblLocker[intWeapon] = nil
 	SendDataToAClient(ply)
 end
 concommand.Add("tx_sellweapon",SellWeapon)
