@@ -78,6 +78,9 @@ function PANEL:AddWeapon(lstWeaponList, strWeapon, intWeapon)
 		WeaponPanel:SetSize(self.YourWeaponsList:GetWide() - 10, 125)
 	end
 	WeaponPanel.Paint = function() PaintWeaponItem(WeaponPanel, strWeapon, true) end
+	if intWeapon then
+		WeaponPanel.Paint = function() PaintWeaponItem(WeaponPanel, intWeapon, true) end
+	end
 	local WeaponPicture = vgui.Create("DLabel", WeaponPanel)
 	WeaponPicture:SetFont("CSSelectIcons")
 	WeaponPicture:SetText(Weapons[Weapons[strWeapon].Weapon].Icon)
@@ -125,10 +128,12 @@ function PANEL:AddWeapon(lstWeaponList, strWeapon, intWeapon)
 		UpgradeButton:SetDrawBackground(false)
 		UpgradeButton:SetText("Upgrade")
 		UpgradeButton.DoClick = function(UpgradeButton)
-			--RunConsoleCommand("tx_sell", k)
+			RunConsoleCommand("tx_upgradeweapon", intWeapon, "ClipSize")
+			UpgradeButton:SetDisabled(true)
 			timer.Simple(0.5, function()
 				self:LoadShopWeapons()
 				self:LoadYourWeapons()
+				UpgradeButton:SetDisabled(false)
 			end)
 		end
 	end
