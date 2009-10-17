@@ -140,7 +140,7 @@ function SellWeapon(ply,command,args)
 		fisaddition = Weapons[weapon].FiringSpeed[fis] / 2 
 	end
 	local price = Weapons[weapon].Price / 2 + pwraddition + accaddition + clpaddition + fisaddition
-	ply:StripWeapon(lock[weapon]Weapon
+	ply:StripWeapon(lock[weapon].Weapon)
 	ply:SetNWInt("cash",cash + price)
 	lock[weapon] = nil
 	SendDataToAClient(ply)
