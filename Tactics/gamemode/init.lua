@@ -75,7 +75,7 @@ function UpgradeWeapon(ply,command,args)
 	local lock = ply.Locker
 	local weapon = args[1]
 	local trait = args[2]
-	local cash = tonumber(ply:GetNWInt("Money") + 500000)
+	local cash = tonumber(ply:GetNWInt("cash"))
 	local pwr = lock[weapon].pwrlvl
 	local acc = lock[weapon].accrlvl
 	local clp = lock[weapon].clplvl
@@ -85,32 +85,64 @@ function UpgradeWeapon(ply,command,args)
 	local totalpoints = pwr + acc + clp + fis + res
 	if trait == "Power" && lock[weapon].pwrlvl != #Weapons[weapon].lockrades.Power && totalpoints < maxpoints then
 		if cash >= Weapons[weapon].lockrades.Power[pwr] then
-			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[Power].Price[pwr])			
+			ply:SetNWInt("cash", cash - Weapons[weapon].lockrades[Power].Price[pwr])			
 			lock[weapon].pwrlvl = lock[weapon].pwrlvl + 1
 		end
 	elseif trait == "Accuracy" && lock[weapon].acclvl != #Weapons[weapon].lockrades.Accuracy && totalpoints < maxpoints then
 		if  cash >= lockPrices[weapon].Accuracy[acc] then	
-		ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[Accuracy].Price[acc])
+		ply:SetNWInt("cash", cash - Weapons[weapon].lockrades[Accuracy].Price[acc])
 		lock[weapon].accrlvl = lock[weapon].accrlvl + 1
 		end
 	elseif trait == "ClipSize" && lock[weapon].clplvl != #Weapons[weapon].lockrades.ClipSize && totalpoints < maxpoints then
 		if  cash >= lockPrices[weapon].ClipSize[clp] then	
-			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[ClipSize].Price[clp])			
+			ply:SetNWInt("cash", cash - Weapons[weapon].lockrades[ClipSize].Price[clp])			
 			lock[weapon].clplvl = lock[weapon].clplvl + 1
 		end
 	elseif trait == "FiringSpeed" && lock[weapon].spdlvl != #Weapons[weapon].lockrades.FiringSpeed && totalpoints < maxpoints  then
 		if  cash >= lockPrices[weapon].FiringSpeed[fis] then	
-			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[FiringSpeed].Price[fis])		
+			ply:SetNWInt("cash", cash - Weapons[weapon].lockrades[FiringSpeed].Price[fis])		
 			lock[weapon].spdlvl = lock[weapon].spdlvl + 1
 		end
 	elseif trait == "ReloadSpeed" && lock[weapon].spdlvl != #Weapons[weapon].lockrades.ReloadSpeed && totalpoints < maxpoints then
 		if  cash >= lockPrices[weapon].FiringSpeed[res] then	
-			ply:SetNWInt("Money", cash - Weapons[weapon].lockrades[ReloadSpeed].Price[res])		
+			ply:SetNWInt("cash", cash - Weapons[weapon].lockrades[ReloadSpeed].Price[res])		
 			lock[weapon].reslvl = lock[weapon].reslvl + 1
 		end
 	end
 	if ply:GetActiveWeapon():GetClass() == Weapons[weapon].Weapon then
 		ply:GetActiveWeapon():Update()
 	end
+	SendDataToAClient(ply)
 end
-concommand.Add("UpgradeWeapon", UpgradeWeapon)
+concommand.Add("tx_UpgradeWeapon", UpgradeWeapon)
+
+function SellWeapon(ply,command,args)
+	local lock = ply.Locker
+	local weapon = args[1]
+	local trait = args[2]
+	local cash = tonumber(ply:GetNWInt("cash"))
+	local pwr = lock[weapon].pwrlvl
+	local acc = lock[weapon].accrlvl
+	local clp = lock[weapon].clplvl
+	local fis = lock[weapon].spdlvl
+	local res = lock[weapon].reslvl
+	local pwraddition = 0
+	local accaddition = 0
+	local clpaddition = 0
+	local fisaddition = 0
+	if pwr > 1 then
+		pwraddition = Weapons[weapon].Power[pwr] / 2 
+	elseif acc > 1 then
+		accaddition = Weapons[weapon].Accuracy[acc] / 2 
+	elseif clp > 1 then
+		clpaddition = Weapons[weapon].ClipSize[clp] / 2 
+	elseif fis > 1 then
+		fisaddition = Weapons[weapon].FiringSpeed[fis] / 2 
+	end
+	local price = Weapons[weapon].Price / 2 + pwraddition + accaddition + clpaddition + fisaddition
+	ply:StripWeapon(lock[weapon]Weapon
+	ply:SetNWInt("cash",cash + price)
+	lock[weapon] = nil
+	SendDataToAClient(ply)
+end
+concommand.Add("tx_SellWeapon",SellWeapon)
