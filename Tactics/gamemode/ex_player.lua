@@ -100,21 +100,23 @@ concommand.Add("tx_depositWeapon", function(ply, command, args) ply:DepositWeapo
 function Player:WithdrawWeapon(intWeapon)
 	local tblLocker = self.Locker
 	local intWeaponID = intWeapon or 0
-	local strNWCurrentWep = nil
-	local strNWSecondaryWep = nil
-	if self:GetNWInt("Weapon1") == 0 then strNWCurrentWep = "Weapon1" strNWSecondaryWep = "Weapon2"
-	elseif self:GetNWInt("Weapon2") == 0 then strNWCurrentWep = "Weapon2" strNWSecondaryWep = "Weapon1" 
-	else return end
-	if strNWCurrentWep then
-		self:Give(tblLocker[intWeaponID].Weapon)
-		self:GetWeapon(tblLocker[intWeaponID].Weapon):SetNWInt("id", intWeaponID)
-		self:SetNWInt(strNWCurrentWep, intWeaponID)
-		self:SetNWInt("ActiveWeapon", intWeaponID)
-		self:SelectWeapon(self.Locker[intWeaponID].Weapon)
-		if self:HasWeapon("weapon_crowbar") then
-			self:StripWeapon("weapon_crowbar")
+	if !self:HasWeapon(tblLocker[intWeaponID].Weapon) then
+		local strNWCurrentWep = nil
+		local strNWSecondaryWep = nil
+		if self:GetNWInt("Weapon1") == 0 then strNWCurrentWep = "Weapon1" strNWSecondaryWep = "Weapon2"
+		elseif self:GetNWInt("Weapon2") == 0 then strNWCurrentWep = "Weapon2" strNWSecondaryWep = "Weapon1" 
+		else return end
+		if strNWCurrentWep then
+			self:Give(tblLocker[intWeaponID].Weapon)
+			self:GetWeapon(tblLocker[intWeaponID].Weapon):SetNWInt("id", intWeaponID)
+			self:SetNWInt(strNWCurrentWep, intWeaponID)
+			self:SetNWInt("ActiveWeapon", intWeaponID)
+			self:SelectWeapon(self.Locker[intWeaponID].Weapon)
+			if self:HasWeapon("weapon_crowbar") then
+				self:StripWeapon("weapon_crowbar")
+			end
+			SendDataToAClient(self)
 		end
-		SendDataToAClient(self)
 	end
 end
 concommand.Add("tx_withdrawWeapon", function(ply, command, args) ply:WithdrawWeapon(tonumber(args[1]))  end)

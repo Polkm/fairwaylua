@@ -84,8 +84,9 @@ function PANEL:LoadWeapons()
 				MoveButton:SetDrawBackground(false)
 				MoveButton:SetText("Deposit")
 				MoveButton.DoClick = function(MoveButton)
+					MoveButton:SetDisabled(true)
 					RunConsoleCommand("tx_depositWeapon", k)
-					timer.Simple(0.1, function() self:LoadWeapons() end)
+					timer.Simple(2, function() MoveButton:SetDisabled(false) end)
 				end
 			else
 				local MoveButton = vgui.Create("DButton", WeaponPanel)
@@ -93,9 +94,14 @@ function PANEL:LoadWeapons()
 				MoveButton:SetPos(5, 70)
 				MoveButton:SetDrawBackground(false)
 				MoveButton:SetText("Withdraw")
+				if (Locker[Client:GetNWInt("Weapon1")] && Locker[Client:GetNWInt("Weapon1")].Weapon == weaponTable.Weapon) or
+					(Locker[Client:GetNWInt("Weapon2")] && Locker[Client:GetNWInt("Weapon2")].Weapon == weaponTable.Weapon) then
+					MoveButton:SetDisabled(true)
+				end
 				MoveButton.DoClick = function(MoveButton)
+					MoveButton:SetDisabled(true)
 					RunConsoleCommand("tx_withdrawWeapon", k)
-					timer.Simple(0.1, function() self:LoadWeapons() end)
+					timer.Simple(2, function() MoveButton:SetDisabled(false) end)
 				end
 			end
 			ProperList:AddItem(WeaponPanel)
