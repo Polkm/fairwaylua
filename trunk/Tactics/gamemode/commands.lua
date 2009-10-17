@@ -22,7 +22,7 @@ function UpgradeWeapon(ply, command, args)
 			local intPrice = Weapons[strWeapon].UpGrades.Accuracy[intAccuracyLevel].Price
 			--if intCash >= intPrice then
 				--ply:SetNWInt("cash", intCash - intPrice)
-				tblLocker[intWeapon].accrlvl = tblLocker[intWeapon].accrlvl + 1
+				tblLocker[intWeapon].acclvl = tblLocker[intWeapon].acclvl + 1
 			--end
 		elseif strTrait == "ClipSize" && intClipSizeLevel < #Weapons[strWeapon].UpGrades.ClipSize then
 			local intPrice = Weapons[strWeapon].UpGrades.ClipSize[intClipSizeLevel].Price
