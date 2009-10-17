@@ -105,10 +105,9 @@ function Player:WithdrawWeapon(intWeapon)
 	if self:GetNWInt("Weapon1") == 0 then strNWCurrentWep = "Weapon1" strNWSecondaryWep = "Weapon2"
 	elseif self:GetNWInt("Weapon2") == 0 then strNWCurrentWep = "Weapon2" strNWSecondaryWep = "Weapon1" 
 	else return end
-	print(self:GetNWInt("Weapon1"), self:GetNWInt("Weapon2"))
 	if strNWCurrentWep then
-		print("Atteping withdraw")
 		self:Give(tblLocker[intWeaponID].Weapon)
+		self:GetWeapon(tblLocker[intWeaponID].Weapon):SetNWInt("id", intWeaponID)
 		self:SetNWInt(strNWCurrentWep, intWeaponID)
 		self:SetNWInt("ActiveWeapon", intWeaponID)
 		self:SelectWeapon(self.Locker[intWeaponID].Weapon)

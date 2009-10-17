@@ -86,7 +86,7 @@ function SWEP:Reload()
 	if self:GetNWBool("reloading") then return false end
 	if self:Clip1() >= self.Primary.ClipSize then return false end
 	if self:Clip1() < self.Primary.ClipSize && self:GetOwner():GetAmmoCount(self.Primary.Ammo) > 0  then
-		print(self.ReloadSpeed)
+		--print(self.ReloadSpeed)
 		self:SetNWBool("reloading", true)
 		self:GetOwner():RestartGesture(self:GetOwner():Weapon_TranslateActivity(ACT_HL2MP_GESTURE_RELOAD))
 		self:SetNextPrimaryFire(CurTime() + self.ReloadSpeed)
@@ -113,10 +113,9 @@ function SWEP:Holster(wep)
 end
 
 function SWEP:Update()
-	local intActiveWeaponNumber = tonumber(self:GetOwner():GetNWInt("ActiveWeapon"))
+	local intActiveWeaponNumber = self:GetNWInt("id")
 	if intActiveWeaponNumber!= 0 then
 		if SERVER then
-			print("serverLoading")
 			local pwr = self:GetOwner().Locker[intActiveWeaponNumber].pwrlvl
 			local acc = self:GetOwner().Locker[intActiveWeaponNumber].acclvl
 			local clip = self:GetOwner().Locker[intActiveWeaponNumber].clplvl
@@ -128,10 +127,8 @@ function SWEP:Update()
 			self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
 			self.ReloadSpeed = Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
 			self.RecievedInfo = true
-			print("serverLoaded")
 		end
 		if CLIENT then
-			print("clientLoading")
 			local pwr = Locker[intActiveWeaponNumber].pwrlvl
 			local acc = Locker[intActiveWeaponNumber].acclvl
 			local clip = Locker[intActiveWeaponNumber].clplvl
@@ -143,9 +140,7 @@ function SWEP:Update()
 			self.Primary.Delay = Weapons[self:GetClass()].UpGrades.FiringSpeed[speed].Level
 			self.ReloadSpeed =  Weapons[self:GetClass()].UpGrades.ReloadSpeed[res].Level
 			self.RecievedInfo = true
-			print("clientLoaded")
 		end
-		
 	end
 	return true
 end
