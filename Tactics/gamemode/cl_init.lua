@@ -74,7 +74,7 @@ function PaintWeaponItem(weaponPanel, intWeapon, boolShowBars)
 	if boolShowBars then
 		local strWeapon = intWeapon
 		if Locker[intWeapon] then strWeapon = Locker[intWeapon].Weapon end
-		local intXPosition = 110
+		local intXPosition = 100
 		local intBarWidth = weaponPanel:GetWide() - 10 - intXPosition
 		local YOffset = 5
 		surface.SetTextColor(255, 255, 255, 255)
@@ -142,6 +142,15 @@ function PaintWeaponItem(weaponPanel, intWeapon, boolShowBars)
 		local ReloadSpeedLevel = 1
 		if Locker[intWeapon] then ReloadSpeedLevel = Locker[intWeapon].reslvl end
 		surface.DrawRect(intXPosition, YOffset, intBarWidth / (table.Count(Weapons[strWeapon].UpGrades.ReloadSpeed) / ReloadSpeedLevel), 5)
-		YOffset = YOffset + 5
+		YOffset = YOffset + 15
+		
+		-- Max Points
+		surface.SetFont("DefaultSmallDropShadow")
+		local TotalLevl = PowerLevel + AccuracyLevel + FiringSpeedLevel + ClipSizeLevel + ReloadSpeedLevel
+		local MaxLevel = 15
+		if Locker[intWeapon] then MaxLevel = Locker[intWeapon].Maxpoints end
+		local x, y = surface.GetTextSize("Points " .. TotalLevl .. "/" .. MaxLevel)
+		surface.SetTextPos(intXPosition, YOffset)
+		surface.DrawText("Points " .. TotalLevl .. "/" .. MaxLevel)
 	end
 end
