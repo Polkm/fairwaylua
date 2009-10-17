@@ -118,11 +118,11 @@ concommand.Add("tx_UpgradeWeapon", UpgradeWeapon)
 
 function SellWeapon(ply,command,args)
 	local lock = ply.Locker
-	local weapon = args[1]
-	local trait = args[2]
+	local weapon = tonumber(args[1])
 	local cash = tonumber(ply:GetNWInt("cash"))
+	PrintTable(lock[weapon])
 	local pwr = lock[weapon].pwrlvl
-	local acc = lock[weapon].accrlvl
+	local acc = lock[weapon].acclvl
 	local clp = lock[weapon].clplvl
 	local fis = lock[weapon].spdlvl
 	local res = lock[weapon].reslvl
@@ -139,13 +139,13 @@ function SellWeapon(ply,command,args)
 	elseif fis > 1 then
 		fisaddition = Weapons[weapon].FiringSpeed[fis] / 2 
 	end
-	local price = Weapons[weapon].Price / 2 + pwraddition + accaddition + clpaddition + fisaddition
+	local price = Weapons[lock[weapon].Weapon].Price / 2 + pwraddition + accaddition + clpaddition + fisaddition
 	ply:StripWeapon(lock[weapon].Weapon)
-	ply:SetNWInt("cash",cash + price)
+	ply:SetNWInt("cash", cash + price)
 	lock[weapon] = nil
 	SendDataToAClient(ply)
 end
-concommand.Add("tx_SellWeapon",SellWeapon)
+concommand.Add("tx_sellweapon",SellWeapon)
 
 function BuyWeapon(ply,command,args)
 	local lock = ply.Locker
