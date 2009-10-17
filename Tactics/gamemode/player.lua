@@ -1,5 +1,6 @@
 function GM:PlayerInitialSpawn(ply)
 	ply:SetNWBool("PvpFlag", false)
+	ply:SetNWInt("MaxHp", 100)
 	ply.Locker = {}
 	ply:AddWeaponToLocker("weapon_m4_tx")
 	ply:AddWeaponToLocker("weapon_deagle_tx")
@@ -9,26 +10,13 @@ function GM:PlayerInitialSpawn(ply)
 	ply.Perks = {}
 	ply.Perks["perk_ammoup"] = false
 	ply.Perks["perk_leech"] = false
-	ply.CanUse = true
 end
 
 function GM:PlayerLoadout(ply)
-	ply:SetNWInt("MaxHp", 100)
-	GAMEMODE:SetPlayerSpeed(ply,200,230)
+	GAMEMODE:SetPlayerSpeed(ply, 200, 230)
 	for perk, active in pairs(ply.Perks) do
 		if active then PlayerPerk[perk].Function(ply) end
 	end
-	local entity = ents.Create("prop_dynamic")
-	entity:SetModel("models/error.mdl")
-	entity:Spawn()
-	entity:SetAngles(ply:GetAngles())
-	entity:SetMoveType(MOVETYPE_NONE)
-	entity:SetParent(ply)
-	entity:SetPos(ply:GetPos())
-	entity:SetRenderMode(RENDERMODE_NONE)
-	entity:SetSolid(SOLID_NONE)
-	entity:SetNoDraw(true)
-	ply:SetViewEntity(entity)
 	for k, weapon in pairs(ply.Locker) do
 		ply:Give(weapon.Weapon)
 		ply:GetWeapon(weapon.Weapon):SetNWInt("id", k)
@@ -40,9 +28,18 @@ function GM:PlayerLoadout(ply)
 		ply:SelectWeapon(ply.Locker[ply:GetNWInt("ActiveWeapon")].Weapon)
 	end
 	ply:GiveAmmoAmount("full")
-	PrintTable(ply.Locker)
-	PrintTable(ply.Perks)
 	SendDataToAClient(ply)
+	local entity = ents.Create("prop_dynamic")
+	entity:SetModel("models/error.mdl")
+	entity:Spawn()
+	entity:SetAngles(ply:GetAngles())
+	entity:SetMoveType(MOVETYPE_NONE)
+	entity:SetParent(ply)
+	entity:SetPos(ply:GetPos())
+	entity:SetRenderMode(RENDERMODE_NONE)
+	entity:SetSolid(SOLID_NONE)
+	entity:SetNoDraw(true)
+	ply:SetViewEntity(entity)
 end
 
 function GM:PlayerShouldTakeDamage(victim, attacker)

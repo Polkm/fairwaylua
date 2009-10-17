@@ -58,7 +58,7 @@ function Player:SwitchWeapon()
 			strWeaponClass = self.Locker[self:GetNWInt("Weapon2")].Weapon
 		end
 		self:SelectWeapon(strWeaponClass)
-		if self:GetActiveWeapon():GetClass() == strWeaponClass then
+		if self:GetActiveWeapon() && self:GetActiveWeapon():GetClass() == strWeaponClass then
 			self:SetNWInt("ActiveWeapon", self:GetNWInt("Weapon2"))
 		end
 	elseif self:GetNWInt("ActiveWeapon") == self:GetNWInt("Weapon2") then
@@ -67,7 +67,7 @@ function Player:SwitchWeapon()
 			strWeaponClass = self.Locker[self:GetNWInt("Weapon1")].Weapon
 		end
 		self:SelectWeapon(strWeaponClass)
-		if self:GetActiveWeapon():GetClass() == strWeaponClass then
+		if self:GetActiveWeapon() && self:GetActiveWeapon():GetClass() == strWeaponClass then
 			self:SetNWInt("ActiveWeapon", self:GetNWInt("Weapon1"))
 		end
 	end
