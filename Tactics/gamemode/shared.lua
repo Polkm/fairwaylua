@@ -20,6 +20,7 @@ end
 Weapons = {}
 Weapons["weapon_p220_tx"] = {
 	Weapon = "weapon_p220_tx",
+	PrintName = "P220",
 	Icon = "y",
 	Price = 1,
 	UpGrades = {
@@ -44,6 +45,7 @@ Weapons["weapon_p220_tx"] = {
 }
 Weapons["weapon_mp5_tx"] = {
 	Weapon = "weapon_mp5_tx",
+	PrintName = "MP5",
 	Icon = "x",
 	Price = 1,
 	UpGrades = {
@@ -68,6 +70,7 @@ Weapons["weapon_mp5_tx"] = {
 }
 Weapons["weapon_ump_tx"] = {
 	Weapon = "weapon_ump_tx",
+	PrintName = "UMP",
 	Icon = "q",
 	Price = 1,
 	UpGrades = {
@@ -92,6 +95,7 @@ Weapons["weapon_ump_tx"] = {
 }
 Weapons["weapon_aug_tx"] = {
 	Weapon = "weapon_aug_tx",
+	PrintName = "AUG",
 	Icon = "e",
 	Price = 1,
 	UpGrades = {
@@ -116,6 +120,7 @@ Weapons["weapon_aug_tx"] = {
 }
 Weapons["weapon_m4_tx"] = {
 	Weapon = "weapon_m4_tx",
+	PrintName = "M4",
 	Icon = "w",
 	Price = 1,
 	UpGrades = {
@@ -140,6 +145,7 @@ Weapons["weapon_m4_tx"] = {
 }
 Weapons["weapon_deagle_tx"] = {
 	Weapon = "weapon_deagle_tx",
+	PrintName = "Desert Eagle",
 	Icon = "f",
 	Price = 1,
 	UpGrades = {
@@ -164,6 +170,7 @@ Weapons["weapon_deagle_tx"] = {
 }
 Weapons["weapon_glock18_tx"] = {
 	Weapon = "weapon_glock18_tx",
+	PrintName = "Glock 18",
 	Icon = "c",
 	Price = 1,
 	UpGrades = {
@@ -188,6 +195,7 @@ Weapons["weapon_glock18_tx"] = {
 }
 Weapons["weapon_p90_tx"] = {
 	Weapon = "weapon_p90_tx",
+	PrintName = "P90",
 	Icon = "m",
 	Price = 1,
 	UpGrades = {
@@ -212,6 +220,7 @@ Weapons["weapon_p90_tx"] = {
 }
 Weapons["weapon_ak47_tx"] = {
 	Weapon = "weapon_ak47_tx",
+	PrintName = "AK47",
 	Icon = "b",
 	Price = 1,
 	UpGrades = {
