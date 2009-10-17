@@ -72,9 +72,10 @@ end
 
 function PaintWeaponItem(weaponPanel, intWeapon, boolShowBars)
 	draw.RoundedBox(4, 0, 0, weaponPanel:GetWide(), weaponPanel:GetTall(), Color(100, 100, 100, 150))
-	if boolShowBars then
+	if boolShowBars  then
 		local strWeapon = intWeapon
 		if Locker[intWeapon] then strWeapon = Locker[intWeapon].Weapon end
+		if !Weapons[strWeapon] then return end
 		local intXPosition = 100
 		local intBarWidth = weaponPanel:GetWide() - 10 - intXPosition
 		local YOffset = 5
@@ -90,7 +91,7 @@ function PaintWeaponItem(weaponPanel, intWeapon, boolShowBars)
 		surface.SetDrawColor(255, 55, 55, 100)
 		local PowerLevel = 1
 		if Locker[intWeapon] then PowerLevel = Locker[intWeapon].pwrlvl end
-		surface.DrawRect(intXPosition, YOffset, intBarWidth / (table.Count(Weapons[strWeapon].UpGrades.Power) / PowerLevel), 5)
+		surface.DrawRect(intXPosition, YOffset, intBarWidth / ( #Weapons[strWeapon].UpGrades.Power / PowerLevel), 5)
 		YOffset = YOffset + 5
 		-- Accuracy
 		surface.SetFont("DefaultSmallDropShadow")
