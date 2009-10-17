@@ -236,6 +236,12 @@ AmmoTypes[1]["full"] = 50
 AmmoTypes[1]["large"] = 25
 AmmoTypes[1]["medium"] = 20
 AmmoTypes[1]["small"] = 10
+-- 357
+AmmoTypes[5] = {}
+AmmoTypes[5]["full"] = 30
+AmmoTypes[5]["large"] = 25
+AmmoTypes[5]["medium"] = 15
+AmmoTypes[5]["small"] = 5
 --Pistol
 AmmoTypes[3] = {}
 AmmoTypes[3]["full"] = 70
