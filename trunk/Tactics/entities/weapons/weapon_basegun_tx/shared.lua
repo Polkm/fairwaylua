@@ -33,7 +33,9 @@ function SWEP:Initialize()
 		self:SetWeaponHoldType(self.HoldType)
 	end
 	timer.Simple(1, function()
-		self:Update()
+		if self:IsValid() then
+			self:Update()
+		end
 	end)
 end
 
@@ -60,27 +62,29 @@ function SWEP:SecondaryAttack()
 		self:SetNWBool("reloading", true)
 		local entNade = ents.Create("npc_grenade_frag")
 		timer.Simple(1, function()
-			local vecNadePos = self:GetOwner():EyePos() + (self:GetOwner():GetAimVector() * 14)
-			local intNadeDur = 3
-			entNade:SetOwner(self:GetOwner())
-			entNade:Fire("SetTimer", intNadeDur)
-			entNade:SetPos(vecNadePos)
-			entNade:SetAngles(self:GetOwner():EyeAngles())
-			entNade:Spawn()
-			--Figur out the distance
-			local tblTraceTable = {}
-			tblTraceTable.start = self:GetOwner():EyePos()
-			tblTraceTable.endpos = tblTraceTable.start + (self:GetOwner():GetCursorAimVector() * 4096 * 4)
-			local tblFilterTable = ents.FindByClass("func_brush")
-			table.insert(tblFilterTable, self:GetOwner())
-			table.insert(tblFilterTable, self:GetOwner():GetActiveWeapon())
-			table.insert(tblFilterTable, entNade)
-			tblTraceTable.filter = tblFilterTable
-			local trcPlayerTrace = util.TraceLine(tblTraceTable)
-			local intPower = trcPlayerTrace.HitPos:Distance(self:GetOwner():GetPos())
-			local phys = entNade:GetPhysicsObject()
-			phys:ApplyForceCenter(self:GetOwner():GetAimVector():GetNormalized() * math.Clamp(intPower * 1.5, 1, 700))
-			self:SetNWBool("reloading", false)
+			if self:IsValid() then
+				local vecNadePos = self:GetOwner():EyePos() + (self:GetOwner():GetAimVector() * 14)
+				local intNadeDur = 3
+				entNade:SetOwner(self:GetOwner())
+				entNade:Fire("SetTimer", intNadeDur)
+				entNade:SetPos(vecNadePos)
+				entNade:SetAngles(self:GetOwner():EyeAngles())
+				entNade:Spawn()
+				--Figur out the distance
+				local tblTraceTable = {}
+				tblTraceTable.start = self:GetOwner():EyePos()
+				tblTraceTable.endpos = tblTraceTable.start + (self:GetOwner():GetCursorAimVector() * 4096 * 4)
+				local tblFilterTable = ents.FindByClass("func_brush")
+				table.insert(tblFilterTable, self:GetOwner())
+				table.insert(tblFilterTable, self:GetOwner():GetActiveWeapon())
+				table.insert(tblFilterTable, entNade)
+				tblTraceTable.filter = tblFilterTable
+				local trcPlayerTrace = util.TraceLine(tblTraceTable)
+				local intPower = trcPlayerTrace.HitPos:Distance(self:GetOwner():GetPos())
+				local phys = entNade:GetPhysicsObject()
+				phys:ApplyForceCenter(self:GetOwner():GetAimVector():GetNormalized() * math.Clamp(intPower * 1.5, 1, 700))
+				self:SetNWBool("reloading", false)
+			end
 		end)
 	end
 end
@@ -99,18 +103,20 @@ function SWEP:Reload()
 		self:SetNextPrimaryFire(CurTime() + self.ReloadSpeed)
 		self:SetNextSecondaryFire(CurTime() + self.ReloadSpeed)
 		timer.Simple(self.ReloadSpeed, function() 
-			if (self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1()) >= self.Primary.ClipSize then
-				if SERVER then
-					self:GetOwner():RemoveAmmo(self.Primary.ClipSize - self.Weapon:Clip1()  ,self.Primary.Ammo )
-					self.Weapon:SetClip1(self.Primary.ClipSize)
+			if self:IsValid() then
+				if (self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1()) >= self.Primary.ClipSize then
+					if SERVER then
+						self:GetOwner():RemoveAmmo(self.Primary.ClipSize - self.Weapon:Clip1()  ,self.Primary.Ammo )
+						self.Weapon:SetClip1(self.Primary.ClipSize)
+					end
+				else
+					if SERVER then
+						self.Weapon:SetClip1(self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1())
+						self:GetOwner():RemoveAmmo(self:GetOwner():GetAmmoCount(self.Primary.Ammo),self.Primary.Ammo)
+					end
 				end
-			else
-				if SERVER then
-					self.Weapon:SetClip1(self:GetOwner():GetAmmoCount(self.Primary.Ammo) + self.Weapon:Clip1())
-					self:GetOwner():RemoveAmmo(self:GetOwner():GetAmmoCount(self.Primary.Ammo),self.Primary.Ammo)
-				end
+				self:SetNWBool("reloading", false)
 			end
-			self:SetNWBool("reloading", false)
 		end)
 	end
 end
