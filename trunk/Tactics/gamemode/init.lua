@@ -146,3 +146,16 @@ function SellWeapon(ply,command,args)
 	SendDataToAClient(ply)
 end
 concommand.Add("tx_SellWeapon",SellWeapon)
+
+function BuyWeapon(ply,command,args)
+	local lock = ply.Locker
+	local weapon = args[1]
+	local trait = args[2]
+	local cash = tonumber(ply:GetNWInt("cash"))
+	if cash >= Weapons[lock[weapon].weapon].Price then
+		ply:SetNWInt("cash", cash - Weapons[weapon].Price)
+		ply:AddWeaponToLocker(Weapons[lock[weapon].weapon])
+	end
+	SendDataToAClient(ply)
+end
+concommand.Add("tx_BuyWeapon",SellWeapon)
