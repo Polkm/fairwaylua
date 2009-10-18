@@ -14,7 +14,6 @@ end
 
 function Load(ply)
 	local Steam = string.Replace(ply:SteamID(),":",";")
-	print(Steam)
 	local FilePath1 = "Tactics/"..Steam.."/playerinfo.txt"
 	if not file.Exists(FilePath1) then
 		ply:SetNWInt("cash",0)
@@ -51,11 +50,8 @@ function Load(ply)
 				ply.Perks[tostring(k)] = tobool(v)
 			end
 		end
-		PrintTable(ply.Perks)
-		PrintTable(ply.Locker)		
-		print("loaded")
 	end
 	hook.Call("PlayerLoadout", GAMEMODE, ply)
 	SendDataToAClient(ply)
-	timer.Simple(3,function() Save(ply) end)
+	Save(ply)
 end

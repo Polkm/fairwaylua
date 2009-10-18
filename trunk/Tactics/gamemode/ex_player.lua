@@ -51,24 +51,26 @@ function Player:AddWeaponToLocker(strWeapon, intMaxPoints, intPwrLvl, intAccLvl,
 end
 
 function Player:SwitchWeapon()
-	if self:GetNWBool("reloading") then return false end 
-	if self:GetNWInt("ActiveWeapon") == self:GetNWInt("Weapon1") then
-		local strWeaponClass = "weapon_crowbar"
-		if self.Locker[self:GetNWInt("Weapon2")] then
-			strWeaponClass = self.Locker[self:GetNWInt("Weapon2")].Weapon
-		end
-		self:SelectWeapon(strWeaponClass)
-		if self:GetActiveWeapon() && self:GetActiveWeapon():GetClass() == strWeaponClass then
-			self:SetNWInt("ActiveWeapon", self:GetNWInt("Weapon2"))
-		end
-	elseif self:GetNWInt("ActiveWeapon") == self:GetNWInt("Weapon2") then
-		local strWeaponClass = "weapon_crowbar"
-		if self.Locker[self:GetNWInt("Weapon1")] then
-			strWeaponClass = self.Locker[self:GetNWInt("Weapon1")].Weapon
-		end
-		self:SelectWeapon(strWeaponClass)
-		if self:GetActiveWeapon() && self:GetActiveWeapon():GetClass() == strWeaponClass then
-			self:SetNWInt("ActiveWeapon", self:GetNWInt("Weapon1"))
+	if Locker then
+		if self:GetNWBool("reloading") then return false end 
+		if self:GetNWInt("ActiveWeapon") == self:GetNWInt("Weapon1") then
+			local strWeaponClass = "weapon_crowbar"
+			if self.Locker[self:GetNWInt("Weapon2")] then
+				strWeaponClass = self.Locker[self:GetNWInt("Weapon2")].Weapon
+			end
+			self:SelectWeapon(strWeaponClass)
+			if self:GetActiveWeapon() && self:GetActiveWeapon():GetClass() == strWeaponClass then
+				self:SetNWInt("ActiveWeapon", self:GetNWInt("Weapon2"))
+			end
+		elseif self:GetNWInt("ActiveWeapon") == self:GetNWInt("Weapon2") then
+			local strWeaponClass = "weapon_crowbar"
+			if self.Locker[self:GetNWInt("Weapon1")] then
+				strWeaponClass = self.Locker[self:GetNWInt("Weapon1")].Weapon
+			end
+			self:SelectWeapon(strWeaponClass)
+			if self:GetActiveWeapon() && self:GetActiveWeapon():GetClass() == strWeaponClass then
+				self:SetNWInt("ActiveWeapon", self:GetNWInt("Weapon1"))
+			end
 		end
 	end
 end
