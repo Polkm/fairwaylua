@@ -47,6 +47,7 @@ function GM:PlayerLoadout(ply)
 	entity:SetSolid(SOLID_NONE)
 	entity:SetNoDraw(true)
 	ply:SetViewEntity(entity)
+	SendDataToAClient(ply)
 end
 
 function GM:PlayerShouldTakeDamage(victim, attacker)

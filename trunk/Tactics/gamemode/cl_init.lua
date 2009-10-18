@@ -13,8 +13,19 @@ function RecieveDataFromServer(handler, id, encoded, decoded)
 	local decod = decoded
 	Locker = decod.LockerTable
 	Perks = decod.PerkPerkPerk
-	RunConsoleCommand("tx_updateweapons")
 	timer.Simple(0.1, function()
+		for k, weapon in pairs(LocalPlayer():GetWeapons()) do
+			if Locker[LocalPlayer():GetNWInt("Weapon1")] then
+				if weapon:GetClass() == Locker[LocalPlayer():GetNWInt("Weapon1")].Weapon then
+					weapon:Update()
+				end
+			end
+			if Locker[LocalPlayer():GetNWInt("Weapon2")] then
+				if weapon:GetClass() == Locker[LocalPlayer():GetNWInt("Weapon2")].Weapon then
+					weapon:Update()
+				end
+			end
+		end
 		if LockerMenu then
 			LockerMenu:LoadWeapons()
 		end
