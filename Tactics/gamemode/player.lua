@@ -2,12 +2,14 @@ function GM:PlayerInitialSpawn(ply)
 	timer.Simple(2, Load, ply)
 	timer.Create(ply:Nick() .. "AutoSaver", 60, 0, Save, ply)
 	ply.CanUse = true
+	ply.FirstSpawn = true
 end
 function GM:PlayerDisconnected(ply)
 	Save(ply)
 end
 function GM:PlayerSpawn(ply)
 	hook.Call("PlayerSetModel", GAMEMODE, ply)
+	if ply.FirstSpawn then return end
 	hook.Call("PlayerLoadout", GAMEMODE, ply)
 end
 
