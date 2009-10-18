@@ -32,7 +32,7 @@ function SWEP:Initialize()
     if SERVER then
 		self:SetWeaponHoldType(self.HoldType)
 	end
-	timer.Simple(3, function()
+	timer.Simple(2, function()
 		if self:IsValid() then
 			self:Update()
 		end
