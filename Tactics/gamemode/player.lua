@@ -8,6 +8,7 @@ function GM:PlayerDisconnected(ply)
 end
 function GM:PlayerSpawn(ply)
 	hook.Call("PlayerSetModel", GAMEMODE, ply)
+	hook.Call("PlayerLoadout", GAMEMODE, ply)
 end
 
 function GM:PlayerLoadout(ply)
