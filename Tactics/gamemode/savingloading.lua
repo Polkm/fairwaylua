@@ -51,7 +51,6 @@ function Load(ply)
 			end
 		end
 	end
-	ply.FirstSpawn = false
 	hook.Call("PlayerLoadout", GAMEMODE, ply)
 	Save(ply)
 end

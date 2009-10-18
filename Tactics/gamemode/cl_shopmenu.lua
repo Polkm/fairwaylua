@@ -103,7 +103,7 @@ function PANEL:AddWeapon(lstWeaponList, strWeapon, intWeapon)
 		BuyButton.DoClick = function(BuyButton)
 			RunConsoleCommand("tx_buyweapon", strWeapon)
 			BuyButton:SetDisabled(true)
-			timer.Simple(0.5, function() BuyButton:SetDisabled(false) end)
+			timer.Simple(2, function() BuyButton:SetDisabled(false) end)
 		end
 	else
 		local SellButton = vgui.Create("DButton", WeaponPanel)

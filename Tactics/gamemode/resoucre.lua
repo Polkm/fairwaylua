@@ -7,3 +7,5 @@ resource.AddFile("materials/health_icon.vtf")
 resource.AddFile("materials/cash_icon.vmt")
 resource.AddFile("materials/cash_icon.vtf")
 
+resource.AddFile("materials/lock_icon.vmt")
+resource.AddFile("materials/lock_icon.vtf")
