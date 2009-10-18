@@ -3,7 +3,7 @@ AddCSLuaFile("shared.lua")
 include('shared.lua')
 
 function ENT:Initialize()
-	self:SetModel("models/props_lab/lockers.mdl")
+	self:SetModel("models/gman.mdl")
 	self:PhysicsInit(0)
 	self:SetMoveType(0)
 	self:SetSolid(SOLID_VPHYSICS)
