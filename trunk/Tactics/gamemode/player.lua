@@ -1,7 +1,10 @@
 function GM:PlayerInitialSpawn(ply)
-	Load(ply)
+	timer.Simple(2, Load, ply)
 end
 
+function GM:PlayerSpawn(ply)
+	hook.Call("PlayerSetModel", GAMEMODE, ply)
+end
 
 function GM:PlayerLoadout(ply)
 	GAMEMODE:SetPlayerSpeed(ply, 200, 230)

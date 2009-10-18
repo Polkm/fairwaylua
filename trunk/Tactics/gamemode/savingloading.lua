@@ -14,6 +14,7 @@ end
 
 function Load(ply)
 	local Steam = string.Replace(ply:SteamID(),":",";")
+	print(Steam)
 	local FilePath1 = "Tactics/"..Steam.."/playerinfo.txt"
 	if not file.Exists(FilePath1) then
 		ply:SetNWInt("cash",0)
@@ -37,24 +38,24 @@ function Load(ply)
 		ply.Locker = {}
 		ply.Perks = {}
 		for k,v in pairs(lock) do
-			ply:AddWeaponToLocker(v.weapon,
-			tonumber(v.maxpoints),
-			tonumber(v.pwrlvl), 
-			tonumber(v.acclvl),
-			tonumber(v.clplvl),
-			tonumber(v.spdlvl),
-			tonumber(v.reslvl))	
+			ply:AddWeaponToLocker(v["weapon"],
+			tonumber(v["maxpoints"]),
+			tonumber(v["pwrlvl"]), 
+			tonumber(v["acclvl"]),
+			tonumber(v["clplvl"]),
+			tonumber(v["spdlvl"]),
+			tonumber(v["reslvl"]))	
 		end
-		PrintTable(ply.Locker)
-		if purks != nil then
-			for k,v in pairs(purks) do 
-				ply.Perks[tostring(k)] = v
+		if purks then
+			for k, v in pairs(purks) do 
+				ply.Perks[tostring(k)] = tobool(v)
 			end
 		end
 		PrintTable(ply.Perks)
 		PrintTable(ply.Locker)		
 		print("loaded")
 	end
-	timer.Simple(10,function() Save(ply) end)
+	hook.Call("PlayerLoadout", GAMEMODE, ply)
 	SendDataToAClient(ply)
+	timer.Simple(3,function() Save(ply) end)
 end
