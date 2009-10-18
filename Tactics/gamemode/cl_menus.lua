@@ -53,6 +53,7 @@ function PANEL:PerformLayout()
 end
 
 function PANEL:LoadWeapons()
+	print("loaded locker menu")
 	local Client = LocalPlayer()
 	self.EquiptedWeaponsList:Clear()
 	self.LockerWeaponsList:Clear()

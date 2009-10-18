@@ -14,13 +14,15 @@ function RecieveDataFromServer(handler, id, encoded, decoded)
 	Locker = decod.LockerTable
 	Perks = decod.PerkPerkPerk
 	RunConsoleCommand("tx_updateweapons")
-	if LockerMenu then
-		LockerMenu:LoadWeapons()
-	end
-	if ShopMenu then
-		ShopMenu:LoadShopWeapons()
-		ShopMenu:LoadYourWeapons()
-	end
+	timer.Simple(0.1, function()
+		if LockerMenu then
+			LockerMenu:LoadWeapons()
+		end
+		if ShopMenu then
+			ShopMenu:LoadShopWeapons()
+			ShopMenu:LoadYourWeapons()
+		end
+	end)
 end
 datastream.Hook("LockerTransfer", RecieveDataFromServer)
 
