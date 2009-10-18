@@ -51,7 +51,9 @@ function Player:AddWeaponToLocker(strWeapon, intMaxPoints, intPwrLvl, intAccLvl,
 end
 
 function Player:SwitchWeapon()
-	if self:GetNWBool("reloading") then return false end 
+	if !self or !self:IsValid() or !self:Alive() then return false end
+	if !self:GetActiveWeapon() then return false end
+	if self:GetActiveWeapon():GetNWBool("reloading") then return false end
 	if self:GetNWInt("ActiveWeapon") == self:GetNWInt("Weapon1") then
 		local strWeaponClass = "weapon_crowbar"
 		if self.Locker[self:GetNWInt("Weapon2")] then

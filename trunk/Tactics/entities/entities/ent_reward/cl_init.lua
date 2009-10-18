@@ -1,6 +1,7 @@
 include('shared.lua')
 ENT.Spawnable			= false
 ENT.AdminSpawnable		= false
+
 function ENT:Initialize()
 	self.TehColor = Color(255, 255, 255, 255)
 	self.matIcon = Material(self.AmmoIcon)

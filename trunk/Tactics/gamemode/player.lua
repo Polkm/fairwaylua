@@ -1,8 +1,16 @@
 function GM:PlayerInitialSpawn(ply)
-	timer.Simple(2, Load, ply)
+	timer.Simple(0.1, HasSteam, ply)
 	timer.Create(ply:Nick() .. "AutoSaver", 60, 0, Save, ply)
 	ply.CanUse = true
 	ply.FirstSpawn = true
+end
+function HasSteam(ply)
+	print(ply:SteamID())
+	if ply:SteamID() != "STEAM_ID_PENDING" then
+		Load(ply)
+	else
+		timer.Simple(0.1, HasSteam, ply)
+	end
 end
 function GM:PlayerDisconnected(ply)
 	Save(ply)
@@ -35,7 +43,6 @@ function GM:PlayerLoadout(ply)
 		ply:SelectWeapon(ply.Locker[ply:GetNWInt("ActiveWeapon")].Weapon)
 	end
 	ply:GiveAmmoAmount("full")
-	SendDataToAClient(ply)
 	local entity = ents.Create("prop_dynamic")
 	entity:SetModel("models/error.mdl")
 	entity:Spawn()
@@ -48,6 +55,7 @@ function GM:PlayerLoadout(ply)
 	entity:SetNoDraw(true)
 	ply:SetViewEntity(entity)
 	SendDataToAClient(ply)
+	ply.FirstSpawn = false
 end
 
 function GM:PlayerShouldTakeDamage(victim, attacker)

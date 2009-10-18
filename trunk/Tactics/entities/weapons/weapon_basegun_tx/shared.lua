@@ -92,9 +92,8 @@ function SWEP:Reload()
 	if self:GetNWBool("reloading") then return false end
 	if self:Clip1() >= self.Primary.ClipSize then return false end
 	if self:Clip1() < self.Primary.ClipSize && self:GetOwner():GetAmmoCount(self.Primary.Ammo) > 0  then
-		--print(self.ReloadSpeed)
 		self:SetNWBool("reloading", true)
-		self:GetOwner():RestartGesture(self:GetOwner():Weapon_TranslateActivity(ACT_HL2MP_GESTURE_RELOAD))
+		if SERVER then GAMEMODE:SetPlayerAnimation(self:GetOwner(), PLAYER_RELOAD) end
 		self:SetNextPrimaryFire(CurTime() + self.ReloadSpeed)
 		self:SetNextSecondaryFire(CurTime() + self.ReloadSpeed)
 		timer.Simple(self.ReloadSpeed, function() 

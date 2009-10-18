@@ -13,19 +13,8 @@ function RecieveDataFromServer(handler, id, encoded, decoded)
 	local decod = decoded
 	Locker = decod.LockerTable
 	Perks = decod.PerkPerkPerk
+	UpdateWeapons(ply)
 	timer.Simple(0.1, function()
-		for k, weapon in pairs(LocalPlayer():GetWeapons()) do
-			if Locker[LocalPlayer():GetNWInt("Weapon1")] then
-				if weapon:GetClass() == Locker[LocalPlayer():GetNWInt("Weapon1")].Weapon then
-					weapon:Update()
-				end
-			end
-			if Locker[LocalPlayer():GetNWInt("Weapon2")] then
-				if weapon:GetClass() == Locker[LocalPlayer():GetNWInt("Weapon2")].Weapon then
-					weapon:Update()
-				end
-			end
-		end
 		if LockerMenu then
 			LockerMenu:LoadWeapons()
 		end
@@ -37,6 +26,22 @@ function RecieveDataFromServer(handler, id, encoded, decoded)
 end
 datastream.Hook("LockerTransfer", RecieveDataFromServer)
 
+function UpdateWeapons(ply)
+	for k, weapon in pairs(ply:GetWeapons()) do
+		if Locker[ply:GetNWInt("Weapon1")] then
+			if weapon:GetClass() == Locker[ply:GetNWInt("Weapon1")].Weapon then
+				weapon:Update()
+			end
+		end
+		if Locker[ply:GetNWInt("Weapon2")] then
+			if weapon:GetClass() == Locker[ply:GetNWInt("Weapon2")].Weapon then
+				weapon:Update()
+			end
+		end
+	end
+end
+concommand.Add("tx_updateweapons", UpdateWeapons)
+
 function GM:Initialize()
 	gui.EnableScreenClicker(true)
 	vgui.GetWorldPanel():SetCursor("crosshair")
@@ -44,13 +49,13 @@ end
 
 function GM:GUIMousePressed(input)
 	if GAMEMODE.ShowScoreboard then return end
-	if input == MOUSE_LEFT then LocalPlayer():ConCommand("+attack") end
-	if input == MOUSE_RIGHT then LocalPlayer():ConCommand("+attack2") end
+	if input == MOUSE_LEFT then RunConsoleCommand("+attack") end
+	if input == MOUSE_RIGHT then RunConsoleCommand("+attack2") end
 end
 function GM:GUIMouseReleased(input)
 	if GAMEMODE.ShowScoreboard then return end
-	if input == MOUSE_LEFT then LocalPlayer():ConCommand("-attack") end
-	if input == MOUSE_RIGHT then LocalPlayer():ConCommand("-attack2") end
+	if input == MOUSE_LEFT then RunConsoleCommand("-attack") end
+	if input == MOUSE_RIGHT then RunConsoleCommand("-attack2") end
 end
 function GM:OnSpawnMenuClose()
 	if GAMEMODE.ShowScoreboard then return end
