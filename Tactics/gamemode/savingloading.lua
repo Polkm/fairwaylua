@@ -53,6 +53,5 @@ function Load(ply)
 	end
 	ply.FirstSpawn = false
 	hook.Call("PlayerLoadout", GAMEMODE, ply)
-	SendDataToAClient(ply)
 	Save(ply)
 end

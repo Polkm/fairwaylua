@@ -16,6 +16,12 @@ NodesManifest = {}
 
 function SendDataToAClient(ply) 
 	datastream.StreamToClients(ply, "LockerTransfer", {LockerTable = ply.Locker, PerkPerkPerk = ply.Perks}) 
+	if ply.Locker[ply:GetNWInt("Weapon1")] then
+		ply:GetWeapon(ply.Locker[ply:GetNWInt("Weapon1")].Weapon):Update()
+	end
+	if ply.Locker[ply:GetNWInt("Weapon2")] then
+		ply:GetWeapon(ply.Locker[ply:GetNWInt("Weapon2")].Weapon):Update()
+	end
 end
 concommand.Add("tx_updatelocker", SendDataToAClient)
 
