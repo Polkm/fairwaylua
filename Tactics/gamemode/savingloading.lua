@@ -1,58 +1,60 @@
-require("glon")
-require("gm_sqlite")
-local Player = FindMetaTable("Player")
+function Save(ply)
+	local Steam = string.Replace(ply:SteamID(),":",";")
+	local FilePath1 = "Tactics/"..Steam.."/playerinfo.txt"
+	local Savetable = {}
+	Savetable["Name"] = ply:Nick()
+	Savetable["Cash"] = ply:GetNWInt("Cash")
+	Savetable["Perks"] = ply.Perks
+	Savetable["Locker"] = ply.Locker
+	Savetable["Weapon1"] = ply:GetNWInt("Weapon1")
+	Savetable["Weapon2"] = ply:GetNWInt("Weapon2")
+	local StrindedItems = util.TableToKeyValues(Savetable)
+	file.Write(FilePath1,StrindedItems)
+end
 
-function GM:Initialize()
-	if !sql.TableExists("player_acounts") then
-		local SQLQuery = "CREATE TABLE player_acounts (unique_id varchar(255), cash int, locker text, perks text)"
-		local SQLResult = sql.Query(SQLQuery)
-		if sql.TableExists("player_acounts") then
-			print("Succes ! table 1 created \n")
-		else
-			print("Somthing went wrong with the player_acounts query !\n")
-			print(sql.LastError(SQLResult) .. "\n")
+function Load(ply)
+	local Steam = string.Replace(ply:SteamID(),":",";")
+	local FilePath1 = "Tactics/"..Steam.."/playerinfo.txt"
+	if not file.Exists(FilePath1) then
+		ply:SetNWInt("cash",0)
+		ply.Locker = {}
+		ply.Perks = {}
+		ply:SetNWBool("LockerZone", false)
+		ply:SetNWBool("PvpFlag", false)
+		ply:SetNWInt("MaxHp", 100)
+		ply:AddWeaponToLocker("weapon_p220_tx")
+		ply:SetNWInt("ActiveWeapon", 1)
+		ply:SetNWInt("Weapon1", 1)
+	elseif file.Exists(FilePath1) then
+		local savetable = util.KeyValuesToTable(file.Read(FilePath1) )
+		local lock = savetable["locker"]
+		local cash = savetable["cash"]
+		local purks = savetable["perks"]
+		ply:SetNWInt("cash", tonumber(cash))
+		ply:SetNWInt("Weapon1", tonumber(savetable["weapon1"]))
+		ply:SetNWInt("Weapon2", tonumber(savetable["weapon2"]))
+		ply:SetNWInt("ActiveWeapon", ply:GetNWInt("Weapon1"))
+		ply.Locker = {}
+		ply.Perks = {}
+		for k,v in pairs(lock) do
+			ply:AddWeaponToLocker(v.weapon,
+			tonumber(v.maxpoints),
+			tonumber(v.pwrlvl), 
+			tonumber(v.acclvl),
+			tonumber(v.clplvl),
+			tonumber(v.spdlvl),
+			tonumber(v.reslvl))	
 		end
+		PrintTable(ply.Locker)
+		if purks != nil then
+			for k,v in pairs(purks) do 
+				ply.Perks[tostring(k)] = v
+			end
+		end
+		PrintTable(ply.Perks)
+		PrintTable(ply.Locker)		
+		print("loaded")
 	end
-end
-
-function Player:SQLExist()
-	local steamID = self:GetNWString("SteamID")
-	local SQLResult = sql.Query("SELECT unique_id, cash FROM player_acounts WHERE unique_id = '"..steamID.."'")
-	if SQLResult then
-		self:SQLLoadGame()
-	else
-		self:SQLNewGame()
-	end
-end
-
-function Player:SQLLoadGame()
-
-end
-
-function Player:SQLSaveGame()
-	
-end
-
-function Player:SQLNewGame()
-	self.Locker = {}
-	self:AddWeaponToLocker("weapon_mp5_tx")
-	self:AddWeaponToLocker("weapon_p220_tx")
-	self:SetNWInt("ActiveWeapon", 1)
-	self:SetNWInt("Weapon1", 1)
-	self:SetNWInt("Weapon2", 2)
-	self.Perks = {}
-	self.Perks["perk_ammoup"] = false
-	local steamID = self:GetNWString("SteamID")
-	local intCash = self:GetNWInt("cash")
-	local strLockerSaveString = glon.encode(self.Locker)
-	local strPerksSaveString = glon.encode(self.Perks)
-	if SQLResult then
-	local strQuery = "INSERT INTO player_acounts (`unique_id`, `cash`, `locker`, `perks`)VALUES ('" .. steamID .. "', '" .. intCash .. "', '" .. strLockerSaveString .. "', '" .. strPerksSaveString .. "')"
-	sql.Query(strQuery)
-	local SQLResult = sql.Query("SELECT unique_id, money FROM player_info WHERE unique_id = '"..steamID.."'")
-	if SQLResult then
-		print("Player account created !\n")
-	else
-		print("Something went wrong with creating a players info !\n")
-	end
+	timer.Simple(10,function() Save(ply) end)
+	SendDataToAClient(ply)
 end

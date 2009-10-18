@@ -40,12 +40,12 @@ function Player:AddWeaponToLocker(strWeapon, intMaxPoints, intPwrLvl, intAccLvl,
 	local intMaximumPoints = tonumber(intMaxPoints) or 15
 	local tblNewWeaponTable = {
 		Weapon = strWeaponClass,
-		Maxpoints = intMaximumPoints,
-		pwrlvl = intPwrLvl or 1,
-		acclvl = intAccLvl or 1,
-		clplvl = intClpLvl or 1,
-		spdlvl = intSpdLvl or 1,
-		reslvl = intResLvl or 1,
+		Maxpoints = tonumber(intMaximumPoints),
+		pwrlvl = tonumber(intPwrLvl) or 1,
+		acclvl = tonumber(intAccLvl) or 1,
+		clplvl = tonumber(intClpLvl) or 1,
+		spdlvl = tonumber(intSpdLvl) or 1,
+		reslvl = tonumber(intResLvl) or 1,
 	}
 	table.insert(self.Locker, tblNewWeaponTable)
 end

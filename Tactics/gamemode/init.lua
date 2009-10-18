@@ -10,6 +10,7 @@ include("player.lua")
 include("ex_player.lua")
 include("commands.lua")
 include("resoucre.lua")
+include("savingloading.lua")
 GM.PlayerSpawnTime = {}
 NodesManifest = {}
 

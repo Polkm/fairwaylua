@@ -1,21 +1,14 @@
 function GM:PlayerInitialSpawn(ply)
-	ply:SetNWBool("PvpFlag", false)
-	ply:SetNWInt("MaxHp", 100)
-	ply.Locker = {}
-	ply:AddWeaponToLocker("weapon_m4_tx")
-	ply:AddWeaponToLocker("weapon_deagle_tx")
-	ply:SetNWInt("ActiveWeapon", 1)
-	ply:SetNWInt("Weapon1", 1)
-	ply:SetNWInt("Weapon2", 2)
-	ply.Perks = {}
-	ply.Perks["perk_ammoup"] = false
-	ply.Perks["perk_leech"] = false
+	Load(ply)
 end
+
 
 function GM:PlayerLoadout(ply)
 	GAMEMODE:SetPlayerSpeed(ply, 200, 230)
 	for perk, active in pairs(ply.Perks) do
-		if active then PlayerPerk[perk].Function(ply) end
+		if active then
+			PlayerPerk[perk].Function(ply) 
+		end
 	end
 	for k, weapon in pairs(ply.Locker) do
 		ply:Give(weapon.Weapon)
