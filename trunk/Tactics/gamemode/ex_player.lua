@@ -35,17 +35,17 @@ function Player:GiveAmmoAmount(strAmount)
 	end
 end
 
-function Player:AddWeaponToLocker(strWeapon, intMaxPoints)
+function Player:AddWeaponToLocker(strWeapon, intMaxPoints, intPwrLvl, intAccLvl, intClpLvl, intSpdLvl, intResLvl)
 	local strWeaponClass = tostring(strWeapon) or "weapon_crowbar"
 	local intMaximumPoints = tonumber(intMaxPoints) or 15
 	local tblNewWeaponTable = {
 		Weapon = strWeaponClass,
 		Maxpoints = intMaximumPoints,
-		pwrlvl = 1,
-		acclvl = 1,
-		clplvl = 1,
-		spdlvl = 1,
-		reslvl = 1,
+		pwrlvl = intPwrLvl or 1,
+		acclvl = intAccLvl or 1,
+		clplvl = intClpLvl or 1,
+		spdlvl = intSpdLvl or 1,
+		reslvl = intResLvl or 1,
 	}
 	table.insert(self.Locker, tblNewWeaponTable)
 end
