@@ -20,9 +20,13 @@ function GM:PlayerLoadout(ply)
 			PlayerPerk[perk].Function(ply) 
 		end
 	end
-	for k, weapon in pairs(ply.Locker) do
-		ply:Give(weapon.Weapon)
-		ply:GetWeapon(weapon.Weapon):SetNWInt("id", k)
+	if ply.Locker[ply:GetNWInt("Weapon1")] then
+		ply:Give(ply.Locker[ply:GetNWInt("Weapon1")].Weapon)
+		ply:GetWeapon(ply.Locker[ply:GetNWInt("Weapon1")].Weapon):SetNWInt("id",ply:GetNWInt("Weapon1"))
+	end
+	if ply.Locker[ply:GetNWInt("Weapon2")] then
+		ply:Give(ply.Locker[ply:GetNWInt("Weapon2")].Weapon)
+		ply:GetWeapon(ply.Locker[ply:GetNWInt("Weapon2")].Weapon):SetNWInt("id", ply:GetNWInt("Weapon2"))
 	end
 	if ply:GetNWInt("Weapon1") == 0 && ply:GetNWInt("Weapon2") == 0 then
 		ply:Give("weapon_crowbar")
