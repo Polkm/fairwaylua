@@ -4,8 +4,7 @@ include('shared.lua')
 
 function ENT:Initialize()
 	self:SetModel("models/gman.mdl")
-	self:PhysicsInit(0)
-	self:SetMoveType(0)
+	self:SetSequence("idle")
 	self:SetSolid(SOLID_VPHYSICS)
 end
 
