@@ -85,7 +85,7 @@ function PANEL:AddWeapon(lstWeaponList, strWeapon, intWeapon)
 		WeaponPanel.Paint = function() PaintWeaponItem(WeaponPanel, intWeapon, true) end
 	end
 	local WeaponPicture = vgui.Create("DLabel", WeaponPanel)
-	WeaponPicture:SetFont("CSSelectIcons")
+	WeaponPicture:SetFont("TXSmallWeaponIcons")
 	WeaponPicture:SetText(Weapons[Weapons[strWeapon].Weapon].Icon)
 	WeaponPicture:SetPos(5, 0)
 	WeaponPicture:SetSize(150, 120)

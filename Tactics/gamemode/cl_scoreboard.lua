@@ -7,21 +7,25 @@ function GM:HUDDrawScoreBoard()
 	local clrLockerText = Color(100, 200, 100, 0)
 	for _, player in pairs(player.GetAll()) do
 		local vecPlayerPos = player:GetPos():ToScreen()
-		local intDrawAlpha = 255 --/ ((client:GetPos():Distance(player:GetPos()) / 500) + 1)
+		local intDrawAlpha = 255
 		clrNameText.a = intDrawAlpha
-		draw.SimpleText(player:Nick(), "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y - 20, clrNameText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-		draw.SimpleText("$"..player:GetNWInt("Cash"), "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y , clrNameText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)		
+		local intYOffset = vecPlayerPos.y
+		draw.SimpleText("$" .. player:GetNWInt("Cash"), "Trebuchet20", vecPlayerPos.x, intYOffset , clrNameText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)		
+		intYOffset = intYOffset - 20
+		draw.SimpleText(player:Nick(), "Trebuchet20", vecPlayerPos.x, intYOffset, clrNameText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		intYOffset = intYOffset - 20
 		if player:GetNWBool("PvpFlag") then
 			clrPVPText.a = intDrawAlpha
-			draw.SimpleText("PvP", "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y - 35, clrPVPText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.SimpleText("PvP", "Trebuchet20", vecPlayerPos.x, intYOffset, clrPVPText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			intYOffset = intYOffset - 20
 		end
 		if player:GetNWBool("LockerZone") then
 			clrLockerText.a = intDrawAlpha
-			if !player:GetNWBool("PvpFlag") then
-				draw.SimpleText("Locker Zone", "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y - 35, clrLockerText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			else
-				draw.SimpleText("Locker Zone", "Trebuchet20", vecPlayerPos.x, vecPlayerPos.y - 45, clrLockerText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-			end
+			draw.SimpleText("Locker Zone", "Trebuchet20", vecPlayerPos.x, intYOffset, clrLockerText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			intYOffset = intYOffset - 20
+		end
+		if player:GetActiveWeapon() && Weapons[player:GetActiveWeapon():GetClass()] then
+			draw.SimpleText(Weapons[player:GetActiveWeapon():GetClass()].Icon, "TXSmallWeaponIcons", vecPlayerPos.x, intYOffset, clrNameText, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	end
 end
