@@ -25,58 +25,70 @@ Weapons["weapon_p220_tx"] = {
 	Price = 200,
 	UpGrades = {
 		Power = {{Price = 200, Level = 2},
-				{Price = 500, Level = 4},
+				{Price = 400, Level = 4},
 				{Price = 1000, Level = 5},
-				{Price = 1500, Level = 6}},
+				{Price = 1500, Level = 6},
 				{Price = 2000, Level = 8}},
-		Accuracy = {{Price = 0, Level = 0.1},
-				{Price = 150, Level = 0.07},
-				{Price = 400, Level = 0.06},
-				{Price = 800, Level = 0.05},},
-				{Price = 1200, Level = 0.03},},
-		ClipSize = {{Price = 0, Level = 10},
-				{Price = 200, Level = 15},
-				{Price = 550, Level = 20},
-				{Price = 1100, Level = 25}},
-				{Price = 1800, Level = 30}},
-		FiringSpeed = {{Price = 0, Level = 0.5},
-				{Price = 1400, Level = 0.3},
-				{Price = 2200, Level = 0.2},
-				{Price = 3100, Level = 0.1}},
-				{Price = 3100, Level = 0.05}},
-		ReloadSpeed = {{Price = 400, Level = 0.8}},
+		Accuracy = {{Price = 150, Level = 0.1},
+				{Price = 400, Level = 0.07},
+				{Price = 800, Level = 0.06},
+				{Price = 1200, Level = 0.05},
+				{Price = 1800, Level = 0.03}},
+		ClipSize = {{Price = 200, Level = 10},
+				{Price = 550, Level = 15},
+				{Price = 1100, Level = 20},
+				{Price = 1800, Level = 25},
+				{Price = 2700, Level = 30}},
+		FiringSpeed = {{Price = 100, Level = 0.5},
+				{Price = 200, Level = 0.3},
+				{Price = 500, Level = 0.2},
+				{Price = 1000, Level = 0.1},
+				{Price = 1500, Level = 0.05}},
+		ReloadSpeed = {{Price = 400, Level = 2},
+				{Price = 800, Level = 1.5},
+				{Price = 1000, Level = 1.0},
+				{Price = 1300, Level = 0.7},
+				{Price = 1800, Level = 0.5}},
 	},
 }
 Weapons["weapon_mp5_tx"] = {
 	Weapon = "weapon_mp5_tx",
 	PrintName = "MP5",
 	Icon = "x",
-	Price = 1,
+	Price = 1000,
 	UpGrades = {
 		Power = {{Price = 600, Level = 3},
-				{Price = 1500, Level = 5},
-				{Price = 2500, Level = 7},
-				{Price = 4000, Level = 10}},
-		Accuracy = {{Price = 600, Level = 0.10},
+				{Price = 1000, Level = 5},
+				{Price = 1500, Level = 7},
+				{Price = 2100, Level = 8},
+				{Price = 3000, Level = 9}},
+		Accuracy = {{Price = 500, Level = 0.15},
+				{Price = 700, Level = 0.12},
+				{Price = 1000, Level = 0.1},
 				{Price = 1500, Level = 0.09},
-				{Price = 3000, Level = 0.08},
-				{Price = 4000, Level = 0.07},},
-		ClipSize = {{Price = 800, Level = 30},
-				{Price = 1300, Level = 35},
-				{Price = 2000, Level = 40},
-				{Price = 2600, Level = 50}},
-		FiringSpeed = {{Price = 1000, Level = 0.1},
-				{Price = 1400, Level = 0.08},
-				{Price = 2200, Level = 0.06},
-				{Price = 3100, Level = 0.04}},
-		ReloadSpeed = {{Price = 400, Level = 1.2}},
+				{Price = 2100, Level = 0.08}},
+		ClipSize = {{Price = 650, Level = 25},
+				{Price = 800, Level = 30},
+				{Price = 1000, Level = 34},
+				{Price = 1300, Level = 37},
+				{Price = 1700, Level = 40}},
+		FiringSpeed = {{Price = 1000, Level = 0.15},
+				{Price = 1200, Level = 0.12},
+				{Price = 1500, Level = 0.1},
+				{Price = 2000, Level = 0.09},
+				{Price = 2600, Level = 0.08}},
+		ReloadSpeed = {{Price = 400, Level = 2.3},
+				{Price = 600, Level = 1.8},
+				{Price = 1000, Level = 1.4},
+				{Price = 1500, Level = 1},
+				{Price = 2100, Level = 0.8}},
 	},
 }
 Weapons["weapon_ump_tx"] = {
 	Weapon = "weapon_ump_tx",
 	PrintName = "UMP",
 	Icon = "q",
-	Price = 1,
+	Price = 0,
 	UpGrades = {
 		Power = {{Price = 600, Level = 5},
 				{Price = 1500, Level = 7},
@@ -101,7 +113,7 @@ Weapons["weapon_aug_tx"] = {
 	Weapon = "weapon_aug_tx",
 	PrintName = "AUG",
 	Icon = "e",
-	Price = 1,
+	Price = 0,
 	UpGrades = {
 		Power = {{Price = 600, Level = 8},
 				{Price = 1500, Level = 10},
@@ -126,7 +138,7 @@ Weapons["weapon_m4_tx"] = {
 	Weapon = "weapon_m4_tx",
 	PrintName = "M4",
 	Icon = "w",
-	Price = 1,
+	Price = 0,
 	UpGrades = {
 		Power = {{Price = 600, Level = 7},
 				{Price = 1500, Level = 9},
@@ -151,7 +163,7 @@ Weapons["weapon_deagle_tx"] = {
 	Weapon = "weapon_deagle_tx",
 	PrintName = "Desert Eagle",
 	Icon = "f",
-	Price = 1,
+	Price = 0,
 	UpGrades = {
 		Power = {{Price = 600, Level = 12},
 				{Price = 1500, Level = 14},
@@ -176,7 +188,7 @@ Weapons["weapon_glock18_tx"] = {
 	Weapon = "weapon_glock18_tx",
 	PrintName = "Glock 18",
 	Icon = "c",
-	Price = 1,
+	Price = 0,
 	UpGrades = {
 		Power = {{Price = 600, Level = 4},
 				{Price = 1500, Level = 6},
@@ -201,7 +213,7 @@ Weapons["weapon_p90_tx"] = {
 	Weapon = "weapon_p90_tx",
 	PrintName = "P90",
 	Icon = "m",
-	Price = 1,
+	Price = 0,
 	UpGrades = {
 		Power = {{Price = 600, Level = 3},
 				{Price = 1500, Level = 5},
@@ -226,7 +238,7 @@ Weapons["weapon_ak47_tx"] = {
 	Weapon = "weapon_ak47_tx",
 	PrintName = "AK47",
 	Icon = "b",
-	Price = 1,
+	Price = 0,
 	UpGrades = {
 		Power = {{Price = 600, Level = 8},
 				{Price = 1500, Level = 10},
@@ -335,27 +347,27 @@ function Player:GetWeaponValue(intWeapon)
 	local intPowerLevel = tblLocker[intWeapon].pwrlvl - 1
 	local intPowerCost = 0
 	if intPowerLevel > 0 then
-		intPowerCost = Weapons[strWeapon].UpGrades.Power[intPowerLevel + 1].Price / 2
+		intPowerCost = Weapons[strWeapon].UpGrades.Power[intPowerLevel].Price / 2
 	end
 	local intAccuracyLevel = tblLocker[intWeapon].acclvl - 1
 	local intAccuracyCost = 0
 	if intAccuracyLevel > 0 then
-		intAccuracyCost = Weapons[strWeapon].UpGrades.Accuracy[intAccuracyLevel + 1].Price / 2
+		intAccuracyCost = Weapons[strWeapon].UpGrades.Accuracy[intAccuracyLevel].Price / 2
 	end
 	local intClipSizeLevel = tblLocker[intWeapon].clplvl - 1
 	local intClipSizeCost = 0
 	if intClipSizeLevel > 0 then
-		intClipSizeCost = Weapons[strWeapon].UpGrades.ClipSize[intClipSizeLevel + 1].Price / 2
+		intClipSizeCost = Weapons[strWeapon].UpGrades.ClipSize[intClipSizeLevel].Price / 2
 	end
 	local intFiringSpeedLevel = tblLocker[intWeapon].spdlvl - 1
 	local intFiringSpeedCost = 0
 	if intFiringSpeedLevel > 0 then
-		intFiringSpeedCost = Weapons[strWeapon].UpGrades.FiringSpeed[intFiringSpeedLevel + 1].Price / 2
+		intFiringSpeedCost = Weapons[strWeapon].UpGrades.FiringSpeed[intFiringSpeedLevel].Price / 2
 	end
 	local intReloadSpeedLevel = tblLocker[intWeapon].reslvl - 1
 	local intReloadSpeedCost = 0
 	if intReloadSpeedLevel > 0 then
-		intReloadSpeedCost = Weapons[strWeapon].UpGrades.ReloadSpeed[intReloadSpeedLevel + 1].Price / 2
+		intReloadSpeedCost = Weapons[strWeapon].UpGrades.ReloadSpeed[intReloadSpeedLevel].Price / 2
 	end
 	local intValue = Weapons[strWeapon].Price / 2
 	intValue = intValue + intPowerCost + intAccuracyCost + intClipSizeCost + intFiringSpeedCost + intReloadSpeedCost

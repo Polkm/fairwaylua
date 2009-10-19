@@ -59,7 +59,9 @@ function PANEL:LoadShopWeapons()
 	local Client = LocalPlayer()
 	self.ShopWeaponsList:Clear()
 	for k, weaponTable in pairs(Weapons) do
-		self:AddWeapon(self.ShopWeaponsList, k)
+		if weaponTable.Price > 0 then
+			self:AddWeapon(self.ShopWeaponsList, k)
+		end
 	end
 end
 
@@ -131,20 +133,20 @@ function PANEL:AddWeapon(lstWeaponList, strWeapon, intWeapon)
 				RunConsoleCommand("tx_upgradeweapon", intWeapon, stringCommand)
 				timer.Simple(2, function() UpgradeButton:SetDisabled(false) end)
 			end
-			if Weapons[strWeapon].UpGrades.Power[Locker[intWeapon].pwrlvl + 1] then
-				MenuButtonOptions:AddOption("Power For $" .. Weapons[strWeapon].UpGrades.Power[Locker[intWeapon].pwrlvl + 1].Price, function() UpgradCommand("Power") end)
+			if Weapons[strWeapon].UpGrades.Power[Locker[intWeapon].pwrlvl] then
+				MenuButtonOptions:AddOption("Power For $" .. Weapons[strWeapon].UpGrades.Power[Locker[intWeapon].pwrlvl].Price, function() UpgradCommand("Power") end)
 			end
-			if Weapons[strWeapon].UpGrades.Accuracy[Locker[intWeapon].acclvl + 1] then
-				MenuButtonOptions:AddOption("Accuracy For $" .. Weapons[strWeapon].UpGrades.Accuracy[Locker[intWeapon].acclvl + 1].Price, function() UpgradCommand("Accuracy") end)
+			if Weapons[strWeapon].UpGrades.Accuracy[Locker[intWeapon].acclvl] then
+				MenuButtonOptions:AddOption("Accuracy For $" .. Weapons[strWeapon].UpGrades.Accuracy[Locker[intWeapon].acclvl].Price, function() UpgradCommand("Accuracy") end)
 			end
-			if Weapons[strWeapon].UpGrades.FiringSpeed[Locker[intWeapon].spdlvl + 1] then
-				MenuButtonOptions:AddOption("Firing Speed For $" .. Weapons[strWeapon].UpGrades.FiringSpeed[Locker[intWeapon].spdlvl + 1].Price, function() UpgradCommand("FiringSpeed") end)
+			if Weapons[strWeapon].UpGrades.FiringSpeed[Locker[intWeapon].spdlvl] then
+				MenuButtonOptions:AddOption("Firing Speed For $" .. Weapons[strWeapon].UpGrades.FiringSpeed[Locker[intWeapon].spdlvl].Price, function() UpgradCommand("FiringSpeed") end)
 			end
-			if Weapons[strWeapon].UpGrades.ClipSize[Locker[intWeapon].clplvl + 1] then
-				MenuButtonOptions:AddOption("Clip Size For $" .. Weapons[strWeapon].UpGrades.ClipSize[Locker[intWeapon].clplvl + 1].Price, function() UpgradCommand("ClipSize") end)
+			if Weapons[strWeapon].UpGrades.ClipSize[Locker[intWeapon].clplvl] then
+				MenuButtonOptions:AddOption("Clip Size For $" .. Weapons[strWeapon].UpGrades.ClipSize[Locker[intWeapon].clplvl].Price, function() UpgradCommand("ClipSize") end)
 			end
-			if Weapons[strWeapon].UpGrades.ReloadSpeed[Locker[intWeapon].reslvl + 1] then
-				MenuButtonOptions:AddOption("Reload Speed For $" .. Weapons[strWeapon].UpGrades.ReloadSpeed[Locker[intWeapon].reslvl + 1].Price, function() UpgradCommand("ReloadSpeed") end)
+			if Weapons[strWeapon].UpGrades.ReloadSpeed[Locker[intWeapon].reslvl] then
+				MenuButtonOptions:AddOption("Reload Speed For $" .. Weapons[strWeapon].UpGrades.ReloadSpeed[Locker[intWeapon].reslvl].Price, function() UpgradCommand("ReloadSpeed") end)
 			end
 			MenuButtonOptions:Open()
 		end

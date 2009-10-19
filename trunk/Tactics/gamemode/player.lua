@@ -23,6 +23,7 @@ end
 
 function GM:PlayerLoadout(ply)
 	GAMEMODE:SetPlayerSpeed(ply, 200, 230)
+	ply:SetNWInt("MaxHP", 100)
 	for perk, active in pairs(ply.Perks) do
 		if active then
 			PlayerPerk[perk].Function(ply) 
