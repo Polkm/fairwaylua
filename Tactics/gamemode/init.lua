@@ -32,14 +32,14 @@ function GM:OnNPCKilled(victim, killer, weapon)
 		--Ammo
 		local AmmoDrop = NPCData["default"].AmmoDrop
 		if type(NpcDataTable.AmmoDrop) == "boolean" then AmmoDrop = NpcDataTable.AmmoDrop end
-		local RandomAmount = AmmoSizes[math.random(1, 25)]
+		local RandomAmount = AmmoSizes[math.random(1, 8)]
 		if AmmoDrop && type(RandomAmount) == "string" && RandomAmount != "full" then
 			table.insert(drops, {type = "ammo", amount = RandomAmount})
 		end
 		--Health
 		local HealthDrop = NPCData["default"].HealthDrop
 		if type(NpcDataTable.HealthDrop) == "boolean" then HealthDrop = NpcDataTable.HealthDrop end
-		local RandomAmount = HealthSizes[math.random(1, 50)]
+		local RandomAmount = HealthSizes[math.random(1, 70)]
 		if HealthDrop && type(RandomAmount) == "string"then
 			table.insert(drops, {type = "health", amount = RandomAmount})
 		end
@@ -48,7 +48,7 @@ function GM:OnNPCKilled(victim, killer, weapon)
 		if type(NpcDataTable.CashDrop) == "boolean" then CashDrop = NpcDataTable.CashDrop end
 		local CashToDrop = NpcDataTable.CashToDrop or NPCData["default"].CashToDrop
 		local RandomAmount = math.random(CashToDrop - 5, CashToDrop + 5)
-		local IsGoingToDrop = math.random(0, 10)
+		local IsGoingToDrop = math.random(1, 2)
 		if CashToDrop && RandomAmount > 0 && IsGoingToDrop == 1 then
 			table.insert(drops, {type = "cash", amount = RandomAmount})
 		end
@@ -62,7 +62,7 @@ function GM:OnNPCKilled(victim, killer, weapon)
 				reward:SetNWEntity("PropProtector", killer)
 				reward:Spawn()
 				timer.Simple(10, function() if reward:IsValid() then reward:SetNWEntity("PropProtector", "none") end end)
-				timer.Simple(40, function() if reward:IsValid() then reward:Remove() end end)
+				timer.Simple(60, function() if reward:IsValid() then reward:Remove() end end)
 			end
 		end 
 	end

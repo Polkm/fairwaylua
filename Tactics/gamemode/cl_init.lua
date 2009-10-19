@@ -13,8 +13,8 @@ function RecieveDataFromServer(handler, id, encoded, decoded)
 	local decod = decoded
 	Locker = decod.LockerTable
 	Perks = decod.PerkPerkPerk
-	UpdateWeapons(ply)
 	timer.Simple(0.1, function()
+		UpdateWeapons(LocalPlayer())
 		if LockerMenu then
 			LockerMenu:LoadWeapons()
 		end
