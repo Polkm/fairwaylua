@@ -4,8 +4,9 @@ include("cl_menus.lua")
 include("cl_shopmenu.lua")
 include("cl_hud.lua")
 include("cl_scoreboard.lua")
-surface.CreateFont("csd", ScreenScale(40), 500, true, true, "CSSelectIcons")
-surface.CreateFont("csd", ScreenScale(120), 500, true, true,"CSHugeSelectIcons" )
+surface.CreateFont("csd", ScreenScale(40), 500, true, true, "TXSmallWeaponIcons")
+surface.CreateFont("csd", ScreenScale(120), 500, true, true,"TXWeaponIcons")
+surface.CreateFont("csd", ScreenScale(160), 500, true, true,"TXHugeWeaponIcons")
 Locker = {}
 Perks = {}
 

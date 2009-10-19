@@ -1,9 +1,11 @@
 function ToggleLocker()
 	if !LockerMenu then
-		LockerMenu = vgui.Create("lockermenu")
-		LockerMenu:Center()
-		LockerMenu:SetVisible(true)
-		LockerMenu.Frame:SetVisible(true)
+		if LocalPlayer():GetNWBool("LockerZone") then
+			LockerMenu = vgui.Create("lockermenu")
+			LockerMenu:Center()
+			LockerMenu:SetVisible(true)
+			LockerMenu.Frame:SetVisible(true)
+		end
 	else
 		LockerMenu:SetVisible(false)
 		LockerMenu.Frame:SetVisible(false)
@@ -67,7 +69,7 @@ function PANEL:LoadWeapons()
 			WeaponPanel.Paint = function() PaintWeaponItem(WeaponPanel, k, true) end
 			WeaponPanel:SetTooltip(strDescription)
 			local WeaponPicture = vgui.Create("DLabel", WeaponPanel)
-			WeaponPicture:SetFont("CSSelectIcons")
+			WeaponPicture:SetFont("TXSmallWeaponIcons")
 			WeaponPicture:SetText(Weapons[weaponTable.Weapon].Icon) --Weapons[weaponTable.Weapon].Icon
 			WeaponPicture:SetPos(5, 0)
 			WeaponPicture:SetSize(150, 120)

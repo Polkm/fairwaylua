@@ -74,7 +74,7 @@ function Player:SwitchWeapon()
 		end
 	end
 end
-concommand.Add("tx_switchWeapon", function(ply, command, args) ply:SwitchWeapon() end)
+concommand.Add("tx_switchWeapon", function(ply, command, args) ply:SwitchWeapon()end)
 
 function Player:DepositWeapon(intWeapon)
 	local tblLocker = self.Locker
@@ -97,7 +97,11 @@ function Player:DepositWeapon(intWeapon)
 		SendDataToAClient(self)
 	end
 end
-concommand.Add("tx_depositWeapon", function(ply, command, args) ply:DepositWeapon(tonumber(args[1]))  end)
+concommand.Add("tx_depositWeapon", function(ply, command, args)
+	if ply:GetNWBool("LockerZone") then
+		ply:DepositWeapon(tonumber(args[1]))
+	end
+end)
 
 function Player:WithdrawWeapon(intWeapon)
 	local tblLocker = self.Locker
@@ -121,9 +125,12 @@ function Player:WithdrawWeapon(intWeapon)
 		end
 	end
 end
-concommand.Add("tx_withdrawWeapon", function(ply, command, args) ply:WithdrawWeapon(tonumber(args[1]))  end)
+concommand.Add("tx_withdrawWeapon", function(ply, command, args)
+	if ply:GetNWBool("LockerZone") then
+		ply:WithdrawWeapon(tonumber(args[1]))
+	end
+end)
 
---Perks
 function Player:ActivatePerk(PerkToActivate)
 	PerkToActivate = "perk_ammoup"
 	if self.Perks[PerkToActivate] != nil then
