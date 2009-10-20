@@ -1,15 +1,18 @@
 local Player = FindMetaTable("Player")
 
-function Player:GiveCash(intAmount)
+function Player:GiveCash(intAmount, boolPerkEffect)
 	local intAmountToGive = tonumber(intAmount) or 0
-	if self.Perks["perk_ammoup"] then
-		intAmountToGive = intAmountToGive / 2
-	elseif self.Perks["perk_gamble"] then
-		local chance = math.random(1, 2)
-		if chance == 1 then
-			intAmountToGive = intAmountToGive * -1
-		else
-			intAmountToGive = intAmountToGive * 2
+	local boolShouldPerkCash = tobool(boolPerkEffect) or true
+	if boolShouldPerkCash then
+		if self.Perks["perk_ammoup"] then
+			intAmountToGive = intAmountToGive / 2
+		elseif self.Perks["perk_gamble"] then
+			local chance = math.random(1, 2)
+			if chance == 1 then
+				intAmountToGive = intAmountToGive * -1
+			else
+				intAmountToGive = intAmountToGive * 2
+			end
 		end
 	end
 	intAmountToGive = math.Round(intAmountToGive)
@@ -19,6 +22,16 @@ function Player:GiveCash(intAmount)
 	else
 		return false
 	end
+end
+
+function Player:GiveHealth(intAmount)
+	local intAmountToChange = tonumber(intAmount) or 0
+	if intAmountToChange > 0 then
+		local intMaxHealth = self:GetNWInt("MaxHP") or 100
+		self:SetHealth(math.Clamp(self:Health() + intAmountToChange, 0, intMaxHealth))
+		return true
+	end
+	return false
 end
 
 function Player:GiveAmmoAmount(strAmount)

@@ -38,8 +38,8 @@ function GM:HUDPaint()
 	surface.SetDrawColor(clrHUDBox_Boarder.r, clrHUDBox_Boarder.g, clrHUDBox_Boarder.b, clrHUDBox_Boarder.a)
 	surface.DrawOutlinedRect(0, SH - (intHealthBoxHieght + intCashBoxHieght), intCashBoxWidth, intCashBoxHieght)
 	surface.SetFont("Trebuchet20")
-	local x,y = surface.GetTextSize("$ " .. intCash)
-	surface.SetTextPos(5, SH - (intHealthBoxHieght + (intCashBoxHieght)) )
+	local x,y = surface.GetTextSize("$" .. intCash)
+	surface.SetTextPos(5, SH - (intHealthBoxHieght + (intCashBoxHieght)))
 	surface.DrawText("$" .. intCash)
 	if client:GetActiveWeapon() && client:GetActiveWeapon():IsValid() && client:GetActiveWeapon():GetClass() != "weapon_crowbar" then
 		if Locker then

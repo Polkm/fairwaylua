@@ -35,12 +35,12 @@ function ENT:Use(activator, caller)
 		activator:GiveCash(intAmountToGive)
 		self:Remove()
 		return
-	elseif strType == "health" && activator:Health() < activator:GetNWInt("MaxHp")  then
+	elseif strType == "health" && activator:Health() < activator:GetNWInt("MaxHp") then
 		local intAmountToAdd = 50
 		if strAmount == "full" then intAmountToAdd = activator:GetNWInt("MaxHp") end
-		local intNewHealth = math.Clamp((activator:Health() + intAmountToAdd), 0, activator:GetNWInt("MaxHp"))
-		activator:SetHealth(intNewHealth)
-		self:Remove()
-		return
+		if self:GiveHealth(intAmountToAdd) then
+			self:Remove()
+			return
+		end
 	end
 end

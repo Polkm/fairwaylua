@@ -1,56 +1,69 @@
-function Save(ply)
-	local Steam = string.Replace(ply:SteamID(),":",";")
-	local FilePath1 = "Tactics/"..Steam.."/playerinfo.txt"
-	local Savetable = {}
-	Savetable["Name"] = ply:Nick()
-	Savetable["Cash"] = ply:GetNWInt("Cash")
-	Savetable["Perks"] = ply.Perks
-	Savetable["Locker"] = ply.Locker
-	Savetable["Weapon1"] = ply:GetNWInt("Weapon1")
-	Savetable["Weapon2"] = ply:GetNWInt("Weapon2")
-	local StrindedItems = util.TableToKeyValues(Savetable)
-	file.Write(FilePath1,StrindedItems)
+local Player = FindMetaTable("Player")
+
+function Player:Save()
+	local strSteamID = string.Replace(self:SteamID(), ":", ";")
+	if strSteamID != "STEAM_ID_PENDING" then
+		local strFilePath = "Tactics/" .. strSteamID .. "/playerinfo.txt"
+		local tblSaveTable = {}
+		tblSaveTable["name"] = self:Nick()
+		tblSaveTable["cash"] = self:GetNWInt("cash")
+		tblSaveTable["locker"] = self.Locker
+		tblSaveTable["perks"] = self.Perks
+		tblSaveTable["weapon1"] = self:GetNWInt("Weapon1")
+		tblSaveTable["weapon2"] = self:GetNWInt("Weapon2")
+		local strConvertedTable = util.TableToKeyValues(tblSaveTable)
+		file.Write(strFilePath, strConvertedTable)
+		return true
+	end
+	return false
 end
 
-function Load(ply)
-	local Steam = string.Replace(ply:SteamID(),":",";")
-	local FilePath1 = "Tactics/"..Steam.."/playerinfo.txt"
-	if not file.Exists(FilePath1) then
-		ply:SetNWInt("cash",0)
-		ply.Locker = {}
-		ply.Perks = {}
-		ply:SetNWBool("LockerZone", false)
-		ply:SetNWBool("PvpFlag", false)
-		ply:SetNWInt("MaxHp", 100)
-		ply:AddWeaponToLocker("weapon_p220_tx")
-		ply:SetNWInt("ActiveWeapon", 1)
-		ply:SetNWInt("Weapon1", 1)
-	elseif file.Exists(FilePath1) then
-		local savetable = util.KeyValuesToTable(file.Read(FilePath1) )
-		local lock = savetable["locker"]
-		local cash = savetable["cash"]
-		local purks = savetable["perks"]
-		ply:SetNWInt("cash", tonumber(cash))
-		ply:SetNWInt("Weapon1", tonumber(savetable["weapon1"]))
-		ply:SetNWInt("Weapon2", tonumber(savetable["weapon2"]))
-		ply:SetNWInt("ActiveWeapon", ply:GetNWInt("Weapon1"))
-		ply.Locker = {}
-		ply.Perks = {}
-		for k,v in pairs(lock) do
-			ply:AddWeaponToLocker(v["weapon"],
-			tonumber(v["maxpoints"]),
-			tonumber(v["pwrlvl"]), 
-			tonumber(v["acclvl"]),
-			tonumber(v["clplvl"]),
-			tonumber(v["spdlvl"]),
-			tonumber(v["reslvl"]))	
-		end
-		if purks then
-			for k, v in pairs(purks) do 
-				ply.Perks[tostring(k)] = tobool(v)
+function Player:Load()
+	local strSteamID = string.Replace(self:SteamID(),":",";")
+	if strSteamID != "STEAM_ID_PENDING" then
+		local strFilePath = "Tactics/" .. strSteamID .. "/playerinfo.txt"
+		if !file.Exists(strFilePath) then
+			self:SetNWInt("cash", 0)
+			self.Locker = {}
+			self.Perks = {}
+			self:AddWeaponToLocker("weapon_p220_tx")
+			self:SetNWInt("ActiveWeapon", 1)
+			self:SetNWInt("Weapon1", 1)
+		elseif file.Exists(strFilePath) then
+			local tblLoadedTable = util.KeyValuesToTable(file.Read(strFilePath))
+			local strLoadedCash = tblLoadedTable["cash"]
+			local tblLoadedLocker = tblLoadedTable["locker"]
+			local tblLoadedPerks = tblLoadedTable["perks"]
+			local strLoadedWeapon1 = tblLoadedTable["weapon1"]
+			local strLoadedWeapon2 = tblLoadedTable["weapon2"]
+			self:SetNWInt("cash", tonumber(strLoadedCash))
+			self:SetNWInt("Weapon1", tonumber(strLoadedWeapon1))
+			self:SetNWInt("Weapon2", tonumber(strLoadedWeapon2))
+			self:SetNWInt("ActiveWeapon", self:GetNWInt("Weapon1"))
+			self.Locker = {}
+			self.Perks = {}
+			if tblLoadedLocker then
+				for id, weaponTable in pairs(tblLoadedLocker) do
+					self:AddWeaponToLocker(
+					tostring(weaponTable["weapon"]),
+					tonumber(weaponTable["maxpoints"]),
+					tonumber(weaponTable["pwrlvl"]), 
+					tonumber(weaponTable["acclvl"]),
+					tonumber(weaponTable["clplvl"]),
+					tonumber(weaponTable["spdlvl"]),
+					tonumber(weaponTable["reslvl"]))
+				end
+			end
+			if tblLoadedPerks then
+				for id, active in pairs(tblLoadedPerks) do 
+					self.Perks[tostring(id)] = tobool(active)
+				end
 			end
 		end
+		self:Save()
+		timer.Create(self:Nick() .. "AutoSaver", 60, 0, function() self:Save() end)
+		hook.Call("PlayerLoadout", GAMEMODE, self)
+	else
+		timer.Simple(0.1, function() self:Load() end)
 	end
-	hook.Call("PlayerLoadout", GAMEMODE, ply)
-	Save(ply)
 end
