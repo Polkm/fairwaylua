@@ -3,6 +3,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("cl_menus.lua")
 AddCSLuaFile("cl_shopmenu.lua")
 AddCSLuaFile("cl_hud.lua")
+AddCSLuaFile("JDraw.lua")
 AddCSLuaFile("cl_scoreboard.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
@@ -12,14 +13,119 @@ include("commands.lua")
 include("resoucre.lua")
 include("savingloading.lua")
 GM.PlayerSpawnTime = {}
-NodesManifest = {}
+GM.MaxWeapons = 400
+GM.WeaponsDataBase = {}
+GM.WeaponNames = {
+	RandomWords = {
+		"sling",
+		"loune",
+		"howler",
+		"yelp",
+		"ter",
+		"tor",
+		"shun",
+		"phat",
+		"pour",
+		"vent",
+		"quot",
+		"beun",
+		"nuh",
+		"fancler",
+		"tram",
+		"fling",
+		"flonger",
+		"kout",
+		"gen",
+		"doul",
+		"wulel",
+	},
+	RandomModel = {
+		"ac2",
+		"45",
+		"ge52",
+		"4",
+		"ju6",
+		"ki7",
+		"ux3",
+		"em7",
+	}
+}
+GM.ElementalLevels = 5
+GM.ElementTypes = {
+	"Incindiary",
+	"Shock",
+	"Explosive",
+	"Acidic",
+}
+
+function GM:Initialize()
+	timer.Simple(2, function()
+		for i=1, GAMEMODE.MaxWeapons do
+			CreateWeapon()
+		end
+		--table.sort(teastpowertable)
+		--PrintTable(teastpowertable)
+		--[[table.SortByMember(GAMEMODE.WeaponsDataBase, "Power")
+		for k,v in pairs(GAMEMODE.WeaponsDataBase) do
+			--print(v.Power)
+		end]]
+		--PrintTable(GAMEMODE.WeaponsDataBase)
+	end)
+end
+
+function CreateName()
+	local strBaseName = GAMEMODE.WeaponNames.RandomWords[math.random(1, #GAMEMODE.WeaponNames.RandomWords)]
+	local strHalfBaseName = string.sub(strBaseName, 1, math.Round(string.len(strBaseName) / 2))
+	local strSecondName = GAMEMODE.WeaponNames.RandomWords[math.random(1, #GAMEMODE.WeaponNames.RandomWords)]
+	local strHalfSecondName = string.sub(strSecondName, math.Round(string.len(strSecondName) / 2))
+	strBaseName = strHalfBaseName .. strHalfSecondName
+	local strEnding = GAMEMODE.WeaponNames.RandomModel[math.random(1, #GAMEMODE.WeaponNames.RandomModel)]
+	local intRandomNumber = math.random(-5, 9)
+	if intRandomNumber >= 0 then strEnding = strEnding .. intRandomNumber end
+	intRandomNumber = math.random(-5, 5)
+	local strRandomLetter = string.lower(string.char(math.random(65, 90)))
+	if intRandomNumber >= 0 then strEnding = strRandomLetter .. strEnding end
+	return strBaseName .. "_" .. strEnding
+end
+
+teastpowertable = {}
+
+function CreateWeapon()
+	if #GAMEMODE.WeaponsDataBase < GAMEMODE.MaxWeapons then
+		local strPickedName = CreateName()
+		if GAMEMODE.WeaponsDataBase[strPickedName] then CreateWeapon() return end
+		GAMEMODE.WeaponsDataBase[strPickedName] = {}
+		local tblLowWeapon = {Power = 1, Accuracy = 35}
+		local tblPickedWeapon = table.Random(GAMEMODE.WeaponsDataBase)
+		if tblPickedWeapon && tblPickedWeapon.Power != nil then
+			tblLowWeapon = tblPickedWeapon
+		end
+
+		local intRandomPower = math.Rand(tblLowWeapon.Power, (tblLowWeapon.Power * 2))
+		local intPower = math.Round(math.Clamp(intRandomPower, 1, intRandomPower))
+		GAMEMODE.WeaponsDataBase[strPickedName].Power = intPower
+		
+		--print(tblLowWeapon.Power, intPower, (tblLowWeapon.Power * 2))
+		table.insert(teastpowertable, intPower)
+		
+		local intRandomAccuracy = math.Rand((tblLowWeapon.Accuracy * 0.9), (tblLowWeapon.Accuracy * 1.5))
+		local intAccuracy = math.Round(math.Clamp(intRandomAccuracy, 1, 150))
+		GAMEMODE.WeaponsDataBase[strPickedName].Accuracy = intAccuracy
+		
+		local intAttributeValue = (intPower / 3) + (intAccuracy / 60) --+ (intFireRate / 10) + (intClipSize / 50)
+		local intMinLevel = math.Round(intAttributeValue)
+		GAMEMODE.WeaponsDataBase[strPickedName].MinLevel = intMinLevel
+		local intPrice = math.Round((intAttributeValue * 200) + math.random(-5, 5))
+		GAMEMODE.WeaponsDataBase[strPickedName].Price = intPrice
+	end
+end
 
 function SendDataToAClient(ply) 
 	datastream.StreamToClients(ply, "LockerTransfer", {LockerTable = ply.Locker, PerkPerkPerk = ply.Perks}) 
-	if ply.Locker[ply:GetNWInt("Weapon1")] then
+	if ply.Locker[ply:GetNWInt("Weapon1")] && ply:GetWeapon(ply.Locker[ply:GetNWInt("Weapon1")].Weapon) then
 		ply:GetWeapon(ply.Locker[ply:GetNWInt("Weapon1")].Weapon):Update()
 	end
-	if ply.Locker[ply:GetNWInt("Weapon2")] then
+	if ply.Locker[ply:GetNWInt("Weapon2")] && ply:GetWeapon(ply.Locker[ply:GetNWInt("Weapon2")].Weapon) then
 		ply:GetWeapon(ply.Locker[ply:GetNWInt("Weapon2")].Weapon):Update()
 	end
 end
