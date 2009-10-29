@@ -14,31 +14,19 @@ function GM:HUDPaint()
 	----Health Box----
 	local intHealthBoxWidth = 300
 	local intHealthBoxHieght = 40
-	local clrNameText = Color(200, 200, 200, 0)
-	local clrPVPText = Color(200, 100, 100, 0)
-	local clrLockerText = Color(100, 200, 100, 0)
-	surface.SetDrawColor(clrHUDBox.r, clrHUDBox.g, clrHUDBox.b, clrHUDBox.a)
-	surface.DrawRect(0, SH - intHealthBoxHieght, intHealthBoxWidth, intHealthBoxHieght)
-	surface.SetDrawColor(clrHUDBox_Boarder.r, clrHUDBox_Boarder.g, clrHUDBox_Boarder.b, clrHUDBox_Boarder.a)
-	surface.DrawOutlinedRect(0, SH - intHealthBoxHieght, intHealthBoxWidth, intHealthBoxHieght)
-	surface.DrawRect(5, SH - intHealthBoxHieght + 5, intHealthBoxWidth - 10, intHealthBoxHieght - 10)
-	surface.SetDrawColor((100 - client:Health()) * 2.55, client:Health() * 2.55, 0, 95)
-	surface.DrawRect(5, SH - intHealthBoxHieght + 5, (intHealthBoxWidth - 10) / (100 / client:Health()), intHealthBoxHieght - 10)
-	surface.SetFont("Trebuchet20")
-	surface.SetTextColor(255, 255, 255, 255)
-	local x, y = surface.GetTextSize(client:Health() .. " %")
-	surface.SetTextPos((intHealthBoxWidth / 2) - (x / 2), SH - (intHealthBoxHieght / 2) - (y / 2))
-	surface.DrawText(client:Health() .. " %")
+	jdraw.SetDrawColor(clrHUDBox, clrHUDBox_Boarder)
+	jdraw.DrawPanel(0, SH - intHealthBoxHieght, intHealthBoxWidth, intHealthBoxHieght, true)
+	jdraw.SetDrawColor(Color((100 - client:Health()) * 2.55, client:Health() * 2.55, 0, 95), clrHUDBox_Boarder)
+	jdraw.SetText("Trebuchet20", Color(255, 255, 255, 255), client:Health() .. " %")
+	jdraw.DrawProgressBar(5, SH - intHealthBoxHieght + 5, intHealthBoxWidth - 10, intHealthBoxHieght - 10, client:Health(), 100)
 	----Cash Box----
 	local intCash = client:GetNWInt("cash")
 	local intCashBoxWidth = 100
 	local intCashBoxHieght = 20
-	surface.SetDrawColor(clrHUDBox.r, clrHUDBox.g, clrHUDBox.b, clrHUDBox.a)
-	surface.DrawRect(0, SH - (intHealthBoxHieght + intCashBoxHieght), intCashBoxWidth, intCashBoxHieght)
-	surface.SetDrawColor(clrHUDBox_Boarder.r, clrHUDBox_Boarder.g, clrHUDBox_Boarder.b, clrHUDBox_Boarder.a)
-	surface.DrawOutlinedRect(0, SH - (intHealthBoxHieght + intCashBoxHieght), intCashBoxWidth, intCashBoxHieght)
+	jdraw.SetRounded(true, 4)
+	jdraw.SetDrawColor(clrHUDBox, clrHUDBox_Boarder)
+	jdraw.DrawPanel(0, SH - (intHealthBoxHieght + intCashBoxHieght), intCashBoxWidth, intCashBoxHieght, true)
 	surface.SetFont("Trebuchet20")
-	local x,y = surface.GetTextSize("$" .. intCash)
 	surface.SetTextPos(5, SH - (intHealthBoxHieght + (intCashBoxHieght)))
 	surface.DrawText("$" .. intCash)
 	if client:GetActiveWeapon() && client:GetActiveWeapon():IsValid() && client:GetActiveWeapon():GetClass() != "weapon_crowbar" then
@@ -46,10 +34,8 @@ function GM:HUDPaint()
 			----Primary Item Box----
 			local intPrimaryItemBoxWidth = 150
 			local intPrimaryItemBoxHieght = 90
-			surface.SetDrawColor(clrHUDBox.r, clrHUDBox.g, clrHUDBox.b, clrHUDBox.a)
-			surface.DrawRect(SW - intPrimaryItemBoxWidth, SH  - intPrimaryItemBoxHieght, intPrimaryItemBoxWidth, intPrimaryItemBoxHieght)
-			surface.SetDrawColor(clrHUDBox_Boarder.r, clrHUDBox_Boarder.g, clrHUDBox_Boarder.b, clrHUDBox_Boarder.a)
-			surface.DrawOutlinedRect(SW - intPrimaryItemBoxWidth, SH  - intPrimaryItemBoxHieght, intPrimaryItemBoxWidth, intPrimaryItemBoxHieght)
+			jdraw.SetDrawColor(clrHUDBox, clrHUDBox_Boarder)
+			jdraw.DrawPanel(SW - intPrimaryItemBoxWidth, SH  - intPrimaryItemBoxHieght, intPrimaryItemBoxWidth, intPrimaryItemBoxHieght, true)
 			--Ammo In Mag--
 			local intAmmoInMag = 0
 			if client:GetActiveWeapon():Clip1() then intAmmoInMag = client:GetActiveWeapon():Clip1() end
@@ -89,6 +75,9 @@ function GM:HUDPaint()
 			end
 		end
 	end
+	local clrNameText = Color(200, 200, 200, 0)
+	local clrPVPText = Color(200, 100, 100, 0)
+	local clrLockerText = Color(100, 200, 100, 0)
 	for _, player in pairs(player.GetAll()) do
 		if !GAMEMODE.ShowScoreboard && player != client then
 			local vecPlayerPos = player:GetPos():ToScreen()

@@ -17,6 +17,14 @@ function Player:GetIdealCamAngle()
 	return IdealCammeraAngle + Angle(self.AddativeCamAngle, 0, 0)
 end
 
+
+
+
+
+
+
+
+
 Weapons = {}
 Weapons["weapon_p220_tx"] = {
 	Weapon = "weapon_p220_tx",

@@ -43,11 +43,3 @@ SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
 
 SWEP.ReloadSpeed = 1
-
-function SWEP:Reloadhook()
-	if self.Weapon:Clip1() >= self.Primary.ClipSize then return end
-	if self:GetOwner():GetAmmoCount(self.Primary.Ammo) >= 1 then
-		self:EmitSound("weapons/ragingbull/bullreload.wav")
-	end
-end
-hook.Add("Reload","Play Rage Sound",SWEP:Reloadhook())

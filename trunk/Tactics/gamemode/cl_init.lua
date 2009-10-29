@@ -3,6 +3,7 @@ include("shared.lua")
 include("cl_menus.lua")
 include("cl_shopmenu.lua")
 include("cl_hud.lua")
+include("JDraw.lua")
 include("cl_scoreboard.lua")
 surface.CreateFont("csd", ScreenScale(40), 500, true, true, "TXSmallWeaponIcons")
 surface.CreateFont("csd", ScreenScale(120), 500, true, true,"TXWeaponIcons")
@@ -73,8 +74,10 @@ function GM:Tick()
 		table.insert(filterTable, ply)
 		tracedata.filter = filterTable
 		local trace = util.TraceLine(tracedata)
-		local Ang = (trace.HitPos - ply:EyePos()):Angle() -- Gets the angle between the two points
-		ply:SetEyeAngles(Ang) -- Sets the angle
+		local vecLookPoint = trace.HitPos
+		--if trace.HitWorld && math.Round(math.abs(vecLookPoint.z - ply:GetPos().z)) <= 3 then vecLookPoint.z = vecLookPoint.z + 60 end
+		local vecToLookPos = vecLookPoint - ply:EyePos()
+		ply:SetEyeAngles(vecToLookPos:Angle())
 	end
 end
 

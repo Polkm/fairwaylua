@@ -2,6 +2,14 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 
+function ENT:KeyValue(key, value)
+	if key == "type" then
+		self:SetType(value)
+	elseif key == "amount" then
+		self:SetAmount(value)
+	end
+end
+
 function ENT:Initialize()
 	self:SetModel("models/props_junk/PopCan01a.mdl")
 	if self:GetNWString("type") == "ammo" then self:SetModel("models/Items/BoxSRounds.mdl") end
