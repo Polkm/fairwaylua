@@ -131,8 +131,8 @@ end
 function ENT:GetForwardAcceleration( driver, phys, ForwardVel )
 	if (!driver || !driver:IsValid()) then return 0 end
 	
-	if ( driver:KeyDown( IN_FORWARD ) ) then return 120 end
-	if ( driver:KeyDown( IN_BACK ) ) then return -50 end
+	if ( driver:KeyDown( IN_FORWARD ) ) then return 520 end
+	if ( driver:KeyDown( IN_BACK ) ) then return -320 end
 
 	return 0
 	
@@ -140,8 +140,8 @@ end
 
 function ENT:GetTurnYaw( driver, phys, ForwardVel )
 	if ( !driver || !driver:IsValid() ) then return 0 end
-	if ( driver:KeyDown( IN_MOVELEFT ) ) then  return 10 end
-	if ( driver:KeyDown( IN_MOVERIGHT ) ) then return -10 end
+	if ( driver:KeyDown( IN_MOVELEFT ) ) then  return 150 end
+	if ( driver:KeyDown( IN_MOVERIGHT ) ) then return -150 end
 	return 0
 end
 
@@ -182,6 +182,7 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	if ( driver ) then
 		forward = self:GetForwardAcceleration( driver, phys, ForwardVel )
 		yaw		= self:GetTurnYaw( driver, phys, ForwardVel )
+
 	end
 	// Kill any sidewards movement (unless we're skidding)
 	right = RightVel * 0.95
@@ -197,6 +198,6 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	// ie, forward is whatever firection the entity is facing. This is perfect for a car
 	// but if you're making a ball that you're spectating and pushing in the direction
 	// that you're facing you'll want to override this whole function and use global
-	return Angular, Linear, SIM_LOCAL_ACCELERATION
+	return  Angular,Linear, SIM_LOCAL_ACCELERATION
 	
 end
