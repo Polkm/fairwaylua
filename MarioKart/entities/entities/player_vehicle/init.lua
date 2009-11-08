@@ -27,6 +27,7 @@ function ENT:SetupModel()
 	self.Axis:SetNoDraw(false)
 	self.Axis:SetPos(self.Entity:GetPos())
 	self.Axis:Spawn()
+	self.Axis:SetSolid(NONE)
 	constraint.Weld(self.Axis,self.Entity,0,0,0,true)
 	self.Axis:SetCollisionGroup(0)
 	self.BackWheel1 = ents.Create("player_wheel")
@@ -34,11 +35,13 @@ function ENT:SetupModel()
 	self.BackWheel1:SetMoveType(MOVETYPE_VPHYSICS)
 	self.BackWheel1:SetSolid(SOLID_VPHYSICS)
 	self.BackWheel1:SetPos(self.Entity:GetPos() + Vector(-13,-21,5))
+
 	//self.BackWheel1:SetParent(self.Entity)
 	self.BackWheel1:SetCollisionGroup(11)
 	self.BackWheel1:Spawn()
 	//constraint.Weld(self.BackWheel1,self.Entity,0,0,0,true)
-	constraint.Axis(self.Entity ,self.BackWheel1,
+	constraint.NoCollide(self.BackWheel1,self.Entity,0,0)
+	constraint.Axis(self.Axis ,self.BackWheel1,
                 0, 0,
                self.Entity:GetPos() + Vector(-13,-30,5), self.BackWheel1:GetPos(),
                 0, 0,
@@ -53,6 +56,7 @@ function ENT:SetupModel()
 	self.BackWheel2:SetCollisionGroup(11)
 	self.BackWheel2:Spawn()
 	//constraint.Weld(self.BackWheel2,self.Entity,0,0,0,true)
+	constraint.NoCollide(self.BackWheel2,self.Entity,0,0)
 		constraint.Axis(self.Entity ,self.BackWheel2,
                 0, 0,
                self.Entity:GetPos() + Vector(-13,30,5), self.BackWheel2:GetPos(),
@@ -68,7 +72,8 @@ function ENT:SetupModel()
 	self.frontWheel1:SetCollisionGroup(11)
 	self.frontWheel1:Spawn()
 	//constraint.Weld(self.frontWheel1,self.Entity,0,0,0,true)
-		constraint.Axis(self.Entity ,self.frontWheel1,
+	constraint.NoCollide(self.frontWheel1,self.Entity,0,0)
+	constraint.Axis(self.Axis ,self.frontWheel1,
                 0, 0,
                self.Entity:GetPos() + Vector(35,-30,5), self.frontWheel1:GetPos(),
                 0, 0,
@@ -84,7 +89,8 @@ function ENT:SetupModel()
 	self.frontWheel2:SetCollisionGroup(11)
 	self.frontWheel2:Spawn()
 	//constraint.Weld(self.frontWheel2,self.Entity,0,0,0,true)
-	constraint.Axis(self.Entity ,self.frontWheel2,
+	constraint.NoCollide(self.frontWheel2,self.Entity,0,0)
+	constraint.Axis(self.Axis ,self.frontWheel2,
                 0, 0,
                self.Entity:GetPos() + Vector(35,30,5), self.frontWheel2:GetPos(),
                 0, 0,
