@@ -4,56 +4,49 @@ include('shared.lua')
 
 function ENT:Initialize()
 	self.Entity:SetModel("models/gmodcart/regular_cart.mdl")
-	self.Entity:PhysicsInit(SOLID_VPHYSICS)
-	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
-	self.Entity:SetSolid(SOLID_VPHYSICS)
-	self.Entity:SetCollisionGroup(11)
+	self.Entity:SetMoveType( MOVETYPE_CUSTOM )
+	self.Entity:PhysicsInit( SOLID_VPHYSICS )
+	self.Entity:SetSolid( SOLID_VPHYSICS )
+	self.Entity:SetCollisionGroup(GROUP_WORLD)
+	self.Entity:SetNoDraw(true)
+	self.Ragdoll = ents.Create("prop_dynamic")
+	self.Ragdoll:SetPos(self.Entity:GetPos() + Vector(5,0,7))
+	self.Ragdoll:SetModel("models/marioragdoll/SuperMarioGalaxy/mario/mario.mdl")
+	self.Ragdoll:SetParent(self.Entity)
+	self.Ragdoll:Spawn()
+	self.BodyFrame = ents.Create("player_wheel")
+	self.BodyFrame:SetPos(self.Entity:GetPos())
+	self.BodyFrame:Spawn()
+	self.BodyFrame:SetModel("models/gmodcart/regular_cart.mdl")
+	self.BodyFrame:SetPos(self.Entity:GetPos() + Vector(0,0,10))
+	self.BodyFrame:SetParent(self.Entity)
 	self.BackWheel1 = ents.Create("player_wheel")
-	self.BackWheel1:PhysicsInit(SOLID_VPHYSICS)
-	self.BackWheel1:SetMoveType(MOVETYPE_VPHYSICS)
-	self.BackWheel1:SetSolid(SOLID_VPHYSICS)
-	self.BackWheel1:SetPos(self.Entity:GetPos() + Vector(-13,-23,5))
-	//self.BackWheel1:SetParent(self.Entity)
-	self.BackWheel1:SetCollisionGroup(11)
+	self.BackWheel1:SetPos(self.BodyFrame:GetPos() + Vector(-13,-21,5))
+	self.BackWheel1:SetParent(self.Entity)
+	self.BackWheel1:SetModel("models/gmodcart/cart_wheel.mdl")
 	self.BackWheel1:Spawn()
-	constraint.Weld(self.BackWheel1,self.Entity,0,0,0,true)
 	self.BackWheel2 = ents.Create("player_wheel")
-	self.BackWheel2:PhysicsInit(SOLID_VPHYSICS)
-	self.BackWheel2:SetMoveType(MOVETYPE_VPHYSICS)
-	self.BackWheel2:SetSolid(SOLID_VPHYSICS)
-	self.BackWheel2:SetPos(self.Entity:GetPos() + Vector(-13,23,5))
-	//self.BackWheel2:SetParent(self.Entity)
-	self.BackWheel2:SetCollisionGroup(11)
+	self.BackWheel2:SetPos(self.BodyFrame:GetPos() + Vector(-13,21,5))
+	self.BackWheel2:SetParent(self.Entity)
+	self.BackWheel2:SetModel("models/gmodcart/cart_wheel.mdl")
 	self.BackWheel2:Spawn()
-	constraint.Weld(self.BackWheel2,self.Entity,0,0,0,true)
 	self.frontWheel1 = ents.Create("player_wheel")
-	self.frontWheel1:PhysicsInit(SOLID_VPHYSICS)
-	self.frontWheel1:SetMoveType(MOVETYPE_VPHYSICS)
-	self.frontWheel1:SetSolid(SOLID_VPHYSICS)
-	self.frontWheel1:SetPos(self.Entity:GetPos() + Vector(35,-21,3))
-	//self.frontWheel1:SetParent(self.Entity)
-	self.frontWheel1:SetCollisionGroup(11)
+	self.frontWheel1:SetPos(self.BodyFrame:GetPos() + Vector(35,-21,5))
+	self.frontWheel1:SetParent(self.Entity)
+	self.frontWheel1:SetModel("models/gmodcart/cart_wheel.mdl")
 	self.frontWheel1:Spawn()
-	constraint.Weld(self.frontWheel1,self.Entity,0,0,0,true)
 	self.frontWheel2 = ents.Create("player_wheel")
-	self.frontWheel2:PhysicsInit(SOLID_VPHYSICS)
-	self.frontWheel2:SetMoveType(MOVETYPE_VPHYSICS)
-	self.frontWheel2:SetSolid(SOLID_VPHYSICS)
-	self.frontWheel2:SetPos(self.Entity:GetPos() + Vector(35,21,3))
-	//self.frontWheel2:SetParent(self.Entity)
-	self.frontWheel2:SetCollisionGroup(11)
+	self.frontWheel2:SetPos(self.BodyFrame:GetPos() + Vector(35,21,5))
+	self.frontWheel2:SetParent(self.Entity)
+	self.frontWheel2:SetModel("models/gmodcart/cart_wheel.mdl")
 	self.frontWheel2:Spawn()
-	constraint.Weld(self.frontWheel2,self.Entity,0,0,0,true)
 	self.SteerWheel1 = ents.Create("player_wheel")
-	self.SteerWheel1:PhysicsInit(SOLID_VPHYSICS)
-	self.SteerWheel1:SetMoveType(MOVETYPE_VPHYSICS)
-	self.SteerWheel1:SetSolid(SOLID_VPHYSICS)
-	self.SteerWheel1:SetPos(self.Entity:GetPos())
-	self.SteerWheel1:SetParent(self.Entity)
-	self.SteerWheel1:SetCollisionGroup(11)
-	constraint.NoCollide(self.SteerWheel1,self.Entity,0,0)
-	self.SteerWheel1:Spawn()
+	self.SteerWheel1:SetPos(self.BodyFrame:GetPos())
+	self.SteerWheel1:SetParent(self.BodyFrame)
+	constraint.NoCollide(self.SteerWheel1,self.BodyFrame,0,0)
 	self.SteerWheel1:SetModel("models/gmodcart/regular_cart_steerwheel.mdl")
+	self.SteerWheel1:Spawn()
+	self.Entity:StartMotionController()
 end
 
 function ENT:OnTakeDamage(dmginfo)
@@ -73,12 +66,74 @@ function ENT:OnRestore()
 end
 function ENT:PhysicsCollide(data,physobj)
 end
-function ENT:PhysicsSimulate(phys,deltatime) 
+
+function ENT:PhysicsSimulate( phys, deltatime )
+	local up = phys:GetAngle():Up()
+	if ( up.z < 0.33 ) then
+		return SIM_NOTHING
+	end
+	local driver = self:GetOwner()
+	local forward = 0
+	local right = 0
+	local Velocity = phys:GetVelocity()
+	local ForwardVel = phys:GetAngle():Forward():Dot( Velocity )
+	local RightVel = phys:GetAngle():Right():Dot( Velocity )
+	if ( driver ) then
+		forward = self:GetForwardAcceleration( driver, phys, ForwardVel )
+		yaw		= self:GetTurnYaw( driver, phys, ForwardVel )
+		if yaw > 0 then
+			self.frontWheel1:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
+			self.frontWheel2:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
+		elseif yaw < 0 then
+			self.frontWheel1:SetAngles(self.Entity:GetAngles() + Angle(0,-15,0))
+			self.frontWheel2:SetAngles(self.Entity:GetAngles() + Angle(0,-15,0))
+		else
+			self.frontWheel1:SetAngles(self.Entity:GetAngles() )
+			self.frontWheel2:SetAngles(self.Entity:GetAngles() )
+		end
+	end
+
+	right = RightVel * 0.95
+
+
+	forward = forward - ForwardVel * 0.01
+	
+
+	local Linear = ( Vector( forward, right, 0 ) ) * deltatime * 2000;
+	
+
+	local AngleVel = phys:GetAngleVelocity()
+
+	local AngleFriction = AngleVel * -0.1
+	
+	local Angular = (AngleFriction + Vector( 0, 0, yaw )) * deltatime * 2000;
+
+	return Angular, Linear, SIM_LOCAL_ACCELERATION
 end
+
 function ENT:PhysicsUpdate(phys) 
 end
 function ENT:Think()
+	local phys = self.Entity:GetPhysicsObject()
+	if ( phys && self:GetOwner() ) then
+		phys:Wake()
+	end
 end
+
+function ENT:GetForwardAcceleration( driver, phys, ForwardVel )
+	if (!driver || !driver:IsValid()) then return 0 end
+	if ( driver:KeyDown( IN_FORWARD ) ) then return 250 end
+	if ( driver:KeyDown( IN_BACK ) ) then return -100 end
+	return 0
+end
+
+function ENT:GetTurnYaw( driver, phys, ForwardVel )
+	if ( !driver || !driver:IsValid() ) then return 0 end
+	if ( driver:KeyDown( IN_MOVELEFT ) ) then return 150 end
+	if ( driver:KeyDown( IN_MOVERIGHT ) ) then return -150 end
+	return 0
+end
+
 function ENT:Touch(ent) 
 end
 function ENT:UpdateTransmitState(Entity)

@@ -6,9 +6,98 @@
 // Note: Vehicles aren't done yet. This is all just a placeholder.
 
 
-ENT.Base			= "base_anim"
-ENT.Type 			= "vehicle"
+ENT.Type 			= "anim"
 
+function ENT:SetupModel()
+	self.Entity:SetModel("models/gmodcart/regular_cart.mdl")
+	self.Entity:SetPos(self.Entity:GetPos() *  Vector(0,0,10))
+	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
+	self.Entity:PhysicsInit( SOLID_VPHYSICS )
+	self.Entity:SetSolid(SOLID_VPHYSICS)
+	self.Axis = ents.Create("player_wheel")
+	self.Axis:SetNoDraw(false)
+	self.Axis:SetPos(self.Entity:GetPos())
+	self.Axis:Spawn()
+	self.Axis:SetSolid(NONE)
+	constraint.Weld(self.Axis,self.Entity,0,0,0,true)
+	self.Axis:SetCollisionGroup(0)
+	self.BackWheel1 = ents.Create("player_wheel")
+	self.BackWheel1:PhysicsInit(SOLID_VPHYSICS)
+	self.BackWheel1:SetMoveType(MOVETYPE_VPHYSICS)
+	self.BackWheel1:SetSolid(SOLID_VPHYSICS)
+	self.BackWheel1:SetPos(self.Entity:GetPos() + Vector(-13,-21,5))
+
+	//self.BackWheel1:SetParent(self.Entity)
+	self.BackWheel1:SetCollisionGroup(11)
+	self.BackWheel1:Spawn()
+	//constraint.Weld(self.BackWheel1,self.Entity,0,0,0,true)
+	constraint.NoCollide(self.BackWheel1,self.Entity,0,0)
+	constraint.Axis(self.Axis ,self.BackWheel1,
+                0, 0,
+               self.Entity:GetPos() + Vector(-13,-30,5), self.BackWheel1:GetPos(),
+                0, 0,
+                0, 1,
+                self.BackWheel1:GetPos())
+	self.BackWheel2 = ents.Create("player_wheel")
+	self.BackWheel2:PhysicsInit(SOLID_VPHYSICS)
+	self.BackWheel2:SetMoveType(MOVETYPE_VPHYSICS)
+	self.BackWheel2:SetSolid(SOLID_VPHYSICS)
+	self.BackWheel2:SetPos(self.Entity:GetPos() + Vector(-13,21,5))
+	//self.BackWheel2:SetParent(self.Entity)
+	self.BackWheel2:SetCollisionGroup(11)
+	self.BackWheel2:Spawn()
+	//constraint.Weld(self.BackWheel2,self.Entity,0,0,0,true)
+	constraint.NoCollide(self.BackWheel2,self.Entity,0,0)
+		constraint.Axis(self.Entity ,self.BackWheel2,
+                0, 0,
+               self.Entity:GetPos() + Vector(-13,30,5), self.BackWheel2:GetPos(),
+                0, 0,
+                0, 1,
+                self.BackWheel2:GetPos())
+	self.frontWheel1 = ents.Create("player_wheel")
+	self.frontWheel1:PhysicsInit(SOLID_VPHYSICS)
+	self.frontWheel1:SetMoveType(MOVETYPE_VPHYSICS)
+	self.frontWheel1:SetSolid(SOLID_VPHYSICS)
+	self.frontWheel1:SetPos(self.Entity:GetPos() + Vector(35,-21,5))
+	//self.frontWheel1:SetParent(self.Entity)
+	self.frontWheel1:SetCollisionGroup(11)
+	self.frontWheel1:Spawn()
+	//constraint.Weld(self.frontWheel1,self.Entity,0,0,0,true)
+	constraint.NoCollide(self.frontWheel1,self.Entity,0,0)
+	constraint.Axis(self.Axis ,self.frontWheel1,
+                0, 0,
+               self.Entity:GetPos() + Vector(35,-30,5), self.frontWheel1:GetPos(),
+                0, 0,
+                0, 1,
+                self.frontWheel1:GetPos())
+				
+	self.frontWheel2 = ents.Create("player_wheel")
+	self.frontWheel2:PhysicsInit(SOLID_VPHYSICS)
+	self.frontWheel2:SetMoveType(MOVETYPE_VPHYSICS)
+	self.frontWheel2:SetSolid(SOLID_VPHYSICS)
+	self.frontWheel2:SetPos(self.Entity:GetPos() + Vector(35,21,5))
+	//self.frontWheel2:SetParent(self.Entity)
+	self.frontWheel2:SetCollisionGroup(11)
+	self.frontWheel2:Spawn()
+	//constraint.Weld(self.frontWheel2,self.Entity,0,0,0,true)
+	constraint.NoCollide(self.frontWheel2,self.Entity,0,0)
+	constraint.Axis(self.Axis ,self.frontWheel2,
+                0, 0,
+               self.Entity:GetPos() + Vector(35,30,5), self.frontWheel2:GetPos(),
+                0, 0,
+                0, 1,
+                self.frontWheel2:GetPos())
+	self.SteerWheel1 = ents.Create("player_wheel")
+	self.SteerWheel1:PhysicsInit(SOLID_VPHYSICS)
+	self.SteerWheel1:SetMoveType(MOVETYPE_VPHYSICS)
+	self.SteerWheel1:SetSolid(SOLID_VPHYSICS)
+	self.SteerWheel1:SetPos(self.Entity:GetPos())
+	self.SteerWheel1:SetParent(self.Entity)
+	self.SteerWheel1:SetCollisionGroup(11)
+	constraint.NoCollide(self.SteerWheel1,self.Entity,0,0)
+	self.SteerWheel1:Spawn()
+	self.SteerWheel1:SetModel("models/gmodcart/regular_cart_steerwheel.mdl")
+end
 
 function ENT:Use( ply )
 	if ( SERVER ) then
@@ -17,6 +106,8 @@ function ENT:Use( ply )
 end
 
 function ENT:SetupPhysics()
+	self.Entity:SetMoveType( MOVETYPE_VPHYSICS )
+	self.Entity:PhysicsInit( SOLID_VPHYSICS )
 	self.Entity:StartMotionController()
 	local phys = self.Entity:GetPhysicsObject()
 	if (phys) then
@@ -35,37 +126,27 @@ function ENT:SetupPhysicsShadow()
 end
 
 function ENT:SharedInitialize()
-	// In singleplayer we do all the controls and stuff on the server
-	// In multiplayer we do it all on the client and grab
+
 	self.DoProcessing = false
 	if (CLIENT && !SinglePlayer() || SERVER && SinglePlayer()) then
 		self.DoProcessing = true
 	end
+	self:SetupModel()
 	self:ReConfigurePhysics()
 end
 
-//
-// Reconfigures the physics situation. 
-// This needs to be called every time the driver changes
-//
-
 function ENT:ReConfigurePhysics()
-	// If we have a motion controller, stop it.
 	self.Entity:StopMotionController()
 	if ( CLIENT ) then
 		if ( self:GetDriver() == LocalPlayer() && !SinglePlayer() ) then
-			// If the current driver is the local player then predict the physics object
 			self:SetupPhysics()
 		else
-			// Else make a physics shadow (so other objects can bump into us)
 			self:SetupPhysicsShadow()
 		end
 	else
 		if ( SinglePlayer() ) then
-			// If we're in singleplayer the vehicle is 100% serverside
 			self:SetupPhysics()
 		else
-			// If not we're a shadow on the server
 			self:SetupPhysicsShadow()
 		end
 	end
@@ -98,23 +179,23 @@ function ENT:SetDriver( ply )
 	self:ReConfigurePhysics()
 end
 
+function ENT:CalcView( ply, origin, angles, fov )
+	local phys = self.Entity:GetPhysicsObject()
+	if ( !phys ) then return end
+	self.LastViewYaw = self.LastViewYaw or phys:GetAngle().yaw
+	local distance = math.AngleDifference( self.LastViewYaw, phys:GetAngle().yaw )
+	self.LastViewYaw = math.ApproachAngle( self.LastViewYaw, phys:GetAngle().yaw, distance * FrameTime() * 2 )
+	local view = {}
+	view.origin 	= phys:GetPos() + Vector( 0, 0, 64 ) - phys:GetAngle():Forward() * 128
+	view.angles		= Angle( 10, self.LastViewYaw - distance * 1.25, distance*0.1 ) 
+	view.fov 		= 90
+	return view
+
+end
+
 function ENT:Think()
 	local phys = self.Entity:GetPhysicsObject()	
-	if ( CLIENT ) then
-		// The client needs to pick up on new drivers
-		if ( self.OldDriver != self:GetDriver()  ) then		
-			self:ReConfigurePhysics()
-			self.OldDriver = self:GetDriver()			
-		end	
-		// Keep the clientside shadow up to date
-		if ( phys && (SinglePlayer() || self:GetDriver() != LocalPlayer()) ) then		
-			phys:UpdateShadow( self.Entity:GetPos(), self.Entity:GetAngles(), 0.01 )			
-		end	
-	end	
-	// Keep the phys object awake if we have a driver!
-	if ( phys && self:GetDriver() ) then	
-		phys:Wake()		
-	end	
+
 	if ( self:GetDriver() && self:GetDriver():IsValid() ) then	
 		self:DoInputs( self:GetDriver() )	
 	end
@@ -145,30 +226,11 @@ function ENT:GetTurnYaw( driver, phys, ForwardVel )
 	return 0
 end
 
-function ENT:CalcView( ply, origin, angles, fov )
-	local phys = self.Entity:GetPhysicsObject()
-	if ( !phys ) then return end
-	self.LastViewYaw = self.LastViewYaw or phys:GetAngle().yaw
-	local distance = math.AngleDifference( self.LastViewYaw, phys:GetAngle().yaw )
-	self.LastViewYaw = math.ApproachAngle( self.LastViewYaw, phys:GetAngle().yaw, distance * FrameTime() * 2 )
-	local view = {}
-	view.origin 	= phys:GetPos() + Vector( 0, 0, 64 ) - phys:GetAngle():Forward() * 128
-	view.angles		= Angle( 10, self.LastViewYaw - distance * 1.25, distance*0.1 ) 
-	view.fov 		= 90
-	return view
-
-end
 
 /*---------------------------------------------------------
    Name: Simulate
 ---------------------------------------------------------*/
 function ENT:PhysicsSimulate( phys, deltatime )
-// If we're not on the floor then don't do nothin
-// Todo: This doesn't work clientside.
-//	if ( !self.Entity:IsOnGround() ) then
-//		return SIM_NOTHING
-//	end
-	// Make sure we're the right way up!
 	local up = phys:GetAngle():Up()
 	if ( up.z < 0.33 ) then
 		return SIM_NOTHING
