@@ -24,6 +24,7 @@ function GM:PlayerSpawn(ply)
 	cart:SetOwner(ply)
 	ply:SetViewEntity(cart)
 	ply:Give("weapon_physgun")
+	ply.CanJump = true
 end
 
 /*
