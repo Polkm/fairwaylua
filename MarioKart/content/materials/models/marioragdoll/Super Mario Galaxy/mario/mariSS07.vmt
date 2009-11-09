@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\marioragdoll\Super Mario Galaxy\mario\mariSS07"
+               "$halflambert"1 
+               "$alphatest" 1
+ }
