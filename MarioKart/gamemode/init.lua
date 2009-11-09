@@ -1,7 +1,5 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
-AddCSLuaFile("cl_hud.lua")
-AddCSLuaFile("cl_menus.lua")
 include("shared.lua")
 GM.PlayerSpawnTime = {}
 
@@ -17,15 +15,18 @@ function GM:PlayerInitialSpawn(ply)
 end
 
 function GM:PlayerSpawn(ply)
+	if ply:GetNWEntity("Cart"):IsValid() then ply:GetNWEntity("Cart"):Remove() end
 	local cart = ents.Create("player_cart")
 	cart:SetPos(Vector(0,0,20))
 	cart:Spawn()
+	GAMEMODE:SetPlayerSpeed(ply, 0, 0)
 	ply:SetNWEntity("Cart",cart)
 	cart:SetOwner(ply)
 	ply:SetViewEntity(cart)
 	ply:Give("weapon_physgun")
 end
 
+/*
 local ClientResources = 0;
 local function ProcessFolder ( Location )
 	for k, v in pairs(file.Find(Location .. '*')) do
@@ -49,5 +50,5 @@ if !SinglePlayer() then
 	ProcessFolder('../gamemodes/' .. GM.Path .. '/content/models/');
 	ProcessFolder('../gamemodes/' .. GM.Path .. '/content/materials/');
 	ProcessFolder('../gamemodes/' .. GM.Path .. '/content/sound/');
-end
+end*/
 
