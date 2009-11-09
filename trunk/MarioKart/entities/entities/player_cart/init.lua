@@ -9,11 +9,13 @@ function ENT:Initialize()
 	self.Entity:SetSolid( SOLID_VPHYSICS )
 	self.Entity:SetCollisionGroup(GROUP_WORLD)
 	self.Entity:SetNoDraw(true)
+	self.Entity:GetPhysicsObject():SetMass( 100 )
 	self.Ragdoll = ents.Create("prop_dynamic")
 	self.Ragdoll:SetPos(self.Entity:GetPos() + Vector(5,0,7))
 	self.Ragdoll:SetModel("models/marioragdoll/SuperMarioGalaxy/mario/mario.mdl")
 	self.Ragdoll:SetParent(self.Entity)
 	self.Ragdoll:Spawn()
+	self.Ragdoll:SetCollisionGroup(GROUP_NONE)
 	self.BodyFrame = ents.Create("player_wheel")
 	self.BodyFrame:SetPos(self.Entity:GetPos())
 	self.BodyFrame:Spawn()
@@ -69,7 +71,12 @@ end
 
 function ENT:PhysicsSimulate( phys, deltatime )
 	local up = phys:GetAngle():Up()
-	if ( up.z < 0.33 ) then
+	trace = {}
+	trace.start = self:GetPos()
+	trace.filter = self
+	trace.endpos = self:GetPos() - Vector(0,0,10)
+	local tr = util.TraceLine(trace)
+	if ( up.z < 0.33 ) || !tr.Hit then
 		return SIM_NOTHING
 	end
 	local driver = self:GetOwner()
@@ -111,14 +118,14 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	forward = forward - ForwardVel * 0.01
 	
 
-	local Linear = ( Vector( forward, right, 0 ) ) * deltatime * 2000;
+	local Linear = ( Vector( forward, right, 0 ) ) * deltatime * 250;
 	
 
 	local AngleVel = phys:GetAngleVelocity()
 
-	local AngleFriction = AngleVel * -0.1
+	local AngleFriction = AngleVel * -1.1
 	
-	local Angular = (AngleFriction + Vector( 0, 0, yaw )) * deltatime * 2000;
+	local Angular = (AngleFriction + Vector( 0, 0, yaw )) * deltatime * 250;
 
 	return Angular, Linear, SIM_LOCAL_ACCELERATION
 end
