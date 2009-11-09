@@ -80,6 +80,18 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	local RightVel = phys:GetAngle():Right():Dot( Velocity )
 	if ( driver ) then
 		forward = self:GetForwardAcceleration( driver, phys, ForwardVel )
+		
+		/*if Velocity.x >= 1 then
+			self.BackWheel1:SetAngles(self.BackWheel1:GetAngles():Forward() * 10)
+			self.BackWheel2:SetAngles(self.BackWheel2:GetAngles():Forward() * 10)
+			self.frontWheel1:SetAngles(self.frontWheel1:GetAngles():Forward() * 10)
+			self.frontWheel2:SetAngles(self.frontWheel2:GetAngles():Forward() * 10)
+		elseif Velocity.x <= -1 then
+			self.BackWheel1:SetAngles(self.BackWheel1:GetAngles():Forward() * -10)
+			self.BackWheel2:SetAngles(self.BackWheel2:GetAngles():Forward() * -10)
+			self.frontWheel1:SetAngles(self.frontWheel1:GetAngles():Forward() * -10)
+			self.frontWheel2:SetAngles(self.frontWheel2:GetAngles():Forward() * -10)
+		end */
 		yaw		= self:GetTurnYaw( driver, phys, ForwardVel )
 		if yaw > 0 then
 			self.frontWheel1:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
