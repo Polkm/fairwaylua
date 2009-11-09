@@ -13,8 +13,12 @@ function GM:PlayerInitialSpawn(ply)
 end
 
 function GM:PlayerSpawn(ply)
-	local cart = ents.Create("player_vehicle")
-	cart:SetPos(ply:GetPos() + Vector(0,0,10))
+	local cart = ents.Create("player_cart")
+	cart:SetPos(Vector(0,0,20))
 	cart:Spawn()
+	ply:SetNWEntity("Cart",cart)
+	cart:SetOwner(ply)
+	ply:SetViewEntity(cart)
 	ply:Give("weapon_physgun")
 end
+
