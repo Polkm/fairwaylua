@@ -87,7 +87,7 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	local RightVel = phys:GetAngle():Right():Dot( Velocity )
 	if ( driver ) then
 		forward = self:GetForwardAcceleration( driver, phys, ForwardVel )
-		
+		bounce = self:GetUpAcceleration( driver , phys , ForwardVel)
 		/*if Velocity.x >= 1 then
 			self.BackWheel1:SetAngles(self.BackWheel1:GetAngles():Forward() * 10)
 			self.BackWheel2:SetAngles(self.BackWheel2:GetAngles():Forward() * 10)
@@ -118,7 +118,7 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	forward = forward - ForwardVel * 0.01
 	
 
-	local Linear = ( Vector( forward, right, 0 ) ) * deltatime * 250;
+	local Linear = ( Vector( forward, right, bounce ) ) * deltatime * 250;
 	
 
 	local AngleVel = phys:GetAngleVelocity()
@@ -142,7 +142,13 @@ end
 function ENT:GetForwardAcceleration( driver, phys, ForwardVel )
 	if (!driver || !driver:IsValid()) then return 0 end
 	if ( driver:KeyDown( IN_FORWARD ) ) then return 250 end
-	if ( driver:KeyDown( IN_BACK ) ) then return -100 end
+	if ( driver:KeyDown( IN_BACK ) ) then return -150 end
+	return 0
+end
+
+function ENT:GetUpAcceleration( driver, phys, ForwardVel )
+	if (!driver || !driver:IsValid()) then return 0 end
+	if ( driver:KeyDown( IN_JUMP ) ) then return 250 end
 	return 0
 end
 
