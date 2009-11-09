@@ -8,11 +8,12 @@ function ENT:Initialize()
 	self.Entity:PhysicsInit( SOLID_VPHYSICS )
 	self.Entity:SetSolid( SOLID_VPHYSICS )
 	self.Entity:SetCollisionGroup(GROUP_WORLD)
-	self.Entity:SetNoDraw(true)
+	//self.Entity:SetNoDraw(true)
 	self.Entity:GetPhysicsObject():SetMass( 100 )
+	self.Entity:GetPhysicsObject():SetMaterial("gmod_ice")
 	self.Ragdoll = ents.Create("prop_dynamic")
 	self.Ragdoll:SetPos(self.Entity:GetPos() + Vector(5,0,7))
-	self.Ragdoll:SetModel("models/marioragdoll/SuperMarioGalaxy/mario/mario.mdl")
+	self.Ragdoll:SetModel("models/marioragdoll/Super Mario Galaxy/mario/mario.mdl")
 	self.Ragdoll:SetParent(self.Entity)
 	self.Ragdoll:Spawn()
 	self.Ragdoll:SetCollisionGroup(GROUP_NONE)
@@ -76,9 +77,6 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	trace.filter = self
 	trace.endpos = self:GetPos() - Vector(0,0,10)
 	local tr = util.TraceLine(trace)
-	if ( up.z < 0.33 ) || !tr.Hit then
-		return SIM_NOTHING
-	end
 	local driver = self:GetOwner()
 	local forward = 0
 	local right = 0
@@ -88,6 +86,12 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	if ( driver ) then
 		forward = self:GetForwardAcceleration( driver, phys, ForwardVel )
 		bounce = self:GetUpAcceleration( driver , phys , ForwardVel)
+		yaw		= self:GetTurnYaw( driver, phys, ForwardVel )
+		if ( up.z < 0.33 ) || !tr.Hit then
+			forward = 0
+			bounce = 0
+			yaw	= 0
+		end
 		/*if Velocity.x >= 1 then
 			self.BackWheel1:SetAngles(self.BackWheel1:GetAngles():Forward() * 10)
 			self.BackWheel2:SetAngles(self.BackWheel2:GetAngles():Forward() * 10)
@@ -99,7 +103,6 @@ function ENT:PhysicsSimulate( phys, deltatime )
 			self.frontWheel1:SetAngles(self.frontWheel1:GetAngles():Forward() * -10)
 			self.frontWheel2:SetAngles(self.frontWheel2:GetAngles():Forward() * -10)
 		end */
-		yaw		= self:GetTurnYaw( driver, phys, ForwardVel )
 		if yaw > 0 then
 			self.frontWheel1:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
 			self.frontWheel2:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
@@ -115,7 +118,7 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	right = RightVel * 0.95
 
 
-	forward = forward - ForwardVel * 0.01
+	forward = forward - ForwardVel * 0.2
 	
 
 	local Linear = ( Vector( forward, right, bounce ) ) * deltatime * 250;
@@ -126,7 +129,13 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	local AngleFriction = AngleVel * -1.1
 	
 	local Angular = (AngleFriction + Vector( 0, 0, yaw )) * deltatime * 250;
-
+	
+	/*if Linear < 0.01 then 
+		Linear = 0 
+	end
+	if Angular < 0.01 && Linear < 0.01 then
+		Angular = 0 
+	end*/
 	return Angular, Linear, SIM_LOCAL_ACCELERATION
 end
 
