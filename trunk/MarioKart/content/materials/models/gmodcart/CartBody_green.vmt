@@ -1,4 +1,4 @@
-"LightmappedGeneric"
+"VertexLitGeneric"
 {
-	"$basetexture" "models/gmodcart/CartBody_green"
+	"$basetexture" "models/gmodcart/CartBody_green.vtf"
 }

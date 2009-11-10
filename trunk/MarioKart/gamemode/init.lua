@@ -17,6 +17,9 @@ end
 function GM:PlayerSpawn(ply)
 	if ply:GetNWEntity("Cart"):IsValid() then ply:GetNWEntity("Cart"):Remove() end
 	local cart = ents.Create("player_cart")
+	local box = ents.Create("item_box")
+	box:SetPos(Vector(0,0,40))
+	box:Spawn()
 	cart:SetPos(Vector(0,0,20))
 	cart:Spawn()
 	GAMEMODE:SetPlayerSpeed(ply, 0, 0)
