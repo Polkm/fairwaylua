@@ -1,4 +1,5 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "models/gmodcart/CartBody.vtf"
+	"$basetexture" "models/gmodcart/CartBody.vtf"
+	"$model" 1
 }
