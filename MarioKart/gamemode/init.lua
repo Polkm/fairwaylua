@@ -5,8 +5,8 @@ GM.PlayerSpawnTime = {}
 
 function GM:Initialize()
 util.PrecacheModel( "models/marioragdoll/SuperMarioGalaxy/mario/mario.mdl" )
-util.PrecacheModel( "models/gmodcart/regular_cart.mdl" )
-util.PrecacheModel("models/gmodcart/cart_wheel.mdl" )
+util.PrecacheModel( "models/gmodcart/base_cart.mdl" )
+util.PrecacheModel("models/gmodcart/base_cart_wheel.mdl" )
 util.PrecacheModel("models/gmodcart/regular_cart_steerwheel.mdl" )
 end
 
@@ -27,7 +27,7 @@ function GM:PlayerSpawn(ply)
 	ply.CanJump = true
 end
 
-/*
+
 local ClientResources = 0;
 local function ProcessFolder ( Location )
 	for k, v in pairs(file.Find(Location .. '*')) do
@@ -51,5 +51,5 @@ if !SinglePlayer() then
 	ProcessFolder('../gamemodes/' .. GM.Path .. '/content/models/');
 	ProcessFolder('../gamemodes/' .. GM.Path .. '/content/materials/');
 	ProcessFolder('../gamemodes/' .. GM.Path .. '/content/sound/');
-end*/
+end
 
