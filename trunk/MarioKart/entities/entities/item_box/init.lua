@@ -13,7 +13,7 @@ function ENT:Initialize()
 	self.QuestionMark = ents.Create("player_wheel")
 	self.QuestionMark:SetModel("models/gmodcart/mk_question.mdl")
 	self.QuestionMark:SetPos(self.Entity:GetPos())
-	self.QuestionMark:SetDrawColor(255,255,255,155)
+	self.QuestionMark:SetColor(255,255,255,255)
 	self.QuestionMark:Spawn()
 end
 
