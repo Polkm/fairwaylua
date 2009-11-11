@@ -36,8 +36,7 @@ function GM:Tick()
 			elseif player:GetNWInt("CheckPoint") > otherPlayer:GetNWInt("CheckPoint") then
 				intPlace = place
 			elseif player:GetNWInt("CheckPoint") == otherPlayer:GetNWInt("CheckPoint") then
-				local entCheckPoint = GAMEMODE.CheckPointEnts[player:GetNWInt("CheckPoint")]
-				if !entCheckPoint then entCheckPoint = GAMEMODE.CheckPointEnts[1] end
+				local entCheckPoint = GAMEMODE.CheckPointEnts[player:GetNWInt("CheckPoint")] or GAMEMODE.CheckPointEnts[1]
 				entCheckPoint = entCheckPoint.Target
 				local entPlayerCart = player:GetNWEntity("Cart")
 				local entOtherPlayerCart = otherPlayer:GetNWEntity("Cart")
