@@ -1,5 +1,27 @@
 include( 'shared.lua' )
 
+function GM:HUDShouldDraw(Name)
+	if Name == "CHudHealth" or Name == "CHudBattery" or Name =="CHudSecondaryAmmo" or Name == "CHudAmmo" then
+		return false
+	end	
+	return true
+end
+
+
+function GM:HUDPaint()
+	local SW = ScrW()
+	local SH = ScrH()
+	local client = LocalPlayer()
+	surface.SetFont("HUDNumber")
+	surface.SetTextColor(255,255,255,255)
+	surface.SetTextPos(SW/7,SH/1.2)
+	surface.DrawText("1st")
+	surface.SetDrawColor(0,0,0,255)
+	surface.DrawRect(SW/2-50,SH/15-50,100,100)
+end
+
+
+
 function GM:CalcView( ply, origin, angles, fov )
 
 	local phys = LocalPlayer():GetNWEntity("Cart")
@@ -20,4 +42,5 @@ function GM:CalcView( ply, origin, angles, fov )
 	return view
 
 end
+
 
