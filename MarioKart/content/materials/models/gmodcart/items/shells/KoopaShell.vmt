@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/gmodcart/items/shells/KoopaShell.vtf"
+	"$model" 1
+}
