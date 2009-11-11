@@ -32,6 +32,10 @@ function GM:PlayerSpawn(ply)
 	cart:SetAngles(ply:GetAngles())
 end
 
+function GM:Think()
+
+end
+
 local ClientResources = 0
 local function ProcessFolder ( Location )
 	for k, v in pairs(file.Find(Location .. '*')) do

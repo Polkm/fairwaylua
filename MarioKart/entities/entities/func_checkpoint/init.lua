@@ -3,6 +3,19 @@ AddCSLuaFile("shared.lua")
 include('shared.lua')
 
 function ENT:Initialize()
+timer.Simple(3, function()
+
+	for k,v in pairs(ents.FindByClass("checktarget")) do
+		print(v.Name)
+		print(self.Target)
+		if v.Name == tostring(self.Target) then
+			self.Target = v 
+			print(self.Target:GetPos())
+			return
+		end
+	end
+	
+	end)
 end
 
 function ENT:KeyValue(key, value)
@@ -14,6 +27,9 @@ function ENT:KeyValue(key, value)
 	end
 	if key == "max" then
 		self.Max = tonumber(value)
+	end
+	if key == "target" then
+		self.Target = value
 	end
 end
 
