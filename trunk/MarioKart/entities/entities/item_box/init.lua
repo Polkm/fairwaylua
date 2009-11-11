@@ -8,8 +8,8 @@ function ENT:Initialize()
 	self.Entity:SetColor(155,0,0,175)
 	self.Entity:SetAngles(Angle(45,45,45))
 	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
+	self.Entity:PhysicsInit( SOLID_VPHYSICS )
 	self.Entity:SetSolid(SOLID_VPHYSICS)
-
 	self.QuestionMark = ents.Create("player_wheel")
 	self.QuestionMark:SetModel("models/gmodcart/mk_question.mdl")
 	self.QuestionMark:SetPos(self.Entity:GetPos())
@@ -18,6 +18,7 @@ function ENT:Initialize()
 end
 
 function ENT:Spin()
+	self.Entity:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),175)
 	self.Entity:SetAngles(self.Entity:GetAngles() + Angle(5,5,5))
 end
 
@@ -27,8 +28,7 @@ end
 function ENT:OnTakeDamage(dmginfo)
 end
 function ENT:StartTouch(ent)
-	print("Touched")
-
+Msg("lol")
 end
 function ENT:EndTouch(ent)
 end
