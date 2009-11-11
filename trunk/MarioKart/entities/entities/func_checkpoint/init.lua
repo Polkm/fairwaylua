@@ -2,37 +2,30 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 
-function ENT:Initialize()
-	print("SHIT TASTIC")
-end
-
 function ENT:KeyValue(key, value)
 	if key == "number" then
-		self.Number = value
+		self.Number = tonumber(value)
 	end
 	if key == "finish" then
-		self.Finish = value
+		self.Finish = tobool(value)
 	end
-end
-
-function ENT:Touch(ent)
-	print("Touched1111")
+	if key == "max" then
+		self.Max = tonumber(value)
+	end
 end
 
 function ENT:StartTouch(ent)
-	print("Touched")
 	if ent:IsValid() && ent:GetOwner():IsPlayer() then
-		print("Past First Test")
 		if ent:GetOwner():GetNWEntity("Cart") == ent then
-			print("Past Second Test")
 			local plyOwner = ent:GetOwner()
-			if plyOwner:GetNwInt("CheckPoint") == self.Number then
-				if !self.Finish then
-					plyOwner:SetNWInt("CheckPoint", plyOwner:GetNwInt("CheckPoint") + 1)
-					print("Check Point " .. self.Number)
-				else
-					plyOwner:SetNWInt("CheckPoint", 1)
-					plyOwner:SetNWInt("Lap", plyOwner:GetNwInt("Lap") + 1)
+			if plyOwner:GetNWInt("CheckPoint") == self.Number then
+				plyOwner:SetNWInt("CheckPoint", plyOwner:GetNWInt("CheckPoint") + 1)
+				print("Check Point " .. self.Number)
+			else
+				local intMaxLaps = self.Max or 5
+				if self.Finish && plyOwner:GetNWInt("CheckPoint") >= intMaxLaps then
+					plyOwner:SetNWInt("CheckPoint", 2)
+					plyOwner:SetNWInt("Lap", plyOwner:GetNWInt("Lap") + 1)
 					print("LAP!")
 				end
 			end

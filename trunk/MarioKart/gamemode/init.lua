@@ -25,10 +25,12 @@ function GM:PlayerSpawn(ply)
 	cart:SetOwner(ply)
 	ply:SetViewEntity(cart)
 	ply:SetNWEntity("Cart", cart)
-	ply:SetNWEntity("CheckPoint", 1)
-	ply:SetNWEntity("Lap", 1)
+	ply:SetNWInt("CheckPoint", 1)
+	ply:SetNWInt("Lap", 1)
 	ply.CanJump = true
 	GAMEMODE:SetPlayerSpeed(ply,0,0)
+	cart:SetPos(ply:GetPos())
+	cart:SetAngles(ply:GetAngles())
 end
 
 local ClientResources = 0
