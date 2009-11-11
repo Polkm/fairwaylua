@@ -1,4 +1,5 @@
 include('shared.lua')
+include('cl_ghost.lua')
 
 function GM:HUDShouldDraw(Name)
 	if Name == "CHudHealth" or Name == "CHudBattery" or Name =="CHudSecondaryAmmo" or Name == "CHudAmmo" then
@@ -22,7 +23,6 @@ function GM:HUDPaint()
 end
 
 function GM:CalcView( ply, origin, angles, fov )
-
 	local phys = LocalPlayer():GetNWEntity("Cart")
 	if ( !phys ) then return end
 	
