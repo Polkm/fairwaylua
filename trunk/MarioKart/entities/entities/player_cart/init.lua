@@ -12,7 +12,7 @@ function ENT:Initialize()
 	self.Entity:GetPhysicsObject():SetMass( 100 )
 	self.Entity:GetPhysicsObject():SetMaterial("gmod_ice")
 	self.Ragdoll = ents.Create("prop_dynamic")
-	self.Ragdoll:SetPos(self.Entity:GetPos() + Vector(15,0,7))
+	self.Ragdoll:SetPos(self.Entity:GetPos() + Vector(15,0,1))
 	self.Ragdoll:SetModel("models/marioragdoll/Super Mario Galaxy/mario/mario.mdl")
 	self.Ragdoll:SetParent(self.Entity)
 	self.Ragdoll:Spawn()
@@ -77,7 +77,7 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	trace = {}
 	trace.start = self:GetPos()
 	trace.filter = self
-	trace.endpos = self:GetPos() - Vector(0,0,10)
+	trace.endpos = self:GetPos() - Vector(0,0,3)
 	local tr = util.TraceLine(trace)
 	local driver = self:GetOwner()
 	local forward = 0
@@ -91,7 +91,7 @@ function ENT:PhysicsSimulate( phys, deltatime )
 		yaw		= self:GetTurnYaw( driver, phys, ForwardVel )
 		if ( up.z < 0.33 ) || !tr.Hit then
 			forward = 0
-			bounce = 0
+			bounce = 1
 			yaw	= 0
 		end
 		-- Spin the wheels... Didnt work too well.
@@ -159,9 +159,12 @@ function ENT:GetForwardAcceleration( driver, phys, ForwardVel )
 end
 
 function ENT:GetUpAcceleration( driver, phys, ForwardVel )
-	if (!driver || !driver:IsValid()) then return 0 end
-	if ( driver:KeyDown( IN_JUMP ) ) then return 1000 end
-	return 0
+	local Velocity = phys:GetVelocity()
+	local ForwardVel = phys:GetAngle():Forward():Dot( Velocity )
+	
+	if (!driver || !driver:IsValid() || ForwardVel <= 100 ) then return 0 end
+	if ( driver:KeyDown( IN_JUMP ) ) then return 2000 end
+	return 180
 end
 
 function ENT:GetTurnYaw( driver, phys, ForwardVel )
