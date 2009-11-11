@@ -18,7 +18,7 @@ function GM:HUDPaint()
 	
 	
 	surface.SetTextPos(SW / 7, SH / 1.2)
-	surface.DrawText("1st")
+	surface.DrawText(LocalPlayer():GetNWInt("Place"))
 end
 
 function GM:CalcView( ply, origin, angles, fov )
