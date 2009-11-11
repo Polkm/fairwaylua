@@ -8,6 +8,34 @@ function GM:Initialize()
 	util.PrecacheModel("models/gmodcart/base_cart.mdl")
 	util.PrecacheModel("models/gmodcart/base_cart_wheel.mdl")
 	util.PrecacheModel("models/gmodcart/regular_cart_steerwheel.mdl")
+	mk_CurrentCheckPoint = 1
+	mk_CurrentLap = 1
+end
+
+function GM:SetPlayerColor(ply, strColor)
+	if GAMEMODE.PosibleColors[strColor] then
+		ply:GetNWEntity("Cart").BodyFrame:SetMaterial(GAMEMODE.PosibleColors[strColor])
+	end
+end
+concommand.Add("mk_changeCarColor", function(ply, command, args)
+	GAMEMODE:SetPlayerColor(ply, args[1])
+end)
+
+function GM:Think()
+	for j,h in pairs(ents.FindByClass("func_checkpoint")) do 
+		if h.Number == mk_CurrentCheckPoint then
+			print(h.Target)
+				for k,v in pairs(player.GetAll()) do 
+					for a,b in pairs(player.GetAll()) do
+						if v:GetNWInt("CheckPoint") == b:GetNWInt("CheckPoint") then
+							if v:GetPos():Distance(h.Target:GetPos()) > b:GetPos():Distance(h.Target:GetPos()) && v:GetNWInt("Place") > b:GetNWInt("Place")  then
+								v:SetNWInt("Place",b:GetNWInt("Place"))
+							end
+						end
+					end
+				end
+		end
+	end
 end
 
 function GM:PlayerInitialSpawn(ply)
@@ -26,15 +54,13 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWEntity("Cart", cart)
 	ply:SetNWInt("CheckPoint", 1)
 	ply:SetNWInt("Lap", 1)
+	ply:SetNWInt("Place",1)
 	ply.CanJump = true
 	GAMEMODE:SetPlayerSpeed(ply,0,0)
 	cart:SetPos(ply:GetPos())
 	cart:SetAngles(ply:GetAngles())
 end
 
-function GM:Think()
-
-end
 
 local ClientResources = 0
 local function ProcessFolder ( Location )

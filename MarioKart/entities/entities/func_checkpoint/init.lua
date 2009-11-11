@@ -38,16 +38,23 @@ function ENT:StartTouch(ent)
 		if ent:GetOwner():GetNWEntity("Cart") == ent then
 			local plyOwner = ent:GetOwner()
 			if plyOwner:GetNWInt("CheckPoint") == self.Number then
+				for k,v in pairs(ents.FindByClass("func_checkpoint")) do
+					if mk_CurrentCheckPoint <= self.Number then
+						mk_CurrentCheckPoint = self.Number + 1
+					end
+				end
 				plyOwner:SetNWInt("CheckPoint", plyOwner:GetNWInt("CheckPoint") + 1)
 				print("Check Point " .. self.Number)
 			else
 				local intMaxLaps = self.Max or 5
 				if self.Finish && plyOwner:GetNWInt("CheckPoint") >= intMaxLaps then
 					plyOwner:SetNWInt("CheckPoint", 2)
+					mk_CurrentLap = mk_CurrentLap + 1
 					plyOwner:SetNWInt("Lap", plyOwner:GetNWInt("Lap") + 1)
 					print("LAP!")
 				end
 			end
+			
 		end
 	end
 end
