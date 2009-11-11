@@ -2,6 +2,9 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 GM.PlayerSpawnTime = {}
+GM.PosibleColors = {}
+GM.PosibleColors["red"] = "models/gmodcart/CartBody_red"
+GM.CheckPointEnts = {}
 
 function GM:Initialize()
 	util.PrecacheModel("models/marioragdoll/SuperMarioGalaxy/mario/mario.mdl")
@@ -22,19 +25,33 @@ concommand.Add("mk_changeCarColor", function(ply, command, args)
 end)
 
 function GM:Think()
-	for j,h in pairs(ents.FindByClass("func_checkpoint")) do 
-		if h.Number == mk_CurrentCheckPoint then
-			print(h.Target)
-				for k,v in pairs(player.GetAll()) do 
-					for a,b in pairs(player.GetAll()) do
-						if v:GetNWInt("CheckPoint") == b:GetNWInt("CheckPoint") then
-							if v:GetPos():Distance(h.Target:GetPos()) > b:GetPos():Distance(h.Target:GetPos()) && v:GetNWInt("Place") > b:GetNWInt("Place")  then
-								v:SetNWInt("Place",b:GetNWInt("Place"))
-							end
-						end
-					end
+	local tblPlayerTable = {}
+	for _, player in pairs(player.GetAll()) do
+		local intPlace = 1
+		for place, otherPlayer in pairs(tblPlayerTable) do
+			if player:GetNWInt("Lap") > otherPlayer:GetNWInt("Lap") then
+				intPlace = place
+			elseif player:GetNWInt("CheckPoint") > otherPlayer:GetNWInt("CheckPoint") then
+				intPlace = place
+			elseif player:GetNWInt("CheckPoint") == otherPlayer:GetNWInt("CheckPoint") then
+				local entCheckPoint = GAMEMODE.CheckPointEnts[player:GetNWInt("CheckPoint")]
+				if !entCheckPoint then entCheckPoint = GAMEMODE.CheckPointEnts[1] end
+				entCheckPoint = entCheckPoint.Target
+				local entPlayerCart = player:GetNWEntity("Cart")
+				local entOtherPlayerCart = otherPlayer:GetNWEntity("Cart")
+				if entPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) <= entOtherPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) then
+					intPlace = place
+				elseif entPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) > entOtherPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) then
+					intPlace = place + 1
 				end
+			elseif player:GetNWInt("CheckPoint") < otherPlayer:GetNWInt("CheckPoint") then
+				intPlace = place + 1
+			end
 		end
+		table.insert(tblPlayerTable, intPlace, player)
+	end
+	for place, player in pairs(tblPlayerTable) do
+		player:SetNWInt("Place", place)
 	end
 end
 
