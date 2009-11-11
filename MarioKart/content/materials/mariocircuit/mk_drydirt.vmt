@@ -1,4 +1,5 @@
 "LightmappedGeneric"
 {
 	"$basetexture" "mariocircuit/mk_drydirt"
+	"$surfaceprop" "dirt"
 }

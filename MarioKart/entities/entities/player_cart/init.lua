@@ -160,14 +160,14 @@ end
 
 function ENT:GetUpAcceleration( driver, phys, ForwardVel )
 	if (!driver || !driver:IsValid()) then return 0 end
-	if ( driver:KeyDown( IN_JUMP ) ) then return 250 end
+	if ( driver:KeyDown( IN_JUMP ) ) then return 1000 end
 	return 0
 end
 
 function ENT:GetTurnYaw( driver, phys, ForwardVel )
 	if ( !driver || !driver:IsValid() ) then return 0 end
-	if ( driver:KeyDown( IN_MOVELEFT ) ) then return 150 end
-	if ( driver:KeyDown( IN_MOVERIGHT ) ) then return -150 end
+	if ( driver:KeyDown( IN_MOVELEFT ) ) then return 100 end
+	if ( driver:KeyDown( IN_MOVERIGHT ) ) then return -100 end
 	return 0
 end
 
