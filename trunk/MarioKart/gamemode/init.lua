@@ -28,7 +28,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWEntity("CheckPoint", 1)
 	ply:SetNWEntity("Lap", 1)
 	ply.CanJump = true
-	GAMEMODE:SetPlayerSpeed(ply, 0, 0)
+	GAMEMODE:SetPlayerSpeed(ply,0,0)
 end
 
 local ClientResources = 0
