@@ -8,7 +8,6 @@ function ENT:Initialize()
 	self.Entity:SetMoveType( MOVETYPE_CUSTOM )
 	self.Entity:PhysicsInit( SOLID_VPHYSICS )
 	self.Entity:SetSolid( SOLID_VPHYSICS )
-	//self.Entity:SetCollisionGroup(GROUP_WORLD)
 	self.Entity:SetNoDraw(true)
 	self.Entity:GetPhysicsObject():SetMass( 100 )
 	self.Entity:GetPhysicsObject():SetMaterial("gmod_ice")
@@ -128,7 +127,7 @@ function ENT:PhysicsSimulate( phys, deltatime )
 	local Linear = ( Vector( forward, right, bounce ) ) * deltatime * 250;
 	
 
-	local AngleVel = phys:GetAngleVelocity()
+	local AngleVel = phys:GetAngleVelocity() 
 
 	local AngleFriction = AngleVel * -1.1
 	
