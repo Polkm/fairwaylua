@@ -9,7 +9,7 @@ function ENT:Initialize()
 	self.Entity:SetAngles(Angle(45,45,45))
 	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
 	self.Entity:SetSolid(SOLID_VPHYSICS)
-	self.Entity:SetCollisionGroup(11)
+
 	self.QuestionMark = ents.Create("player_wheel")
 	self.QuestionMark:SetModel("models/gmodcart/mk_question.mdl")
 	self.QuestionMark:SetPos(self.Entity:GetPos())
@@ -26,7 +26,8 @@ end
 
 function ENT:OnTakeDamage(dmginfo)
 end
-function ENT:StartTouch(ent) 
+function ENT:StartTouch(ent)
+	print("Touched")
 
 end
 function ENT:EndTouch(ent)
