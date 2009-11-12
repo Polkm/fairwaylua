@@ -15,7 +15,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWInt("CheckPoint", 1)
 	ply:SetNWInt("Lap", 1)
 	ply:SetNWInt("Place",1)
-	ply:SetNWString("item","none")
+	ply:SetNWString("item","item_koopashell_green")
 	ply.CanJump = true
 	ply:SetNWEntity("activeitem", "none")
 	GAMEMODE:SetPlayerSpeed(ply,0,0)
