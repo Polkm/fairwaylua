@@ -4,6 +4,13 @@ include('shared.lua')
 
 function ENT:Initialize()
 	GAMEMODE.CheckPointEnts[self.Number] = self
+	timer.Simple(1, function()
+		for _, ent in pairs(ents.FindByClass("checktarget")) do
+			if ent.Name ==  self.Target then
+				self.Target = ent
+			end
+		end
+	end)
 end
 
 function ENT:KeyValue(key, value)
@@ -17,7 +24,7 @@ function ENT:KeyValue(key, value)
 		self.Max = tonumber(value)
 	end
 	if key == "target" then
-		self.Target = value
+		self.Target = tostring(value)
 	end
 end
 
