@@ -22,6 +22,12 @@ function GM:HUDPaint()
 	surface.DrawText(LocalPlayer():GetNWInt("Place"))
 end
 
+function GM:Think()
+	if LocalPlayer():KeyPressed(IN_USE)  then
+		RunConsoleCommand("mk_FireItem")
+	end
+end
+
 function GM:CalcView( ply, origin, angles, fov )
 	local phys = LocalPlayer():GetNWEntity("Cart")
 	if ( !phys ) then return end

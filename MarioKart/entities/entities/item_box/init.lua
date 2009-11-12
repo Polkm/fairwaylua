@@ -7,7 +7,7 @@ ENT.Increase = false
 
 function ENT:Initialize()
 	self.Entity:SetModel("models/gmodcart/mk_block.mdl")
-	self.Entity:SetColor(155,0,0,175)
+	self.Entity:SetColor(155,155,155,175)
 	self.Entity:SetAngles(Angle(45,45,45))
 	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
 	self.Entity:PhysicsInit( SOLID_VPHYSICS )
@@ -17,7 +17,6 @@ function ENT:Initialize()
 	self.QuestionMark:SetPos(self.Entity:GetPos())
 	self.QuestionMark:SetColor(255,255,255,255)
 	self.QuestionMark:Spawn()
-	self.QuestionMark:SetColor(255,0,0,255)
 end
 
 function ENT:Spin()
@@ -43,9 +42,16 @@ timer.Create("BoxSpin",0.05,0, function() for k,v in pairs(ents.FindByClass("ite
 function ENT:OnTakeDamage(dmginfo)
 end
 function ENT:StartTouch(ent)
-self.Entity:Remove()
-self.QuestionMark:Remove()
-
+	self.Entity:Remove()
+	self.QuestionMark:Remove()
+	if ent:IsValid() && ent:GetOwner():IsPlayer() then
+		if ent:GetOwner():GetNWEntity("Cart") == ent then
+			local ply = ent:GetOwner()
+			if ply:GetNWString("item") == "none" then
+				ply:SetNWString("item","item_koopashell_green")
+			end
+		end
+	end
 end
 function ENT:EndTouch(ent)
 end

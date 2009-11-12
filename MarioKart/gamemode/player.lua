@@ -15,7 +15,9 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWInt("CheckPoint", 1)
 	ply:SetNWInt("Lap", 1)
 	ply:SetNWInt("Place",1)
+	ply:SetNWString("item","none")
 	ply.CanJump = true
+	ply:SetNWEntity("activeitem", "none")
 	GAMEMODE:SetPlayerSpeed(ply,0,0)
 	cart:SetPos(ply:GetPos())
 	cart:SetAngles(ply:GetAngles())
@@ -28,4 +30,22 @@ function GM:SetPlayerColor(ply, strColor)
 end
 concommand.Add("mk_changeCarColor", function(ply, command, args)
 	GAMEMODE:SetPlayerColor(ply, args[1])
+end)
+
+function GM:FireItem(ply)
+	local item = ply:GetNWString("item")
+	print("ran")
+	if ply:GetNWEntity("activeitem") == "none" && item != "none" then
+	print("ran")
+		ply:SetNWEntity("activeitem",GAMEMODE.mk_Items[item].UseFunction(ply))
+		ply:SetNWString("item", "none")
+		return
+	elseif ply:GetNWEntity("activeitem") != "none" then
+		ply:GetNWEntity("activeitem"):UseItem()
+		ply:SetNWEntity("activeitem", nil)
+		return
+	end
+end
+concommand.Add("mk_FireItem", function(ply, command, args)
+	GAMEMODE:FireItem(ply)
 end)
