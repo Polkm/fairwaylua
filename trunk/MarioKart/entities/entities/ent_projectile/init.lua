@@ -2,8 +2,6 @@ AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "shared.lua" )
 include('shared.lua')
 
-ENT.Bobnumber = 0
-ENT.Increase = false
 
 function ENT:Initialize()
 	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
@@ -24,15 +22,49 @@ function ENT:OnRemove()
 end
 function ENT:OnRestore()
 end
-function ENT:PhysicsCollide(data,physobj)
-	if data.HitEntity:IsWorld() then
-		local oldspeed = data.OurOldVelocity
-		self:SetVelocity(oldspeed + oldspeed * -2)
-		
-	end
+
+function ENT:UseItem() 
+	local cart = self:GetOwner():GetNWEntity("Cart")
+	self:SetParent(nil)
+	self.Entity:PhysicsInitSphere( 8.1, "metal_bouncy" )
+	self.Entity:GetPhysicsObject():Wake()
+	constraint.NoCollide(self.Entity,cart,0,0)
+	self:SetAngles(cart:GetAngles())
+	self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
+	self.Entity:GetPhysicsObject():ApplyForceCenter(cart:GetAngles():Forward() + cart:GetAngles():Forward() * 1200)
+	
+	timer.Simple(1, function()
+	constraint.RemoveAll(self.Entity)
+	timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
+	end)
 end
+
+function ENT:PhysicsCollide(data,physobj)
+
+	//if data.HitEntity:IsWorld() then
+		local LastSpeed = math.max( data.OurOldVelocity:Length(), data.Speed )
+		local NewVelocity = physobj:GetVelocity()
+		NewVelocity = Vector(NewVelocity.x,NewVelocity.y,NewVelocity.z*0.5)
+		NewVelocity:Normalize()
+		LastSpeed = math.max( NewVelocity:Length(), LastSpeed )
+		
+		local TargetVelocity = NewVelocity * LastSpeed * 0.999999999999999999999999999999999999999
+		
+		physobj:SetVelocity( TargetVelocity )
+	//elseif data.HitEntity:GetOwner():IsPlayer() then
+
+	//end
+end
+
+
+
+
+
+
+
+
+
 function ENT:PhysicsSimulate(phys,deltatime) 
-	print("running")
 	trace = {}
 	trace.start = self:GetPos()
 	trace.filter = self
@@ -48,37 +80,19 @@ function ENT:PhysicsSimulate(phys,deltatime)
 	local UpVel = phys:GetAngle():Up():Dot( Velocity )
 	right = RightVel * 0.95
 	
-
-
 	forward = forward - ForwardVel * 0.2
-	
 
 	local Linear = ( Vector( forward, right, -5) ) * deltatime * 250;
-	
 
 	local AngleVel = phys:GetAngleVelocity() 
 
 	local AngleFriction = Vector(AngleVel.x * -1.1,AngleVel.y * -50,AngleVel.z * -50)
 	
 	local Angular = (AngleFriction) ;
-	
-
 	return Angular, Linear, SIM_LOCAL_ACCELERATION
 end
-function ENT:PhysicsUpdate(phys) 
-end
 
-function ENT:UseItem() 
-	print("fired")
-	constraint.NoCollide(self,self:GetOwner(),0,0)
-	self:SetParent(nil)
-	self:SetAngles(self:GetOwner():GetNWEntity("Cart"):GetAngles())
-	self:SetPos(self:GetOwner():GetNWEntity("Cart"):GetPos() - self:GetOwner():GetNWEntity("Cart"):GetAngles():Forward() * -30 + self:GetOwner():GetNWEntity("Cart"):GetAngles():Up() * 20)
-	self:StartMotionController()
-	timer.Simple(5, function()
-	constraint.RemoveAll(self)
-	timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
-	end)
+function ENT:PhysicsUpdate(phys) 
 end
 
 function ENT:Think() 
