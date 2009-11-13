@@ -15,7 +15,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWInt("CheckPoint", 1)
 	ply:SetNWInt("Lap", 1)
 	ply:SetNWInt("Place",1)
-	ply:SetNWString("item","item_koopashell_green")
+	ply:SetNWString("item","item_koopashell_red")
 	ply.CanJump = true
 	ply:SetNWEntity("activeitem", "none")
 	GAMEMODE:SetPlayerSpeed(ply,0,0)
@@ -37,11 +37,12 @@ function GM:FireItem(ply)
 	print("ran")
 	if ply:GetNWEntity("activeitem") == "none" && item != "none" then
 	print("ran")
-		ply:SetNWEntity("activeitem",GAMEMODE.mk_Items[item].UseFunction(ply))
+		ply:SetNWEntity("activeitem",GAMEMODE.mk_Items[item].SpawnFunction(ply))
+		ply:GetNWEntity("activeitem").class = item
 		ply:SetNWString("item", "none")
 		return
 	elseif ply:GetNWEntity("activeitem") != "none" then
-		ply:GetNWEntity("activeitem"):UseItem()
+		GAMEMODE.mk_Items[ply:GetNWEntity("activeitem").class].UseFunction(ply:GetNWEntity("activeitem"))
 		ply:SetNWEntity("activeitem", nil)
 		return
 	end

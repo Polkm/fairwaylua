@@ -24,36 +24,23 @@ function ENT:OnRestore()
 end
 
 function ENT:UseItem() 
-	local cart = self:GetOwner():GetNWEntity("Cart")
-	self:SetParent(nil)
-	self.Entity:PhysicsInitSphere( 8.1, "metal_bouncy" )
-	self.Entity:GetPhysicsObject():Wake()
-	constraint.NoCollide(self.Entity,cart,0,0)
-	self:SetAngles(cart:GetAngles())
-	self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
-	self.Entity:GetPhysicsObject():ApplyForceCenter(cart:GetAngles():Forward() + cart:GetAngles():Forward() * 1200)
 	
-	timer.Simple(1, function()
-	constraint.RemoveAll(self.Entity)
-	timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
-	end)
 end
 
 function ENT:PhysicsCollide(data,physobj)
-
-	//if data.HitEntity:IsWorld() then
+	if data.HitEntity:IsWorld() then
 		local LastSpeed = math.max( data.OurOldVelocity:Length(), data.Speed )
 		local NewVelocity = physobj:GetVelocity()
-		NewVelocity = Vector(NewVelocity.x,NewVelocity.y,NewVelocity.z*0.5)
+		NewVelocity = Vector(NewVelocity.x,NewVelocity.y,NewVelocity.z*0.25)
 		NewVelocity:Normalize()
 		LastSpeed = math.max( NewVelocity:Length(), LastSpeed )
 		
 		local TargetVelocity = NewVelocity * LastSpeed * 0.999999999999999999999999999999999999999
 		
 		physobj:SetVelocity( TargetVelocity )
-	//elseif data.HitEntity:GetOwner():IsPlayer() then
+	elseif data.HitEntity:GetOwner():IsPlayer() then
 
-	//end
+	end
 end
 
 
@@ -95,8 +82,14 @@ end
 function ENT:PhysicsUpdate(phys) 
 end
 
-function ENT:Think() 
+function ENT:Think()
+	if self.class == "item_koopashell_red" then 
+		if self.Activated then
+			self.Entity:GetPhysicsObject():ApplyForceCenter((self.target:GetPos() - self.Entity:GetPos()) * 3)
+		end
+	end
 end
+
 function ENT:Touch(ent) 
 end
 function ENT:UpdateTransmitState(Entity)
