@@ -5,9 +5,6 @@ end
 function GM:PlayerSpawn(ply)
 	if ply:GetNWEntity("Cart"):IsValid() then ply:GetNWEntity("Cart"):Remove() end
 	local cart = ents.Create("player_cart")
-	local box = ents.Create("item_box")
-	box:SetPos(Vector(0, 0, 40))
-	box:Spawn()
 	cart:SetPos(ply:GetPos())
 	cart:Spawn()
 	cart:SetOwner(ply)
@@ -21,6 +18,9 @@ function GM:PlayerSpawn(ply)
 	GAMEMODE:SetPlayerSpeed(ply,0,0)
 	cart:SetPos(ply:GetPos())
 	cart:SetAngles(ply:GetAngles())
+	ply.wipeout = false
+	ply:SetNoDraw(true)
+	ply:SetPos(Vector(0,0,0))
 end
 
 function GM:SetPlayerColor(ply, strColor)
@@ -34,19 +34,17 @@ end)
 
 function GM:FireItem(ply)
 	local item = ply:GetNWString("item")
-	print("ran")
-	if ply:GetNWEntity("activeitem") == "none" && item != "none" then
-	print("ran")
+	if ply:GetNWEntity("activeitem") == "none" && item != "empty" then
 		ply:SetNWEntity("activeitem",GAMEMODE.mk_Items[item].SpawnFunction(ply))
 		ply:GetNWEntity("activeitem").class = item
-		ply:SetNWString("item", "none")
+		ply:SetNWString("item", "empty")
 		return
 	elseif ply:GetNWEntity("activeitem") != "none" then
 		GAMEMODE.mk_Items[ply:GetNWEntity("activeitem").class].UseFunction(ply:GetNWEntity("activeitem"))
-		ply:SetNWEntity("activeitem", nil)
 		return
 	end
 end
 concommand.Add("mk_FireItem", function(ply, command, args)
 	GAMEMODE:FireItem(ply)
 end)
+

@@ -54,25 +54,30 @@ function ENT:Initialize()
 	self.Entity:StartMotionController()
 end
 
-function ENT:OnTakeDamage(dmginfo)
+function ENT:Wipeout(type)
+	if type == "Spin" then
+		Msg("spinz")
+		self:GetOwner().wipeout = true
+		self.BodyFrame:SetColor(255,0,0,255)
+		timer.Simple(5, function()  	self.BodyFrame:SetColor(255,255,255,255) self:GetOwner().wipeout = false end)
+	elseif type == "Explode" then
+		Msg("spinz")
+		self:GetOwner().wipeout = true
+		self.BodyFrame:SetColor(255,0,0,255)
+		timer.Simple(5, function()  	self.BodyFrame:SetColor(255,255,255,255) self:GetOwner().wipeout = false end)
+	end
 end
-function ENT:StartTouch(ent) 
+
+function ENT:Hazard()
 
 end
-function ENT:EndTouch(ent)
-end
-function ENT:AcceptInput(name,activator,caller)
-end
-function ENT:KeyValue(key,value)
-end
-function ENT:OnRemove()
-end
-function ENT:OnRestore()
-end
-function ENT:PhysicsCollide(data,physobj)
+
+function ENT:Wipeout_Explode()
+
 end
 
 function ENT:PhysicsSimulate( phys, deltatime )
+	if self:GetOwner().wipeout then return SIM_NOTHING  end
 	local up = phys:GetAngle():Up()
 	trace = {}
 	trace.start = self:GetPos()
@@ -180,4 +185,22 @@ function ENT:UpdateTransmitState(Entity)
 end
 function ENT:Use(activator,caller)
 	
+end
+
+function ENT:OnTakeDamage(dmginfo)
+end
+function ENT:StartTouch(ent) 
+
+end
+function ENT:EndTouch(ent)
+end
+function ENT:AcceptInput(name,activator,caller)
+end
+function ENT:KeyValue(key,value)
+end
+function ENT:OnRemove()
+end
+function ENT:OnRestore()
+end
+function ENT:PhysicsCollide(data,physobj)
 end

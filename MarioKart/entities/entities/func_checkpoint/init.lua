@@ -36,14 +36,14 @@ function ENT:StartTouch(ent)
 				plyOwner:SetNWInt("CheckPoint", plyOwner:GetNWInt("CheckPoint") + 1)
 				print("Check Point " .. self.Number)
 				if self.Finish then
-					plyOwner:ConCommand("mk_startRecording")
+					//plyOwner:ConCommand("mk_startRecording")
 				end
 			else
 				local intMaxLaps = self.Max or 5
 				if self.Finish && plyOwner:GetNWInt("CheckPoint") >= intMaxLaps then
 					plyOwner:SetNWInt("CheckPoint", 2)
 					plyOwner:SetNWInt("Lap", plyOwner:GetNWInt("Lap") + 1)
-					plyOwner:ConCommand("mk_stopRecording")
+					//plyOwner:ConCommand("mk_stopRecording")
 					print("LAP!")
 				end
 			end

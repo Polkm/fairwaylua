@@ -29,6 +29,11 @@ end
 
 function ENT:PhysicsCollide(data,physobj)
 	if data.HitEntity:IsWorld() then
+		if self.class == "item_koopashell_red" && self.Activated then 
+			if data.Speed && math.abs(data.HitPos.z - self:GetPos().z) < 1 then
+				self:Remove()
+			end
+		end
 		local LastSpeed = math.max( data.OurOldVelocity:Length(), data.Speed )
 		local NewVelocity = physobj:GetVelocity()
 		NewVelocity = Vector(NewVelocity.x,NewVelocity.y,NewVelocity.z*0.25)
@@ -38,8 +43,14 @@ function ENT:PhysicsCollide(data,physobj)
 		local TargetVelocity = NewVelocity * LastSpeed * 0.999999999999999999999999999999999999999
 		
 		physobj:SetVelocity( TargetVelocity )
-	elseif data.HitEntity:GetOwner():IsPlayer() then
-
+	else
+		for k,v in pairs(player.GetAll()) do
+			if data.HitEntity:GetOwner():GetNWEntity("Cart") == v:GetNWEntity("Cart") then
+				data.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
+				self:Remove()
+				return
+			end
+		end	
 	end
 end
 

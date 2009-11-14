@@ -7,7 +7,7 @@ function GM:HUDShouldDraw(Name)
 	end	
 	return true
 end
-
+mk_CanItem = true 
 function GM:HUDPaint()
 	local SW = ScrW()
 	local SH = ScrH()
@@ -23,13 +23,15 @@ function GM:HUDPaint()
 end
 
 function GM:Think()
-	if LocalPlayer():KeyPressed(IN_USE)  then
+	if LocalPlayer():KeyPressed(IN_USE) && mk_CanItem  then
 		RunConsoleCommand("mk_FireItem")
+		mk_CanItem = false
+		timer.Simple(0.3, function() mk_CanItem = true end)
 	end
 end
 
 function GM:CalcView( ply, origin, angles, fov )
-	local phys = LocalPlayer():GetNWEntity("Cart")
+	local phys = LocalPlayer():GetNWEntity("Cart") or ply
 	if ( !phys ) then return end
 	
 	LastViewYaw = LastViewYaw or phys:GetAngles().yaw
