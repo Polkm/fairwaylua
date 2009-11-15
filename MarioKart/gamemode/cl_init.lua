@@ -41,11 +41,11 @@ function GM:HUDPaint()
 	
 	if client:GetNWString("Item") != "empty" then
 		if mk_ItemBoxy < (20)  then
-			mk_ItemBoxy = mk_ItemBoxy + 1
+			mk_ItemBoxy = mk_ItemBoxy + 2
 		end
 	else
 		if mk_ItemBoxy > (-128) then
-			mk_ItemBoxy = mk_ItemBoxy - 1
+			mk_ItemBoxy = mk_ItemBoxy - 2
 		end
 	end
 	surface.SetTexture(surface.GetTextureID("gmodcart/items/mk_box"))
