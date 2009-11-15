@@ -1,0 +1,5 @@
+"UnlitGeneric"
+{
+	"$basetexture" "gmodcart/items/mk_3mushrooms"
+	"$translucent" 1
+}

@@ -1,0 +1,5 @@
+"UnlitGeneric"
+{
+	"$basetexture" "gmodcart/items/mk_redshell"
+	"$translucent" 1
+}

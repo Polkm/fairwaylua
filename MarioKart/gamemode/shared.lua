@@ -20,7 +20,7 @@ GM.mk_Items["item_koopashell_green"] = {
 Name = "Green Shell",
 Model = "models/gmodcart/items/koopashell.mdl",
 Skin = 0,
-Material = "",
+Material = "gmodcart/items/mk_greenshell",
 SpawnFunction = function(ply)
 	local item = ents.Create("ent_projectile")
 	local cart = ply:GetNWEntity("Cart")
@@ -43,6 +43,7 @@ UseFunction = function(self)
 		self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 		self.Entity:GetPhysicsObject():ApplyForceCenter(cart:GetAngles():Forward() + cart:GetAngles():Forward() * 1200)
 		self:GetOwner():SetNWEntity("activeitem","none")
+		self.Activated = true
 		timer.Simple(1, function()
 		constraint.RemoveAll(self.Entity)
 		timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
@@ -55,7 +56,7 @@ GM.mk_Items["item_koopashell_red"] = {
 Name = "Red Shell",
 Model = "models/gmodcart/items/koopashell.mdl",
 Skin = 1,
-Material = "",
+Material = "gmodcart/items/mk_redshell",
 SpawnFunction = function(ply)
 	local item = ents.Create("ent_projectile")
 	local cart = ply:GetNWEntity("Cart")
@@ -102,7 +103,7 @@ WipeOutType = "Explode",
 Name = "Blue Shell",
 Model = "models/gmodcart/items/koopashell.mdl",
 Skin = 2,
-Material = "",
+Material = "gmodcart/items/mk_blueshells",
 SpawnFunction = function(ply)
 	local item = ents.Create("ent_projectile")
 	local cart = ply:GetNWEntity("Cart")
@@ -125,76 +126,7 @@ UseFunction = function(self)
 		self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 		self.Entity:GetPhysicsObject():ApplyForceCenter(cart:GetAngles():Forward() + cart:GetAngles():Forward() * 1200)
 		self:GetOwner():SetNWEntity("activeitem","none")
-		timer.Simple(1, function()
-		constraint.RemoveAll(self.Entity)
-		timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
-		end)
-	end,
-WipeOutType = "Explode",
-}*/
------------------
-/*GM.mk_Items["item_multi_koopashell_green"] = {
-Name = "Blue Shell",
-Model = "models/gmodcart/items/koopashell.mdl",
-Skin = 1,
-Material = "",
-SpawnFunction = function(ply)
-	local item = ents.Create("ent_projectile")
-	local cart = ply:GetNWEntity("Cart")
-	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
-	item:SetModel("models/gmodcart/items/koopashell.mdl")
-	item:SetOwner(ply)
-	item:Spawn()
-	item:SetParent(cart)
-	item:PhysicsInit(SOLID_VPHYSICS)
-	item:GetPhysicsObject():SetMaterial("gmod_ice")
-	return item
-end,
-UseFunction = function(self)
-		local cart = self:GetOwner():GetNWEntity("Cart")
-		self:SetParent(nil)
-		self.Entity:PhysicsInitSphere( 8.1, "metal_bouncy" )
-		self.Entity:GetPhysicsObject():Wake()
-		constraint.NoCollide(self.Entity,cart,0,0)
-		self:SetAngles(cart:GetAngles())
-		self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
-		self.Entity:GetPhysicsObject():ApplyForceCenter(cart:GetAngles():Forward() + cart:GetAngles():Forward() * 1200)
-		self:GetOwner():SetNWEntity("activeitem","none")
-		timer.Simple(1, function()
-		constraint.RemoveAll(self.Entity)
-		timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
-		end)
-	end,
-WipeOutType = "Explode",
-}*/
------------------
-/*GM.mk_Items["item_multi_koopashell_red"] = {
-Name = "Blue Shell",
-Model = "models/gmodcart/items/koopashell.mdl",
-Skin = 2,
-Material = "",
-SpawnFunction = function(ply)
-	local item = ents.Create("ent_projectile")
-	local cart = ply:GetNWEntity("Cart")
-	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
-	item:SetModel("models/gmodcart/items/koopashell.mdl")
-	item:SetOwner(ply)
-	item:Spawn()
-	item:SetParent(cart)
-	item:PhysicsInit(SOLID_VPHYSICS)
-	item:GetPhysicsObject():SetMaterial("gmod_ice")
-	return item
-end,
-UseFunction = function(self)
-		local cart = self:GetOwner():GetNWEntity("Cart")
-		self:SetParent(nil)
-		self.Entity:PhysicsInitSphere( 8.1, "metal_bouncy" )
-		self.Entity:GetPhysicsObject():Wake()
-		constraint.NoCollide(self.Entity,cart,0,0)
-		self:SetAngles(cart:GetAngles())
-		self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
-		self.Entity:GetPhysicsObject():ApplyForceCenter(cart:GetAngles():Forward() + cart:GetAngles():Forward() * 1200)
-		self:GetOwner():SetNWEntity("activeitem","none")
+		self.Activated = true
 		timer.Simple(1, function()
 		constraint.RemoveAll(self.Entity)
 		timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
@@ -207,6 +139,7 @@ GM.mk_Items["item_banana"] = {
 Name = "Banana",
 Model = "models/props/cs_italy/bananna.mdl",
 Skin = 1,
+Material = "gmodcart/items/mk_banana",
 SpawnFunction = function(ply)
 	local item = ents.Create("ent_projectile")
 	local cart = ply:GetNWEntity("Cart")
@@ -216,6 +149,7 @@ SpawnFunction = function(ply)
 	item:Spawn()
 	item:SetParent(cart)
 	item:PhysicsInit(SOLID_VPHYSICS)
+	self.Activated = true
 	return item
 end,
 UseFunction = function(self)
@@ -229,37 +163,4 @@ UseFunction = function(self)
 WipeOutType = "Spin",
 
 }
------------------
-/*GM.mk_Items["item_multi_banana"] = {
-Name = "Multibanana",
-Model = "models/gmodcart/items/koopashell.mdl",
-Skin = 1,
-Material = "",
-SpawnFunction = function(ply)
-	local item = ents.Create("ent_projectile")
-	local cart = ply:GetNWEntity("Cart")
-	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
-	item:SetModel("models/gmodcart/items/koopashell.mdl")
-	item:SetOwner(ply)
-	item:Spawn()
-	item:SetParent(cart)
-	item:PhysicsInit(SOLID_VPHYSICS)
-	item:GetPhysicsObject():SetMaterial("gmod_ice")
-	return item
-end,
-UseFunction = function(self)
-		local cart = self:GetOwner():GetNWEntity("Cart")
-		self:SetParent(nil)
-		self.Entity:GetPhysicsObject():Wake()
-		constraint.NoCollide(self.Entity,cart,0,0)
-		self:SetAngles(cart:GetAngles())
-		self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
-		self:GetOwner():SetNWEntity("activeitem","none")
-		timer.Simple(1, function()
-		constraint.RemoveAll(self.Entity)
-		timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
-		end)
-	end,
-WipeOutType = "Spin",
-}*/
------------------
+---------------------------

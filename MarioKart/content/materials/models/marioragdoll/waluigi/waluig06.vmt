@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\marioragdoll\waluigi\/waluig06"
+	"$halflambert" 1
+}
