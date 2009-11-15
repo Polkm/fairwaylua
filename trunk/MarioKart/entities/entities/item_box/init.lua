@@ -39,7 +39,7 @@ function ENT:Spin()
 end
 
 
-//timer.Create("BoxSpin",0.05,0, function() for k,v in pairs(ents.FindByClass("item_box")) do v:Spin() end end)
+timer.Create("BoxSpin",0.05,0, function() for k,v in pairs(ents.FindByClass("item_box")) do v:Spin() end end)
 
 function ENT:OnTakeDamage(dmginfo)
 end

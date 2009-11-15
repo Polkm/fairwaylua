@@ -28,8 +28,8 @@ function ENT:UseItem()
 end
 
 function ENT:PhysicsCollide(data,physobj)
-	if data.HitEntity:IsWorld() then
-		if self.class == "item_koopashell_red" && self.Activated then 
+	if data.HitEntity:IsWorld() && self.Activated then
+		if self.class == "item_koopashell_red"  then 
 			if data.Speed && math.abs(data.HitPos.z - self:GetPos().z) < 1 then
 				self:Remove()
 			end
@@ -45,7 +45,7 @@ function ENT:PhysicsCollide(data,physobj)
 		physobj:SetVelocity( TargetVelocity )
 	else
 		for k,v in pairs(player.GetAll()) do
-			if data.HitEntity:GetOwner():GetNWEntity("Cart") == v:GetNWEntity("Cart") then
+			if data.HitEntity:GetOwner():GetNWEntity("Cart") == v:GetNWEntity("Cart") && data.HitEntity:GetClass() == v:GetNWEntity("Cart"):GetClass() && self.Activated then
 				data.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
 				self:Remove()
 				return
@@ -94,8 +94,8 @@ function ENT:PhysicsUpdate(phys)
 end
 
 function ENT:Think()
-	if self.class == "item_koopashell_red" then 
-		if self.Activated then
+	if self.Activated then
+		if self.class == "item_koopashell_red" then 
 			self.Entity:GetPhysicsObject():ApplyForceCenter((self.target:GetPos() - self.Entity:GetPos()) * 3)
 		end
 	end
