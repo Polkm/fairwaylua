@@ -52,7 +52,7 @@ function GM:HUDPaint()
 	surface.SetDrawColor(255,255,255,255)
 	surface.DrawTexturedRect(mk_ItemBoxx, mk_ItemBoxy ,128,128)
 	if client:GetNWString("Item") != "empty" then
-		if GAMEMODE.mk_Items[client:GetNWString("Item")].Material == nil then
+		if GAMEMODE.mk_Items[client:GetNWString("Item")] && GAMEMODE.mk_Items[client:GetNWString("Item")].Material == nil then
 			ModelIcon:SetPos(SW / 2,20)
 			ModelIcon:SetSize(100,100)
 			ModelEnt:SetModel(GAMEMODE.mk_Items[client:GetNWString("Item")].Model)
@@ -63,9 +63,11 @@ function GM:HUDPaint()
 			ModelIcon:SetLookAt(center)
 			ModelIcon:SetCamPos(center+Vector(dist,dist,0))	
 		else
-			surface.SetTexture(surface.GetTextureID(GAMEMODE.mk_Items[client:GetNWString("Item")].Material))
-			surface.SetDrawColor(255,255,255,255)
-			surface.DrawTexturedRect(mk_ItemBoxx + 14, mk_ItemBoxy + 14,100,100)
+			if GAMEMODE.mk_Items[client:GetNWString("Item")] then
+				surface.SetTexture(surface.GetTextureID(GAMEMODE.mk_Items[client:GetNWString("Item")].Material))
+				surface.SetDrawColor(255,255,255,255)
+				surface.DrawTexturedRect(mk_ItemBoxx + 14, mk_ItemBoxy + 14,100,100)
+			end
 		end
 	end
 	

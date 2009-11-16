@@ -15,13 +15,12 @@ GM.PosibleColors["purple"] = "models/gmodcart/CartBody_purple"
 GM.PosibleColors["pink"] = "models/gmodcart/CartBody_pink"
 
 GM.mk_Items = {}
-
-GM.mk_Items["item_koopashell_green"] = {
-Name = "Green Shell",
-Model = "models/gmodcart/items/koopashell.mdl",
-Skin = 0,
-Material = "gmodcart/items/mk_greenshell",
-SpawnFunction = function(ply)
+local tblNewItem = {}
+tblNewItem.Name = "Green Shell"
+tblNewItem.Model = "models/gmodcart/items/koopashell.mdl"
+tblNewItem.Skin = 0
+tblNewItem.Material = "gmodcart/items/mk_greenshell"
+tblNewItem.SpawnFunction = function(ply)
 	local item = ents.Create("ent_projectile")
 	local cart = ply:GetNWEntity("Cart")
 	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
@@ -32,8 +31,8 @@ SpawnFunction = function(ply)
 	item:PhysicsInit(SOLID_VPHYSICS)
 	item:GetPhysicsObject():SetMaterial("gmod_ice")
 	return item
-end,
-UseFunction = function(self)
+end
+tblNewItem.UseFunction = function(self)
 		local cart = self:GetOwner():GetNWEntity("Cart")
 		self:SetParent(nil)
 		self.Entity:PhysicsInitSphere( 8.1, "metal_bouncy" )
@@ -48,9 +47,10 @@ UseFunction = function(self)
 		constraint.RemoveAll(self.Entity)
 		timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
 		end)
-	end,
-WipeOutType = "Explode",
-}
+	end
+tblNewItem.WipeOutType = "Explode"
+GM.mk_Items["item_koopashell_green"] = tblNewItem
+
 -----------------
 GM.mk_Items["item_koopashell_red"] = {
 Name = "Red Shell",
@@ -149,7 +149,7 @@ SpawnFunction = function(ply)
 	item:Spawn()
 	item:SetParent(cart)
 	item:PhysicsInit(SOLID_VPHYSICS)
-	self.Activated = true
+	item.Activated = true
 	return item
 end,
 UseFunction = function(self)
