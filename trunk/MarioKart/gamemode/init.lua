@@ -47,20 +47,22 @@ function GM:Tick()
 		for place, otherPlayer in pairs(tblPlayerTable) do
 			if player:GetNWInt("Lap") > otherPlayer:GetNWInt("Lap") then
 				intPlace = place
-			elseif player:GetNWInt("CheckPoint") > otherPlayer:GetNWInt("CheckPoint") then
-				intPlace = place
-			elseif player:GetNWInt("CheckPoint") == otherPlayer:GetNWInt("CheckPoint") then
-				local entCheckPoint = GAMEMODE.CheckPointEnts[player:GetNWInt("CheckPoint")] or GAMEMODE.CheckPointEnts[1]
-				entCheckPoint = entCheckPoint.Target
-				local entPlayerCart = player:GetNWEntity("Cart")
-				local entOtherPlayerCart = otherPlayer:GetNWEntity("Cart")
-				if entPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) <= entOtherPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) then
+			else
+				if player:GetNWInt("CheckPoint") > otherPlayer:GetNWInt("CheckPoint") then
 					intPlace = place
-				elseif entPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) > entOtherPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) then
+				elseif player:GetNWInt("CheckPoint") == otherPlayer:GetNWInt("CheckPoint") then
+					local entCheckPoint = GAMEMODE.CheckPointEnts[player:GetNWInt("CheckPoint")] or GAMEMODE.CheckPointEnts[1]
+					entCheckPoint = entCheckPoint.Target
+					local entPlayerCart = player:GetNWEntity("Cart")
+					local entOtherPlayerCart = otherPlayer:GetNWEntity("Cart")
+					if entPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) <= entOtherPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) then
+						intPlace = place
+					elseif entPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) > entOtherPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) then
+						intPlace = place + 1
+					end
+				elseif player:GetNWInt("CheckPoint") < otherPlayer:GetNWInt("CheckPoint") then
 					intPlace = place + 1
 				end
-			elseif player:GetNWInt("CheckPoint") < otherPlayer:GetNWInt("CheckPoint") then
-				intPlace = place + 1
 			end
 		end
 		table.insert(tblPlayerTable, intPlace, player)
