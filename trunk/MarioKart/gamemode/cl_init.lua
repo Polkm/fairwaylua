@@ -3,6 +3,9 @@ include('cl_ghost.lua')
 
 function GM:Initialize()
 	ModelIcon = vgui.Create("DModelPanel")
+	timer.Simple(0.5, function()
+		GAMEMODE:DrawPlacesPanel()
+	end)
 end
 
 function GM:HUDShouldDraw(Name)
@@ -11,7 +14,6 @@ function GM:HUDShouldDraw(Name)
 	end	
 	return true
 end
-
 
 local mk_ItemBoxx = ScrW()/2 - 64
 local mk_ItemBoxy = -128
@@ -38,7 +40,6 @@ function GM:HUDPaint()
 	surface.DrawText("Lap " .. client:GetNWInt("Lap"))
 	
 	--item display
-	
 	if client:GetNWString("Item") != "empty" then
 		if mk_ItemBoxy < (20)  then
 			mk_ItemBoxy = mk_ItemBoxy + 2
@@ -103,7 +104,56 @@ function GM:CalcView( ply, origin, angles, fov )
 	view.angles		= Angle( 10, LastViewYaw - distance * 1.25, distance*0.1 ) 
 	view.fov 		= 90
 	return view
+end
 
+function GM:DrawPlacesPanel()
+	local intNumberPlayer = #player.GetAll()
+	local intCurrentPlace = 1
+	local intMaxPlaces = 5
+	local intYOffset = 15
+	local intYOffsetEach = 50
+	local PlacesPanel = vgui.Create("DPanel")
+	PlacesPanel:SetPos(20, 100)
+	PlacesPanel:SetSize(300, intMaxPlaces * intYOffsetEach + 20)
+	PlacesPanel.Paint = function() end
+	for i = 1, intMaxPlaces do
+		local plyFoundPlayer = GAMEMODE:FindPlayer(intCurrentPlace)
+		local PlaceText = vgui.Create("DLabel", PlacesPanel)
+		PlaceText:SetPos(5, intYOffset)
+		PlaceText:SetFont("HUDNumber")
+		PlaceText:SetColor(Color(255, 255, 255, 255))
+		PlaceText:SetText(intCurrentPlace)
+		
+		local AvitarImage = vgui.Create("AvatarImage", PlacesPanel)
+		AvitarImage:SetPos(30, intYOffset - 5)
+		AvitarImage:SetSize(32, 32)
+		AvitarImage:SetPlayer(plyFoundPlayer)
+		
+		local NameText = vgui.Create("DLabel", PlacesPanel)
+		NameText:SetPos(70, intYOffset)
+		NameText:SetSize(300, 20)
+		NameText:SetFont("Trebuchet24")
+		NameText:SetColor(Color(255, 255, 255, 255))
+		NameText:SetText(plyFoundPlayer:Nick())
+		
+		intYOffset = intYOffset + intYOffsetEach
+		intCurrentPlace = intCurrentPlace + 1
+		if intNumberPlayer < intCurrentPlace then break end
+	end
+	timer.Simple(0.5, function() GAMEMODE:UpdatelacesPanel(PlacesPanel) end)
+end
+
+function GM:UpdatelacesPanel(PlacesPanel)
+	PlacesPanel:Remove()
+	GAMEMODE:DrawPlacesPanel()
+end
+
+function GM:FindPlayer(intPlace)
+	for _, player in pairs(player.GetAll()) do
+		if player:GetNWInt("Place") == intPlace then
+			return player
+		end
+	end
 end
 
 

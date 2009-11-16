@@ -13,7 +13,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWInt("Lap", 1)
 	ply:SetNWInt("Place",1)
 	--ply:SetNWString("item","item_koopashell_red")
-	ply:SetNWString("item","item_banana")
+	ply:SetNWString("item","empty")
 	ply.CanJump = true
 	ply:SetNWEntity("activeitem", "none")
 	GAMEMODE:SetPlayerSpeed(ply,0,0)
