@@ -135,6 +135,10 @@ function ENT:PhysicsSimulate(phys, deltatime)
 	local AngleFriction = phys:GetAngleVelocity() * -1.1
 	local Angular = (AngleFriction + Vector(0, 0, intYaw)) * deltatime * 250
 	
+	if self:GetOwner().SlowDown && self:GetOwner().CanSlowDown then 
+		Linear =  Linear/2
+	end
+	
 	return Angular, Linear, SIM_LOCAL_ACCELERATION
 end
 
@@ -150,7 +154,7 @@ end
 function ENT:GetForwardAcceleration(driver, phys, vecForwardVel)
 	if !driver || !driver:IsValid() then return 0 end
 	if !self:GetOwner().wipeout then
-		if driver:KeyDown(IN_FORWARD) then return 250 end
+		if driver:KeyDown(IN_FORWARD) then return self:GetOwner().Forward end
 		if driver:KeyDown(IN_BACK) then return -150 end
 	end
 	return 0

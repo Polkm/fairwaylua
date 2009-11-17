@@ -21,8 +21,10 @@ tblNewItem.Model = "models/gmodcart/items/koopashell.mdl"
 tblNewItem.Skin = 0
 tblNewItem.Material = "gmodcart/items/mk_greenshell"
 tblNewItem.SpawnFunction = function(ply)
+	local Itemtype = ply:GetNWString("item")
 	local item = ents.Create("ent_projectile")
 	local cart = ply:GetNWEntity("Cart")
+	item.class = Itemtype
 	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 	item:SetModel("models/gmodcart/items/koopashell.mdl")
 	item:SetOwner(ply)
@@ -30,7 +32,7 @@ tblNewItem.SpawnFunction = function(ply)
 	item:SetParent(cart)
 	item:PhysicsInit(SOLID_VPHYSICS)
 	item:GetPhysicsObject():SetMaterial("gmod_ice")
-	return item
+	item:GetOwner():SetNWEntity("activeitem",item)
 end
 tblNewItem.UseFunction = function(self)
 		local cart = self:GetOwner():GetNWEntity("Cart")
@@ -58,8 +60,10 @@ Model = "models/gmodcart/items/koopashell.mdl",
 Skin = 1,
 Material = "gmodcart/items/mk_redshell",
 SpawnFunction = function(ply)
+	local Itemtype = ply:GetNWString("item")
 	local item = ents.Create("ent_projectile")
 	local cart = ply:GetNWEntity("Cart")
+	item.class = Itemtype
 	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 	item:SetModel("models/gmodcart/items/koopashell.mdl")
 	item:SetOwner(ply)
@@ -68,7 +72,7 @@ SpawnFunction = function(ply)
 	item:SetParent(cart)
 	item:PhysicsInit(SOLID_VPHYSICS)
 	item:GetPhysicsObject():SetMaterial("gmod_ice")
-	return item
+	item:GetOwner():SetNWEntity("activeitem",item)
 end,
 UseFunction = function(self)
 		local cart = self:GetOwner():GetNWEntity("Cart")
@@ -105,8 +109,10 @@ Model = "models/gmodcart/items/koopashell.mdl",
 Skin = 2,
 Material = "gmodcart/items/mk_blueshells",
 SpawnFunction = function(ply)
+	local Itemtype = ply:GetNWString("item")
 	local item = ents.Create("ent_projectile")
 	local cart = ply:GetNWEntity("Cart")
+	item.class = Itemtype
 	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 	item:SetModel("models/gmodcart/items/koopashell.mdl")
 	item:SetOwner(ply)
@@ -114,7 +120,7 @@ SpawnFunction = function(ply)
 	item:SetParent(cart)
 	item:PhysicsInit(SOLID_VPHYSICS)
 	item:GetPhysicsObject():SetMaterial("gmod_ice")
-	return item
+	item:GetOwner():SetNWEntity("activeitem",item)
 end,
 UseFunction = function(self)
 		local cart = self:GetOwner():GetNWEntity("Cart")
@@ -141,8 +147,10 @@ Model = "models/props/cs_italy/bananna.mdl",
 Skin = 1,
 Material = "gmodcart/items/mk_banana",
 SpawnFunction = function(ply)
+	local Itemtype = ply:GetNWString("item")
 	local item = ents.Create("ent_projectile")
 	local cart = ply:GetNWEntity("Cart")
+	item.class = Itemtype
 	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 	item:SetModel("models/props/cs_italy/bananna.mdl")
 	item:SetOwner(ply)
@@ -150,7 +158,7 @@ SpawnFunction = function(ply)
 	item:SetParent(cart)
 	item:PhysicsInit(SOLID_VPHYSICS)
 	item.Activated = true
-	return item
+	item:GetOwner():SetNWEntity("activeitem",item)
 end,
 UseFunction = function(self)
 		local cart = self:GetOwner():GetNWEntity("Cart")
@@ -162,5 +170,28 @@ UseFunction = function(self)
 	end,
 WipeOutType = "Spin",
 
+}
+---------------------------
+GM.mk_Items["item_star"] = {
+Name = "Star Power",
+Material = "gmodcart/items/mk_star",
+SpawnFunction = function(ply)
+	ply.CanSlowDown = false
+	ply.Forward = ply.Forward * 1.25
+	timer.Simple(2, function() ply.CanSlowDown = true ply.Forward = (ply.Forward - ply.Forward * 0.25)  end)
+	ply:GetOwner():SetNWEntity("activeitem","none")
+end,
+WipeOutType = "Explode",
+
+}
+---------------------------
+GM.mk_Items["item_mushroom"] = {
+Material = "gmodcart/items/mk_mushroom",
+SpawnFunction = function(ply)
+	ply.CanSlowDown = false
+	ply.Forward = ply.Forward * 2
+	timer.Simple(2, function() ply.CanSlowDown = true ply.Forward = ply.Forward / 2 end)
+	ply:GetOwner():SetNWEntity("activeitem","none")
+end,
 }
 ---------------------------

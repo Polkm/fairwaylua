@@ -43,6 +43,7 @@ end
 function ENT:OnTakeDamage(dmginfo)
 end
 function ENT:StartTouch(ent)
+	if ent:GetOwner():IsPlayer() && ent:GetOwner():GetNWEntity("Cart") != ent then return end
 	local oldpose = self:GetPos()
 	self:Remove()
 	self.QuestionMark:Remove()
@@ -50,7 +51,7 @@ function ENT:StartTouch(ent)
 		if ent:GetOwner():GetNWEntity("Cart") == ent then
 			local ply = ent:GetOwner()
 			if ply:GetNWString("item") == "empty" then
-				local itemtable = {"item_koopashell_green",
+				local itemtable = {"item_mushroom",
 				"item_koopashell_red",
 				"item_banana",
 				}
@@ -61,3 +62,4 @@ function ENT:StartTouch(ent)
 	end
 	timer.Simple(10,function()	local box = ents.Create("item_box")	box:SetPos(oldpose) box:Spawn()  end)
 end
+
