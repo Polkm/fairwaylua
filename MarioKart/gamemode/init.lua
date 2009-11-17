@@ -16,9 +16,11 @@ function GM:Initialize()
 end
 
 function GM:StartPrep()
-	GAMEMODE.GameModeState = "PREP"
-	timer.Simple(30, function()
-		
+	SetGlobalString("GameModeState", "PREP")
+	SetGlobalInt("CountDown", 10)
+	timer.Create("mk_CountDown",1,0, function() SetGlobalInt("CountDown",GetGlobalInt("CountDown") - 1) if GetGlobalInt("CountDown") <= 0 then GAMEMODE:StartRace() timer.Destroy("mk_CountDown") end end)
+	timer.Simple(GetGlobalInt("CountDown") - 5, function()
+		GAMEMODE:PositionRacers()
 	end)
 end
 
@@ -29,7 +31,9 @@ function GM:PositionRacers()
 end
 
 function GM:StartRace()
-	GAMEMODE.GameModeState = "RACE"
+	SetGlobalInt("GameModeTime",0)
+	timer.Create("mk_GameModeTimer",0.1,0,function() SetGlobalInt("GameModeTime",GetGlobalInt("GameModeTime") + 0.1) end)
+	SetGlobalString("GameModeState", "START")
 end
 
 function GM:Tick()

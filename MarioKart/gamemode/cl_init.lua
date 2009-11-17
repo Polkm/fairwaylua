@@ -2,6 +2,8 @@ include('shared.lua')
 include('cl_ghost.lua')
 
 function GM:Initialize()
+	RunConsoleCommand("gm_clearfonts")
+	surface.CreateFont("coolvetica", ScreenScale(120), ScreenScale(120), true, false, "HudScaled")
 	ModelIcon = vgui.Create("DModelPanel")
 	timer.Simple(0.5, function()
 		GAMEMODE:DrawPlacesPanel()
@@ -38,7 +40,15 @@ function GM:HUDPaint()
 	surface.SetTextColor(255, 255, 255, 255)
 	surface.SetTextPos(SW / 4, 20)
 	surface.DrawText("Lap " .. client:GetNWInt("Lap"))
-	
+	surface.SetTextPos(SW / 1.5, 20)
+	surface.DrawText(string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10))
+	if GetGlobalInt("CountDown") <= 3 && GetGlobalInt("CountDown") > 0 then 
+		surface.SetFont("HudScaled")
+		local x,y = surface.GetTextSize(GetGlobalInt("CountDown"))
+		surface.SetTextPos(SW/2 - x/2  ,SH/2 - y/2)
+		surface.DrawText(GetGlobalInt("CountDown"))
+	end
+	surface.SetFont("HUDNumber")
 	--item display
 	if client:GetNWString("Item") != "empty" then
 		if mk_ItemBoxy < (20)  then
