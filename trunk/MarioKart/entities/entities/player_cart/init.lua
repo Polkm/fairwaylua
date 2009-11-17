@@ -78,12 +78,13 @@ function ENT:Wipeout(strType)
 		end)
 	end
 end
-function ENT:Hazard()
+function ENT:Think()
 end
 function ENT:Wipeout_Explode()
 end
 
 function ENT:PhysicsSimulate(phys, deltatime)
+	if GetGlobalString("GameModeState") == "PREP" then return end
 	local vecUp = phys:GetAngle():Up()
 	local tblTrace = {}
 	tblTrace.start = self:GetPos()

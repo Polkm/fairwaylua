@@ -178,7 +178,10 @@ Material = "gmodcart/items/mk_star",
 SpawnFunction = function(ply)
 	ply.CanSlowDown = false
 	ply.Forward = ply.Forward * 1.25
-	timer.Simple(2, function() ply.CanSlowDown = true ply.Forward = (ply.Forward - ply.Forward * 0.25)  end)
+	ply.StarPower = true
+	timer.Create(ply:Nick().."StarTimer",0.25, 60,function() 	ply:GetNWEntity("Cart").BodyFrame:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),255) ply:GetNWEntity("Cart").Ragdoll:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),255) end)
+	timer.Simple(15, function() timer.Destroy(ply:Nick().."StarTimer") ply:GetNWEntity("Cart").BodyFrame:SetColor(255,255,255,255) ply:GetNWEntity("Cart").Ragdoll:SetColor(255,255,255,255)
+	ply.StarPower = false ply.CanSlowDown = true ply.Forward = (ply.Forward - ply.Forward * 0.25)  end)
 	ply:GetOwner():SetNWEntity("activeitem","none")
 end,
 WipeOutType = "Explode",

@@ -52,7 +52,9 @@ function ENT:StartTouch(ent)
 			local ply = ent:GetOwner()
 			if ply:GetNWString("item") == "empty" then
 				local itemtable = {"item_mushroom",
+				"item_star",
 				"item_koopashell_red",
+				"item_koopashell_green",
 				"item_banana",
 				}
 				
