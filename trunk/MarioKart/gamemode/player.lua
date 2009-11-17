@@ -20,8 +20,11 @@ function GM:PlayerSpawn(ply)
 	cart:SetPos(ply:GetPos())
 	cart:SetAngles(ply:GetAngles())
 	ply.wipeout = false
-	ply:SetNoDraw(true)
+	ply.CanSlowDown = true
+	ply.Forward = 250
+	//ply:SetNoDraw(true)
 	ply:SetPos(Vector(0,0,0))
+	//ply:SetParent(cart)
 end
 
 function GM:SetPlayerColor(ply, strColor)
@@ -36,8 +39,7 @@ end)
 function GM:FireItem(ply)
 	local item = ply:GetNWString("item")
 	if ply:GetNWEntity("activeitem") == "none" && item != "empty" then
-		ply:SetNWEntity("activeitem",GAMEMODE.mk_Items[item].SpawnFunction(ply))
-		ply:GetNWEntity("activeitem").class = item
+		GAMEMODE.mk_Items[item].SpawnFunction(ply)
 		ply:SetNWString("item", "empty")
 		return
 	elseif ply:GetNWEntity("activeitem") != "none" then

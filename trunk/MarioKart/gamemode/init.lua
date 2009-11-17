@@ -13,27 +13,19 @@ function GM:Initialize()
 	util.PrecacheModel("models/gmodcart/base_cart_wheel.mdl")
 	util.PrecacheModel("models/gmodcart/regular_cart_steerwheel.mdl")
 	GAMEMODE:StartPrep()
-	timer.Simple(3, function()
-		local box = ents.Create("item_box")
-	box:SetPos(Vector(0, -1500, 40))
-	box:Spawn()
-	box = ents.Create("item_box")
-	box:SetPos(Vector(-160, -1500, 40))
-	box:Spawn()
-	box = ents.Create("item_box")
-	box:SetPos(Vector(160, -1500, 40))
-	box:Spawn()
-	box = ents.Create("item_box")
-	box:SetPos(Vector(-320, -1500, 40))
-	box:Spawn()
-	end)
 end
 
 function GM:StartPrep()
 	GAMEMODE.GameModeState = "PREP"
-	timer.Simple(20, function()
+	timer.Simple(30, function()
 		
 	end)
+end
+
+function GM:PositionRacers()
+	for k,v in pairs(player.GetAll()) do
+		v:Spawn()
+	end
 end
 
 function GM:StartRace()
