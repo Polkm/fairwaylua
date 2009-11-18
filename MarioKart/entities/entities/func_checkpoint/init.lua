@@ -42,9 +42,14 @@ function ENT:StartTouch(ent)
 				local intMaxLaps = self.Max or 5
 				if self.Finish && plyOwner:GetNWInt("CheckPoint") >= intMaxLaps then
 					plyOwner:SetNWInt("CheckPoint", 2)
-					plyOwner:SetNWInt("Lap", plyOwner:GetNWInt("Lap") + 1)
+					if GAMEMODE.WinLaps <= plyOwner:GetNWInt("Lap") then
+						GAMEMODE:StartPrep()
+						print("FINISHED!")
+					else
+						plyOwner:SetNWInt("Lap", plyOwner:GetNWInt("Lap") + 1)
+						print("LAP!")
+					end
 					//plyOwner:ConCommand("mk_stopRecording")
-					print("LAP!")
 				end
 			end
 			

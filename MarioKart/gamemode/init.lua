@@ -5,7 +5,8 @@ include("shared.lua")
 include("player.lua")
 GM.PlayerSpawnTime = {}
 GM.CheckPointEnts = {}
-GM.GameModeState = "PREP"
+GM.PrepTime = 10
+GM.WinLaps = 3
 
 function GM:Initialize()
 	util.PrecacheModel("models/marioragdoll/SuperMarioGalaxy/mario/mario.mdl")
@@ -17,9 +18,18 @@ end
 
 function GM:StartPrep()
 	SetGlobalString("GameModeState", "PREP")
-	SetGlobalInt("CountDown", 10)
-	timer.Create("mk_CountDown",1,0, function() SetGlobalInt("CountDown",GetGlobalInt("CountDown") - 1) if GetGlobalInt("CountDown") <= 0 then GAMEMODE:StartRace() timer.Destroy("mk_CountDown") end end)
-	timer.Simple(GetGlobalInt("CountDown") - 5, function()
+	if timer.IsTimer("mk_GameModeTimer") then
+		timer.Destroy("mk_GameModeTimer")
+	end
+	SetGlobalInt("CountDown", GAMEMODE.PrepTime)
+	timer.Create("mk_CountDown", 1, 0, function()
+		SetGlobalInt("CountDown", GetGlobalInt("CountDown") - 1)
+		if GetGlobalInt("CountDown") <= 0 then
+			GAMEMODE:StartRace()
+			timer.Destroy("mk_CountDown")
+		end
+	end)
+	timer.Simple(GAMEMODE.PrepTime / 2, function()
 		GAMEMODE:PositionRacers()
 	end)
 end
@@ -31,9 +41,9 @@ function GM:PositionRacers()
 end
 
 function GM:StartRace()
-	SetGlobalInt("GameModeTime",0)
-	timer.Create("mk_GameModeTimer",0.1,0,function() SetGlobalInt("GameModeTime",GetGlobalInt("GameModeTime") + 0.1) end)
-	SetGlobalString("GameModeState", "START")
+	SetGlobalString("GameModeState", "RACE")
+	SetGlobalInt("GameModeTime", 0)
+	timer.Create("mk_GameModeTimer", 0.1, 0, function() SetGlobalInt("GameModeTime", GetGlobalInt("GameModeTime") + 0.1) end)
 end
 
 function GM:Tick()
