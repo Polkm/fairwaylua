@@ -1,11 +1,16 @@
 include('shared.lua')
 include('cl_ghost.lua')
+include('cl_placespanel.lua')
 GM.HUDNoDraw = {}
 GM.HUDNoDraw[1] = "CHudHealth"
 GM.HUDNoDraw[2] = "CHudBattery"
 GM.HUDNoDraw[3] = "CHudSecondaryAmmo"
 GM.HUDNoDraw[4] = "CHudAmmo"
 
+local mk_ItemBoxx = (ScrW() / 2) - 64
+local mk_ItemBoxy = -128
+local mk_CanItem = true 
+local mk_Model = nil
 
 function GM:Initialize()
 	RunConsoleCommand("gm_clearfonts")
@@ -21,23 +26,18 @@ function GM:HUDShouldDraw(Name)
 	return true
 end
 
-local mk_ItemBoxx = ScrW()/2 - 64
-local mk_ItemBoxy = -128
-local mk_CanItem = true 
-
 function GM:HUDPaint()
 	local SW = ScrW()
 	local SH = ScrH()
 	local client = LocalPlayer()
-	if !Created then 
-		ModelEnt = ents.Create("prop_physics")
-		ModelEnt:SetAngles(Angle(0,0,0))
-		ModelEnt:SetPos(Vector(0,0,0))
-		ModelEnt:SetModel("models/gmodcart/items/koopashell.mdl")
-		ModelEnt:SetNoDraw(true)
-		ModelEnt:Spawn()
-		ModelEnt:Activate()
-		Created = true
+	if !mk_Model then 
+		mk_Model = ents.Create("prop_physics")
+		mk_Model:SetAngles(Angle(0, 0, 0))
+		mk_Model:SetPos(Vector(0, 0, 0))
+		mk_Model:SetModel("models/gmodcart/items/koopashell.mdl")
+		mk_Model:SetNoDraw(true)
+		mk_Model:Spawn()
+		mk_Model:Activate()
 	end
 	surface.SetFont("HUDNumber")
 	surface.SetTextColor(255, 255, 255, 255)
@@ -69,11 +69,11 @@ function GM:HUDPaint()
 		if GAMEMODE.mk_Items[client:GetNWString("Item")] && GAMEMODE.mk_Items[client:GetNWString("Item")].Material == nil then
 			ModelIcon:SetPos(SW / 2,20)
 			ModelIcon:SetSize(100,100)
-			ModelEnt:SetModel(GAMEMODE.mk_Items[client:GetNWString("Item")].Model)
-			ModelEnt:SetSkin(GAMEMODE.mk_Items[client:GetNWString("Item")].Skin)
-			ModelIcon:SetEntity(ModelEnt)
-			local center = ModelEnt:OBBCenter()
-			local dist = ModelEnt:BoundingRadius()
+			mk_Model:SetModel(GAMEMODE.mk_Items[client:GetNWString("Item")].Model)
+			mk_Model:SetSkin(GAMEMODE.mk_Items[client:GetNWString("Item")].Skin)
+			ModelIcon:SetEntity(mk_Model)
+			local center = mk_Model:OBBCenter()
+			local dist = mk_Model:BoundingRadius()
 			ModelIcon:SetLookAt(center)
 			ModelIcon:SetCamPos(center+Vector(dist,dist,0))	
 		else
@@ -96,9 +96,9 @@ function GM:Think()
 	end
 end
 
-function GM:CalcView( ply, origin, angles, fov )
+function GM:CalcView(ply, origin, angles, fov)
 	local phys = LocalPlayer():GetNWEntity("Cart") or ply
-	if ( !phys ) then return end
+	if !phys then return end
 	
 	LastViewYaw = LastViewYaw or phys:GetAngles().yaw
 	
@@ -114,56 +114,3 @@ function GM:CalcView( ply, origin, angles, fov )
 	view.fov 		= 90
 	return view
 end
-
-function GM:DrawPlacesPanel()
-	local intNumberPlayer = #player.GetAll()
-	local intCurrentPlace = 1
-	local intMaxPlaces = 5
-	local intYOffset = 15
-	local intYOffsetEach = 50
-	local PlacesPanel = vgui.Create("DPanel")
-	PlacesPanel:SetPos(20, 100)
-	PlacesPanel:SetSize(300, intMaxPlaces * intYOffsetEach + 20)
-	PlacesPanel.Paint = function() end
-	for i = 1, intMaxPlaces do
-		local plyFoundPlayer = GAMEMODE:FindPlayer(intCurrentPlace)
-		local PlaceText = vgui.Create("DLabel", PlacesPanel)
-		PlaceText:SetPos(5, intYOffset)
-		PlaceText:SetFont("HUDNumber")
-		PlaceText:SetColor(Color(255, 255, 255, 255))
-		PlaceText:SetText(intCurrentPlace)
-		
-		local AvitarImage = vgui.Create("AvatarImage", PlacesPanel)
-		AvitarImage:SetPos(30, intYOffset - 5)
-		AvitarImage:SetSize(32, 32)
-		AvitarImage:SetPlayer(plyFoundPlayer)
-		
-		local NameText = vgui.Create("DLabel", PlacesPanel)
-		NameText:SetPos(70, intYOffset)
-		NameText:SetSize(300, 20)
-		NameText:SetFont("Trebuchet24")
-		NameText:SetColor(Color(255, 255, 255, 255))
-		NameText:SetText(plyFoundPlayer:Nick())
-		
-		intYOffset = intYOffset + intYOffsetEach
-		intCurrentPlace = intCurrentPlace + 1
-		if intNumberPlayer < intCurrentPlace then break end
-	end
-	timer.Simple(0.5, function() GAMEMODE:UpdatelacesPanel(PlacesPanel) end)
-end
-
-function GM:UpdatelacesPanel(PlacesPanel)
-	PlacesPanel:Remove()
-	GAMEMODE:DrawPlacesPanel()
-end
-
-function GM:FindPlayer(intPlace)
-	for _, player in pairs(player.GetAll()) do
-		if player:GetNWInt("Place") == intPlace then
-			return player
-		end
-	end
-end
-
-
-

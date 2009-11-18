@@ -1,5 +1,6 @@
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("cl_ghost.lua")
+AddCSLuaFile("cl_placespanel.lua")
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 include("player.lua")
