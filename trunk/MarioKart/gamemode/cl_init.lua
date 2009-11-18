@@ -1,26 +1,29 @@
 include('shared.lua')
 include('cl_ghost.lua')
+GM.HUDNoDraw = {}
+GM.HUDNoDraw[1] = "CHudHealth"
+GM.HUDNoDraw[2] = "CHudBattery"
+GM.HUDNoDraw[3] = "CHudSecondaryAmmo"
+GM.HUDNoDraw[4] = "CHudAmmo"
+
 
 function GM:Initialize()
 	RunConsoleCommand("gm_clearfonts")
 	surface.CreateFont("coolvetica", ScreenScale(120), ScreenScale(120), true, false, "HudScaled")
 	ModelIcon = vgui.Create("DModelPanel")
-	timer.Simple(0.5, function()
+	timer.Simple(0.1, function()
 		GAMEMODE:DrawPlacesPanel()
 	end)
 end
 
 function GM:HUDShouldDraw(Name)
-	if Name == "CHudHealth" or Name == "CHudBattery" or Name =="CHudSecondaryAmmo" or Name == "CHudAmmo" then
-		return false
-	end	
+	if table.HasValue(GAMEMODE.HUDNoDraw, Name) then return false end	
 	return true
 end
 
 local mk_ItemBoxx = ScrW()/2 - 64
 local mk_ItemBoxy = -128
-
-mk_CanItem = true 
+local mk_CanItem = true 
 
 function GM:HUDPaint()
 	local SW = ScrW()
@@ -81,10 +84,6 @@ function GM:HUDPaint()
 			end
 		end
 	end
-	
-	-----------
-	-- Position
-	
 	surface.SetTextPos(SW / 7, SH / 1.2)
 	surface.DrawText(LocalPlayer():GetNWInt("Place"))
 end
