@@ -84,7 +84,6 @@ function ENT:Wipeout_Explode()
 end
 
 function ENT:PhysicsSimulate(phys, deltatime)
-	if GetGlobalString("GameModeState") == "PREP" then return end
 	local vecUp = phys:GetAngle():Up()
 	local tblTrace = {}
 	tblTrace.start = self:GetPos()
@@ -154,7 +153,7 @@ end
 
 function ENT:GetForwardAcceleration(driver, phys, vecForwardVel)
 	if !driver || !driver:IsValid() then return 0 end
-	if !self:GetOwner().wipeout then
+	if !self:GetOwner().wipeout && GetGlobalString("GameModeState") == "RACE" then
 		if driver:KeyDown(IN_FORWARD) then return self:GetOwner().Forward end
 		if driver:KeyDown(IN_BACK) then return -150 end
 	end
@@ -171,7 +170,7 @@ end
 
 function ENT:GetTurnYaw(driver, phys, vecForwardVel)
 	if !driver || !driver:IsValid() then return 0 end
-	if !self:GetOwner().wipeout then
+	if !self:GetOwner().wipeout && GetGlobalString("GameModeState") == "RACE" then
 		if driver:KeyDown(IN_MOVELEFT) then return 100 end
 		if driver:KeyDown(IN_MOVERIGHT) then return -100 end
 	end
