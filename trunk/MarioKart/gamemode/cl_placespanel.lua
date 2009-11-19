@@ -1,27 +1,29 @@
+local mk_PlacesPanel = nil
+
 function GM:DrawPlacesPanel()
 	local intNumberPlayer = #player.GetAll()
 	local intCurrentPlace = 1
 	local intMaxPlaces = 5
 	local intYOffset = 15
 	local intYOffsetEach = 50
-	local PlacesPanel = vgui.Create("DPanel")
-	PlacesPanel:SetPos(20, 100)
-	PlacesPanel:SetSize(300, intMaxPlaces * intYOffsetEach + 20)
-	PlacesPanel.Paint = function() end
+	mk_PlacesPanel = vgui.Create("DPanel")
+	mk_PlacesPanel:SetPos(20, 100)
+	mk_PlacesPanel:SetSize(300, intMaxPlaces * intYOffsetEach + 20)
+	mk_PlacesPanel.Paint = function() end
 	for i = 1, intMaxPlaces do
 		local plyFoundPlayer = GAMEMODE:FindPlayer(intCurrentPlace)
-		local PlaceText = vgui.Create("DLabel", PlacesPanel)
+		local PlaceText = vgui.Create("DLabel", mk_PlacesPanel)
 		PlaceText:SetPos(5, intYOffset)
 		PlaceText:SetFont("HUDNumber")
 		PlaceText:SetColor(Color(255, 255, 255, 255))
 		PlaceText:SetText(intCurrentPlace)
 		
-		local AvitarImage = vgui.Create("AvatarImage", PlacesPanel)
+		local AvitarImage = vgui.Create("AvatarImage", mk_PlacesPanel)
 		AvitarImage:SetPos(30, intYOffset - 5)
 		AvitarImage:SetSize(32, 32)
 		AvitarImage:SetPlayer(plyFoundPlayer)
 		
-		local NameText = vgui.Create("DLabel", PlacesPanel)
+		local NameText = vgui.Create("DLabel", mk_PlacesPanel)
 		NameText:SetPos(70, intYOffset)
 		NameText:SetSize(300, 20)
 		NameText:SetFont("Trebuchet24")
@@ -32,12 +34,14 @@ function GM:DrawPlacesPanel()
 		intCurrentPlace = intCurrentPlace + 1
 		if intNumberPlayer < intCurrentPlace then break end
 	end
-	timer.Simple(0.5, function() GAMEMODE:UpdatelacesPanel(PlacesPanel) end)
+	timer.Simple(0.5, function() GAMEMODE:UpdatelacesPanel() end)
 end
 
-function GM:UpdatelacesPanel(PlacesPanel)
-	PlacesPanel:Remove()
-	GAMEMODE:DrawPlacesPanel()
+function GM:UpdatelacesPanel()
+	if mk_PlacesPanel then
+		mk_PlacesPanel:Remove()
+		GAMEMODE:DrawPlacesPanel()
+	end
 end
 
 function GM:FindPlayer(intPlace)
@@ -47,6 +51,8 @@ function GM:FindPlayer(intPlace)
 		end
 	end
 end
+
+function GM:Draw
 
 
 
