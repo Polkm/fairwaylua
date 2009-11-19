@@ -1,5 +1,5 @@
 function GM:PlayerInitialSpawn(ply)
-	//ply:SetModel("models/gmodcart/regular_cart.mdl")
+	ply.Character = "Luigi"
 end
 
 function GM:PlayerSpawn(ply)
@@ -19,12 +19,13 @@ function GM:PlayerSpawn(ply)
 	GAMEMODE:SetPlayerSpeed(ply,0,0)
 	cart:SetPos(ply:GetPos())
 	cart:SetAngles(ply:GetAngles())
+	cart.Ragdoll:SetModel(GAMEMODE.Characters[ply.Character].Model)
+	ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed
+	ply.Turn = GAMEMODE.Characters[ply.Character].MaxTurn
 	ply.wipeout = false
 	ply.CanSlowDown = true
-	ply.Forward = 250
-	//ply:SetNoDraw(true)
+	ply:SetNoDraw(true)
 	ply:SetPos(Vector(0, 0, 0))
-	//ply:SetParent(cart)
 	ply:ConCommand("mk_characterDefault")
 end
 

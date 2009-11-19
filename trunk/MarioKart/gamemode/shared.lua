@@ -14,6 +14,52 @@ GM.PosibleColors["darkyellow"] = "models/gmodcart/CartBody_darkyellow"
 GM.PosibleColors["purple"] = "models/gmodcart/CartBody_purple"
 GM.PosibleColors["pink"] = "models/gmodcart/CartBody_pink"
 
+
+GM.Characters = {}
+GM.Characters["Donkey_Kong"] = {
+	Name = "Donkey Kong",
+	Model = "models/donkeykong/dk.mdl",
+	MaxSpeed = 245,
+	MaxTurn = 105,
+	Weight = 100,
+}
+GM.Characters["Mario"] = {
+	Name = "Mario",
+	Model = "models/marioragdoll/Super Mario Galaxy/mario/mario.mdl",
+	MaxSpeed = 250,
+	MaxTurn = 100,
+	Weight = 100,
+}
+GM.Characters["Luigi"] = {
+	Name = "Luigi",
+	Model = "models/marioragdoll/Super Mario Galaxy/luigi/luigi.mdl",
+	MaxSpeed = 250,
+	MaxTurn = 100,
+	Weight = 100,
+}
+GM.Characters["Yoshi"] = {
+	Name = "Yoshi",
+	Model = "models/marioragdoll/Super Mario Galaxy/yos00/yoshi.mdl",
+	MaxSpeed = 255,
+	MaxTurn = 95,
+	Weight = 100,
+}
+GM.Characters["Wario"] = {
+	Name = "Wario",
+	Model = "models/marioragdoll/Super Mario Galaxy/wario/wario.mdl",
+	MaxSpeed = 245,
+	MaxTurn = 105,
+	Weight = 100,
+}
+GM.Characters["WaiLuigi"] = {
+	Name = "WaiLuigi",
+	Model = "models/marioragdoll/Super Mario Galaxy/waluigi/waluig.mdl",
+	MaxSpeed = 255,
+	MaxTurn = 95,
+	Weight = 120,
+}
+
+
 GM.mk_Items = {}
 local tblNewItem = {}
 tblNewItem.Name = "Green Shell"
@@ -177,11 +223,11 @@ Name = "Star Power",
 Material = "gmodcart/items/mk_star",
 SpawnFunction = function(ply)
 	ply.CanSlowDown = false
-	ply.Forward = ply.Forward * 1.25
+	ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed * 1.25
 	ply.StarPower = true
 	timer.Create(ply:Nick().."StarTimer",0.25, 60,function() 	ply:GetNWEntity("Cart").BodyFrame:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),255) ply:GetNWEntity("Cart").Ragdoll:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),255) end)
 	timer.Simple(15, function() timer.Destroy(ply:Nick().."StarTimer") ply:GetNWEntity("Cart").BodyFrame:SetColor(255,255,255,255) ply:GetNWEntity("Cart").Ragdoll:SetColor(255,255,255,255)
-	ply.StarPower = false ply.CanSlowDown = true ply.Forward = (ply.Forward - ply.Forward * 0.25)  end)
+	ply.StarPower = false ply.CanSlowDown = true ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed  end)
 	ply:GetOwner():SetNWEntity("activeitem","none")
 end,
 WipeOutType = "Explode",
@@ -192,8 +238,8 @@ GM.mk_Items["item_mushroom"] = {
 Material = "gmodcart/items/mk_mushroom",
 SpawnFunction = function(ply)
 	ply.CanSlowDown = false
-	ply.Forward = ply.Forward * 2
-	timer.Simple(2, function() ply.CanSlowDown = true ply.Forward = ply.Forward / 2 end)
+	ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed * 2
+	timer.Simple(2, function() ply.CanSlowDown = true ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed end)
 	ply:GetOwner():SetNWEntity("activeitem","none")
 end,
 }

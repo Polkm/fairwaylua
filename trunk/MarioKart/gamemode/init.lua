@@ -6,7 +6,7 @@ include("shared.lua")
 include("player.lua")
 GM.PlayerSpawnTime = {}
 GM.CheckPointEnts = {}
-GM.PrepTime = 20
+GM.PrepTime = 30
 GM.WinLaps = 3
 
 function GM:Initialize()
@@ -30,13 +30,18 @@ function GM:StartPrep()
 			timer.Destroy("mk_CountDown")
 		end
 	end)
-	timer.Simple(GAMEMODE.PrepTime / 2, function()
+	timer.Simple(GAMEMODE.PrepTime - 5, function()
 		GAMEMODE:PositionRacers()
 	end)
 end
 
+function GM:RaceFinish(ply)
+	timer.Simple(20,function() GAMEMODE:StartPrep() end)
+end
+
 function GM:PositionRacers()
 	for k,v in pairs(player.GetAll()) do
+		v:SetViewEntity(v:GetNWEntity("Cart"))
 		v:Spawn()
 	end
 end

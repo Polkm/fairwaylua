@@ -15,7 +15,7 @@ function ENT:Initialize()
 	self.Entity:GetPhysicsObject():SetMaterial("gmod_ice")
 	self.Ragdoll = ents.Create("prop_dynamic")
 	self.Ragdoll:SetPos(self.Entity:GetPos() + Vector(15,0,1))
-	self.Ragdoll:SetModel("models/donkeykong/dk.mdl")
+	self.Ragdoll:SetModel("models/marioragdoll/Super Mario Galaxy/mario/mario.mdl")
 	self.Ragdoll:SetParent(self.Entity)
 	self.Ragdoll:Spawn()
 	self.Ragdoll:SetCollisionGroup(GROUP_NONE)
@@ -54,6 +54,16 @@ function ENT:Initialize()
 	self.SteerWheel1:SetModel("models/gmodcart/regular_cart_steerwheel.mdl")
 	self.SteerWheel1:Spawn()
 	self.Entity:StartMotionController()
+end
+
+function ENT:PhysicsCollide(tblData, physObject)
+	if self:GetOwner().StarPower then
+		if tblData.HitEntity:GetOwner():IsPlayer() && tblData.HitEntity:GetOwner():GetNWEntity("Cart") == tblData.HitEntity && self.LastStarHit != tblData.HitEntity  then
+			self.LastStarHit = tblData.HitEntity
+			tblData.HitEntity:Wipeout("Spin")
+			timer.Simple(1, function() self.LastStarHit = 0 end)
+		end
+	end
 end
 
 function ENT:Wipeout(strType)
@@ -171,8 +181,8 @@ end
 function ENT:GetTurnYaw(driver, phys, vecForwardVel)
 	if !driver || !driver:IsValid() then return 0 end
 	if !self:GetOwner().wipeout && GetGlobalString("GameModeState") == "RACE" then
-		if driver:KeyDown(IN_MOVELEFT) then return 100 end
-		if driver:KeyDown(IN_MOVERIGHT) then return -100 end
+		if driver:KeyDown(IN_MOVELEFT) then return self:GetOwner().Turn end
+		if driver:KeyDown(IN_MOVERIGHT) then return -1* (self:GetOwner().Turn) end
 	end
 	return self.vecAddativeAngularVelocity.z
 end

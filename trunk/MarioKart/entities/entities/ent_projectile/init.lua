@@ -25,7 +25,9 @@ function ENT:PhysicsCollide(tblData, physObject)
 		local entHitEntity = tblData.HitEntity
 		local plyHitEntityOwner = entHitEntity:GetOwner()
 		if self.Activated && entHitEntity == plyHitEntityOwner:GetNWEntity("Cart") then
-			tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
+			if !entHitEntity:GetOwner().StarPower then
+				tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
+			end
 			self:Remove()
 			return
 		end
