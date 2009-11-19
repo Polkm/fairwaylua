@@ -18,6 +18,7 @@ function GM:Initialize()
 	ModelIcon = vgui.Create("DModelPanel")
 	timer.Simple(0.1, function()
 		GAMEMODE:DrawPlacesPanel()
+		GAMEMODE:DrawCharacterCreation()
 	end)
 end
 

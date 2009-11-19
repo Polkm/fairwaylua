@@ -23,8 +23,9 @@ function GM:PlayerSpawn(ply)
 	ply.CanSlowDown = true
 	ply.Forward = 250
 	//ply:SetNoDraw(true)
-	ply:SetPos(Vector(0,0,0))
+	ply:SetPos(Vector(0, 0, 0))
 	//ply:SetParent(cart)
+	ply:ConCommand("mk_characterDefault")
 end
 
 function GM:SetPlayerColor(ply, strColor)

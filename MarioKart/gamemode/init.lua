@@ -6,7 +6,7 @@ include("shared.lua")
 include("player.lua")
 GM.PlayerSpawnTime = {}
 GM.CheckPointEnts = {}
-GM.PrepTime = 10
+GM.PrepTime = 20
 GM.WinLaps = 3
 
 function GM:Initialize()
