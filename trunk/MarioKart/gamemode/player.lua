@@ -38,6 +38,16 @@ concommand.Add("mk_changeCarColor", function(ply, command, args)
 	GAMEMODE:SetPlayerColor(ply, args[1])
 end)
 
+function GM:SetPlayerCharacter(ply, strCharacter)
+	if GAMEMODE.Characters[strCharacter] then
+		ply.Character = strCharacter
+		ply:GetNWEntity("Cart").Ragdoll:SetModel(GAMEMODE.Characters[strCharacter].Model)
+	end
+end
+concommand.Add("mk_changeCharacter", function(ply, command, args)
+	GAMEMODE:SetPlayerCharacter(ply, args[1])
+end)
+
 function GM:FireItem(ply)
 	local item = ply:GetNWString("item")
 	if ply:GetNWEntity("activeitem") == "none" && item != "empty" then

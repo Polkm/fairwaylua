@@ -1,4 +1,5 @@
 local mk_convarKartColor = CreateClientConVar("mk_kartColor", "red", true, true)
+local mk_convarCharacter = CreateClientConVar("mk_Character", "Mario", true, true)
 local mk_CharacterPanel = nil
 local mk_PlacesPanel = nil
 
@@ -72,6 +73,18 @@ function GM:DrawCharacterCreation()
 		RunConsoleCommand("mk_changeCarColor", data)
 	end
 	
+	local Charakter = vgui.Create("DMultiChoice", mk_CharacterPanel)
+	Charakter:SetSize(140, 20)
+	Charakter:SetPos(5, 30)
+	for char, tbl in pairs(GAMEMODE.Characters) do
+		Charakter:AddChoice(char)
+	end
+	Charakter:ChooseOption(mk_convarCharacter:GetString())
+	Charakter.OnSelect = function(index, value, data)
+		RunConsoleCommand("mk_Character", data)
+		RunConsoleCommand("mk_changeCharacter", data)
+	end
+	
 	local DoneButton = vgui.Create( "DButton", mk_CharacterPanel)
 	DoneButton:SetSize(140, 20)
 	DoneButton:SetPos(5, 75)
@@ -88,6 +101,7 @@ concommand.Add("mk_characterCreation", function()
 end)
 concommand.Add("mk_characterDefault", function()
 	RunConsoleCommand("mk_changeCarColor", mk_convarKartColor:GetString())
+	RunConsoleCommand("mk_changeCharacter", mk_convarCharacter:GetString())
 end)
 
 
