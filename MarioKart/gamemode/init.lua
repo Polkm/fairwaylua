@@ -36,7 +36,18 @@ function GM:StartPrep()
 end
 
 function GM:RaceFinish(ply)
-	timer.Simple(20,function() GAMEMODE:StartPrep() end)
+	for k,v in pairs(player.GetAll()) do
+		if v != ply then
+			v:SetViewEntity(ply:GetNWEntity("Cart")) 
+		end
+	end
+	timer.Simple(20,function()	
+	for k,v in pairs(player.GetAll()) do
+		if v != ply then
+			v:SetViewEntity(v:GetNWEntity("Cart")) 
+		end
+	end 
+	GAMEMODE:StartPrep() end)
 end
 
 function GM:PositionRacers()

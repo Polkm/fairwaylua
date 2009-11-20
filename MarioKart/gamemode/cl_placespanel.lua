@@ -77,7 +77,7 @@ function GM:DrawCharacterCreation()
 	Charakter:SetSize(140, 20)
 	Charakter:SetPos(5, 30)
 	for char, tbl in pairs(GAMEMODE.Characters) do
-		Charakter:AddChoice(char)
+		Charakter:AddChoice(tbl.Name)
 	end
 	Charakter:ChooseOption(mk_convarCharacter:GetString())
 	Charakter.OnSelect = function(index, value, data)

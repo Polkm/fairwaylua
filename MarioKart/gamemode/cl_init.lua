@@ -18,7 +18,9 @@ function GM:Initialize()
 	ModelIcon = vgui.Create("DModelPanel")
 	timer.Simple(0.1, function()
 		GAMEMODE:DrawPlacesPanel()
-		GAMEMODE:DrawCharacterCreation()
+		if GetGlobalString("GameModeState") == "PREP" then
+			GAMEMODE:DrawCharacterCreation()
+		end
 	end)
 end
 
@@ -45,7 +47,7 @@ function GM:HUDPaint()
 	surface.SetTextPos(SW / 4, 20)
 	surface.DrawText("Lap " .. client:GetNWInt("Lap"))
 	surface.SetTextPos(SW / 1.5, 20)
-	surface.DrawText(string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10))
+	surface.DrawText("Time: "..string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10))
 	if GetGlobalInt("CountDown") <= 3 && GetGlobalInt("CountDown") > 0 then 
 		surface.SetFont("HudScaled")
 		local x,y = surface.GetTextSize(GetGlobalInt("CountDown"))
@@ -98,7 +100,7 @@ function GM:Think()
 end
 
 function GM:CalcView(ply, origin, angles, fov)
-	local phys = LocalPlayer():GetNWEntity("Cart") or ply
+	local phys = ply:GetNWEntity("Cart")
 	if !phys then return end
 	
 	LastViewYaw = LastViewYaw or phys:GetAngles().yaw
