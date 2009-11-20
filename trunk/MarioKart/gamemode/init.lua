@@ -30,24 +30,17 @@ function GM:StartPrep()
 			timer.Destroy("mk_CountDown")
 		end
 	end)
-	timer.Simple(GAMEMODE.PrepTime - 5, function()
+	timer.Simple(GAMEMODE.PrepTime / 2, function()
 		GAMEMODE:PositionRacers()
 	end)
 end
 
 function GM:RaceFinish(ply)
-	for k,v in pairs(player.GetAll()) do
-		if v != ply then
-			v:SetViewEntity(ply:GetNWEntity("Cart")) 
-		end
+	if GetGlobalString("GameModeState") == "RACE" then
+		SetGlobalString("GameModeState", "PENDING")
+		
+		timer.Simple(GAMEMODE.PrepTime / 10, function() GAMEMODE:StartPrep() end)
 	end
-	timer.Simple(GAMEMODE.PrepTime - 10,function()	
-	for k,v in pairs(player.GetAll()) do
-		if v != ply then
-			v:SetViewEntity(v:GetNWEntity("Cart")) 
-		end
-	end 
-	GAMEMODE:StartPrep() end)
 end
 
 function GM:PositionRacers()
