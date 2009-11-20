@@ -18,6 +18,7 @@ function ENT:Initialize()
 	self.QuestionMark:SetColor(255,255,255,255)
 	self.QuestionMark:Spawn()
 	self.Ready = true
+
 	--self:Spin()
 end
 

@@ -26,6 +26,7 @@ function GM:PlayerSpawn(ply)
 	ply.CanSlowDown = true
 	ply:SetNoDraw(true)
 	ply:SetPos(Vector(0, 0, 0))
+	ply:SetViewEntity(cart)
 	ply:ConCommand("mk_characterDefault")
 end
 
@@ -39,9 +40,11 @@ concommand.Add("mk_changeCarColor", function(ply, command, args)
 end)
 
 function GM:SetPlayerCharacter(ply, strCharacter)
-	if GAMEMODE.Characters[strCharacter] then
+	if GAMEMODE.Characters[strCharacter] && GetGlobalString("GameModeState") == "PREP" then
 		ply.Character = strCharacter
 		ply:GetNWEntity("Cart").Ragdoll:SetModel(GAMEMODE.Characters[strCharacter].Model)
+		ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed
+		ply.Turn = GAMEMODE.Characters[ply.Character].MaxTurn
 	end
 end
 concommand.Add("mk_changeCharacter", function(ply, command, args)

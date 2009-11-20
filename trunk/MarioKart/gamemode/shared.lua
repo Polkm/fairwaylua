@@ -16,8 +16,8 @@ GM.PosibleColors["pink"] = "models/gmodcart/CartBody_pink"
 
 
 GM.Characters = {}
-GM.Characters["Donkey_Kong"] = {
-	Name = "Donkey Kong",
+GM.Characters["Donkey-Kong"] = {
+	Name = "Donkey-Kong",
 	Model = "models/donkeykong/dk.mdl",
 	MaxSpeed = 245,
 	MaxTurn = 105,
@@ -39,21 +39,21 @@ GM.Characters["Luigi"] = {
 }
 GM.Characters["Yoshi"] = {
 	Name = "Yoshi",
-	Model = "models/marioragdoll/Super Mario Galaxy/yos00/yoshi.mdl",
+	Model = "models/marioragdoll/yos00/yoshi.mdl",
 	MaxSpeed = 255,
 	MaxTurn = 95,
 	Weight = 100,
 }
 GM.Characters["Wario"] = {
 	Name = "Wario",
-	Model = "models/marioragdoll/Super Mario Galaxy/wario/wario.mdl",
+	Model = "models/marioragdoll/wario/wario.mdl",
 	MaxSpeed = 245,
 	MaxTurn = 105,
 	Weight = 100,
 }
-GM.Characters["WaiLuigi"] = {
-	Name = "WaiLuigi",
-	Model = "models/marioragdoll/Super Mario Galaxy/waluigi/waluig.mdl",
+GM.Characters["Waluigi"] = {
+	Name = "Waluigi",
+	Model = "models/marioragdoll/waluigi/waluig.mdl",
 	MaxSpeed = 255,
 	MaxTurn = 95,
 	Weight = 120,
