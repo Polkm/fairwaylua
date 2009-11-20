@@ -163,7 +163,7 @@ end
 
 function ENT:GetForwardAcceleration(driver, phys, vecForwardVel)
 	if !driver || !driver:IsValid() then return 0 end
-	if !self:GetOwner().wipeout && GetGlobalString("GameModeState") == "RACE" then
+	if !self:GetOwner().wipeout && GetGlobalString("GameModeState") != "PREP" then
 		if driver:KeyDown(IN_FORWARD) then return self:GetOwner().Forward end
 		if driver:KeyDown(IN_BACK) then return -150 end
 	end
@@ -180,7 +180,7 @@ end
 
 function ENT:GetTurnYaw(driver, phys, vecForwardVel)
 	if !driver || !driver:IsValid() then return 0 end
-	if !self:GetOwner().wipeout && GetGlobalString("GameModeState") == "RACE" then
+	if !self:GetOwner().wipeout && GetGlobalString("GameModeState") != "PREP" then
 		if driver:KeyDown(IN_MOVELEFT) then return self:GetOwner().Turn end
 		if driver:KeyDown(IN_MOVERIGHT) then return -1* (self:GetOwner().Turn) end
 	end
