@@ -41,7 +41,7 @@ function GM:RaceFinish(ply)
 			v:SetViewEntity(ply:GetNWEntity("Cart")) 
 		end
 	end
-	timer.Simple(20,function()	
+	timer.Simple(GAMEMODE.PrepTime - 10,function()	
 	for k,v in pairs(player.GetAll()) do
 		if v != ply then
 			v:SetViewEntity(v:GetNWEntity("Cart")) 
