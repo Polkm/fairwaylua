@@ -88,7 +88,7 @@ tblNewItem.UseFunction = function(self)
 		constraint.NoCollide(self.Entity,cart,0,0)
 		self:SetAngles(cart:GetAngles())
 		self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
-		self.Entity:GetPhysicsObject():ApplyForceCenter(cart:GetAngles():Forward() + cart:GetAngles():Forward() * 1200)
+		self.Entity:GetPhysicsObject():ApplyForceCenter(cart:GetAngles():Forward() + cart:GetAngles():Forward() * 1500)
 		self:GetOwner():SetNWEntity("activeitem","none")
 		self.Activated = true
 		timer.Simple(1, function()
