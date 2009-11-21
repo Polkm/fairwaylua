@@ -15,26 +15,28 @@ function GM:DrawPlacesPanel()
 	mk_PlacesPanel.Paint = function() end
 	for i = 1, intMaxPlaces do
 		local plyFoundPlayer = GAMEMODE:FindPlayer(intCurrentPlace)
-		local PlaceText = vgui.Create("DLabel", mk_PlacesPanel)
-		PlaceText:SetPos(5, intYOffset)
-		PlaceText:SetFont("HUDNumber")
-		PlaceText:SetColor(Color(255, 255, 255, 255))
-		PlaceText:SetText(intCurrentPlace)
-		
-		local AvitarImage = vgui.Create("AvatarImage", mk_PlacesPanel)
-		AvitarImage:SetPos(30, intYOffset - 5)
-		AvitarImage:SetSize(32, 32)
-		AvitarImage:SetPlayer(plyFoundPlayer)
-		
-		local NameText = vgui.Create("DLabel", mk_PlacesPanel)
-		NameText:SetPos(70, intYOffset)
-		NameText:SetSize(300, 20)
-		NameText:SetFont("Trebuchet24")
-		NameText:SetColor(Color(255, 255, 255, 255))
-		NameText:SetText(plyFoundPlayer:Nick())
-		
-		intYOffset = intYOffset + intYOffsetEach
-		intCurrentPlace = intCurrentPlace + 1
+		if plyFoundPlayer then
+			local PlaceText = vgui.Create("DLabel", mk_PlacesPanel)
+			PlaceText:SetPos(5, intYOffset)
+			PlaceText:SetFont("HUDNumber")
+			PlaceText:SetColor(Color(255, 255, 255, 255))
+			PlaceText:SetText(intCurrentPlace)
+			
+			local AvitarImage = vgui.Create("AvatarImage", mk_PlacesPanel)
+			AvitarImage:SetPos(30, intYOffset - 5)
+			AvitarImage:SetSize(32, 32)
+			AvitarImage:SetPlayer(plyFoundPlayer)
+			
+			local NameText = vgui.Create("DLabel", mk_PlacesPanel)
+			NameText:SetPos(70, intYOffset)
+			NameText:SetSize(300, 20)
+			NameText:SetFont("Trebuchet24")
+			NameText:SetColor(Color(255, 255, 255, 255))
+			NameText:SetText(plyFoundPlayer:Nick())
+			
+			intYOffset = intYOffset + intYOffsetEach
+			intCurrentPlace = intCurrentPlace + 1
+		end
 		if intNumberPlayer < intCurrentPlace then break end
 	end
 	timer.Simple(0.5, function() GAMEMODE:UpdatelacesPanel() end)
