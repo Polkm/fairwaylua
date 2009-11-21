@@ -7,7 +7,8 @@ include("player.lua")
 GM.PlayerSpawnTime = {}
 GM.CheckPointEnts = {}
 GM.PrepTime = 30
-GM.WinLaps = 3
+GM.WinLaps = 1
+GM.CatchUpTime = 30
 
 function GM:Initialize()
 	util.PrecacheModel("models/marioragdoll/SuperMarioGalaxy/mario/mario.mdl")
@@ -18,6 +19,10 @@ function GM:Initialize()
 end
 
 function GM:StartPrep()
+	for k,v in pairs(player.GetAll()) do
+		v:SetNWEntity("WatchEntity",v:GetNWEntity("Cart"))
+	end
+	SetGlobalEntity("Winner","none")
 	SetGlobalString("GameModeState", "PREP")
 	if timer.IsTimer("mk_GameModeTimer") then
 		timer.Destroy("mk_GameModeTimer")
@@ -38,14 +43,18 @@ function GM:StartPrep()
 end
 
 function GM:RaceFinish(ply)
-	if GetGlobalString("GameModeState") == "RACE" then
 		SetGlobalString("GameModeState", "PENDING")
-		for _, player in pairs(player.GetAll()) do
-			player:ChatPrint(ply:Nick() .. " won the Race!")
+		ply.Finished = true
+		if GetGlobalEntity("Winner") == "none" then
+			SetGlobalEntity("Winner",ply)
+			timer.Simple(GAMEMODE.CatchUpTime, function() timer.Destroy("mk_GameModeTimer") GAMEMODE:StartPrep() end)
 		end
-		timer.Destroy("mk_GameModeTimer")
-		timer.Simple(GAMEMODE.PrepTime / 10, function() GAMEMODE:StartPrep() end)
-	end
+		for _, player in pairs(player.GetAll()) do
+			player:ChatPrint(ply:Nick() .. " Came in "..ply:GetNWInt("Place").."!")
+			if player.Finished && GetGlobalEntity("Winner") != "none" then
+				player:SetNWEntity("WatchEntity",GetGlobalEntity("Winner"):GetNWEntity("Cart"))
+			end
+		end
 end
 
 function GM:PositionRacers()
