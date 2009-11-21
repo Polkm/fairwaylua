@@ -32,13 +32,18 @@ function GM:StartPrep()
 	end)
 	timer.Simple(GAMEMODE.PrepTime / 2, function()
 		GAMEMODE:PositionRacers()
+		SetGlobalInt("GameModeTime", GAMEMODE.PrepTime / 2)
+		timer.Create("mk_GameModeTimer", 0.1, 0, function() SetGlobalInt("GameModeTime", GetGlobalInt("GameModeTime") - 0.1) end)
 	end)
 end
 
 function GM:RaceFinish(ply)
 	if GetGlobalString("GameModeState") == "RACE" then
 		SetGlobalString("GameModeState", "PENDING")
-		
+		for _, player in pairs(player.GetAll()) do
+			player:ChatPrint(ply:Nick() .. " won the Race!")
+		end
+		timer.Destroy("mk_GameModeTimer")
 		timer.Simple(GAMEMODE.PrepTime / 10, function() GAMEMODE:StartPrep() end)
 	end
 end
