@@ -53,9 +53,10 @@ function GM:RaceFinish(ply)
 		end
 		for _, player in pairs(player.GetAll()) do
 			player:ChatPrint(ply:Nick() .. " Came in " .. ply:GetNWInt("Place") ..
-				" With a time of " .. (string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10)))
+			"With a time of " .. (string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10)))
 			if player.Finished && GetGlobalEntity("Winner") != "none" then
 				player:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
+				break
 			end
 		end
 end

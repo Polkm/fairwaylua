@@ -27,21 +27,26 @@ function ENT:PhysicsCollide(tblData, physObject)
 	else
 		local entHitEntity = tblData.HitEntity
 		local plyHitEntityOwner = entHitEntity:GetOwner()
-		if self.Activated && entHitEntity == plyHitEntityOwner:GetNWEntity("Cart") then
-			if self.Class != "item_koopashell_blue" then
-				if !entHitEntity:GetOwner().StarPower then
-					tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
+		if self.Activated  then
+			if entHitEntity == plyHitEntityOwner:GetNWEntity("Cart") then
+				if self.Class != "item_koopashell_blue" then
+					if !entHitEntity:GetOwner().StarPower then
+						tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
+					end
+						self:Remove()
+					return
+				else
+					if !entHitEntity:GetOwner().StarPower then
+						tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
+					end
+					if plyHitEntityOwner:GetNWEntity("Cart") == self.target then
+						self:Remove()
+					end
+					return
 				end
-					self:Remove()
-				return
-			else
-				if !entHitEntity:GetOwner().StarPower then
-					tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
-				end
-				if plyHitEntityOwner:GetNWEntity("Cart") == self.target then
-					self:Remove()
-				end
-				return
+			elseif entHitEntity:GetClass() == "ent_projectile" then
+				self:Remove()
+				entHitEntity:Remove()
 			end
 		end
 	end
