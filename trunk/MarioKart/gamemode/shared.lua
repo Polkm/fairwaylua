@@ -408,9 +408,20 @@ SpawnFunction = function(ply)
 	ply.CanSlowDown = false
 	ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed * 1.25
 	ply.StarPower = true
-	timer.Create(ply:Nick().."StarTimer",0.25, 60,function() 	ply:GetNWEntity("Cart").BodyFrame:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),255) ply:GetNWEntity("Cart").Ragdoll:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),255) end)
-	timer.Simple(15, function() timer.Destroy(ply:Nick().."StarTimer") ply:GetNWEntity("Cart").BodyFrame:SetColor(255,255,255,255) ply:GetNWEntity("Cart").Ragdoll:SetColor(255,255,255,255)
-	ply.StarPower = false ply.CanSlowDown = true ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed  end)
+	ply:ConCommand("mk_Sound Star")
+	timer.Create(ply:Nick().."StarTimer",0.25, 60,function()
+		ply:GetNWEntity("Cart").BodyFrame:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),255)
+		ply:GetNWEntity("Cart").Ragdoll:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),255)
+	end)
+	timer.Simple(15, function()
+		timer.Destroy(ply:Nick().."StarTimer")
+		ply:GetNWEntity("Cart").BodyFrame:SetColor(255,255,255,255)
+		ply:GetNWEntity("Cart").Ragdoll:SetColor(255,255,255,255)
+		ply.StarPower = false
+		ply.CanSlowDown = true
+		ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed
+		ply:ConCommand("mk_Sound BackGround")
+	end)
 	ply:GetOwner():SetNWEntity("activeitem","none")
 end,
 WipeOutType = "Explode",

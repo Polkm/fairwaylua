@@ -126,3 +126,34 @@ function GM:CalcView(ply, origin, angles, fov)
 	return view
 end
 
+local tblSoundTable = {}
+tblSoundTable["BackGround"] = "gmodcart/music/mk_circuit.mp3"
+tblSoundTable["Star"] = "gmodcart/items/mk_star.mp3"
+local sndCurentSound = nil
+local sndBackGroundSound = nil
+local entBackGroundCart = nil
+function GM:PlaySound(strSound)
+	if tblSoundTable[strSound] then
+		local entCart = LocalPlayer():GetNWEntity("Cart")
+		if sndCurentSound then sndCurentSound:FadeOut(0.5) end
+		if strSound == "BackGround" then
+			if !sndBackGroundSound or entBackGroundCart != entCart then
+				entBackGroundCart = entCart
+				sndBackGroundSound = CreateSound(entCart, Sound(tblSoundTable[strSound]))
+				sndBackGroundSound:PlayEx(0.5, 100)
+			else
+				sndBackGroundSound:ChangeVolume(0.5)
+			end
+		else
+			if sndBackGroundSound then sndBackGroundSound:ChangeVolume(0.1) end
+			sndCurentSound = CreateSound(entCart, Sound(tblSoundTable[strSound]))
+			sndCurentSound:PlayEx(0.5, 100)
+		end
+	end
+end
+concommand.Add("mk_Sound", function(ply, command, args)
+	GAMEMODE:PlaySound(args[1])
+end)
+
+
+
