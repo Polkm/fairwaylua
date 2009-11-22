@@ -1,6 +1,7 @@
 include('shared.lua')
 include('cl_ghost.lua')
 include('cl_placespanel.lua')
+include('cl_charactercreation.lua')
 GM.HUDNoDraw = {}
 GM.HUDNoDraw[1] = "CHudHealth"
 GM.HUDNoDraw[2] = "CHudBattery"
