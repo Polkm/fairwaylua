@@ -1,5 +1,9 @@
 function GM:PlayerInitialSpawn(ply)
-	ply.Character = "Luigi"
+	ply.Character = "Mario"
+end
+
+function GM:ShowHelp(ply)
+	ply:ConCommand("mk_characterCreation")
 end
 
 function GM:PlayerDisconnected(ply)

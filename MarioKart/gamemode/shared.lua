@@ -16,7 +16,12 @@ GM.PosibleColors["pink"] = "models/gmodcart/CartBody_pink"
 
 GM.PositionItemTables = {}
 GM.PositionItemTables[1] = {
-				"item_boo",
+				"item_mushroom",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_banana",
+				"item_banana",
+				"item_banana",
 				}
 GM.PositionItemTables[2] = {
 				"item_mushroom",
@@ -31,6 +36,7 @@ GM.PositionItemTables[2] = {
 GM.PositionItemTables[3] = {
 				"item_mushroom",
 				"item_mushroom",
+				"item_boo",
 				"item_koopashell_red",
 				"item_koopashell_red",
 				"item_koopashell_green",
@@ -55,9 +61,12 @@ GM.PositionItemTables[4] = {
 				"item_banana",
 				"item_banana",
 				"item_banana",
+				"item_boo",
 				}
 GM.PositionItemTables[5] = {
 				"item_mushroom",
+				"item_boo",
+				"item_boo",
 				"item_star",
 				"item_koopashell_red",
 				"item_koopashell_red",
@@ -74,6 +83,8 @@ GM.PositionItemTables[6] = {
 				"item_koopashell_green",
 				"item_koopashell_green",
 				"item_lightning",
+				"item_boo",
+				"item_boo",
 				}
 GM.PositionItemTables[7] = {
 				"item_mushroom",
@@ -88,6 +99,7 @@ GM.PositionItemTables[7] = {
 				"item_koopashell_blue",
 				"item_lightning",
 				"item_lightning",
+				"item_boo",
 				}				
 GM.PositionItemTables[8] = {
 				"item_mushroom",
