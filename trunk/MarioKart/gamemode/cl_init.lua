@@ -140,14 +140,14 @@ function GM:PlaySound(strSound)
 			if !sndBackGroundSound or entBackGroundCart != entCart then
 				entBackGroundCart = entCart
 				sndBackGroundSound = CreateSound(entCart, Sound(tblSoundTable[strSound]))
-				sndBackGroundSound:PlayEx(0.5, 100)
+				sndBackGroundSound:PlayEx(0.3, 100)
 			else
-				sndBackGroundSound:ChangeVolume(0.5)
+				sndBackGroundSound:ChangeVolume(0.3)
 			end
 		else
 			if sndBackGroundSound then sndBackGroundSound:ChangeVolume(0.1) end
 			sndCurentSound = CreateSound(entCart, Sound(tblSoundTable[strSound]))
-			sndCurentSound:PlayEx(0.5, 100)
+			sndCurentSound:PlayEx(0.3, 100)
 		end
 	end
 end
