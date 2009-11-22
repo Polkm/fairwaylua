@@ -7,7 +7,7 @@ include("shared.lua")
 include("player.lua")
 GM.PlayerSpawnTime = {}
 GM.CheckPointEnts = {}
-GM.PrepTime = 30
+GM.PrepTime = 10
 GM.WinLaps = 3
 GM.CatchUpTime = 30
 
@@ -53,7 +53,7 @@ function GM:RaceFinish(ply)
 		end
 		for _, player in pairs(player.GetAll()) do
 			player:ChatPrint(ply:Nick() .. " Came in " .. ply:GetNWInt("Place") ..
-				" With a time of " .. (math.Round(GetGlobalInt("GameModeTime") * 10) / 10) .. " Seconds")
+				" With a time of " .. (string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10)))
 			if player.Finished && GetGlobalEntity("Winner") != "none" then
 				player:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
 			end

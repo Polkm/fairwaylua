@@ -382,6 +382,7 @@ SpawnFunction = function(ply)
 	for k,v in pairs(player.GetAll()) do 
 		if v != ply && v:GetNWString("item") != "empty" then
 			ply:SetNWString("item", v:GetNWString("item"))
+			v:SetNWString("item","empty")
 			break
 		end
 	end
