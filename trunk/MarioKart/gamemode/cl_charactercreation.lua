@@ -17,7 +17,7 @@ function GM:DrawCharacterCreation()
 	CharacterColorSellection:ChooseOption(mk_convarKartColor:GetString())
 	CharacterColorSellection.OnSelect = function(index, value, data)
 		RunConsoleCommand("mk_kartColor", data)
-		RunConsoleCommand("mk_changeCarColor", data)
+		RunConsoleCommand("MarioKartCRCLR", data)
 	end
 	
 	local CharacterSellection = vgui.Create("DMultiChoice", mk_CharacterPanel)
@@ -29,7 +29,7 @@ function GM:DrawCharacterCreation()
 	CharacterSellection:ChooseOption(mk_convarCharacter:GetString())
 	CharacterSellection.OnSelect = function(index, value, data)
 		RunConsoleCommand("mk_Character", data)
-		RunConsoleCommand("mk_changeCharacter", data)
+		RunConsoleCommand("MarioKartCHRCTR", data)
 	end
 	
 	local DoneButton = vgui.Create( "DButton", mk_CharacterPanel)
@@ -48,8 +48,8 @@ concommand.Add("mk_characterCreation", function()
 end)
 
 concommand.Add("mk_characterDefault", function()
-	RunConsoleCommand("mk_changeCarColor", mk_convarKartColor:GetString())
-	RunConsoleCommand("mk_changeCharacter", mk_convarCharacter:GetString())
+	RunConsoleCommand("MarioKartCRCLR", mk_convarKartColor:GetString())
+	RunConsoleCommand("MarioKartCHRCTR", mk_convarCharacter:GetString())
 end)
 
 

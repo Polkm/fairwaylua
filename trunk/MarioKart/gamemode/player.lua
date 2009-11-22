@@ -6,7 +6,6 @@ function GM:PlayerDisconnected(ply)
 	ply:GetNWEntity("Cart"):Remove()
 end
 
-
 function GM:PlayerSpawn(ply)
 	if ply:GetNWEntity("Cart"):IsValid() then ply:GetNWEntity("Cart"):Remove() end
 	local cart = ents.Create("player_cart")
@@ -44,7 +43,7 @@ function GM:SetPlayerColor(ply, strColor)
 		ply:GetNWEntity("Cart").BodyFrame:SetMaterial(GAMEMODE.PosibleColors[strColor])
 	end
 end
-concommand.Add("mk_changeCarColor", function(ply, command, args)
+concommand.Add("MarioKartCRCLR", function(ply, command, args)
 	GAMEMODE:SetPlayerColor(ply, args[1])
 end)
 
@@ -56,7 +55,7 @@ function GM:SetPlayerCharacter(ply, strCharacter)
 		ply.Turn = GAMEMODE.Characters[ply.Character].MaxTurn
 	end
 end
-concommand.Add("mk_changeCharacter", function(ply, command, args)
+concommand.Add("MarioKartCHRCTR", function(ply, command, args)
 	GAMEMODE:SetPlayerCharacter(ply, args[1])
 end)
 
