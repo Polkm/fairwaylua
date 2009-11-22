@@ -15,6 +15,11 @@ function GM:PlayerSpawn(ply)
 	entKart:Spawn()
 	entKart:SetAngles(ply:GetAngles())
 	entKart.Ragdoll:SetModel(GAMEMODE.Characters[ply.Character].Model)
+	--[[local effectdata = EffectData()
+	effectdata:SetEntity(entKart)
+	effectdata:SetOrigin(Vector(14, -20, 30))
+	util.Effect("engine_smoke", effectdata)	]]
+
 	ply:SetNWEntity("Cart", entKart)
 	ply:Spectate(MODE_CHASE)
 	ply:SpectateEntity(entKart)
