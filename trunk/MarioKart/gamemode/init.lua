@@ -52,9 +52,10 @@ function GM:RaceFinish(ply)
 			timer.Simple(GAMEMODE.CatchUpTime, function() timer.Destroy("mk_GameModeTimer") GAMEMODE:StartPrep() end)
 		end
 		for _, player in pairs(player.GetAll()) do
-			player:ChatPrint(ply:Nick() .. " Came in "..ply:GetNWInt("Place").."!")
+			player:ChatPrint(ply:Nick() .. " Came in " .. ply:GetNWInt("Place") ..
+				" With a time of " .. (math.Round(GetGlobalInt("GameModeTime") * 10) / 10) .. " Seconds")
 			if player.Finished && GetGlobalEntity("Winner") != "none" then
-				player:SetNWEntity("WatchEntity",GetGlobalEntity("Winner"):GetNWEntity("Cart"))
+				player:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
 			end
 		end
 end
@@ -69,7 +70,14 @@ end
 function GM:StartRace()
 	SetGlobalString("GameModeState", "RACE")
 	SetGlobalInt("GameModeTime", 0)
+	GAMEMODE:CleanUpMap()
 	timer.Create("mk_GameModeTimer", 0.1, 0, function() SetGlobalInt("GameModeTime", GetGlobalInt("GameModeTime") + 0.1) end)
+end
+
+function GM:CleanUpMap()
+	for _, ent in pairs(ents.FindByClass("ent_projectile")) do
+		ent:Remove()
+	end
 end
 
 function GM:Tick()

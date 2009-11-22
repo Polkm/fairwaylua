@@ -8,38 +8,40 @@ end
 
 function GM:PlayerSpawn(ply)
 	if ply:GetNWEntity("Cart"):IsValid() then ply:GetNWEntity("Cart"):Remove() end
-	local cart = ents.Create("player_cart")
-	cart:SetPos(ply:GetPos())
-	cart:Spawn()
-	cart:SetOwner(ply)
-	ply:SetNWEntity("Cart", cart)
+	--Kart creation
+	local entKart = ents.Create("player_cart")
+	entKart:SetPos(ply:GetPos())
+	entKart:SetOwner(ply)
+	entKart:Spawn()
+	entKart:SetAngles(ply:GetAngles())
+	entKart.Ragdoll:SetModel(GAMEMODE.Characters[ply.Character].Model)
+	ply:SetNWEntity("Cart", entKart)
+	ply:Spectate(MODE_CHASE)
+	ply:SpectateEntity(entKart)
+	ply:SetNWEntity("WatchEntity", entKart)
+	ply:SetViewEntity(entKart)
+	--Setting variables
 	ply:SetNWInt("CheckPoint", 1)
 	ply:SetNWInt("Lap", 1)
-	ply:SetNWInt("Place",1)
-	--ply:SetNWString("item","item_koopashell_red")
+	ply:SetNWInt("Place", 1)
 	ply:SetNWString("item","empty")
-	ply.CanJump = true
 	ply:SetNWEntity("activeitem", "none")
-	GAMEMODE:SetPlayerSpeed(ply,0,0)
-	cart:SetPos(ply:GetPos())
-	cart:SetAngles(ply:GetAngles())
-	cart.Ragdoll:SetModel(GAMEMODE.Characters[ply.Character].Model)
 	ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed
 	ply.Turn = GAMEMODE.Characters[ply.Character].MaxTurn
-	ply.wipeout = false
+	ply.CanJump = true
 	ply.CanSlowDown = true
 	ply.CanUse = true
-	ply:SetNoDraw(true)
+	ply.wipeout = false
+	--Make the player unnoticable
+	GAMEMODE:SetPlayerSpeed(ply, 0, 0)
 	ply:SetPos(Vector(-40, 100, 500))
-	ply:SetViewEntity(cart)
-	ply:Spectate( MODE_CHASE)
-	ply:SpectateEntity(cart)
-	ply:SetNWEntity("WatchEntity", cart)
+	ply:SetNoDraw(true)
+	--Make the player's kart look like that last time he played
 	ply:ConCommand("mk_characterDefault")
 end
 
 function GM:SetPlayerColor(ply, strColor)
-	if GAMEMODE.PosibleColors[strColor] then
+	if GAMEMODE.PosibleColors[strColor] && GetGlobalString("GameModeState") == "PREP" then
 		ply:GetNWEntity("Cart").BodyFrame:SetMaterial(GAMEMODE.PosibleColors[strColor])
 	end
 end
