@@ -81,34 +81,30 @@ function GM:CleanUpMap()
 end
 
 function GM:Tick()
-	local tblRacingPlayers = GAMEMODE:GetRacingPlayers()
-	if !tblRacingPlayers or #tblRacingPlayers <= 0 then return end
-	local intLastTakenPlace = GAMEMODE:GetLastTakenPlace()
-	if !intLastTakenPlace or intLastTakenPlace >= #player.GetAll() then return end
 	local tblPlayerTable = {}
-	for _, player in pairs(tblRacingPlayers) do
-		local intPlace = intLastTakenPlace
-		for place, otherPlayer in pairs(tblPlayerTable) do
-			if player:GetNWInt("Lap") > otherPlayer:GetNWInt("Lap") then
-				intPlace = place
-			elseif player:GetNWInt("Lap") == otherPlayer:GetNWInt("Lap") then
-				if player:GetNWInt("CheckPoint") > otherPlayer:GetNWInt("CheckPoint") then
-					intPlace = place
-				elseif player:GetNWInt("CheckPoint") == otherPlayer:GetNWInt("CheckPoint") then
-					local entCheckPoint = GAMEMODE.CheckPointEnts[player:GetNWInt("CheckPoint")] or GAMEMODE.CheckPointEnts[1]
-					entCheckPoint = entCheckPoint.Target
-					local entPlayerCart = player:GetNWEntity("Cart")
-					local entOtherPlayerCart = otherPlayer:GetNWEntity("Cart")
-					if entPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) <= entOtherPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) then
+	for playerNum, player in pairs(player.GetAll()) do
+		local intPlace = playerNum
+		if player:GetNWInt("Lap") == 0 then
+			intPlace = player:GetNWInt("Place")
+		else
+			for place, otherPlayer in pairs(tblPlayerTable) do
+				if otherPlayer:GetNWInt("Lap") > 0 then
+					if player:GetNWInt("Lap") > otherPlayer:GetNWInt("Lap") then
 						intPlace = place
-					elseif entPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) > entOtherPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) then
-						intPlace = place + 1
+					elseif player:GetNWInt("Lap") == otherPlayer:GetNWInt("Lap") then
+						if player:GetNWInt("CheckPoint") > otherPlayer:GetNWInt("CheckPoint") then
+							intPlace = place
+						elseif player:GetNWInt("CheckPoint") == otherPlayer:GetNWInt("CheckPoint") then
+							local entCheckPoint = GAMEMODE.CheckPointEnts[player:GetNWInt("CheckPoint")] or GAMEMODE.CheckPointEnts[1]
+							entCheckPoint = entCheckPoint.Target
+							local entPlayerCart = player:GetNWEntity("Cart")
+							local entOtherPlayerCart = otherPlayer:GetNWEntity("Cart")
+							if entPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) <= entOtherPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) then
+								intPlace = place
+							end
+						end
 					end
-				else
-					intPlace = place + 1
 				end
-			else
-				intPlace = place + 1
 			end
 		end
 		table.insert(tblPlayerTable, intPlace, player)
@@ -116,26 +112,6 @@ function GM:Tick()
 	for place, player in pairs(tblPlayerTable) do
 		player:SetNWInt("Place", place)
 	end
-end
-
-function GM:GetRacingPlayers()
-	local tblPlayers = {}
-	for _, player in pairs(player.GetAll()) do
-		if player:GetNWInt("Lap") > 0 then
-			table.insert(tblPlayers, player)
-		end
-	end
-	return tblPlayers
-end
-
-function GM:GetLastTakenPlace()
-	local intPlace = 1
-	for _, player in pairs(player.GetAll()) do
-		if player:GetNWInt("Lap") == 0 && player:GetNWInt("Place") > intPlace then
-			intPlace = player:GetNWInt("Place")
-		end
-	end
-	return intPlace
 end
 
 local ClientResources = 0
