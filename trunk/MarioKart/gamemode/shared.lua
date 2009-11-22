@@ -22,7 +22,6 @@ GM.PositionItemTables[1] = {
 				"item_banana",
 				"item_banana",
 				"item_banana",
-				"item_banana",
 				}
 GM.PositionItemTables[2] = {
 				"item_mushroom",
@@ -330,7 +329,6 @@ UseFunction = function(self)
 		self:GetOwner():SetNWEntity("activeitem","none")
 	end,
 WipeOutType = "Spin",
-
 }
 ---------------------------
 GM.mk_Items["item_star"] = {
@@ -381,5 +379,41 @@ SpawnFunction = function(ply)
 end,
 }
 ---------------------------
-
-
+GM.mk_Items["item_badbox"] = {
+Name = "Bad Box",
+Model = "models/gmodcart/mk_block.mdl",
+Skin = 1,
+Material = "gmodcart/items/mk_box",
+SpawnFunction = function(ply)
+	local Itemtype = ply:GetNWString("item")
+	local item = ents.Create("ent_projectile")
+	local cart = ply:GetNWEntity("Cart")
+	item.class = Itemtype
+	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
+	item:SetOwner(ply)
+	item:SetColor(255,255,255,175)
+	item:SetModel("models/gmodcart/mk_block.mdl")
+	item:Spawn()
+	item:SetParent(cart)
+	item:PhysicsInit(SOLID_VPHYSICS)
+	item:GetOwner():SetNWEntity("activeitem",item)
+end,
+UseFunction = function(self)
+		local cart = self:GetOwner():GetNWEntity("Cart")
+		self.QuestionMark = ents.Create("player_wheel")
+		self.QuestionMark:SetModel("models/gmodcart/mk_question.mdl")
+		self.QuestionMark:SetPos(self:GetPos())
+		self.QuestionMark:SetColor(255,0,0,255)
+		self.QuestionMark:SetAngles(Angle(-180,0,0))
+		self.QuestionMark:SetParent(self)
+		self.QuestionMark:Spawn()
+		self:SetParent(nil)
+		self.Entity:GetPhysicsObject():Wake()
+		self:SetAngles(cart:GetAngles())
+		self:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
+		self:GetOwner():SetNWEntity("activeitem","none")
+		self.Activated = true
+	end,
+WipeOutType = "Spin",
+}
+---------------------------

@@ -2,6 +2,9 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 include('shared.lua')
 
+ENT.Bobnumber = 0
+ENT.Increase = false
+
 function ENT:Initialize()
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:PhysicsInit(SOLID_VPHYSICS)
@@ -48,6 +51,21 @@ function ENT:Think()
 	if self.Activated then
 		if self.class == "item_koopashell_red" || self.class == "item_koopashell_blue"	then 
 			self:GetPhysicsObject():ApplyForceCenter((self.target:GetPos() - self:GetPos()) * 3)
+		elseif self.class == "item_badbox" then
+			self:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),175)
+			self:SetAngles(self:GetAngles() + Angle(5,5,5))
+			if self.Bobnumber <= 0 && !self.Increase then
+				self.Increase = true
+			elseif self.Bobnumber >= 10 && self.Increase then
+				self.Increase = false
+			end
+			if self.Increase then
+				self.QuestionMark:SetPos(self.QuestionMark:GetPos() + Vector(0,0,.2))
+				self.Bobnumber = self.Bobnumber + 1
+			else
+				self.QuestionMark:SetPos(self.QuestionMark:GetPos() - Vector(0,0,.2))
+				self.Bobnumber = self.Bobnumber - 1
+			end
 		end
 	end
 end
