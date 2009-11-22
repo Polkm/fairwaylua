@@ -33,8 +33,7 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWInt("CheckPoint", 1)
 	ply:SetNWInt("Lap", 1)
 	ply:SetNWInt("Place", 1)
-	--ply:SetNWString("item","empty")
-	ply:SetNWString("item","item_star")
+	ply:SetNWString("item","empty")
 	ply:SetNWEntity("activeitem", "none")
 	ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed
 	ply.Turn = GAMEMODE.Characters[ply.Character].MaxTurn
