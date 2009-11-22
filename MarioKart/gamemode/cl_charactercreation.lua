@@ -42,7 +42,7 @@ function GM:DrawCharacterCreation()
 	end
 end
 concommand.Add("mk_characterCreation", function()
-	if !mk_CharacterPanel:IsValid() then
+	if !mk_CharacterPanel or !mk_CharacterPanel:IsValid() then
 		GAMEMODE:DrawCharacterCreation()
 	end
 end)
