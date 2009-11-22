@@ -71,6 +71,9 @@ function GM:StartRace()
 	SetGlobalString("GameModeState", "RACE")
 	SetGlobalInt("GameModeTime", 0)
 	GAMEMODE:CleanUpMap()
+	for k,v in pairs(player.GetAll()) do
+		v:ConCommand("mk_Sound BackGround")
+	end
 	timer.Create("mk_GameModeTimer", 0.1, 0, function() SetGlobalInt("GameModeTime", GetGlobalInt("GameModeTime") + 0.1) end)
 end
 
