@@ -44,6 +44,7 @@ function ENT:StartTouch(ent)
 					plyOwner:SetNWInt("CheckPoint", 2)
 					if GAMEMODE.WinLaps <= plyOwner:GetNWInt("Lap") then
 						GAMEMODE:RaceFinish(plyOwner)
+						plyOwner:SetNWInt("Lap", 0)
 						print("FINISHED!")
 					else
 						plyOwner:SetNWInt("Lap", plyOwner:GetNWInt("Lap") + 1)

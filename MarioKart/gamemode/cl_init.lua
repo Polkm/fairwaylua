@@ -12,6 +12,7 @@ local mk_ItemBoxx = (ScrW() / 2) - 64
 local mk_ItemBoxy = -128
 local mk_CanItem = true 
 local mk_Model = nil
+local mk_DrawTime = 0
 
 function GM:Initialize()
 	RunConsoleCommand("gm_clearfonts")
@@ -46,9 +47,16 @@ function GM:HUDPaint()
 	surface.SetFont("HUDNumber")
 	surface.SetTextColor(255, 255, 255, 255)
 	surface.SetTextPos(SW / 4, 20)
-	surface.DrawText("Lap " .. client:GetNWInt("Lap"))
+	if client:GetNWInt("Lap") > 0 then
+		surface.DrawText("Lap: " .. client:GetNWInt("Lap"))
+	else
+		surface.DrawText("Lap: Finished")
+	end
 	surface.SetTextPos(SW / 1.5, 20)
-	surface.DrawText("Time: "..string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10))
+	if client:GetNWInt("Lap") > 0 then
+		mk_DrawTime = math.Round(GetGlobalInt("GameModeTime") * 10) / 10
+	end
+	surface.DrawText("Time: "..string.ToMinutesSecondsMilliseconds(mk_DrawTime))
 	if GetGlobalInt("CountDown") <= 3 && GetGlobalInt("CountDown") > 0 then 
 		surface.SetFont("HudScaled")
 		local x,y = surface.GetTextSize(GetGlobalInt("CountDown"))
