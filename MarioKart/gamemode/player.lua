@@ -2,6 +2,11 @@ function GM:PlayerInitialSpawn(ply)
 	ply.Character = "Luigi"
 end
 
+function GM:PlayerDisconnected(ply)
+	ply:GetNWEntity("Cart"):Remove()
+end
+
+
 function GM:PlayerSpawn(ply)
 	if ply:GetNWEntity("Cart"):IsValid() then ply:GetNWEntity("Cart"):Remove() end
 	local cart = ents.Create("player_cart")
