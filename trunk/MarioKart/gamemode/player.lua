@@ -24,9 +24,13 @@ function GM:PlayerSpawn(ply)
 	ply.Turn = GAMEMODE.Characters[ply.Character].MaxTurn
 	ply.wipeout = false
 	ply.CanSlowDown = true
+	ply.CanUse = true
 	ply:SetNoDraw(true)
-	ply:SetPos(Vector(0, 0, 0))
+	ply:SetPos(Vector(-40, 100, 500))
 	ply:SetViewEntity(cart)
+	ply:Spectate( MODE_CHASE)
+	ply:SpectateEntity(cart)
+	ply:SetNWEntity("WatchEntity", cart)
 	ply:ConCommand("mk_characterDefault")
 end
 
@@ -53,7 +57,7 @@ end)
 
 function GM:FireItem(ply)
 	local item = ply:GetNWString("item")
-	if ply:GetNWEntity("activeitem") == "none" && item != "empty" then
+	if ply:GetNWEntity("activeitem") == "none" && item != "empty" && ply.CanUse then
 		GAMEMODE.mk_Items[item].SpawnFunction(ply)
 		ply:SetNWString("item", "empty")
 		return

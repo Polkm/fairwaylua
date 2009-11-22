@@ -5,6 +5,8 @@ include('shared.lua')
 ENT.Bobnumber = 0
 ENT.Increase = false
 
+ENT.SpawnPos = Vector(0,0,0)
+
 function ENT:Initialize()
 	self:SetModel("models/gmodcart/mk_block.mdl")
 	self:SetColor(155,155,155,175)
@@ -18,7 +20,7 @@ function ENT:Initialize()
 	self.QuestionMark:SetColor(255,255,255,255)
 	self.QuestionMark:Spawn()
 	self.Ready = true
-
+	self.SpawnPos = self:GetPos()
 	--self:Spin()
 end
 
@@ -45,24 +47,23 @@ function ENT:OnTakeDamage(dmginfo)
 end
 function ENT:StartTouch(ent)
 	if ent:GetOwner():IsPlayer() && ent:GetOwner():GetNWEntity("Cart") != ent then return end
-	local oldpose = self:GetPos()
+	local SpawnPos = self.SpawnPos
 	self:Remove()
 	self.QuestionMark:Remove()
 	if ent:IsValid() && ent:GetOwner():IsPlayer() then
 		if ent:GetOwner():GetNWEntity("Cart") == ent then
 			local ply = ent:GetOwner()
 			if ply:GetNWString("item") == "empty" then
-				local itemtable = {"item_mushroom",
-				"item_star",
-				"item_koopashell_red",
-				"item_koopashell_green",
-				"item_banana",
-				}
-				
+				local itemtable = {}
+				if ply:GetNWInt("Place") > 8 then
+					itemtable = GAMEMODE.PositionItemTables[9]
+				else
+					itemtable = GAMEMODE.PositionItemTables[ply:GetNWInt("Place")]
+				end
 				ply:SetNWString("item",itemtable[math.random(1,#itemtable)])
 			end
 		end
 	end
-	timer.Simple(10,function()	local box = ents.Create("item_box")	box:SetPos(oldpose) box:Spawn()  end)
+	timer.Simple(10,function()	local box = ents.Create("item_box")	box:SetPos(SpawnPos) box:Spawn()  end)
 end
 
