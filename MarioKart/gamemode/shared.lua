@@ -14,7 +14,111 @@ GM.PosibleColors["darkyellow"] = "models/gmodcart/CartBody_darkyellow"
 GM.PosibleColors["purple"] = "models/gmodcart/CartBody_purple"
 GM.PosibleColors["pink"] = "models/gmodcart/CartBody_pink"
 
-
+GM.PositionItemTables = {}
+GM.PositionItemTables[1] = {
+				"item_mushroom",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_banana",
+				"item_banana",
+				"item_banana",
+				"item_banana",
+				}
+GM.PositionItemTables[2] = {
+				"item_mushroom",
+				"item_koopashell_red",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_banana",
+				"item_banana",
+				"item_banana",
+				}
+GM.PositionItemTables[3] = {
+				"item_mushroom",
+				"item_mushroom",
+				"item_koopashell_red",
+				"item_koopashell_red",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_banana",
+				"item_banana",
+				"item_banana",
+				}
+GM.PositionItemTables[4] = {
+				"item_mushroom",
+				"item_mushroom",
+				"item_mushroom",
+				"item_star",
+				"item_koopashell_red",
+				"item_koopashell_red",
+				"item_koopashell_red",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_banana",
+				"item_banana",
+				"item_banana",
+				}
+GM.PositionItemTables[5] = {
+				"item_mushroom",
+				"item_star",
+				"item_koopashell_red",
+				"item_koopashell_red",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_banana",
+				}				
+GM.PositionItemTables[6] = {
+				"item_mushroom",
+				"item_star",
+				"item_koopashell_red",
+				"item_koopashell_red",
+				"item_koopashell_red",
+				"item_koopashell_green",
+				"item_koopashell_green",
+				"item_lightning",
+				}
+GM.PositionItemTables[7] = {
+				"item_mushroom",
+				"item_mushroom",
+				"item_mushroom",
+				"item_star",
+				"item_star",
+				"item_koopashell_red",
+				"item_koopashell_red",
+				"item_koopashell_red",
+				"item_koopashell_green",
+				"item_koopashell_blue",
+				"item_lightning",
+				"item_lightning",
+				}				
+GM.PositionItemTables[8] = {
+				"item_mushroom",
+				"item_mushroom",
+				"item_mushroom",
+				"item_star",
+				"item_star",
+				"item_star",
+				"item_koopashell_red",
+				"item_koopashell_red",
+				"item_koopashell_blue",
+				"item_lightning",
+				"item_lightning",
+				"item_lightning",
+				}				
+GM.PositionItemTables[9] = {
+				"item_mushroom",
+				"item_star",
+				"item_koopashell_red",
+				"item_koopashell_green",
+				"item_banana",
+				"item_lightning",
+				"item_koopashell_blue",
+				}		
+				
 GM.Characters = {}
 GM.Characters["Donkey-Kong"] = {
 	Name = "Donkey-Kong",
@@ -87,7 +191,7 @@ tblNewItem.UseFunction = function(self)
 		self.Entity:GetPhysicsObject():Wake()
 		constraint.NoCollide(self.Entity,cart,0,0)
 		self:SetAngles(cart:GetAngles())
-		self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
+		self:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 		self.Entity:GetPhysicsObject():ApplyForceCenter(cart:GetAngles():Forward() + cart:GetAngles():Forward() * 1500)
 		self:GetOwner():SetNWEntity("activeitem","none")
 		self.Activated = true
@@ -113,7 +217,7 @@ SpawnFunction = function(ply)
 	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 	item:SetModel("models/gmodcart/items/koopashell.mdl")
 	item:SetOwner(ply)
-	item:SetSkin(1)
+	item:SetSkin(GAMEMODE.mk_Items[item.class].Skin)
 	item:Spawn()
 	item:SetParent(cart)
 	item:PhysicsInit(SOLID_VPHYSICS)
@@ -128,7 +232,7 @@ UseFunction = function(self)
 		constraint.NoCollide(self.Entity,cart,0,0)
 		self:SetAngles(cart:GetAngles())
 		self.target = self
-		self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
+		self:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 		for k,v in pairs(player.GetAll()) do
 			for a,b in pairs(player.GetAll()) do
 				if v:GetNWEntity("Cart"):GetPos():Distance(cart:GetPos()) <= b:GetNWEntity("Cart"):GetPos():Distance(cart:GetPos()) && v:GetNWEntity("Cart") != cart  then
@@ -149,7 +253,7 @@ UseFunction = function(self)
 WipeOutType = "Explode",
 }
 -----------------
-/*GM.mk_Items["item_koopashell_blue"] = {
+GM.mk_Items["item_koopashell_blue"] = {
 Name = "Blue Shell",
 Model = "models/gmodcart/items/koopashell.mdl",
 Skin = 2,
@@ -162,6 +266,7 @@ SpawnFunction = function(ply)
 	item:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 	item:SetModel("models/gmodcart/items/koopashell.mdl")
 	item:SetOwner(ply)
+	item:SetSkin(GAMEMODE.mk_Items[item.class].Skin)
 	item:Spawn()
 	item:SetParent(cart)
 	item:PhysicsInit(SOLID_VPHYSICS)
@@ -175,17 +280,27 @@ UseFunction = function(self)
 		self.Entity:GetPhysicsObject():Wake()
 		constraint.NoCollide(self.Entity,cart,0,0)
 		self:SetAngles(cart:GetAngles())
+		self.target = self
 		self:SetPos(cart:GetPos() - cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
-		self.Entity:GetPhysicsObject():ApplyForceCenter(cart:GetAngles():Forward() + cart:GetAngles():Forward() * 1200)
+		for k,v in pairs(player.GetAll()) do
+			for a,b in pairs(player.GetAll()) do
+				if v:GetNWInt("place") == 1 then
+					print(v:GetNWEntity("Cart"))
+					self.target = v:GetNWEntity("Cart")
+				end
+			end
+		end
+		print(self.target)
+		self.Activated = true 
+		self:SetGravity(0)
 		self:GetOwner():SetNWEntity("activeitem","none")
-		self.Activated = true
 		timer.Simple(1, function()
 		constraint.RemoveAll(self.Entity)
 		timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
 		end)
 	end,
 WipeOutType = "Explode",
-}*/
+}
 -----------------
 GM.mk_Items["item_banana"] = {
 Name = "Banana",
@@ -244,6 +359,27 @@ SpawnFunction = function(ply)
 end,
 }
 ---------------------------
-
+GM.mk_Items["item_lightning"] = {
+Material = "gmodcart/items/mk_lightning",
+SpawnFunction = function(ply)
+	for k,v in pairs(player.GetAll()) do
+		if v != ply then
+			v.CanUse = false
+			v:GetNWEntity("Cart"):Wipeout("Spin")
+			v.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed * .25
+		end
+	end
+	timer.Simple(10, function() 
+	for k,v in pairs(player.GetAll()) do
+		if v != ply then
+			v.CanUse = true
+			v.Forward = GAMEMODE.Characters[v.Character].MaxSpeed 
+		end
+	end
+	end)
+	ply:GetOwner():SetNWEntity("activeitem","none")
+end,
+}
+---------------------------
 
 

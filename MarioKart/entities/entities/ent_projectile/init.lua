@@ -25,18 +25,28 @@ function ENT:PhysicsCollide(tblData, physObject)
 		local entHitEntity = tblData.HitEntity
 		local plyHitEntityOwner = entHitEntity:GetOwner()
 		if self.Activated && entHitEntity == plyHitEntityOwner:GetNWEntity("Cart") then
-			if !entHitEntity:GetOwner().StarPower then
-				tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
+			if self.Class != "item_koopashell_blue" then
+				if !entHitEntity:GetOwner().StarPower then
+					tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
+				end
+					self:Remove()
+				return
+			else
+				if !entHitEntity:GetOwner().StarPower then
+					tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
+				end
+				if plyHitEntityOwner:GetNWEntity("Cart") == self.target then
+					self:Remove()
+				end
+				return
 			end
-			self:Remove()
-			return
 		end
 	end
 end
 
 function ENT:Think()
 	if self.Activated then
-		if self.class == "item_koopashell_red" then 
+		if self.class == "item_koopashell_red" || self.class == "item_koopashell_blue"	then 
 			self:GetPhysicsObject():ApplyForceCenter((self.target:GetPos() - self:GetPos()) * 3)
 		end
 	end

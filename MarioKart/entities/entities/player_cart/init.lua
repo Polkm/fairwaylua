@@ -111,7 +111,7 @@ function ENT:PhysicsSimulate(phys, deltatime)
 		intBounce = self:GetUpAcceleration(plyDriver, phys, vecForwardVel)
 		intYaw = self:GetTurnYaw(plyDriver, phys, vecForwardVel)
 		if vecUp.z < 0.33 || !trcDownTrace.Hit then
-			intForward = 0
+			intForward = vecForwardVel * 0.1
 			intBounce = 1
 			intYaw = 0
 		end
@@ -146,7 +146,7 @@ function ENT:PhysicsSimulate(phys, deltatime)
 	local Angular = (AngleFriction + Vector(0, 0, intYaw)) * deltatime * 250
 	
 	if self:GetOwner().SlowDown && self:GetOwner().CanSlowDown then 
-		Linear =  Linear/2
+		Linear =  Linear/3
 	end
 	
 	return Angular, Linear, SIM_LOCAL_ACCELERATION

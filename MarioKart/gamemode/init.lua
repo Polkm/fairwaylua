@@ -7,7 +7,7 @@ include("player.lua")
 GM.PlayerSpawnTime = {}
 GM.CheckPointEnts = {}
 GM.PrepTime = 30
-GM.WinLaps = 1
+GM.WinLaps = 3
 GM.CatchUpTime = 30
 
 function GM:Initialize()
@@ -45,6 +45,7 @@ end
 function GM:RaceFinish(ply)
 		SetGlobalString("GameModeState", "PENDING")
 		ply.Finished = true
+		ply.CanUse = false
 		if GetGlobalEntity("Winner") == "none" then
 			SetGlobalEntity("Winner",ply)
 			timer.Simple(GAMEMODE.CatchUpTime, function() timer.Destroy("mk_GameModeTimer") GAMEMODE:StartPrep() end)
