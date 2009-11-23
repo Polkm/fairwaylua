@@ -249,8 +249,10 @@ UseFunction = function(self)
 		self:SetPos(cart:GetPos() + cart:GetAngles():Forward() * -30 + cart:GetAngles():Up() * 20)
 		for k,v in pairs(player.GetAll()) do
 			for a,b in pairs(player.GetAll()) do
-				if v:GetNWEntity("Cart"):GetPos():Distance(cart:GetPos()) <= b:GetNWEntity("Cart"):GetPos():Distance(cart:GetPos()) && v:GetNWEntity("Cart") != cart  then
+				if v:GetNWInt("Place") == self:GetOwner():GetNWInt("Place") - 1 then
 					print(v:GetNWEntity("Cart"))
+					self.target = v:GetNWEntity("Cart")
+				elseif self:GetOwner():GetNWInt("Place") - 1 <= 0 && v:GetNWInt("Place") == table.Count(player.GetAll()) then
 					self.target = v:GetNWEntity("Cart")
 				end
 			end
