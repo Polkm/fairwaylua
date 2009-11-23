@@ -11,13 +11,11 @@ GM.HUDNoDraw[4] = "CHudAmmo"
 local mk_ItemBoxx = (ScrW() / 2) - 64
 local mk_ItemBoxy = -128
 local mk_CanItem = true 
-local mk_Model = nil
 local mk_DrawTime = 0
 
 function GM:Initialize()
 	RunConsoleCommand("gm_clearfonts")
 	surface.CreateFont("coolvetica", ScreenScale(120), ScreenScale(120), true, false, "HudScaled")
-	ModelIcon = vgui.Create("DModelPanel")
 	timer.Simple(0.1, function()
 		GAMEMODE:DrawPlacesPanel()
 		if GetGlobalString("GameModeState") == "PREP" then
@@ -35,73 +33,58 @@ function GM:HUDPaint()
 	local SW = ScrW()
 	local SH = ScrH()
 	local client = LocalPlayer()
-	if !mk_Model then 
-		mk_Model = ents.Create("prop_physics")
-		mk_Model:SetAngles(Angle(0, 0, 0))
-		mk_Model:SetPos(Vector(0, 0, 0))
-		mk_Model:SetModel("models/gmodcart/items/koopashell.mdl")
-		mk_Model:SetNoDraw(true)
-		mk_Model:Spawn()
-		mk_Model:Activate()
-	end
-	surface.SetFont("HUDNumber")
-	surface.SetTextColor(255, 255, 255, 255)
-	surface.SetTextPos(SW / 4, 20)
-	if client:GetNWInt("Lap") > 0 then
-		surface.DrawText("Lap: " .. client:GetNWInt("Lap"))
-	else
-		surface.DrawText("Lap: Finished")
-	end
-	surface.SetTextPos(SW / 1.5, 20)
-	if client:GetNWInt("Lap") > 0 then
-		mk_DrawTime = math.Round(GetGlobalInt("GameModeTime") * 10) / 10
-	end
-	surface.DrawText("Time: "..string.ToMinutesSecondsMilliseconds(mk_DrawTime))
-	if GetGlobalInt("CountDown") <= 3 && GetGlobalInt("CountDown") > 0 then 
-		surface.SetFont("HudScaled")
-		local x,y = surface.GetTextSize(GetGlobalInt("CountDown"))
-		surface.SetTextPos(SW/2 - x/2  ,SH/2 - y/2)
-		surface.DrawText(GetGlobalInt("CountDown"))
-	end
-	surface.SetFont("HUDNumber")
-	--item display
-	if client:GetNWString("Item") != "empty" then
-		if mk_ItemBoxy < (20)  then
-			mk_ItemBoxy = mk_ItemBoxy + 2
+	local strItem = client:GetNWString("Item")
+	local entViewEntity = LocalPlayer():GetNWEntity("WatchEntity")
+	if !entViewEntity or !entViewEntity:IsValid() then return end
+	local entCart = LocalPlayer():GetNWEntity("Cart")
+	if !entCart or !entCart:IsValid() then return end
+	if entCart == entViewEntity then
+		surface.SetFont("HUDNumber")
+		surface.SetTextColor(255, 255, 255, 255)
+		surface.SetTextPos(SW / 4, 20)
+		local strLapText = "Lap: " .. client:GetNWInt("Lap") .. "/" .. GAMEMODE.WinLaps
+		if client:GetNWInt("Lap") <= 0 then strLapText = "Lap: Done" end
+		surface.DrawText(strLapText)
+		
+		surface.SetTextPos(SW / 1.5, 20)
+		if client:GetNWInt("Lap") > 0 then
+			mk_DrawTime = math.Round(GetGlobalInt("GameModeTime") * 10) / 10
 		end
-	else
-		if mk_ItemBoxy > (-128) then
-			mk_ItemBoxy = mk_ItemBoxy - 2
+		surface.DrawText("Time: " .. string.ToMinutesSecondsMilliseconds(mk_DrawTime))
+		if GetGlobalInt("CountDown") <= 3 && GetGlobalInt("CountDown") > 0 then 
+			surface.SetFont("HudScaled")
+			local x, y = surface.GetTextSize(GetGlobalInt("CountDown"))
+			surface.SetTextPos(SW / 2 - x / 2  ,SH / 2 - y / 2)
+			surface.DrawText(GetGlobalInt("CountDown"))
 		end
-	end
-	surface.SetTexture(surface.GetTextureID("gmodcart/items/mk_box"))
-	surface.SetDrawColor(255,255,255,255)
-	surface.DrawTexturedRect(mk_ItemBoxx, mk_ItemBoxy ,128,128)
-	if client:GetNWString("Item") != "empty" then
-		if GAMEMODE.mk_Items[client:GetNWString("Item")] && GAMEMODE.mk_Items[client:GetNWString("Item")].Material == nil then
-			ModelIcon:SetPos(SW / 2,20)
-			ModelIcon:SetSize(100,100)
-			mk_Model:SetModel(GAMEMODE.mk_Items[client:GetNWString("Item")].Model)
-			mk_Model:SetSkin(GAMEMODE.mk_Items[client:GetNWString("Item")].Skin)
-			ModelIcon:SetEntity(mk_Model)
-			local center = mk_Model:OBBCenter()
-			local dist = mk_Model:BoundingRadius()
-			ModelIcon:SetLookAt(center)
-			ModelIcon:SetCamPos(center+Vector(dist,dist,0))	
+		surface.SetFont("HUDNumber")
+		--item display
+		if strItem != "empty" then
+			if mk_ItemBoxy < (20)  then
+				mk_ItemBoxy = mk_ItemBoxy + 2
+			end
 		else
-			if GAMEMODE.mk_Items[client:GetNWString("Item")] then
-				surface.SetTexture(surface.GetTextureID(GAMEMODE.mk_Items[client:GetNWString("Item")].Material))
-				surface.SetDrawColor(255,255,255,255)
-				surface.DrawTexturedRect(mk_ItemBoxx + 14, mk_ItemBoxy + 14,100,100)
+			if mk_ItemBoxy > (-128) then
+				mk_ItemBoxy = mk_ItemBoxy - 2
 			end
 		end
+		surface.SetTexture(surface.GetTextureID("gmodcart/items/mk_box"))
+		surface.SetDrawColor(255, 255, 255, 255)
+		surface.DrawTexturedRect(mk_ItemBoxx, mk_ItemBoxy, 128, 128)
+		if strItem != "empty" && GAMEMODE.mk_Items[strItem] then
+			surface.SetTexture(surface.GetTextureID(GAMEMODE.mk_Items[strItem].Material))
+			surface.SetDrawColor(255, 255, 255, 255)
+			surface.DrawTexturedRect(mk_ItemBoxx + 14, mk_ItemBoxy + 14, 100, 100)
+		end
+		surface.SetTextPos(SW / 7, SH / 1.2)
+		surface.DrawText(LocalPlayer():GetNWInt("Place"))
+	else
+		
 	end
-	surface.SetTextPos(SW / 7, SH / 1.2)
-	surface.DrawText(LocalPlayer():GetNWInt("Place"))
 end
 
 function GM:Think()
-	if LocalPlayer():KeyPressed(IN_USE) && mk_CanItem  then
+	if LocalPlayer():KeyPressed(IN_USE) && mk_CanItem then
 		RunConsoleCommand("mk_FireItem")
 		mk_CanItem = false
 		timer.Simple(0.3, function() mk_CanItem = true end)
@@ -109,20 +92,20 @@ function GM:Think()
 end
 
 function GM:CalcView(ply, origin, angles, fov)
-	local phys = LocalPlayer():GetNWEntity("WatchEntity") 
-	if !phys:IsValid() then
-		phys = LocalPlayer():GetNWEntity("Cart") 
+	local entViewEntity = LocalPlayer():GetNWEntity("WatchEntity") 
+	if !entViewEntity:IsValid() then
+		entViewEntity = LocalPlayer():GetNWEntity("Cart") 
 	end
-	if !phys or !phys:IsValid() then return end
-	LastViewYaw = LastViewYaw or phys:GetAngles().yaw
-	local distance = math.AngleDifference( LastViewYaw, phys:GetAngles().yaw )
-	LastViewYaw = math.ApproachAngle( LastViewYaw, phys:GetAngles().yaw, distance * FrameTime() * 2 )
-	phys:GetNWEntity("Wheel1"):SetModelScale(Vector(1,2,1))
-	phys:GetNWEntity("Wheel2"):SetModelScale(Vector(1,2,1))
+	if !entViewEntity or !entViewEntity:IsValid() then return end
+	LastViewYaw = LastViewYaw or entViewEntity:GetAngles().yaw
+	local Distance = math.AngleDifference(LastViewYaw, entViewEntity:GetAngles().yaw)
+	LastViewYaw = math.ApproachAngle(LastViewYaw, entViewEntity:GetAngles().yaw, Distance * FrameTime() * 2)
+	if entViewEntity:GetNWEntity("Wheel1") then entViewEntity:GetNWEntity("Wheel1"):SetModelScale(Vector(1,2,1)) end
+	if entViewEntity:GetNWEntity("Wheel2") then entViewEntity:GetNWEntity("Wheel2"):SetModelScale(Vector(1,2,1)) end
 	local view = {}
-	view.origin 	= phys:GetPos() + Vector( 0, 0, 90 ) - phys:GetAngles():Forward() * 128
-	view.angles		= Angle( 10, LastViewYaw - distance * 1.25, distance*0.1 )
-	view.fov 		= 90
+	view.origin = entViewEntity:GetPos() + Vector(0, 0, 90) - entViewEntity:GetAngles():Forward() * 128
+	view.angles	= Angle(10, LastViewYaw - Distance * 1.25, Distance * 0.1)
+	view.fov = 90
 	return view
 end
 
@@ -136,12 +119,12 @@ tblSoundTable["StartLineUp"] = "gmodcart/music/mk_startlineup.mp3"
 tblSoundTable["End"] = "gmodcart/music/mk_end.mp3"
 tblSoundTable["Star"] = "gmodcart/items/mk_star.mp3"
 
-mk_intMasterVolume = 0.6
-mk_sndCurentSound = nil
-mk_sndCurentSound_Volume = 0.0
-mk_sndBackGroundSound = nil
-mk_sndBackGroundSound_Volume = 0.0
-mk_entBackGroundCart = nil
+local mk_intMasterVolume = 0.6
+local mk_sndCurentSound = nil
+local mk_sndCurentSound_Volume = 0.0
+local mk_sndBackGroundSound = nil
+local mk_sndBackGroundSound_Volume = 0.0
+local mk_entBackGroundCart = nil
 function GM:PlaySound(strSound)
 	if mk_convarMusic:GetInt() == 1 then
 		if tblSoundTable[strSound] then

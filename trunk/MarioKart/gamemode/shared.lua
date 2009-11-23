@@ -4,6 +4,10 @@ GM.Email 		= ""
 GM.Website 		= ""
 GM.TeamBased 	= true
 
+GM.WinLaps = 3
+GM.PrepTime = 15
+GM.CatchUpTime = 30
+
 GM.PosibleColors = {}
 GM.PosibleColors["red"] = "models/gmodcart/CartBody_red"
 GM.PosibleColors["green"] = "models/gmodcart/CartBody_green"
