@@ -7,9 +7,6 @@ include("shared.lua")
 include("player.lua")
 GM.PlayerSpawnTime = {}
 GM.CheckPointEnts = {}
-GM.PrepTime = 15
-GM.WinLaps = 3
-GM.CatchUpTime = 30
 
 function GM:Initialize()
 	util.PrecacheModel("models/marioragdoll/SuperMarioGalaxy/mario/mario.mdl")
