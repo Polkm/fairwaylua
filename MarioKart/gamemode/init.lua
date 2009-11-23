@@ -57,7 +57,6 @@ function GM:RaceFinish(ply)
 			"With a time of " .. (string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10)))
 			if player.Finished && GetGlobalEntity("Winner") != "none" then
 				player:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
-				break
 			end
 		end
 end
