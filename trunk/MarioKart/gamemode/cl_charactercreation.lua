@@ -43,9 +43,9 @@ function GM:DrawCharacterCreation()
 	MusicCheckBox:SizeToContents()
 	MusicCheckBox.OnChange = function()
 		if mk_convarMusic:GetBool() then
-			--GAMEMODE:OnAllMusic()
+			GAMEMODE:OnAllMusic()
 		else
-			--GAMEMODE:OffAllMusic()
+			GAMEMODE:OffAllMusic()
 		end
 	end
  

@@ -113,7 +113,7 @@ function GM:CalcView(ply, origin, angles, fov)
 	if !phys:IsValid() then
 		phys = LocalPlayer():GetNWEntity("Cart") 
 	end
-	if !phys then return end
+	if !phys or !phys:IsValid() then return end
 	LastViewYaw = LastViewYaw or phys:GetAngles().yaw
 	local distance = math.AngleDifference( LastViewYaw, phys:GetAngles().yaw )
 	LastViewYaw = math.ApproachAngle( LastViewYaw, phys:GetAngles().yaw, distance * FrameTime() * 2 )
@@ -136,50 +136,52 @@ tblSoundTable["StartLineUp"] = "gmodcart/music/mk_startlineup.mp3"
 tblSoundTable["End"] = "gmodcart/music/mk_end.mp3"
 tblSoundTable["Star"] = "gmodcart/items/mk_star.mp3"
 
-local sndCurentSound = nil
-local sndCurentSound_Volume = 0.0
-local sndBackGroundSound = nil
-local sndBackGroundSound_Volume = 0.0
-local entBackGroundCart = nil
+mk_intMasterVolume = 0.6
+mk_sndCurentSound = nil
+mk_sndCurentSound_Volume = 0.0
+mk_sndBackGroundSound = nil
+mk_sndBackGroundSound_Volume = 0.0
+mk_entBackGroundCart = nil
 function GM:PlaySound(strSound)
 	if mk_convarMusic:GetInt() == 1 then
 		if tblSoundTable[strSound] then
 			local entCart = LocalPlayer():GetNWEntity("Cart")
-			if sndCurentSound then
-				sndCurentSound:FadeOut(0.5)
-				sndCurentSound_Volume = 0.0
+			if !entCart or !entCart:IsValid() then return end
+			if mk_sndCurentSound then
+				mk_sndCurentSound:FadeOut(0.5)
+				mk_sndCurentSound_Volume = 0.0
 			end
 			if strSound == "BackGround" then
-				if !sndBackGroundSound or entBackGroundCart != entCart then
-					entBackGroundCart = entCart
+				if !mk_sndBackGroundSound or mk_entBackGroundCart != entCart then
+					mk_entBackGroundCart = entCart
 					local strSound = tblSoundTable["BackGround"].Default
 					if tblSoundTable["BackGround"][tostring(game.GetMap())] then strSound = tblSoundTable["BackGround"][game.GetMap()] end
-					sndBackGroundSound = CreateSound(entCart, Sound(strSound))
-					sndBackGroundSound:PlayEx(0.3, 100)
-					sndCurentSound_Volume = 0.3
+					mk_sndBackGroundSound = CreateSound(entCart, Sound(strSound))
+					mk_sndBackGroundSound:PlayEx(mk_intMasterVolume, 100)
+					mk_sndBackGroundSound_Volume = mk_intMasterVolume
 				else
-					sndBackGroundSound:ChangeVolume(0.3)
-					sndCurentSound_Volume = 0.3
+					mk_sndBackGroundSound:ChangeVolume(mk_intMasterVolume)
+					mk_sndBackGroundSound_Volume = mk_intMasterVolume
 				end
 			else
-				if sndBackGroundSound then
-					sndBackGroundSound:ChangeVolume(0.1)
-					sndCurentSound_Volume = 0.1
+				if mk_sndBackGroundSound then
+					mk_sndBackGroundSound:ChangeVolume(0.1)
+					mk_sndBackGroundSound_Volume = 0.1
 				end
-				sndCurentSound = CreateSound(entCart, Sound(tblSoundTable[strSound]))
-				sndCurentSound:PlayEx(0.3, 100)
-				sndCurentSound_Volume = 0.3
+				mk_sndCurentSound = CreateSound(entCart, Sound(tblSoundTable[strSound]))
+				mk_sndCurentSound:PlayEx(mk_intMasterVolume, 100)
+				mk_sndCurentSound_Volume = mk_intMasterVolume
 			end
 		end
 	end
 end
 function GM:OffAllMusic()
-	if sndCurentSound then sndCurentSound:ChangeVolume(0.0) end
-	if sndBackGroundSound then sndBackGroundSound:ChangeVolume(0.0) end
+	if mk_sndCurentSound then mk_sndCurentSound:ChangeVolume(0.0) end
+	if mk_sndBackGroundSound then mk_sndBackGroundSound:ChangeVolume(0.0) end
 end
 function GM:OnAllMusic()
-	if sndCurentSound then sndCurentSound:ChangeVolume(sndCurentSound_Volume) end
-	if sndBackGroundSound then sndBackGroundSound:ChangeVolume(sndBackGroundSound_Volume) end
+	if mk_sndCurentSound then mk_sndCurentSound:ChangeVolume(mk_sndCurentSound_Volume) end
+	if mk_sndBackGroundSound then mk_sndBackGroundSound:ChangeVolume(mk_sndBackGroundSound_Volume) end
 end
 concommand.Add("mk_Sound", function(ply, command, args)
 	GAMEMODE:PlaySound(args[1])

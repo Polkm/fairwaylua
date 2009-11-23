@@ -59,7 +59,7 @@ function GM:RaceFinish(ply)
 		end
 		for _, player in pairs(player.GetAll()) do
 			player:ChatPrint(ply:Nick() .. " Came in " .. ply:GetNWInt("Place") ..
-			"With a time of " .. (string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10)))
+			" With a time of " .. (string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10)))
 			if player.Finished && GetGlobalEntity("Winner") != "none" then
 				player:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
 			end
@@ -92,38 +92,35 @@ end
 
 function GM:Tick()
 	local tblPlayerTable = {}
-	local intDefaultPlace = 1
-	for playerNum, player in pairs(player.GetAll()) do
-		local intPlace = intDefaultPlace
-		if player:GetNWInt("Lap") == 0 then
-			--intPlace = player:GetNWInt("Place")
+	for playerNum, Player in pairs(player.GetAll()) do
+		local intPlace = playerNum
+		if Player:GetNWInt("Lap") == 0 then
+			intPlace = Player:GetNWInt("Place")
 		else
 			for place, otherPlayer in pairs(tblPlayerTable) do
 				if otherPlayer:GetNWInt("Lap") > 0 then
-					if player:GetNWInt("Lap") > otherPlayer:GetNWInt("Lap") then
-						intPlace = place
-					elseif player:GetNWInt("Lap") == otherPlayer:GetNWInt("Lap") then
-						if player:GetNWInt("CheckPoint") > otherPlayer:GetNWInt("CheckPoint") then
-							intPlace = place
-						elseif player:GetNWInt("CheckPoint") == otherPlayer:GetNWInt("CheckPoint") then
-							local entCheckPoint = GAMEMODE.CheckPointEnts[player:GetNWInt("CheckPoint")] or GAMEMODE.CheckPointEnts[1]
+					if Player:GetNWInt("Lap") > otherPlayer:GetNWInt("Lap") then
+						if place < intPlace then intPlace = place end
+					elseif Player:GetNWInt("Lap") == otherPlayer:GetNWInt("Lap") then
+						if Player:GetNWInt("CheckPoint") > otherPlayer:GetNWInt("CheckPoint") then
+							if place < intPlace then intPlace = place end
+						elseif Player:GetNWInt("CheckPoint") == otherPlayer:GetNWInt("CheckPoint") then
+							local entCheckPoint = GAMEMODE.CheckPointEnts[Player:GetNWInt("CheckPoint")] or GAMEMODE.CheckPointEnts[1]
 							entCheckPoint = entCheckPoint.Target
-							local entPlayerCart = player:GetNWEntity("Cart")
+							local entPlayerCart = Player:GetNWEntity("Cart")
 							local entOtherPlayerCart = otherPlayer:GetNWEntity("Cart")
 							if entPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) <= entOtherPlayerCart:GetPos():Distance(entCheckPoint:GetPos()) then
-								intPlace = place
+								if place < intPlace then intPlace = place end
 							end
 						end
 					end
 				end
 			end
 		end
-		table.insert(tblPlayerTable, intPlace, player)
-		intDefaultPlace = intDefaultPlace + 1
+		table.insert(tblPlayerTable, intPlace, Player)
 	end
-	PrintTable(tblPlayerTable)
-	for place, player in pairs(tblPlayerTable) do
-		player:SetNWInt("Place", place)
+	for place, Player in pairs(tblPlayerTable) do
+		Player:SetNWInt("Place", place)
 	end
 end
 
