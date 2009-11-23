@@ -96,10 +96,7 @@ end
 function ENT:PhysicsSimulate(phys, deltatime)
 	local vecUp = phys:GetAngle():Up()
 	local tblTrace = {}
-	tblTrace.start = self:GetPos()
-	tblTrace.filter = self
-	tblTrace.endpos = self:GetPos() - Vector(0,0,3)
-	local trcDownTrace = util.TraceLine(tblTrace)
+
 	local plyDriver = self:GetOwner()
 	local intForward = 0
 	local intRight = 0
