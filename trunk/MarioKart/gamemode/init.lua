@@ -92,10 +92,11 @@ end
 
 function GM:Tick()
 	local tblPlayerTable = {}
+	local intDefaultPlace = 1
 	for playerNum, player in pairs(player.GetAll()) do
-		local intPlace = playerNum
+		local intPlace = intDefaultPlace
 		if player:GetNWInt("Lap") == 0 then
-			intPlace = player:GetNWInt("Place")
+			--intPlace = player:GetNWInt("Place")
 		else
 			for place, otherPlayer in pairs(tblPlayerTable) do
 				if otherPlayer:GetNWInt("Lap") > 0 then
@@ -118,6 +119,7 @@ function GM:Tick()
 			end
 		end
 		table.insert(tblPlayerTable, intPlace, player)
+		intDefaultPlace = intDefaultPlace + 1
 	end
 	PrintTable(tblPlayerTable)
 	for place, player in pairs(tblPlayerTable) do
