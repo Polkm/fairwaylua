@@ -149,7 +149,7 @@ function GM:PlaySound(strSound)
 				if !sndBackGroundSound or entBackGroundCart != entCart then
 					entBackGroundCart = entCart
 					local strSound = tblSoundTable["BackGround"].Default
-					if tblSoundTable["BackGround"][game.GetMap()] then strSound = tblSoundTable["BackGround"][game.GetMap()] end
+					if tblSoundTable["BackGround"][tostring(game.GetMap())] then strSound = tblSoundTable["BackGround"][game.GetMap()] end
 					sndBackGroundSound = CreateSound(entCart, Sound(strSound))
 					sndBackGroundSound:PlayEx(0.3, 100)
 				else
