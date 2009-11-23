@@ -99,9 +99,9 @@ end
 function ENT:Wipeout_Explode()
 end
 
+
 function ENT:PhysicsSimulate(phys, deltatime)
 	local vecUp = phys:GetAngle():Up()
-	local tblTrace = {}
 	local tblTrace = {}
 	tblTrace.start = self:GetPos()
 	tblTrace.filter = self
@@ -122,18 +122,6 @@ function ENT:PhysicsSimulate(phys, deltatime)
 			intBounce = 1
 			intYaw = 0
 		end
-		-- Spin the wheels... Didnt work too well.
-		--[[if vecVelocity.x >= 1 then
-			self.BackWheel1:SetAngles(self.BackWheel1:GetAngles():Forward() * 10)
-			self.BackWheel2:SetAngles(self.BackWheel2:GetAngles():Forward() * 10)
-			self.frontWheel1:SetAngles(self.frontWheel1:GetAngles():Forward() * 10)
-			self.frontWheel2:SetAngles(self.frontWheel2:GetAngles():Forward() * 10)
-		elseif vecVelocity.x <= -1 then
-			self.BackWheel1:SetAngles(self.BackWheel1:GetAngles():Forward() * -10)
-			self.BackWheel2:SetAngles(self.BackWheel2:GetAngles():Forward() * -10)
-			self.frontWheel1:SetAngles(self.frontWheel1:GetAngles():Forward() * -10)
-			self.frontWheel2:SetAngles(self.frontWheel2:GetAngles():Forward() * -10)
-		end]]
 		if intYaw > 0 then
 			self.frontWheel1:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
 			self.frontWheel2:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
@@ -155,7 +143,6 @@ function ENT:PhysicsSimulate(phys, deltatime)
 	if self:GetOwner().SlowDown && self:GetOwner().CanSlowDown then 
 		Linear =  Linear/3
 	end
-	
 	return Angular, Linear, SIM_LOCAL_ACCELERATION
 end
 
