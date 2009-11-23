@@ -43,6 +43,11 @@ function GM:StartPrep()
 	end)
 end
 
+function GM:ShouldCollide( enta, entb )
+if entb:IsPlayer() then return false end
+return true
+end
+
 function GM:RaceFinish(ply)
 		SetGlobalString("GameModeState", "PENDING")
 		ply.Finished = true
@@ -114,6 +119,7 @@ function GM:Tick()
 		end
 		table.insert(tblPlayerTable, intPlace, player)
 	end
+	PrintTable(tblPlayerTable)
 	for place, player in pairs(tblPlayerTable) do
 		player:SetNWInt("Place", place)
 	end

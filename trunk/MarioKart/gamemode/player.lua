@@ -23,7 +23,6 @@ function GM:PlayerSpawn(ply)
 	effectdata:SetEntity(entKart)
 	effectdata:SetOrigin(Vector(14, -20, 30))
 	util.Effect("engine_smoke", effectdata)	]]
-
 	ply:SetNWEntity("Cart", entKart)
 	ply:Spectate(MODE_CHASE)
 	ply:SpectateEntity(entKart)
@@ -41,6 +40,7 @@ function GM:PlayerSpawn(ply)
 	ply.CanSlowDown = true
 	ply.CanUse = true
 	ply.wipeout = false
+	ply.Finished = false
 	--Make the player unnoticable
 	GAMEMODE:SetPlayerSpeed(ply, 0, 0)
 	ply:SetPos(Vector(-40, 100, 500))
