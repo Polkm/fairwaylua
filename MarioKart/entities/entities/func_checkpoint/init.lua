@@ -48,6 +48,10 @@ function ENT:StartTouch(ent)
 						print("FINISHED!")
 					else
 						plyOwner:SetNWInt("Lap", plyOwner:GetNWInt("Lap") + 1)
+						if plyOwner:GetNWInt("Lap") == GAMEMODE.WinLaps then
+							plyOwner:ConCommand("mk_Sound FinalLap")
+							timer.Simple(5,function() plyOwner:ConCommand("mk_Sound BackGround") end)
+						end
 						print("LAP!")
 					end
 					//plyOwner:ConCommand("mk_stopRecording")

@@ -7,7 +7,7 @@ include("shared.lua")
 include("player.lua")
 GM.PlayerSpawnTime = {}
 GM.CheckPointEnts = {}
-GM.PrepTime = 10
+GM.PrepTime = 15
 GM.WinLaps = 3
 GM.CatchUpTime = 30
 
@@ -46,6 +46,7 @@ end
 function GM:RaceFinish(ply)
 		SetGlobalString("GameModeState", "PENDING")
 		ply.Finished = true
+		ply:ConCommand("mk_Sound End")
 		ply.CanUse = false
 		if GetGlobalEntity("Winner") == "none" then
 			SetGlobalEntity("Winner",ply)
@@ -64,6 +65,7 @@ end
 function GM:PositionRacers()
 	for k,v in pairs(player.GetAll()) do
 		v:SetViewEntity(v:GetNWEntity("Cart"))
+		v:ConCommand("mk_Sound StartLineUp")
 		v:Spawn()
 	end
 end
