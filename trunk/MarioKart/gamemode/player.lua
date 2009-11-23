@@ -47,6 +47,9 @@ function GM:PlayerSpawn(ply)
 	ply:SetNoDraw(true)
 	--Make the player's kart look like that last time he played
 	ply:ConCommand("mk_characterDefault")
+	if GetGlobalString("GameModeState") == "RACE" then
+		ply:ConCommand("mk_Sound BackGround")
+	end
 end
 
 function GM:SetPlayerColor(ply, strColor)
