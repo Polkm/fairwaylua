@@ -40,11 +40,12 @@ function GM:DrawCharacterCreation()
 	MusicCheckBox:SetPos(5, 55)
 	MusicCheckBox:SetText("Music")
 	MusicCheckBox:SetConVar("mk_Music")
-	MusicCheckBox:SetValue(mk_convarMusic:GetInt())
 	MusicCheckBox:SizeToContents()
 	MusicCheckBox.OnChange = function()
-		if MusicCheckBox:GetChecked(false) then
-			GAMEMODE:OffAllMusic()
+		if mk_convarMusic:GetBool() then
+			--GAMEMODE:OnAllMusic()
+		else
+			--GAMEMODE:OffAllMusic()
 		end
 	end
  
