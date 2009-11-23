@@ -130,7 +130,13 @@ local tblSoundTable = {}
 tblSoundTable["BackGround"] = {}
 tblSoundTable["BackGround"].Default = "gmodcart/music/mk_circuit.mp3"
 tblSoundTable["BackGround"]["mk_snow_a3"] = "gmodcart/music/mk_snow.mp3"
+tblSoundTable["FinalLap"] = "gmodcart/music/mk_finallap.mp3"
+tblSoundTable["StartLineUp"] = "gmodcart/music/mk_startlineup.mp3"
+tblSoundTable["End"] = "gmodcart/music/mk_end.mp3"
+
+--Items
 tblSoundTable["Star"] = "gmodcart/items/mk_star.mp3"
+
 local sndCurentSound = nil
 local sndBackGroundSound = nil
 local entBackGroundCart = nil
