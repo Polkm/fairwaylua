@@ -42,9 +42,6 @@ end
 
 function GM:ShouldCollide( enta, entb )
 if entb:IsPlayer() then return false end
-if enta:GetClass() == "item_box" && entb:GetClass() != "player_cart" then
-	return false
-end
 return true
 end
 
