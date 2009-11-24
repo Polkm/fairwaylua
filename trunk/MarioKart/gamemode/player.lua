@@ -41,6 +41,7 @@ function GM:PlayerSpawn(ply)
 	ply.CanUse = true
 	ply.wipeout = false
 	ply.Finished = false
+	ply.SlowDown = false
 	--Make the player unnoticable
 	GAMEMODE:SetPlayerSpeed(ply, 0, 0)
 	ply:SetPos(Vector(-40, 100, 500))
