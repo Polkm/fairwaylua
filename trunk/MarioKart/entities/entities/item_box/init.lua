@@ -5,19 +5,19 @@ include('shared.lua')
 ENT.Bobnumber = 0
 ENT.Increase = false
 
-ENT.SpawnPos = Vector(0,0,0)
+ENT.SpawnPos = Vector(0, 0, 0)
 
 function ENT:Initialize()
 	self:SetModel("models/gmodcart/mk_block.mdl")
-	self:SetColor(math.random(0,255),math.random(0,255),math.random(0,255),175)
-	self:SetAngles(Angle(45,45,45))
-	self:SetMoveType(MOVETYPE_VPHYSICS)
-	self:PhysicsInit( SOLID_VPHYSICS )
-	self:SetSolid(SOLID_VPHYSICS)
+	self:SetColor(math.random(0, 255),math.random(0, 255),math.random(0, 255), 190)
+	self:SetAngles(Angle(45, 45, 45))
+	self:SetMoveType(MOVETYPE_NONE)
+	self:PhysicsInit(SOLID_BBOX)
 	self.QuestionMark = ents.Create("player_wheel")
 	self.QuestionMark:SetModel("models/gmodcart/mk_question.mdl")
+	self.QuestionMark:SetMoveType(MOVETYPE_NONE)
 	self.QuestionMark:SetPos(self:GetPos())
-	self.QuestionMark:SetColor(255,255,255,255)
+	self.QuestionMark:SetColor(255, 255, 255, 255)
 	self.QuestionMark:Spawn()
 	self.Ready = true
 	self.SpawnPos = self:GetPos()
