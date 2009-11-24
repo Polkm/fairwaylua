@@ -41,8 +41,8 @@ function GM:StartPrep()
 end
 
 function GM:ShouldCollide( enta, entb )
-if entb:IsPlayer() then return false end
-return true
+	if entb:IsPlayer() then return false end
+	return true
 end
 
 function GM:RaceFinish(ply)
@@ -64,10 +64,27 @@ function GM:RaceFinish(ply)
 end
 
 function GM:PositionRacers()
+local IntTakens = 0
 	for k,v in pairs(player.GetAll()) do
-		v:SetViewEntity(v:GetNWEntity("Cart"))
-		v:ConCommand("mk_Sound StartLineUp")
-		v:Spawn()
+		for a,b in pairs(ents.FindByClass("info_player_start")) do 
+			if !b.Taken then
+				v:SetViewEntity(v:GetNWEntity("Cart"))
+				v:ConCommand("mk_Sound StartLineUp")
+				v:Spawn()
+				v:GetNWEntity("Cart"):SetPos(b:GetPos())
+				b.Taken = true
+				break
+			else
+				IntTakens = IntTakens + 1
+			end
+		end
+		if IntTakens = table.Count(ents.FindByClass("info_player_start")) then
+			local EntSpawnpoint = math.random(1,table.Count(ents.FindByClass("info_player_start")))
+			v:SetViewEntity(v:GetNWEntity("Cart"))
+			v:ConCommand("mk_Sound StartLineUp")
+			v:Spawn()
+			v:GetNWEntity("Cart"):SetPos(EntSpawnpoint:GetPos() + Vector(0,0,50))
+		end
 	end
 end
 
@@ -77,6 +94,9 @@ function GM:StartRace()
 	GAMEMODE:CleanUpMap()
 	for k,v in pairs(player.GetAll()) do
 		v:ConCommand("mk_Sound BackGround")
+	end
+	for a,b in pairs(ents.FindByClass("info_player_start")) do 
+		b.Taken = false
 	end
 	timer.Create("mk_GameModeTimer", 0.1, 0, function() SetGlobalInt("GameModeTime", GetGlobalInt("GameModeTime") + 0.1) end)
 end
