@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\marioragdoll\Super Mario Galaxy\luigi\luigiNoizu"
+	"$halflambert" 1
+                "$translucent" 1
+ }
