@@ -87,7 +87,7 @@ function GM:CleanUpMap()
 	end
 end
 
-function GM:Tick()
+timer.Create("TickleMeEllmo", 0.5, 0, function()
 	local tblPlayerTable = {}
 	for playerNum, Player in pairs(player.GetAll()) do
 		local intPlace = playerNum
@@ -119,7 +119,7 @@ function GM:Tick()
 	for place, Player in pairs(tblPlayerTable) do
 		Player:SetNWInt("Place", place)
 	end
-end
+end)
 
 local ClientResources = 0
 local function ProcessFolder(Location)
