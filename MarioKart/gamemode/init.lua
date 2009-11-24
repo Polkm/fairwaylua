@@ -78,7 +78,7 @@ local IntTakens = 0
 				IntTakens = IntTakens + 1
 			end
 		end
-		if IntTakens = table.Count(ents.FindByClass("info_player_start")) then
+		if IntTakens == table.Count(ents.FindByClass("info_player_start")) then
 			local EntSpawnpoint = math.random(1,table.Count(ents.FindByClass("info_player_start")))
 			v:SetViewEntity(v:GetNWEntity("Cart"))
 			v:ConCommand("mk_Sound StartLineUp")
