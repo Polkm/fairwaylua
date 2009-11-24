@@ -16,8 +16,10 @@ function ENT:Initialize()
 	self.QuestionMark = ents.Create("player_wheel")
 	self.QuestionMark:SetModel("models/gmodcart/mk_question.mdl")
 	self.QuestionMark:SetMoveType(MOVETYPE_NONE)
+	self.QuestionMark:SetCollisionGroup(COLLISION_NONE)
 	self.QuestionMark:SetPos(self:GetPos())
 	self.QuestionMark:SetColor(255, 255, 255, 255)
+	self.QuestionMark:SetParent(self)
 	self.QuestionMark:Spawn()
 	self.Ready = true
 	self.SpawnPos = self:GetPos()
@@ -26,7 +28,9 @@ end
 
 function ENT:OnTakeDamage(dmginfo)
 end
+
 function ENT:StartTouch(ent)
+	if !ent:GetOwner() then return end
 	if ent:GetOwner():IsPlayer() && ent:GetOwner():GetNWEntity("Cart") != ent then return end
 	local SpawnPos = self.SpawnPos
 	self:Remove()
