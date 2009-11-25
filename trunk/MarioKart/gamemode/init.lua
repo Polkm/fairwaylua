@@ -103,7 +103,7 @@ function GM:Tick()
 	local tblPlayerTable = {}
 	for playerNum, Player in pairs(player.GetAll()) do
 		local intPlace = playerNum
-		if Player:GetNWInt("Lap") <= 0 then
+		if Player.Finished then
 			intPlace = Player:GetNWInt("Place")
 		else
 			for place, otherPlayer in pairs(tblPlayerTable) do
