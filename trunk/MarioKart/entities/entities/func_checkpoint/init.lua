@@ -41,6 +41,7 @@ function ENT:StartTouch(ent)
 			else
 				local intMaxLaps = self.Max or 5
 				if self.Finish && plyOwner:GetNWInt("CheckPoint") >= intMaxLaps then
+					if plyOwner:GetNWInt("Lap") <= 0 then return end
 					plyOwner:SetNWInt("CheckPoint", 2)
 					if GAMEMODE.WinLaps <= plyOwner:GetNWInt("Lap") then
 						GAMEMODE:RaceFinish(plyOwner)
@@ -50,7 +51,7 @@ function ENT:StartTouch(ent)
 						plyOwner:SetNWInt("Lap", plyOwner:GetNWInt("Lap") + 1)
 						if plyOwner:GetNWInt("Lap") == GAMEMODE.WinLaps then
 							plyOwner:ConCommand("mk_Sound FinalLap")
-							timer.Simple(5,function() plyOwner:ConCommand("mk_Sound BackGround") end)
+							timer.Simple(5, function() plyOwner:ConCommand("mk_Sound BackGround") end)
 						end
 						print("LAP!")
 					end

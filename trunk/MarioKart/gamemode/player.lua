@@ -54,16 +54,17 @@ function GM:PlayerSpawn(ply)
 end
 
 function GM:SetPlayerColor(ply, strColor)
-	if GAMEMODE.PosibleColors[strColor] && GetGlobalString("GameModeState") == "PREP" then
+	if GAMEMODE.PosibleColors[strColor] then
 		ply:GetNWEntity("Cart").BodyFrame:SetMaterial(GAMEMODE.PosibleColors[strColor])
 	end
 end
 concommand.Add("MarioKartCRCLR", function(ply, command, args)
+	--if GetGlobalString("GameModeState") != "PREP" then return end
 	GAMEMODE:SetPlayerColor(ply, args[1])
 end)
 
 function GM:SetPlayerCharacter(ply, strCharacter)
-	if GAMEMODE.Characters[strCharacter] && GetGlobalString("GameModeState") == "PREP" then
+	if GAMEMODE.Characters[strCharacter] then
 		ply.Character = strCharacter
 		ply:GetNWEntity("Cart").Ragdoll:SetModel(GAMEMODE.Characters[strCharacter].Model)
 		ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed
@@ -71,13 +72,14 @@ function GM:SetPlayerCharacter(ply, strCharacter)
 	end
 end
 concommand.Add("MarioKartCHRCTR", function(ply, command, args)
+	if GetGlobalString("GameModeState") != "PREP" then return end
 	GAMEMODE:SetPlayerCharacter(ply, args[1])
 end)
 
 function GM:FireItem(ply)
-	local item = ply:GetNWString("item")
-	if ply:GetNWEntity("activeitem") == "none" && item != "empty" && ply.CanUse then
-		GAMEMODE.mk_Items[item].SpawnFunction(ply)
+	local strItem = ply:GetNWString("item")
+	if ply:GetNWEntity("activeitem") == "none" && strItem != "empty" && ply.CanUse then
+		GAMEMODE.mk_Items[strItem].SpawnFunction(ply)
 		ply:SetNWString("item", "empty")
 		return
 	elseif ply:GetNWEntity("activeitem") != "none" then
