@@ -22,7 +22,7 @@ end
 function GM:PlayerSpawn(ply)
 	--Make the player unnoticable
 	GAMEMODE:SetPlayerSpeed(ply, 0, 0)
-	ply:SetPos(Vector(-40, 100, 500))
+	ply:SetPos(Vector(-40, 100, 50))
 	ply:SetNoDraw(true)
 end
 
