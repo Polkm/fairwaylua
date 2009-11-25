@@ -7,7 +7,7 @@ ENT.Increase = false
 
 function ENT:Initialize()
 	self:SetMoveType(MOVETYPE_VPHYSICS)
-	self:PhysicsInit(SOLID_VPHYSICS)
+	self:PhysicsInit(SOLID_BBOX)
 	--self:SetSolid(SOLID_VPHYSICS)
 end
 
@@ -29,19 +29,12 @@ function ENT:PhysicsCollide(tblData, physObject)
 		local plyHitEntityOwner = entHitEntity:GetOwner()
 		if self.Activated  then
 			if entHitEntity == plyHitEntityOwner:GetNWEntity("Cart") then
-				if self.Class != "item_koopashell_blue" then
-					if !entHitEntity:GetOwner().StarPower then
-						tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
-					end
-						self:Remove()
-					return
-				else
-					if !entHitEntity:GetOwner().StarPower then
-						tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType)
-					end
-					if plyHitEntityOwner:GetNWEntity("Cart") == self.target then
-						self:Remove()
-					end
+				if !entHitEntity:GetOwner().StarPower then
+					local intEffectTime = GAMEMODE.mk_Items[self.class].EffectTime or nil
+					tblData.HitEntity:Wipeout(GAMEMODE.mk_Items[self.class].WipeOutType, intEffectTime)
+				end
+				if self.class != "item_koopashell_blue" || (self.class == "item_koopashell_blue" && plyHitEntityOwner:GetNWEntity("Cart") == self.target) then
+					self:Remove()
 					return
 				end
 			elseif entHitEntity:GetClass() == "ent_projectile" then

@@ -1,4 +1,5 @@
 include('shared.lua')
+include('sh_items.lua')
 include('cl_ghost.lua')
 include('cl_placespanel.lua')
 include('cl_charactercreation.lua')
@@ -15,6 +16,7 @@ local mk_DrawTime = 0
 
 function GM:Initialize()
 	RunConsoleCommand("gm_clearfonts")
+	surface.CreateFont("coolvetica", 36, 36, true, false, "MainFont")
 	surface.CreateFont("coolvetica", ScreenScale(120), ScreenScale(120), true, false, "HudScaled")
 	timer.Simple(0.1, function()
 		GAMEMODE:DrawPlacesPanel()
@@ -34,31 +36,34 @@ function GM:HUDPaint()
 	local SH = ScrH()
 	local client = LocalPlayer()
 	local strItem = client:GetNWString("Item")
-	local entViewEntity = LocalPlayer():GetNWEntity("WatchEntity")
+	local strMainFont = "MainFont"
+	local intOutlineSize = 0
+	local entViewEntity = client:GetNWEntity("WatchEntity")
 	if !entViewEntity or !entViewEntity:IsValid() then return end
-	local entCart = LocalPlayer():GetNWEntity("Cart")
+	local entCart = client:GetNWEntity("Cart")
 	if !entCart or !entCart:IsValid() then return end
 	if entCart == entViewEntity then
-		surface.SetFont("HUDNumber")
-		surface.SetTextColor(255, 255, 255, 255)
-		surface.SetTextPos(SW / 4, 20)
+		--Laps--
 		local strLapText = "Lap: " .. client:GetNWInt("Lap") .. "/" .. GAMEMODE.WinLaps
 		if client:GetNWInt("Lap") <= 0 then strLapText = "Lap: Done" end
-		surface.DrawText(strLapText)
-		
-		surface.SetTextPos(SW / 1.5, 20)
+		draw.SimpleTextOutlined(strLapText, strMainFont, SW / 4, 40, Color(255, 255, 255, 255), 0, 1, intOutlineSize, Color(0, 0, 0, 255))
+		--Time--
 		if client:GetNWInt("Lap") > 0 then
 			mk_DrawTime = math.Round(GetGlobalInt("GameModeTime") * 10) / 10
 		end
-		surface.DrawText("Time: " .. string.ToMinutesSecondsMilliseconds(mk_DrawTime))
-		if GetGlobalInt("CountDown") <= 3 && GetGlobalInt("CountDown") > 0 then 
-			surface.SetFont("HudScaled")
-			local x, y = surface.GetTextSize(GetGlobalInt("CountDown"))
-			surface.SetTextPos(SW / 2 - x / 2  ,SH / 2 - y / 2)
-			surface.DrawText(GetGlobalInt("CountDown"))
+		local strDrawTime = "Time: " .. string.ToMinutesSecondsMilliseconds(mk_DrawTime)
+		draw.SimpleTextOutlined(strDrawTime, strMainFont, SW / 1.5, 40, Color(255, 255, 255, 255), 0, 1, intOutlineSize, Color(0, 0, 0, 255))
+		--Count Down--
+		if GetGlobalInt("CountDown") <= 3 && GetGlobalInt("CountDown") > 0 then
+			draw.SimpleTextOutlined(GetGlobalInt("CountDown"), "HudScaled", SW / 2, SH / 2, Color(255, 255, 255, 255), 1, 1, intOutlineSize, Color(0, 0, 0, 255))
 		end
-		surface.SetFont("HUDNumber")
-		--item display
+		--Place--
+		local intPlace = client:GetNWInt("Place")
+		local strPlace = GAMEMODE:TranslatePlace(intPlace)
+		local clrPlaceText = Color(255, 255 - (intPlace * 10), 255 - (intPlace * 20), 255)
+		draw.SimpleTextOutlined(strPlace, "HudScaled", SW / 25, SH / 1.15, clrPlaceText, 0, 1, intOutlineSize, Color(0, 0, 0, 255))
+		
+		--Item Display--
 		if strItem != "empty" then
 			if mk_ItemBoxy < (20)  then
 				mk_ItemBoxy = mk_ItemBoxy + 2
@@ -76,10 +81,15 @@ function GM:HUDPaint()
 			surface.SetDrawColor(255, 255, 255, 255)
 			surface.DrawTexturedRect(mk_ItemBoxx + 14, mk_ItemBoxy + 14, 100, 100)
 		end
-		surface.SetTextPos(SW / 7, SH / 1.2)
-		surface.DrawText(LocalPlayer():GetNWInt("Place"))
 	else
-		
+		--Letter Boxes--
+		local intLetterBoxHient = 80
+		surface.SetDrawColor(0, 0, 0, 250)
+		surface.DrawRect(0, 0, SW, intLetterBoxHient)
+		surface.DrawRect(0, SH - intLetterBoxHient, SW, intLetterBoxHient)
+		--Player Name--
+		local strPlayerName = entViewEntity:GetOwner():Nick()
+		draw.SimpleText(strPlayerName, strMainFont, ScrW() / 2, intLetterBoxHient / 2, Color(255, 255, 255, 255), 1, 1)
 	end
 end
 

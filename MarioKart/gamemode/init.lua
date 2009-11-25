@@ -3,7 +3,9 @@ AddCSLuaFile("cl_ghost.lua")
 AddCSLuaFile("cl_placespanel.lua")
 AddCSLuaFile("cl_charactercreation.lua")
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("sh_items.lua")
 include("shared.lua")
+include("sh_items.lua")
 include("player.lua")
 GM.PlayerSpawnTime = {}
 GM.CheckPointEnts = {}
@@ -40,12 +42,13 @@ function GM:StartPrep()
 	end)
 end
 
-function GM:ShouldCollide( enta, entb )
+function GM:ShouldCollide(enta, entb)
 	if entb:IsPlayer() then return false end
 	return true
 end
 
 function GM:RaceFinish(ply)
+	if GetGlobalString("GameModeState") == "RACE" then
 		SetGlobalString("GameModeState", "PENDING")
 		ply.Finished = true
 		ply:ConCommand("mk_Sound End")
@@ -55,48 +58,51 @@ function GM:RaceFinish(ply)
 			timer.Simple(GAMEMODE.CatchUpTime, function() timer.Destroy("mk_GameModeTimer") GAMEMODE:StartPrep() end)
 		end
 		for _, player in pairs(player.GetAll()) do
-			player:ChatPrint(ply:Nick() .. " Came in " .. ply:GetNWInt("Place") ..
+			player:ChatPrint(ply:Nick() .. " Came in " .. GAMEMODE:TranslatePlace(ply:GetNWInt("Place")) ..
 			" With a time of " .. (string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10)))
 			if player.Finished && GetGlobalEntity("Winner") != "none" then
 				player:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
 			end
 		end
+	end
 end
 
 function GM:PositionRacers()
-local IntTakens = 0
-	for k,v in pairs(player.GetAll()) do
-		for a,b in pairs(ents.FindByClass("info_player_start")) do 
-			if !b.Taken then
-				v:SetViewEntity(v:GetNWEntity("Cart"))
-				v:ConCommand("mk_Sound StartLineUp")
-				v:Spawn()
-				v:GetNWEntity("Cart"):SetPos(b:GetPos())
-				b.Taken = true
+	local IntTakens = 0
+	local tblSpawnPoints = ents.FindByClass("info_player_start")
+	for _, ply in pairs(player.GetAll()) do
+		for _, spawnPoint in pairs(tblSpawnPoints) do 
+			if !spawnPoint.Taken then
+				GAMEMODE:SpawnPlayer(ply, spawnPoint)
+				spawnPoint.Taken = true
 				break
 			else
 				IntTakens = IntTakens + 1
 			end
 		end
-		if IntTakens == table.Count(ents.FindByClass("info_player_start")) then
-			local EntSpawnpoint = math.random(1,table.Count(ents.FindByClass("info_player_start")))
-			v:SetViewEntity(v:GetNWEntity("Cart"))
-			v:ConCommand("mk_Sound StartLineUp")
-			v:Spawn()
-			v:GetNWEntity("Cart"):SetPos(EntSpawnpoint:GetPos() + Vector(0,0,50))
+		if IntTakens == table.Count(tblSpawnPoints) then
+			local entSellectedSpawn = tblSpawnPoints[math.random(1, table.Count(tblSpawnPoints))]
+			GAMEMODE:SpawnPlayer(ply, entSellectedSpawn)
 		end
 	end
+end
+
+function GM:SpawnPlayer(ply, entSpawnPoint)
+	if !ply:Alive() then ply:Spawn() end
+	ply:SetViewEntity(ply:GetNWEntity("Cart"))
+	ply:ConCommand("mk_Sound StartLineUp")
+	ply:SetPos(entSpawnPoint:GetPos())
 end
 
 function GM:StartRace()
 	SetGlobalString("GameModeState", "RACE")
 	SetGlobalInt("GameModeTime", 0)
 	GAMEMODE:CleanUpMap()
-	for k,v in pairs(player.GetAll()) do
-		v:ConCommand("mk_Sound BackGround")
+	for _, ply in pairs(player.GetAll()) do
+		ply:ConCommand("mk_Sound BackGround")
 	end
-	for a,b in pairs(ents.FindByClass("info_player_start")) do 
-		b.Taken = false
+	for _, spawnPoint in pairs(ents.FindByClass("info_player_start")) do 
+		spawnPoint.Taken = false
 	end
 	timer.Create("mk_GameModeTimer", 0.1, 0, function() SetGlobalInt("GameModeTime", GetGlobalInt("GameModeTime") + 0.1) end)
 end
@@ -107,11 +113,11 @@ function GM:CleanUpMap()
 	end
 end
 
-timer.Create("TickleMeEllmo", 0.5, 0, function()
+function GM:Tick()
 	local tblPlayerTable = {}
 	for playerNum, Player in pairs(player.GetAll()) do
 		local intPlace = playerNum
-		if Player:GetNWInt("Lap") == 0 then
+		if Player:GetNWInt("Lap") <= 0 then
 			intPlace = Player:GetNWInt("Place")
 		else
 			for place, otherPlayer in pairs(tblPlayerTable) do
@@ -139,7 +145,7 @@ timer.Create("TickleMeEllmo", 0.5, 0, function()
 	for place, Player in pairs(tblPlayerTable) do
 		Player:SetNWInt("Place", place)
 	end
-end)
+end
 
 local ClientResources = 0
 local function ProcessFolder(Location)

@@ -39,6 +39,16 @@ function ENT:AddCartPart(entParent, vecPosition, angAngles, strModel)
 	return entNewPart
 end
 
+function ENT:SetCartColor(clrNewColor)
+	cart.BodyFrame:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	cart.Ragdoll:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	cart.BackWheel1:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	cart.BackWheel2:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	cart.frontWheel1:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	cart.frontWheel2:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	cart.SteerWheel1:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+end
+
 function ENT:PhysicsCollide(tblData, physObject)
 	if self:GetOwner().StarPower then
 		if tblData.HitEntity:GetOwner():IsPlayer() && tblData.HitEntity:GetOwner():GetNWEntity("Cart") == tblData.HitEntity && self.LastStarHit != tblData.HitEntity  then
@@ -49,7 +59,8 @@ function ENT:PhysicsCollide(tblData, physObject)
 	end
 end
 
-function ENT:Wipeout(strType)
+function ENT:Wipeout(strType, intTime)
+	local intEffectTime = intTime or 3
 	print(strType)
 	if strType == "Spin" then
 		local intDirection = math.random(-1, 1)
@@ -57,7 +68,7 @@ function ENT:Wipeout(strType)
 		self.vecAddativeAngularVelocity = Vector(0, 0, self:GetAngles():Forward():Dot(self:GetVelocity()) * intDirection * 0.5)
 		self.BodyFrame:SetColor(255, 0, 0, 255)
 		self:GetOwner().wipeout = true
-		timer.Simple(3, function()
+		timer.Simple(intEffectTime, function()
 			self.vecAddativeAngularVelocity = Vector(0, 0, 0)
 			self.BodyFrame:SetColor(255, 255, 255, 255)
 			self:GetOwner().wipeout = false
@@ -65,7 +76,7 @@ function ENT:Wipeout(strType)
 	elseif strType == "Explode" then
 		self:GetOwner().wipeout = true
 		self.BodyFrame:SetColor(255, 0, 0, 255)
-		timer.Simple(3, function()
+		timer.Simple(intEffectTime, function()
 			self.BodyFrame:SetColor(255, 255, 255, 255)
 			self:GetOwner().wipeout = false
 		end)
@@ -95,16 +106,6 @@ function ENT:PhysicsSimulate(phys, deltatime)
 			intForward = vecForwardVel * 0.1
 			intBounce = 1
 			intYaw = 0
-		end
-		if intYaw > 0 then
-			self.frontWheel1:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
-			self.frontWheel2:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
-		elseif intYaw < 0 then
-			self.frontWheel1:SetAngles(self.Entity:GetAngles() + Angle(0,-15,0))
-			self.frontWheel2:SetAngles(self.Entity:GetAngles() + Angle(0,-15,0))
-		else
-			self.frontWheel1:SetAngles(self.Entity:GetAngles())
-			self.frontWheel2:SetAngles(self.Entity:GetAngles())
 		end
 	end
 	intRight = vecRightVel * 0.95
@@ -149,8 +150,24 @@ end
 function ENT:GetTurnYaw(driver, phys, vecForwardVel)
 	if !driver || !driver:IsValid() then return 0 end
 	if !self:GetOwner().wipeout && GetGlobalString("GameModeState") != "PREP" then
-		if driver:KeyDown(IN_MOVELEFT) then return self:GetOwner().Turn end
-		if driver:KeyDown(IN_MOVERIGHT) then return -1* (self:GetOwner().Turn) end
+		local strWheelDirection = "Left"
+		local intForward = self:GetForwardAcceleration(driver, phys, vecForwardVel)
+		if intForward >= 0 then intForward = 1 end
+		if intForward < 0 then intForward = -1 end
+		if driver:KeyDown(IN_MOVELEFT) then
+			strWheelDirection = "Left"
+			self.frontWheel1:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
+			self.frontWheel2:SetAngles(self.Entity:GetAngles() + Angle(0,15,0))
+			return (self:GetOwner().Turn) * intForward
+		end
+		if driver:KeyDown(IN_MOVERIGHT) then
+			strWheelDirection = "Right"
+			self.frontWheel1:SetAngles(self.Entity:GetAngles() + Angle(0,-15,0))
+			self.frontWheel2:SetAngles(self.Entity:GetAngles() + Angle(0,-15,0))
+			return (self:GetOwner().Turn * -1) * intForward
+		end
+		self.frontWheel1:SetAngles(self.Entity:GetAngles())
+		self.frontWheel2:SetAngles(self.Entity:GetAngles())
 	end
 	return self.vecAddativeAngularVelocity.z
 end
