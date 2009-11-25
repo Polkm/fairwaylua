@@ -42,7 +42,6 @@ function GM:SpawnCart(ply)
 		else 
 			ply:SpectateEntity(entKart)
 			ply:SetNWEntity("WatchEntity", entKart)
-			ply:SetViewEntity(entKart)
 		end
 	--Setting variables
 		ply:SetNWInt("CheckPoint", 1)
