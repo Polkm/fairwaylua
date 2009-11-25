@@ -16,7 +16,8 @@ function GM:DrawPlacesPanel()
 		if plyFoundPlayer then
 			if plyFoundPlayer == LocalPlayer() then clrTextColor = Color(255, 255, 220, 255) end
 			local PlaceText = vgui.Create("DLabel", mk_PlacesPanel)
-			PlaceText:SetPos(5, intYOffset)
+			PlaceText:SetPos(5, intYOffset - 6)
+			PlaceText:SetSize(300, 32)
 			PlaceText:SetFont("HUDNumber")
 			PlaceText:SetColor(clrTextColor)
 			PlaceText:SetText(intCurrentPlace)

@@ -28,7 +28,8 @@ function GM:PlayerSpawn(ply)
 	ply:SetNWInt("CheckPoint", 1)
 	ply:SetNWInt("Lap", 1)
 	ply:SetNWInt("Place", 1)
-	ply:SetNWString("item","empty")
+	ply:SetNWString("item", "empty")
+	--ply:SetNWString("item", "item_boo")
 	ply:SetNWEntity("activeitem", "none")
 	ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed
 	ply.Turn = GAMEMODE.Characters[ply.Character].MaxTurn
@@ -44,9 +45,26 @@ function GM:PlayerSpawn(ply)
 	ply:SetNoDraw(true)
 	--Make the player's kart look like that last time he played
 	ply:ConCommand("mk_characterDefault")
+	--Musics
 	if GetGlobalString("GameModeState") == "RACE" then
 		ply:ConCommand("mk_Sound BackGround")
 	end
+end
+
+function GM:FinishPlayer(ply)
+	ply.Finished = true
+	ply.CanUse = false
+	ply:SetNWInt("Lap", 0)
+	for _, player in pairs(player.GetAll()) do
+		player:ChatPrint(ply:Nick() .. " came in " .. GAMEMODE:TranslatePlace(ply:GetNWInt("Place")) ..
+		", With a time of " .. (string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10)))
+	end
+	if GetGlobalEntity("Winner") == "none" then
+		SetGlobalEntity("Winner", ply)
+	else
+		ply:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
+	end
+	ply:ConCommand("mk_Sound End")
 end
 
 function GM:SetPlayerColor(ply, strColor)

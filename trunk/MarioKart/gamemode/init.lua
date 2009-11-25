@@ -19,14 +19,12 @@ function GM:Initialize()
 end
 
 function GM:StartPrep()
-	for k,v in pairs(player.GetAll()) do
-		v:SetNWEntity("WatchEntity",v:GetNWEntity("Cart"))
-	end
-	SetGlobalEntity("Winner","none")
+	--[[for _, ply in pairs(player.GetAll()) do
+		ply:SetNWEntity("WatchEntity", ply:GetNWEntity("Cart"))
+	end]]
 	SetGlobalString("GameModeState", "PREP")
-	if timer.IsTimer("mk_GameModeTimer") then
-		timer.Destroy("mk_GameModeTimer")
-	end
+	SetGlobalEntity("Winner", "none")
+	if timer.IsTimer("mk_GameModeTimer") then timer.Destroy("mk_GameModeTimer") end
 	SetGlobalInt("CountDown", GAMEMODE.PrepTime)
 	timer.Create("mk_CountDown", 1, 0, function()
 		SetGlobalInt("CountDown", GetGlobalInt("CountDown") - 1)
@@ -45,26 +43,6 @@ end
 function GM:ShouldCollide(enta, entb)
 	if !enta:IsWorld() && entb:IsPlayer() then return false end
 	return true
-end
-
-function GM:RaceFinish(ply)
-	if GetGlobalString("GameModeState") == "RACE" then
-		SetGlobalString("GameModeState", "PENDING")
-		ply.Finished = true
-		ply:ConCommand("mk_Sound End")
-		ply.CanUse = false
-		if GetGlobalEntity("Winner") == "none" then
-			SetGlobalEntity("Winner",ply)
-			timer.Simple(GAMEMODE.CatchUpTime, function() timer.Destroy("mk_GameModeTimer") GAMEMODE:StartPrep() end)
-		end
-		for _, player in pairs(player.GetAll()) do
-			player:ChatPrint(ply:Nick() .. " Came in " .. GAMEMODE:TranslatePlace(ply:GetNWInt("Place")) ..
-			" With a time of " .. (string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10)))
-		end
-	end
-	if ply.Finished && GetGlobalEntity("Winner") != "none" then
-		ply:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
-	end
 end
 
 function GM:PositionRacers()
@@ -89,7 +67,6 @@ function GM:PositionRacers()
 	end
 end
 
-
 function GM:StartRace()
 	SetGlobalString("GameModeState", "RACE")
 	SetGlobalInt("GameModeTime", 0)
@@ -101,6 +78,13 @@ function GM:StartRace()
 		spawnPoint.Taken = false
 	end
 	timer.Create("mk_GameModeTimer", 0.1, 0, function() SetGlobalInt("GameModeTime", GetGlobalInt("GameModeTime") + 0.1) end)
+end
+
+function GM:RaceFinish()
+	if GetGlobalString("GameModeState") == "RACE" then
+		SetGlobalString("GameModeState", "PENDING")
+		timer.Simple(GAMEMODE.CatchUpTime, function() timer.Destroy("mk_GameModeTimer") GAMEMODE:StartPrep() end)
+	end
 end
 
 function GM:CleanUpMap()

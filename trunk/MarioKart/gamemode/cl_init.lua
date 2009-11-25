@@ -103,15 +103,19 @@ end
 
 function GM:CalcView(ply, origin, angles, fov)
 	local entViewEntity = LocalPlayer():GetNWEntity("WatchEntity") 
-	if !entViewEntity:IsValid() then
+	if !entViewEntity or !entViewEntity:IsValid() then
 		entViewEntity = LocalPlayer():GetNWEntity("Cart") 
 	end
 	if !entViewEntity or !entViewEntity:IsValid() then return end
 	LastViewYaw = LastViewYaw or entViewEntity:GetAngles().yaw
 	local Distance = math.AngleDifference(LastViewYaw, entViewEntity:GetAngles().yaw)
 	LastViewYaw = math.ApproachAngle(LastViewYaw, entViewEntity:GetAngles().yaw, Distance * FrameTime() * 2)
-	if entViewEntity:GetNWEntity("Wheel1") then entViewEntity:GetNWEntity("Wheel1"):SetModelScale(Vector(1,2,1)) end
-	if entViewEntity:GetNWEntity("Wheel2") then entViewEntity:GetNWEntity("Wheel2"):SetModelScale(Vector(1,2,1)) end
+	if entViewEntity:GetNWEntity("Wheel1") && entViewEntity:GetNWEntity("Wheel1"):IsValid() then
+		entViewEntity:GetNWEntity("Wheel1"):SetModelScale(Vector(1,2,1))
+	end
+	if entViewEntity:GetNWEntity("Wheel2") && entViewEntity:GetNWEntity("Wheel2"):IsValid() then
+		entViewEntity:GetNWEntity("Wheel2"):SetModelScale(Vector(1,2,1))
+	end
 	local view = {}
 	view.origin = entViewEntity:GetPos() + Vector(0, 0, 90) - entViewEntity:GetAngles():Forward() * 128
 	view.angles	= Angle(10, LastViewYaw - Distance * 1.25, Distance * 0.1)
