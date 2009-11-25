@@ -73,8 +73,9 @@ function GM:PositionRacers()
 	for _, ply in pairs(player.GetAll()) do
 		for _, spawnPoint in pairs(tblSpawnPoints) do 
 			if !spawnPoint.Taken then
-				GAMEMODE:SpawnPlayer(ply, spawnPoint)
-				spawnPoint.Taken = true
+				ply:Spawn()
+				ply:GetNWEntity("Cart"):SetPos(spawnPoint:GetPos() + Vector(0,0,10))
+				spawnPoint.Taken = true	
 				break
 			else
 				IntTakens = IntTakens + 1
@@ -82,7 +83,8 @@ function GM:PositionRacers()
 		end
 		if IntTakens == table.Count(tblSpawnPoints) then
 			local entSellectedSpawn = tblSpawnPoints[math.random(1, table.Count(tblSpawnPoints))]
-			GAMEMODE:SpawnPlayer(ply, entSellectedSpawn)
+			ply:Spawn()
+			ply:GetNWEntity("Cart"):SetPos(entSellectedSpawn:GetPos() + Vector(0,0,30))
 		end
 	end
 end
