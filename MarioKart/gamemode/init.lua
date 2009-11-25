@@ -43,7 +43,7 @@ function GM:StartPrep()
 end
 
 function GM:ShouldCollide(enta, entb)
-	if entb:IsPlayer() then return false end
+	if !enta:IsWorld() && entb:IsPlayer() then return false end
 	return true
 end
 
