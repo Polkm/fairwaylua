@@ -105,7 +105,7 @@ function ENT:PhysicsSimulate(phys, deltatime)
 		if vecUp.z < 0.33 || !trcDownTrace.Hit then
 			intForward = vecForwardVel * 0.1
 			intBounce = 1
-			if vecUp.z < 0.33 then
+			if vecUp.z < 0.20 then
 				self:SetAngles(Angle(self:GetAngles().p,self:GetAngles().y,0))
 			end
 		end
