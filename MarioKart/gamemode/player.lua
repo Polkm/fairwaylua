@@ -76,7 +76,7 @@ function GM:FinishPlayer(ply)
 	if GetGlobalEntity("Winner") == "none" then
 		SetGlobalEntity("Winner", ply)
 	else
-		ply:SetViewEntity(GetGlobalEntity("Winner"):GetNWEntity("Cart"))
+		ply:SpectateEntity(GetGlobalEntity("Winner"):GetNWEntity("Cart"))
 		ply:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
 	end
 	ply:ConCommand("mk_Sound End")
