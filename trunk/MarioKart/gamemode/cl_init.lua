@@ -14,6 +14,9 @@ local mk_ItemBoxy = -128
 local mk_CanItem = true 
 local mk_DrawTime = 0
 
+function GM:HUDDrawScoreBoard()
+end
+
 function GM:Initialize()
 	RunConsoleCommand("gm_clearfonts")
 	surface.CreateFont("coolvetica", 36, 36, true, false, "MainFont")
