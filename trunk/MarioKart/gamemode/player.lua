@@ -1,8 +1,17 @@
 function GM:PlayerInitialSpawn(ply)
 	ply.Character = "Mario"
+	GAMEMODE:SpawnCart(ply)
+	local entSellectedSpawn = ents.FindByClass("info_player_start")[math.random(1, table.Count(ents.FindByClass("info_player_start")))]
+	ply:GetNWEntity("Cart"):SetPos(entSellectedSpawn:GetPos() + Vector(0,0,30))	
+	ply:GetNWEntity("Cart"):SetAngles(entSellectedSpawn:GetAngles())
+	ply:GetNWEntity("Cart"):SetVelocity(Vector(0,0,0))
 end
 
 function GM:ShowHelp(ply)
+	ply:ConCommand("mk_characterCreation")
+end
+
+function GM:ShowTeam(ply)
 	ply:ConCommand("mk_characterCreation")
 end
 
@@ -11,38 +20,40 @@ function GM:PlayerDisconnected(ply)
 end
 
 function GM:PlayerSpawn(ply)
-	if ply:GetNWEntity("Cart"):IsValid() then ply:GetNWEntity("Cart"):Remove() end
-	--Kart creation
-	local entKart = ents.Create("player_cart")
-	entKart:SetPos(ply:GetPos())
-	entKart:SetOwner(ply)
-	entKart:Spawn()
-	entKart:SetAngles(ply:GetAngles())
-	entKart.Ragdoll:SetModel(GAMEMODE.Characters[ply.Character].Model)
-	ply:SetNWEntity("Cart", entKart)
-	ply:Spectate(MODE_CHASE)
-	ply:SpectateEntity(entKart)
-	ply:SetNWEntity("WatchEntity", entKart)
-	ply:SetViewEntity(entKart)
-	--Setting variables
-	ply:SetNWInt("CheckPoint", 1)
-	ply:SetNWInt("Lap", 1)
-	ply:SetNWInt("Place", 1)
-	ply:SetNWString("item", "empty")
-	--ply:SetNWString("item", "item_boo")
-	ply:SetNWEntity("activeitem", "none")
-	ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed
-	ply.Turn = GAMEMODE.Characters[ply.Character].MaxTurn
-	ply.CanJump = true
-	ply.CanSlowDown = true
-	ply.CanUse = true
-	ply.wipeout = false
-	ply.Finished = false
-	ply.SlowDown = false
 	--Make the player unnoticable
 	GAMEMODE:SetPlayerSpeed(ply, 0, 0)
 	ply:SetPos(Vector(-40, 100, 500))
 	ply:SetNoDraw(true)
+end
+
+function GM:SpawnCart(ply)
+--Kart creation
+		if !ply:GetNWEntity("Cart"):IsValid() then 
+			local entKart = ents.Create("player_cart")
+			entKart:SetOwner(ply)
+			entKart:Spawn()
+			entKart:SetAngles(ply:GetAngles())
+			entKart.Ragdoll:SetModel(GAMEMODE.Characters[ply.Character].Model)
+			ply:SetNWEntity("Cart", entKart)
+			ply:Spectate(MODE_CHASE)
+			ply:SpectateEntity(entKart)
+			ply:SetNWEntity("WatchEntity", entKart)
+			ply:SetViewEntity(entKart)
+		end
+	--Setting variables
+		ply:SetNWInt("CheckPoint", 1)
+		ply:SetNWInt("Lap", 1)
+		ply:SetNWInt("Place", 1)
+		ply:SetNWString("item", "empty")
+		ply:SetNWEntity("activeitem", "none")
+		ply.Forward = GAMEMODE.Characters[ply.Character].MaxSpeed
+		ply.Turn = GAMEMODE.Characters[ply.Character].MaxTurn
+		ply.CanJump = true
+		ply.CanSlowDown = true
+		ply.CanUse = true
+		ply.wipeout = false
+		ply.Finished = false
+		ply.SlowDown = false
 	--Make the player's kart look like that last time he played
 	ply:ConCommand("mk_characterDefault")
 	--Musics

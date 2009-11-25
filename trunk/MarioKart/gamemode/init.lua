@@ -52,7 +52,10 @@ function GM:PositionRacers()
 		for _, spawnPoint in pairs(tblSpawnPoints) do 
 			if !spawnPoint.Taken then
 				ply:Spawn()
+				GAMEMODE:SpawnCart(ply)
 				ply:GetNWEntity("Cart"):SetPos(spawnPoint:GetPos() + Vector(0,0,10))
+				ply:GetNWEntity("Cart"):SetAngles(spawnPoint:GetAngles())
+				ply:GetNWEntity("Cart"):SetVelocity(Vector(0,0,0))
 				spawnPoint.Taken = true	
 				break
 			else
@@ -61,8 +64,10 @@ function GM:PositionRacers()
 		end
 		if IntTakens == table.Count(tblSpawnPoints) then
 			local entSellectedSpawn = tblSpawnPoints[math.random(1, table.Count(tblSpawnPoints))]
-			ply:Spawn()
+			GAMEMODE:SpawnCart(ply)
 			ply:GetNWEntity("Cart"):SetPos(entSellectedSpawn:GetPos() + Vector(0,0,30))
+			ply:GetNWEntity("Cart"):SetAngles(entSellectedSpawn:GetAngles())
+			ply:GetNWEntity("Cart"):SetVelocity(Vector(0,0,0))
 		end
 	end
 end
