@@ -105,19 +105,22 @@ function ENT:PhysicsSimulate(phys, deltatime)
 		if vecUp.z < 0.33 || !trcDownTrace.Hit then
 			intForward = vecForwardVel * 0.1
 			intBounce = 1
-			intYaw = 0
+			if vecUp.z < 0.33 then
+				self:SetAngles(Angle(self:GetAngles().p,self:GetAngles().y,0))
+			end
 		end
 	end
 	intRight = vecRightVel * 0.95
 	intForward = intForward - vecForwardVel * 0.2
-	
+
 	local Linear = Vector(intForward, intRight, intBounce) * deltatime * 250
 	local AngleFriction = phys:GetAngleVelocity() * -1.1
 	local Angular = (AngleFriction + Vector(0, 0, intYaw)) * deltatime * 250
 	
 	if self:GetOwner().SlowDown && self:GetOwner().CanSlowDown then 
-		Linear =  Linear/5
+		Linear = Linear/6
 	end
+	
 	return Angular, Linear, SIM_LOCAL_ACCELERATION
 end
 
