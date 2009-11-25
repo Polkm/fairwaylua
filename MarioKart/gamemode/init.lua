@@ -90,8 +90,9 @@ end
 function GM:SpawnPlayer(ply, entSpawnPoint)
 	if !ply:Alive() then ply:Spawn() end
 	ply:SetViewEntity(ply:GetNWEntity("Cart"))
+	ply:SetNWEntity("WatchEntity",ply:GetNWEntity("Cart"))
 	ply:ConCommand("mk_Sound StartLineUp")
-	ply:SetPos(entSpawnPoint:GetPos())
+	ply:GetNWEntity("Cart"):SetPos(entSpawnPoint:GetPos())
 end
 
 function GM:StartRace()
