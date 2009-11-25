@@ -137,6 +137,7 @@ GM.PositionItemTables[8] = {
 				"item_koopashell_red",
 				"item_koopashell_red",
 				"item_koopashell_blue",
+				"item_koopashell_blue",
 				"item_lightning",
 				"item_lightning",
 				"item_lightning",
