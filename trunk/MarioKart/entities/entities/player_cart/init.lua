@@ -40,13 +40,13 @@ function ENT:AddCartPart(entParent, vecPosition, angAngles, strModel)
 end
 
 function ENT:SetCartColor(clrNewColor)
-	cart.BodyFrame:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
-	cart.Ragdoll:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
-	cart.BackWheel1:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
-	cart.BackWheel2:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
-	cart.frontWheel1:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
-	cart.frontWheel2:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
-	cart.SteerWheel1:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	self.BodyFrame:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	self.Ragdoll:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	self.BackWheel1:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	self.BackWheel2:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	self.frontWheel1:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	self.frontWheel2:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
+	self.SteerWheel1:SetColor(clrNewColor.r, clrNewColor.g, clrNewColor.b, clrNewColor.a)
 end
 
 function ENT:PhysicsCollide(tblData, physObject)
