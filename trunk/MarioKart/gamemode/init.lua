@@ -60,10 +60,10 @@ function GM:RaceFinish(ply)
 		for _, player in pairs(player.GetAll()) do
 			player:ChatPrint(ply:Nick() .. " Came in " .. GAMEMODE:TranslatePlace(ply:GetNWInt("Place")) ..
 			" With a time of " .. (string.ToMinutesSecondsMilliseconds(math.Round(GetGlobalInt("GameModeTime") * 10) / 10)))
-			if player.Finished && GetGlobalEntity("Winner") != "none" then
-				player:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
-			end
 		end
+	end
+	if ply.Finished && GetGlobalEntity("Winner") != "none" then
+		ply:SetNWEntity("WatchEntity", GetGlobalEntity("Winner"):GetNWEntity("Cart"))
 	end
 end
 
@@ -89,13 +89,6 @@ function GM:PositionRacers()
 	end
 end
 
-function GM:SpawnPlayer(ply, entSpawnPoint)
-	if !ply:Alive() then ply:Spawn() end
-	ply:SetViewEntity(ply:GetNWEntity("Cart"))
-	ply:SetNWEntity("WatchEntity",ply:GetNWEntity("Cart"))
-	ply:ConCommand("mk_Sound StartLineUp")
-	ply:GetNWEntity("Cart"):SetPos(entSpawnPoint:GetPos())
-end
 
 function GM:StartRace()
 	SetGlobalString("GameModeState", "RACE")

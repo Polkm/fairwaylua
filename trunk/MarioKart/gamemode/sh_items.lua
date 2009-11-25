@@ -57,6 +57,7 @@ tblNewItem.SpawnFunction = function(ply)
 	GAMEMODE:CreateBaseProjectile(ply, tblNewItem)
 end
 tblNewItem.UseFunction = function(self)
+	local entCart = self:GetOwner():GetNWEntity("Cart")
 	GAMEMODE:DisingageProjectile(self)
 	self:SetGravity(0) --Polkm: Not sure why this is here?
 	self:PhysicsInitSphere(8.1, "metal_bouncy")
