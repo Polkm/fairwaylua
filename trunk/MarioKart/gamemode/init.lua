@@ -49,6 +49,7 @@ function GM:PositionRacers()
 	local IntTakens = 0
 	local tblSpawnPoints = ents.FindByClass("info_player_start")
 	for _, ply in pairs(player.GetAll()) do
+		ply:ConCommand("mk_Sound StartLineUp")
 		for _, spawnPoint in pairs(tblSpawnPoints) do 
 			if !spawnPoint.Taken then
 				ply:Spawn()
