@@ -116,7 +116,7 @@ function ENT:PhysicsSimulate(phys, deltatime)
 	local Angular = (AngleFriction + Vector(0, 0, intYaw)) * deltatime * 250
 	
 	if self:GetOwner().SlowDown && self:GetOwner().CanSlowDown then 
-		Linear =  Linear/3
+		Linear =  Linear/5
 	end
 	return Angular, Linear, SIM_LOCAL_ACCELERATION
 end

@@ -9,6 +9,7 @@ function ENT:Initialize()
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:PhysicsInit(SOLID_BBOX)
 	--self:SetSolid(SOLID_VPHYSICS)
+	self:SetNWString("item", self.class)
 end
 
 function ENT:PhysicsCollide(tblData, physObject)

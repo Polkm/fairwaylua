@@ -11,7 +11,7 @@ function ENT:StartTouch(ent)
 end
 
 function ENT:EndTouch(ent)
-	if ent:GetOwner():IsPlayer() && ent:GetOwner():GetNWEntity("Cart") == ent && ent:GetOwner().SlowDown then 
+	if ent:GetOwner():IsPlayer() && ent:GetOwner():GetNWEntity("Cart") == ent then 
 		ent:GetOwner().SlowDown = false
 			print("aww")
 	end
