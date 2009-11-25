@@ -36,7 +36,7 @@ function ENT:StartTouch(ent)
 				plyOwner:SetNWInt("CheckPoint", plyOwner:GetNWInt("CheckPoint") + 1)
 				print("Check Point " .. self.Number)
 				if self.Finish then
-					//plyOwner:ConCommand("mk_startRecording")
+					--plyOwner:ConCommand("mk_startRecording")
 				end
 			else
 				local intMaxLaps = self.Max or 5
@@ -44,18 +44,18 @@ function ENT:StartTouch(ent)
 					if plyOwner:GetNWInt("Lap") <= 0 then return end
 					plyOwner:SetNWInt("CheckPoint", 2)
 					if GAMEMODE.WinLaps <= plyOwner:GetNWInt("Lap") then
-						GAMEMODE:RaceFinish(plyOwner)
-						plyOwner:SetNWInt("Lap", 0)
-						print("FINISHED!")
+						GAMEMODE:RaceFinish()
+						GAMEMODE:FinishPlayer(plyOwner)
+						--print("FINISHED!")
 					else
 						plyOwner:SetNWInt("Lap", plyOwner:GetNWInt("Lap") + 1)
 						if plyOwner:GetNWInt("Lap") == GAMEMODE.WinLaps then
 							plyOwner:ConCommand("mk_Sound FinalLap")
 							timer.Simple(5, function() plyOwner:ConCommand("mk_Sound BackGround") end)
 						end
-						print("LAP!")
+						--print("LAP!")
 					end
-					//plyOwner:ConCommand("mk_stopRecording")
+					--plyOwner:ConCommand("mk_stopRecording")
 				end
 			end
 			
