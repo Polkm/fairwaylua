@@ -1,12 +1,8 @@
 include('shared.lua')
+include('sh_camera.lua')
 include('units.lua')
 SelectionNode1, SelectionNode2 = Vector(0, 0, 0), Vector(0, 0, 0)
 BoxSellecting = false
-
-function GM:Initialize()
-	--Polkm: Need this for click'n
-	gui.EnableScreenClicker(true)
-end
 
 function GM:GUIMousePressed(input)
 	local ply = LocalPlayer()
@@ -20,8 +16,8 @@ end
 function GM:GUIMouseReleased(input)
 	local ply = LocalPlayer()
 	local tracedata = {}
-	tracedata.start = CammeraPosition
-	tracedata.endpos = CammeraPosition + (ply:GetCursorAimVector() * 10000)
+	tracedata.start = GAMEMODE.CammeraPosition
+	tracedata.endpos = GAMEMODE.CammeraPosition + (ply:GetCursorAimVector() * 10000)
 	tracedata.filter = ply
 	local trace = util.TraceLine(tracedata)
 	if input == MOUSE_LEFT then
@@ -67,19 +63,4 @@ function GM:HUDPaint()
 		surface.SetDrawColor(20, 150, 20, 50)
 		surface.DrawRect(SelectionNode1.x + 1, SelectionNode1.y + 1, MousePos.x - SelectionNode1.x - 2, MousePos.y - SelectionNode1.y - 2)
 	end
-end
-
-function GM:CalcView(ply, origin, angles, fov)
-	--Polkm: If it doesn't exist, make it
-	if !CammeraPosition then CammeraPosition = ply:GetPos() end
-	if !CammeraAngle then CammeraAngle = Angle(0, 0, 0) end
-	--Polkm: Smoothing out the cam positon and angles
-	CammeraPosition = CammeraPosition + ((ply:GetIdealCamPos() - CammeraPosition) / GAMEMODE.CammeraSmoothness)
-	CammeraAngle = CammeraAngle + ((ply:GetIdealCamAngle() - CammeraAngle) * (1 / GAMEMODE.CammeraSmoothness))
-	--Polkm: Set the postion and angles
-	local view = {}
-	view.origin = CammeraPosition
-	view.angles = CammeraAngle
-	ply:SetEyeAngles(Angle(0, GAMEMODE.IdealCammeraAngle.y, 0))
-	return view
 end

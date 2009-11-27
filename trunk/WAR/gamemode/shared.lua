@@ -5,12 +5,6 @@ GM.Email 		= "polkmpolkmpolkm@gmail.com"
 GM.Website 		= "http://shellshocked.net46.net/"
 GM.TeamBased 	= false
 
---Cammera
-GM.IdealCammeraDistance = 800
-GM.IdealCammeraPosition = Vector(-GM.IdealCammeraDistance / 1.375, -GM.IdealCammeraDistance / 1.375, GM.IdealCammeraDistance)
-GM.IdealCammeraAngle = Angle(45, 45, 0)
-GM.CammeraSmoothness = 50
-
 --Data Management
 GM.Data = {}
 GM.Data.Units = {}

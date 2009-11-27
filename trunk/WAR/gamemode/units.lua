@@ -1,19 +1,19 @@
-local TABLE = {}
-TABLE.Name = "melontrooper"
-TABLE.PrintName = "Melon Trooper"
-TABLE.Model = "models/props_junk/watermelon01.mdl"
-TABLE.SquadLimit = 4
-TABLE.MoveSpeed = 100
-TABLE.CircleSize = 35
-RegisterUnit(TABLE)
+local tblNewUnit = {}
+tblNewUnit.Name = "melontrooper"
+tblNewUnit.PrintName = "Melon Trooper"
+tblNewUnit.Model = "models/props_junk/watermelon01.mdl"
+tblNewUnit.SquadLimit = 4
+tblNewUnit.MoveSpeed = 100
+tblNewUnit.CircleSize = 35
+RegisterUnit(tblNewUnit)
 
-local TABLE = {}
-TABLE.Name = "smg"
-TABLE.PrintName = "SMG"
-TABLE.Model = "models/Weapons/w_smg1.mdl"
-function TABLE:Equipt(sqdSquad)
-	for k, Unit in pairs(sqdSquad.Units) do
+local tblNewGun = {}
+tblNewGun.Name = "smg"
+tblNewGun.PrintName = "SMG"
+tblNewGun.Model = "models/weapons/w_smg1.mdl"
+function tblNewGun:Equipt(sqdSquad)
+	for _, Unit in pairs(sqdSquad.Units) do
 		Unit:SetWeapon("smg")
 	end
 end
-RegisterEquiptment(TABLE)
+RegisterEquiptment(tblNewGun)
