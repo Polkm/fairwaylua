@@ -25,14 +25,17 @@ function Player:MoveSellectedSquad(vecPostion)
 	for k, Squad in pairs(self.SellectedSquads) do
 		TotalUnits = TotalUnits + #Squad.Units
 		for l, Unit in pairs(Squad.Units) do
-			SurfaceNeeded = math.sqrt(TotalUnits * (400 / ((TotalUnits / 200) + 1)))
-			Unit.TargetPostion = vecPostion + Vector(math.random(-SurfaceNeeded, SurfaceNeeded), math.random(-SurfaceNeeded, SurfaceNeeded), 15)
-			Unit:MoveToTarget()
-			Unit:FaceTarget()
-			--Unit:FireGun()
+			SurfaceNeeded = math.sqrt(TotalUnits * (1000 / ((TotalUnits / 200) + 1)))
+			local vecTargetPosition = vecPostion + Vector(math.random(-SurfaceNeeded, SurfaceNeeded), math.random(-SurfaceNeeded, SurfaceNeeded), 15)
+			Unit:MoveTo(vecTargetPosition)
+			Unit:TurnTo(vecTargetPosition)
+			Unit:FireGun()
 		end
 	end
 end
 concommand.Add("WAR_MoveUnits", function(ply, command, args)
 	ply:MoveSellectedSquad(Vector(tonumber(args[1]), tonumber(args[2]), tonumber(args[3])))
 end)
+
+function Player:AttackWithSellected(tblTargetSquad)
+end

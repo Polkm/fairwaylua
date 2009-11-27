@@ -3,28 +3,21 @@ AddCSLuaFile("shared.lua")
 include('shared.lua')
 
 function ENT:Initialize()
-	self:PhysicsInit(SOLID_VPHYSICS)
-	self:SetSolid(SOLID_VPHYSICS)
-	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetCollisionGroup(COLLISION_GROUP_WORLD)
+	self:PhysicsInit(SOLID_BBOX)
 	self:GetPhysicsObject():EnableGravity(false)
 	------------------------------
-	self.ShouldMoveToTarget = false
-	self.TargetPostion = Vector(0, 0, 0)
-	self.ShouldFaceTarget = false
-	------------------------------
-	local gun = ents.Create("prop_physics")
-	gun:SetModel("models/Weapons/w_smg1.mdl")
-	local gunPos = self:GetPos()
-	gunPos = gunPos + (self:GetForward() * 5)
-	gunPos = gunPos + (self:GetUp() * 9)
-	gun:SetPos(gunPos)
-	local gunAngle = self:GetAngles()
-	gunAngle.r = -90
-	gun:SetAngles(gunAngle)
-	gun:SetParent(self)
-	gun:Spawn()
-	self.GunProp = gun
+	self.ShouldMoveToTargetPostion = false
+	self.ShouldTurnToTarget = false
+	self.TargetAngles = Angle(0, 0, 90)
+end
+
+function ENT:SetClass(strClassName)
+	self:SetNWString("class", strClassName)
+end
+
+function ENT:SetWeapon(strWeaponName)
+	self:SetNWString("weapon", strWeaponName)
 end
 
 function ENT:Sellect()
@@ -34,23 +27,21 @@ function ENT:Sellect()
 	table.insert(self:GetOwner().SellectedSquads, self.SquadTable)
 end
 
-function ENT:MoveToTarget()
-	self.ShouldMoveToTarget = true
+function ENT:MoveTo(vecPosition)
+	self.ShouldMoveToTargetPostion = true
+	self.TargetPostion = vecPosition
 end
-function ENT:FaceTarget()
-	self.ShouldFaceTarget = true
+
+function ENT:TurnTo(vecPosition)
+	self.ShouldTurnToTarget = true
+	self.TargetAngles = Angle(0, math.NormalizeAngle((vecPosition - self:GetPos()):Angle().y), 90)
 end
-function ENT:StopMoving()
-	self.ShouldMoveToTarget = false
-end
-function ENT:StopFacing()
-	self.ShouldFaceTarget = false
-end
+
 function ENT:FireGun()
 	local bullet = {}
 	bullet.Num = 1
-	bullet.Src = self.GunProp:GetPos() + (self.GunProp:GetForward() * 10)
-	bullet.Dir = self.GunProp:GetAngles():Forward()
+	bullet.Src = self:GetPos() + (self:GetForward() * 10)
+	bullet.Dir = self:GetAngles():Forward()
 	bullet.Spread = Vector(0.01, 0.01, 0)
 	bullet.Tracer = 1	
 	bullet.Force = 2
@@ -58,42 +49,46 @@ function ENT:FireGun()
 	self:FireBullets(bullet)
 end
 
-function ENT:Attack(objTarget)
-	local Target = objTarget
-	if !Target then return end
-	
-	
-	
-end
-
-function ENT:StepTwardsTarget()
+function ENT:StepTick()
+	if !self.ShouldMoveToTargetPostion then
+		if self:GetPos() != self.TargetPostion then
+			self:SetPos(self.TargetPostion)
+		end
+		return
+	end
 	if self:GetPos():Distance(self.TargetPostion) > 1 then
-		local Slope = (self.TargetPostion - self:GetPos()):GetNormal()
-		local Velocity = Slope
-		if self:GetPos():Distance(self.TargetPostion) > (GAMEMODE.Data.Units[self.SquadTable.Class].MoveSpeed / 30) then
-			Velocity = Velocity * GAMEMODE.Data.Units[self.SquadTable.Class].MoveSpeed
+		local intMoveSpeed = GAMEMODE.Data.Units[self.SquadTable.Class].MoveSpeed
+		local vecSlope = (self.TargetPostion - self:GetPos()):GetNormal()
+		local Velocity = vecSlope
+		if self:GetPos():Distance(self.TargetPostion) > (intMoveSpeed / 30) then
+			Velocity = Velocity * intMoveSpeed
 		else
-			Velocity = Velocity * (GAMEMODE.Data.Units[self.SquadTable.Class].MoveSpeed / 30)
+			Velocity = Velocity * (intMoveSpeed / 30)
 		end
 		Velocity.x = math.Round(Velocity.x)
 		Velocity.y = math.Round(Velocity.y)
 		Velocity.z = math.Round(Velocity.z)
-		self:GetPhysicsObject():SetVelocity(Velocity)
+		if self:GetPhysicsObject():GetVelocity() != Velocity then
+			self:GetPhysicsObject():SetVelocity(Velocity)
+		end
 	else
-		self:GetPhysicsObject():SetVelocity(Vector(0, 0, 0))
-		self:SetPos(self.TargetPostion)
-		self:StopMoving()
-		self:StopFacing()
+		self.ShouldMoveToTargetPostion = false
 	end
 end
 
-function ENT:FaceTwardsTarget()
-	local Yaw = self:GetAngles().y
-	local TargetYaw = (self.TargetPostion - self:GetPos()):Angle().y
-	if Yaw != TargetYaw then
-		local MoveAngle = self:GetAngles()
-		MoveAngle.y = TargetYaw
-		self:SetAngles(MoveAngle)
+function ENT:TurnTick()
+	if !self.ShouldTurnToTarget then
+		if self:GetAngles() != self.TargetAngles then
+			self:SetAngles(self.TargetAngles)
+		end
+		return
+	end
+	if math.abs(self.TargetAngles.y - self:GetAngles().y) > 2 then
+		local angNewAngle = Vector(0, 0, 90)
+		angNewAngle.y = math.NormalizeAngle(self:GetAngles().y + ((self.TargetAngles.y - self:GetAngles().y) / 10))
+		self:SetAngles(angNewAngle)
+	else
+		self.ShouldTurnToTarget = false
 	end
 end
 
