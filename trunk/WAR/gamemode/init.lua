@@ -1,11 +1,13 @@
 AddCSLuaFile("cl_init.lua")
+AddCSLuaFile("cl_jdraw.lua")
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("sh_camera.lua")
-AddCSLuaFile("units.lua")
+AddCSLuaFile("sh_units.lua")
 include("shared.lua")
 include("sh_camera.lua")
-include("units.lua")
+include("sh_units.lua")
 include("commands.lua")
+GM.SquadResponditory = {}
 
 function GM:Initialize()
 end
@@ -17,49 +19,58 @@ function GM:PlayerSpawn(ply)
 	ply:SetWalkSpeed(400)
 	ply:SetRunSpeed(1000)
 	------------------------------
-	ply:CreateSquad("melontrooper")
-	ply:CreateSquad("melontrooper")
+	ply:CreateSquad("melontrooper", nil, "shotgun")
+	ply:CreateSquad("melontrooper", nil, "smg")
 end
 
 function GM:Tick()
 	--Polkm: This is were we think for the wellons, kus the normal "think" function is slow and lagy
-	for _, Unit in pairs(ents.FindByClass("ent_plrunit")) do
-		--Polkm: Other ways of doing it
-		--[[local trace = {}
-		trace.start = Unit:GetPos() + Vector(0,0,0)
-		trace.endpos = trace.start + Vector(0,0,-300)
-		trace.filter = ents.FindByClass("ent_plrunit")
-		local trace = util.TraceLine(trace)
-		Unit.TargetPostion.z = trace.HitPos.z + 20]]
-		
-		Unit:StepTick()
-		Unit:TurnTick()
+	for _, Squad in pairs(GAMEMODE.SquadResponditory) do
+		if Squad.Units then
+			for _, Unit in pairs(Squad.Units)do
+				if Unit and Unit:IsValid() then
+					Unit:StepTick()
+					Unit:TurnTick()
+				end
+			end
+		end
 	end
 end
 
 local Player = FindMetaTable("Player")
-function Player:CreateSquad(strGivenSquadName, vecGivenPosition)
-	local strSquadName = strGivenSquadName or "melontrooper"
-	local tblSquadTable = GAMEMODE.Data.Units[strSquadName]
-	local vecCreatePosition = vecGivenPosition or self:GetPos() + Vector(math.random(-500, 500), math.random(-500, 500), 0)
+function Player:CreateSquad(strGivenSquadName, vecHomePosition, strWeapon)
+	local strSquadClass = strGivenSquadName or "melontrooper"
+	local strWeaponClass = strWeapon or "smg"
+	local tblClassTable = GAMEMODE.Data.Units[strSquadClass]
+	local vecSquadHomePosition = vecHomePosition or self:GetPos() + Vector(math.random(-500, 500), math.random(-500, 500), 0)
+	local intSquadID = #GAMEMODE.SquadResponditory + 1
 	local tblNewSquad = {}
-	tblNewSquad.Class = strSquadName
+	tblNewSquad.Class = strSquadClass
 	tblNewSquad.Owner = self
-	if self.Squads then tblNewSquad.SquadID = #self.Squads + 1
-	else tblNewSquad.SquadID = 1 end
+	tblNewSquad.SquadID = intSquadID
+	tblNewSquad.HomePos = vecSquadHomePosition
 	tblNewSquad.Units = {}
-	for i = 1, tblSquadTable.SquadLimit do
+	for i = 1, tblClassTable.SquadLimit do
 		local entNewUnit = ents.Create("ent_plrunit")
-		entNewUnit:SetModel(tblSquadTable.Model)
-		entNewUnit:SetOwner(self)
-		entNewUnit:SetPos(vecCreatePosition + Vector(math.random(-tblSquadTable.SquadLimit * 15, tblSquadTable.SquadLimit * 15), math.random(-tblSquadTable.SquadLimit * 15, tblSquadTable.SquadLimit * 15), 20))
+		entNewUnit:SetPos(vecSquadHomePosition + GAMEMODE:GetPlacement(tblClassTable.SquadLimit))
 		entNewUnit.TargetPostion = entNewUnit:GetPos()
-		entNewUnit.SquadTable = tblNewSquad
+		entNewUnit:SetModel(tblClassTable.Model)
+		entNewUnit:SetOwner(self)
+		entNewUnit:SetClass(strSquadClass)
+		entNewUnit:SetWeapon(strWeaponClass)
 		entNewUnit:Spawn()
-		entNewUnit:SetClass("melontrooper")
-		entNewUnit:SetWeapon("smg")
+		entNewUnit:SetNWInt("health", tblClassTable.Health)
+		entNewUnit.SquadTable = tblNewSquad
 		table.insert(tblNewSquad.Units, entNewUnit)
 	end
-	if !self.Squads then self.Squads = {} end
-	table.insert(self.Squads, tblNewSquad)
+	table.insert(GAMEMODE.SquadResponditory, tblNewSquad)
 end
+
+function GM:GetSquadByID(intSquadID)
+	for _, Squad in pairs(GAMEMODE.SquadResponditory) do
+		if Squad.SquadID == intSquadID then
+			return Squad
+		end
+	end
+end
+
