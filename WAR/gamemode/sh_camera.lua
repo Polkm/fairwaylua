@@ -3,6 +3,7 @@ GM.IdealCammeraAngle = Vector(45, 45, -85)
 GM.CammeraSmoothness = 15
 GM.OverSholder = false
 GM.AimHelper = false
+GM.ScrollDelta = 0
 
 local Player = FindMetaTable("Player")
 function Player:GetIdealCamPos()
@@ -44,6 +45,9 @@ else
 		if !GAMEMODE.OverSholder then
 			gui.EnableScreenClicker(true)
 			--vgui.GetWorldPanel():SetCursor("crosshair")
+			vgui.GetWorldPanel().OnMouseWheeled = function(panel, delta)
+				GAMEMODE.ScrollDelta = delta * -20
+			end
 		end
 	end
 	hook.Add("Initialize", "InitializeHook", InitializeHook)
@@ -53,9 +57,10 @@ else
 		if !GAMEMODE.CammeraPosition then GAMEMODE.CammeraPosition = client:GetPos() end
 		if !GAMEMODE.CammeraAngle then GAMEMODE.CammeraAngle = Angle(0, 0, 0) end
 		client.AddativeCamAngle = Vector(0, 0, 0)
-		client.AddativeCamDistance = 0
-		if GAMEMODE.ShowScoreboard then
-			client.AddativeCamDistance = GAMEMODE.IdealCammeraDistance * 3
+		if !client.AddativeCamDistance then client.AddativeCamDistance = 0 end
+		if GAMEMODE.ScrollDelta != 0 then
+			client.AddativeCamDistance = math.Clamp(client.AddativeCamDistance + GAMEMODE.ScrollDelta, -100, 300)
+			GAMEMODE.ScrollDelta = 0
 		end
 		GAMEMODE.CammeraPosition = GAMEMODE.CammeraPosition + ((client:GetIdealCamPos() - GAMEMODE.CammeraPosition) / GAMEMODE.CammeraSmoothness)
 		GAMEMODE.CammeraAngle = GAMEMODE.CammeraAngle + ((client:GetIdealCamAngle() - GAMEMODE.CammeraAngle) * (1 / GAMEMODE.CammeraSmoothness))

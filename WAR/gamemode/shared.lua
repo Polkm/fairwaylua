@@ -23,3 +23,8 @@ end
 function Player:GetIdealCamAngle()
 	return GAMEMODE.IdealCammeraAngle
 end
+
+function GM:GetPlacement(intUnits)
+	local intSpace = intUnits * 15
+	return Vector(math.random(-intSpace, intSpace), math.random(-intSpace, intSpace), 20)
+end
