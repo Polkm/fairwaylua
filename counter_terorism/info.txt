@@ -1,0 +1,22 @@
+"Gamemode"
+{
+	"name"		"Counter Terorism"
+	"version"	"1"
+
+	"author_name"	"Polkm & Noobulator"
+	"author_email"	""
+	"author_url"	""
+	
+	"icon"		""
+	"info"		""
+	"hide"		"0"
+
+	"fretta_maps"
+	{
+		"1"	"^gm_"
+		"2"	"^ld_"
+	}
+
+	"selectable"	"1"
+	"description"	"Terrorists explode bomb, counter terorist stop them."
+}
