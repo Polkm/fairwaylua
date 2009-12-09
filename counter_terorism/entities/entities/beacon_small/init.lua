@@ -4,19 +4,17 @@ include('shared.lua')
 
 
 function ENT:Initialize()
-	print("initilized")
+	self:SetNoDraw(true)
 	for a,b in pairs(ents.FindByClass("snpc_citizen")) do
-		print(b:GetPos():Distance(self:GetPos()))
 		if b:GetPos():Distance(self:GetPos()) < 1000 then
 			if !b.Panic then
 				b.Panic = true
 				b:SetSchedule(schdFleeShot)
 			end
-			b.PanicPos = self:GetPos()
-			print("shouldmove")
+			b.PanicEnt = self
 		end
 	end
-	self:Remove()
+	timer.Simple(30,function() if self:IsValid() then self:Remove() end end)
 end
 function ENT:AcceptInput(name,activator,caller)
 end

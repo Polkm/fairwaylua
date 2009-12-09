@@ -12,7 +12,7 @@ end
 
 function SpawningCitizens()
 	for j,h in pairs(ents.FindByClass("info_player_start")) do
-			for i=0, 20 do
+			for i=0, 25 do
 				local Blocked = false
 				for k,v in pairs(ents.FindInBox(h:GetPos()+ Vector(80,80,200),h:GetPos()+ Vector(-80,-80,-200))) do
 					if v:GetClass() == "snpc_citizen" or v:IsPlayer() then
@@ -28,6 +28,7 @@ function SpawningCitizens()
 			end
 		end
 end
+hook.Add("RoundStart", "SpawnCitizens", SpawningCitizens())
 
 function GM:CheckRoundEnd()
 	if !GAMEMODE:InRound() then return end
@@ -60,4 +61,8 @@ SpawningCitizens()
 		randomguy:SetPlayerClass("TeroristBomber")
 		randomguy:KillSilent()
 	end
+end
+
+function GM:Alert(type)
+
 end
