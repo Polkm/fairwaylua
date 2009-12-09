@@ -2,7 +2,7 @@ AddCSLuaFile( "shared.lua" )
 include('shared.lua')
 
 function ENT:Initialize()
-	Bombplanted = true
+	GAMEMODE.Bombplanted = true
 	self.Entity:SetModel("models/weapons/w_c4_planted.mdl")	
 	self.Entity:PhysicsInit(SOLID_VPHYSICS)
 	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
@@ -29,13 +29,8 @@ function ENT:Asplode()
 	util.BlastDamage(self,self,self:GetPos(),600,300)
 	util.ScreenShake(self:GetPos(),15,5,0.6,1200)
 	self:EmitSound("weapon_AWP.Single",400,400)
-	PrintMessage(HUD_PRINTCENTER,"TERRORISTS WIN")
-	for k,v in pairs(player.GetAll()) do
-		TERWIN(v)
-		team.SetScore(TEAM_TERROR, team.GetScore(TEAM_TERROR)+1)
-	end
 	timer.Simple(1,function() self:Remove() end)
-	timer.Simple(3,EndGame())
+	timer.Simple(3,GAMEMODE:RoundEndWithResult(TEAM_TERRORIST))
 end
 function ENT:Think() 
 end

@@ -38,10 +38,10 @@ function SWEP:PrimaryAttack()
 	
 	if SERVER then
 		self.Weapon:TossWeaponSound();
+		local beacon = ents.Create("beacon_small")
+		beacon:SetPos(self:GetOwner():GetPos()) 
+		beacon:Spawn()
 	end
-	local beacon = ents.Create("beacon_small")
-	beacon:SetPos(self:GetOwner():GetPos()) 
-	beacon:Spawn()
 	self:CSShootBullet(self.Primary.Damage,self.Primary.Recoil,self.Primary.NumShots,self.Primary.Cone)
 	self.Owner:ViewPunch(Angle( math.Rand(-0.2,-0.1) * self.Primary.Recoil,math.Rand(-0.1,0.1) *self.Primary.Recoil,0)) 
 	self.Weapon:SetNextPrimaryFire(CurTime() + self.Primary.Delay)

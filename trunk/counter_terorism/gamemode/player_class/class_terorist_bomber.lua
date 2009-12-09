@@ -18,7 +18,7 @@ function CLASS:Loadout(ply)
 end
 
 function CLASS:OnSpawn(ply)
-	SetGlobalEntity("teroristbomber", ply)
+	SetGlobalEntity("TERRORISTbomber", ply)
 end
 
-player_class.Register("TeroristBomber", CLASS)
+player_class.Register("TERRORISTBomber", CLASS)
