@@ -63,6 +63,3 @@ SpawningCitizens()
 	end
 end
 
-function GM:Alert(type)
-
-end

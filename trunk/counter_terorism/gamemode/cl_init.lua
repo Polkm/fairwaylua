@@ -42,3 +42,9 @@ function GM:ShowClassChooser(TEAMID)
 	ClassChooser:MakePopup()
 	ClassChooser:NoFadeIn()
 end
+
+function GM:PlayAlert(type)
+	local client = LocalPlayer()
+	client:EmitSound(GAMEMODE.Alerts[type].sound, 100,100)
+	client:PrintMessage(HUD_PRINTCENTER,GAMEMODE.Alerts[type].text)
+end

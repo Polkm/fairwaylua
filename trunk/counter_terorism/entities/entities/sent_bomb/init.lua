@@ -10,11 +10,8 @@ function ENT:Initialize()
 	self:GetPhysicsObject():EnableMotion(false)
 	self.Entity.Timer = 0
 	timer.Simple(1,function() self:TimerAdd() end)
-	for k,v in pairs(player.GetAll()) do
-		BOMBPL(v)
-		team.SetScore(TEAM_TERROR, team.GetScore(TEAM_TERROR)+1)
-	end
 end
+
 function ENT:TimerAdd()
 	self.Entity.Timer = self.Entity.Timer + 1
 	self:ChangeBeep()
