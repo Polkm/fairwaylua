@@ -5,6 +5,10 @@ function GM:PositionScoreboard(ScoreBoard)
 	ScoreBoard:SetPos((ScrW() - ScoreBoard:GetWide()) / 2, 50)
 end
 
+function GM:HUDDrawTargetID()
+     return false
+end
+
 function GM:ShowClassChooser(TEAMID)
 	if !GAMEMODE.SelectClass then return end
 	print(GetGlobalEntity("TERRORISTbomber"))
