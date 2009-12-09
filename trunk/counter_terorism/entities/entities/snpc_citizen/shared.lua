@@ -1,14 +1,15 @@
 ENT.Base = "base_ai" 
 ENT.Type = "ai"
 
-
-Models = {
+FemaleModels = {
 	"models/Humans/Group01/Female_01.mdl",
 	"models/Humans/Group01/Female_02.mdl",
 	"models/Humans/Group01/Female_03.mdl",
 	"models/Humans/Group01/Female_04.mdl",
 	"models/Humans/Group01/Female_06.mdl",
 	"models/Humans/Group01/Female_07.mdl",
+	}
+MaleModels = {
 	"models/Humans/Group01/Male_01.mdl",
 	"models/Humans/Group01/male_02.mdl",
 	"models/Humans/Group01/male_03.mdl",
@@ -18,6 +19,39 @@ Models = {
 	"models/Humans/Group01/male_07.mdl",
 	"models/Humans/Group01/male_08.mdl",
 	"models/Humans/Group01/male_09.mdl",
+}
+
+PanicMaleSounds = {
+	"vo/npc/male01/goodgod.wav",
+	"vo/npc/male01/gethellout.wav",
+	"vo/npc/male01/gordead_ans04.wav",
+	"vo/npc/male01/no01.wav",
+	"vo/npc/male01/no02.wav",
+	"vo/npc/male01/ohno.wav",
+	"vo/npc/male01/gordead_ans19.wav",
+	"vo/npc/male01/runforyourlife01.wav",
+	"vo/npc/male01/runforyourlife02.wav",
+	"vo/npc/male01/runforyourlife03.wav",
+	"vo/npc/male01/wetrustedyou01.wav",
+	"vo/npc/male01/wetrustedyou02.wav",	
+}
+
+PanicFemaleSounds = {
+	"vo/npc/female01/goodgod.wav",
+	"vo/npc/female01/gethellout.wav",
+	"vo/npc/female01/gordead_ans02.wav",
+	"vo/npc/female01/gordead_ans04.wav",
+	"vo/npc/female01/gordead_ans05.wav",
+	"vo/npc/female01/gordead_ans06.wav",
+	"vo/npc/female01/gordead_ans05.wav",
+	"vo/npc/female01/no01.wav",
+	"vo/npc/female01/no02.wav",
+	"vo/npc/female01/ohno.wav",
+	"vo/npc/female01/runforyourlife01.wav",
+	"vo/npc/female01/runforyourlife02.wav",
+	"vo/npc/female01/runforyourlife03.wav",
+	"vo/npc/female01/wetrustedyou01.wav",
+	"vo/npc/female01/wetrustedyou02.wav",	
 }
 
 function ENT:Ragdoll(dmgforce)

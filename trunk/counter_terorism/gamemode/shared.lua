@@ -13,7 +13,7 @@ GM.AllowSpectating = true
 GM.SelectClass = true
 GM.SecondsBetweenTeamSwitches = 0
 GM.GameLength = 10
-GM.RoundLength = 60
+GM.RoundLength = 300
 GM.NoPlayerDamage = false
 GM.NoPlayerSelfDamage = false
 GM.NoPlayerTeamDamage = true
@@ -33,13 +33,13 @@ TEAM_COUNTERTERORIST = 2
 function GM:CreateTeams()
 	if !GAMEMODE.TeamBased then return end
 	
-	team.SetUp(TEAM_TERORIST, "Terror", Color(155,0,0,120), false)
+	team.SetUp(TEAM_TERORIST, "Terrorists", Color(155,0,0,120), false)
 	team.SetSpawnPoint(TEAM_TERORIST, {"info_player_terrorist"})
 	team.SetClass(TEAM_TERORIST, {"TeroristBomber", "TerroristIED"})
 	
 	team.SetUp(TEAM_COUNTERTERORIST, "Counter Terorists", Color(30,30,155,120))
 	team.SetSpawnPoint(TEAM_COUNTERTERORIST, {"info_player_counterterrorist"}, true)
-	team.SetClass(TEAM_COUNTERTERORIST, {"TerroristIED"})
+	team.SetClass(TEAM_COUNTERTERORIST, {"CT"})
 end
 
 function GM:PlayerCanJoinTeam(ply, TEAMID)
