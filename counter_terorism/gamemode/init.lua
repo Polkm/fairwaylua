@@ -91,7 +91,7 @@ function GM:PlayerSpawn(ply)
 		ply:SetModel(model)
 		GAMEMODE:SetPlayerSpeed(ply,150,211)
 	end
-	ply:SetJumpPower(180)
+	ply:SetJumpPower(200)
 end
 
 function GM:Diffuse(ply,entity)
@@ -102,13 +102,14 @@ function GM:Diffuse(ply,entity)
 			ply:Freeze( false ) 
 			entity:Remove()
 			ply:SetNWBool("isdf", false)
-			PrintMessage(HUD_PRINTCENTER,"COUNTER-TERRORISTS WIN")
-			for k,v in pairs(player.GetAll()) do
-				CTSWIN(v)
+		
+			timer.Simple(3,	function() 
+			for _,playr in pairs(player.GetAll()) do
+				playr:ConCommand("PlayAlert","cts_win")
 			end
-			timer.Simple(3,EndGame())
+			GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST) end)
 		else
-		timer.Simple(0.125, function() ply:SetNWInt("dftime", old +1) diffuse(ply,entity) end)
+		timer.Simple(0.125, function() ply:SetNWInt("dftime", old +1) GAMEMODE:Diffuse(ply,entity) end)
 		end
 	end
 end

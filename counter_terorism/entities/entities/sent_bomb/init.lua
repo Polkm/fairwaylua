@@ -44,9 +44,9 @@ end
 
 function ENT:Use( activator, caller )
 	if activator:IsPlayer() then
-		if activator:Team() == TEAM_CT then 
+		if activator:Team() == TEAM_COUNTERTERRORIST then 
 			activator:Freeze( true ) 
-			diffuse(activator,self)
+			GAMEMODE:Diffuse(activator,self)
 		end
 	end
 end
