@@ -84,11 +84,14 @@ function GM:PlayerSpawn(ply)
 			model = GAMEMODE.Models.Female[math.random(1,#GAMEMODE.Models.Female)]
 		end
 		ply:SetModel(model)
+		GAMEMODE:SetPlayerSpeed(ply,85,250)
 		------------------------------------
 	elseif ply:Team() == TEAM_COUNTERTERRORIST then
 		local model = GAMEMODE.Models.CT[math.random(1,#GAMEMODE.Models.CT)]
 		ply:SetModel(model)
+		GAMEMODE:SetPlayerSpeed(ply,150,211)
 	end
+	ply:SetJumpPower(180)
 end
 
 function GM:Diffuse(ply,entity)
