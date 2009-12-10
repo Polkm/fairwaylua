@@ -12,7 +12,26 @@ surface.CreateFont("csd",ScreenScale(60),500,true,true,"CSSelectIcons")
 
 function SWEP:DrawHUD()
 	if self.Weapon:GetNetworkedBool( "Ironsights", false ) then return false; end
+		local x = ScrW() / 2.0 
+		local y = ScrH() / 2.0 
+		local scale = 15 * self.Primary.Cone
+		if self.Owner:Crouching() then 
+			scale = 15 * self.Primary.Cone * .6
+		elseif !self:GetOwner():OnGround() then
+			scale = 15 * self.Primary.Cone * 1.3
+		end
 
+		local LastShootTime = self.Weapon:GetNetworkedFloat("LastShootTime",0) 
+		scale = scale * (2 - math.Clamp((CurTime() - LastShootTime) * 5,0.0,1.0)) 
+		local gap = 30 * scale
+		local length = gap + 7
+		surface.SetDrawColor(0,255,0,255)
+		surface.DrawLine(x-1,y,x+2,y)
+		surface.DrawLine(x,y-1,x,y+2)
+		surface.DrawLine(x - length,y,x - gap,y) 
+		surface.DrawLine(x + length,y,x + gap,y) 
+		surface.DrawLine(x,y - length,x,y - gap) 
+		surface.DrawLine(x,y + length,x,y + gap) 
 end
 
 function SWEP:DrawWeaponSelection(x,y,wide,tall,alpha) 

@@ -9,8 +9,8 @@ CLASS.JumpPower				= 300
 CLASS.DrawTeamRing			= false
 
 function CLASS:Loadout(ply)
-	ply:Give("weapon_pistol")
-	ply:Give("weapon_ar2")
+	ply:Give("weapon_fiveseven_ct")
+	ply:Give("weapon_mp5_ct")
 end
 
 function CLASS:OnSpawn(ply)

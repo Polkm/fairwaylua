@@ -33,7 +33,7 @@ SWEP.Primary.Recoil			= 0
 SWEP.Primary.Damage			= -1
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0
-SWEP.Primary.Delay			= 2
+SWEP.Primary.Delay			= 3
 
 SWEP.Primary.ClipSize		= 1
 SWEP.Primary.DefaultClip	= 1
@@ -96,6 +96,7 @@ function SWEP:OnRemove()
 end
 
 function SWEP:CreateBomb()
+if (CLIENT) then return end
 	if #ents.FindByClass("sent_bomb") > 0 then return end
 	if self:GetOwner():GetNWBool("CanPlant") == true then
 		local trace = self:GetOwner():GetEyeTrace()
@@ -105,7 +106,7 @@ function SWEP:CreateBomb()
 			bomb:SetPos(hitpos)
 			bomb:DropToFloor()
 			bomb:Spawn()
-			self:TakePrimaryAmmo(1)
+			self:GetOwner():StripWeapon("weapon_bombpack")
 		end
 	end
 end

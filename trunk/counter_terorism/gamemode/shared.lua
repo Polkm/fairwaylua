@@ -59,9 +59,19 @@ GM.TakeFragOnSuicide = false
 GM.AddFragsToTeamScore = true	
 GM.ForceJoinBalancedTeams = false	
 
-GM.NoAutomaticSpawning = false		
-GM.RoundBased = true			
-GM.RoundEndsWhenOneTeamAlive = true
+GM.RealisticFallDamage = true
+
+GM.NoAutomaticSpawning = true	// Players don't spawn automatically when they die, some other system spawns them
+GM.RoundBased = true				// Round based, like CS
+GM.RoundLength = 300					// Round length, in seconds
+GM.RoundPreStartTime = 5			// Preperation time before a round starts
+GM.RoundPostLength = 8				// Seconds to show the 'x team won!' screen at the end of a roundf
+
+GM.RoundEndsWhenOneTeamAlive = false	
+
+GM.EnableFreezeCam = true			// TF2 Style Freezecam
+GM.DeathLingerTime = 3				// The time between you dying and it going into spectator mode, 0 disables
+
 
 TEAM_TERRORIST = 1
 TEAM_COUNTERTERRORIST = 2

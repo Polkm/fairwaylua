@@ -62,6 +62,12 @@ function ENT:OnTakeDamage(dmg)
 	end
 	self.Panic = true
 	if self:Health() <= 0 then
+		if dmg:GetAttacker():IsPlayer() then
+			if dmg:GetAttacker():Team() == TEAM_COUNTERTERRORIST then
+				dmg:GetAttacker():Kill()
+				dmg:GetAttacker():PrintMessage(HUD_PRINTCENTER,"Dont kill the innocent")
+			end
+		end
 		self:Ragdoll(dmg)
 		self.Entity:Remove()
 		return
