@@ -30,7 +30,13 @@ function ENT:Asplode()
 	util.ScreenShake(self:GetPos(),15,5,0.6,1200)
 	self:EmitSound("weapon_AWP.Single",400,400)
 	timer.Simple(1,function() self:Remove() end)
-	timer.Simple(3,GAMEMODE:RoundEndWithResult(TEAM_TERRORIST))
+	timer.Simple(3,	
+	function()	for _,playr in pairs(player.GetAll()) do
+				playr:ConCommand("PlayAlert","ts_win")
+			end
+	GAMEMODE:RoundEndWithResult(TEAM_TERRORIST)
+	
+	end)
 end
 function ENT:Think() 
 end

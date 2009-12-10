@@ -101,6 +101,7 @@ end
 
 function SWEP:CSShootBullet(dmg,recoil,numbul,cone)
 	if self.Owner:Crouching() then cone = cone*.6 end
+	if !self.Owner:OnGround() then cone = cone*1.3 end
 	numbul = numbul or 1 
 	cone = cone or 0.01 
 	local bullet = {} 

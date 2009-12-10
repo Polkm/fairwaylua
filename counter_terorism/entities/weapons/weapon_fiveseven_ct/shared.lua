@@ -32,10 +32,10 @@ SWEP.Primary.Sound			= Sound("weapons/glockre/glock18-1.wav")
 SWEP.Primary.Recoil			= .5
 SWEP.Primary.Damage			= 17
 SWEP.Primary.NumShots		= 1
-SWEP.Primary.Cone			= 0.01
+SWEP.Primary.Cone			= 0.06
 SWEP.Primary.ClipSize		= 20
 SWEP.Primary.Delay			= 0.15
-SWEP.Primary.DefaultClip	= 20 
+SWEP.Primary.DefaultClip	= 40 
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "pistol"
 

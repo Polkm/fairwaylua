@@ -7,23 +7,24 @@ SetGlobalEntity("TERRORISTbomber", nil)
 function GM:ResetTeams()
 	for _, player in pairs(team.GetPlayers(TEAM_TERRORIST)) do
 		player:SetTeam(TEAM_COUNTERTERRORIST)
+		player:SetPlayerClass("class_ct")
 	end
 end
 
 function GM:OnPreRoundStart( num )
 
 	game.CleanUpMap()
-	
 	UTIL_StripAllPlayers()
-	UTIL_SpawnAllPlayers()
-	UTIL_FreezeAllPlayers()
-	
+	GAMEMODE:ResetTeams()
 	if team.NumPlayers(TEAM_TERRORIST) < team.NumPlayers(TEAM_COUNTERTERRORIST) / 3 then
 		local randomguy = table.Random(team.GetPlayers(TEAM_COUNTERTERRORIST))
 		randomguy:SetTeam(TEAM_TERRORIST)
 		randomguy:SetPlayerClass("TERRORISTBomber")
 		randomguy:KillSilent()
+		randomguy:Spawn()
 	end
+	UTIL_SpawnAllPlayers()
+	UTIL_FreezeAllPlayers()
 
 end
 
@@ -50,26 +51,58 @@ function GM:SpawningCitizens()
 			end
 		end
 end
+
 function GM:CheckRoundEnd()
 	if !GAMEMODE:InRound() then return end
-	if team.NumPlayers(TEAM_COUNTERTERRORIST) < 0 and team.NumPlayers(TEAM_TERRORIST) > 0 then
+	if team.NumPlayers(TEAM_COUNTERTERRORIST) <= 0 and team.NumPlayers(TEAM_TERRORIST) > 0 then
+		for _,playr in pairs(player.GetAll()) do
+			playr:ConCommand("PlayAlert","ts_win")
+		end
 		GAMEMODE:RoundEndWithResult(TEAM_TERRORIST)
-		GAMEMODE:ResetTeams()
-	elseif team.NumPlayers(TEAM_COUNTERTERRORIST) > 0 and team.NumPlayers(TEAM_TERRORIST) < 0 then
+	elseif team.NumPlayers(TEAM_COUNTERTERRORIST) > 0 and team.NumPlayers(TEAM_TERRORIST) <= 0 && !GAMEMODE.Bombplanted then
+		for _,playr in pairs(player.GetAll()) do
+			playr:ConCommand("PlayAlert","cts_win")
+		end
 		GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST)
-		GAMEMODE:ResetTeams()
 	end
 	timer.Create("CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEnd() end)
 end
 
 function GM:RoundTimerEnd()
 	if !GAMEMODE:InRound() then return end
-	if team.NumPlayers(TEAM_COUNTERTERRORIST) >= 1 then 
+	if team.NumPlayers(TEAM_COUNTERTERRORIST) >= 1 && GAMEMODE.Bombplanted != true then 
 		GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST)
 	else
 		GAMEMODE:RoundEndWithResult(ROUND_RESULT_DRAW)
 	end	
-	GAMEMODE:ResetTeams()
+end
+
+function GM:RoundEndWithResult( result, resulttext )
+	resulttext = GAMEMODE:ProcessResultText( result, resulttext )
+	if type( result ) == "number" then // the result is a team ID
+		GAMEMODE:SetRoundResult( result, resulttext )
+		GAMEMODE:RoundEnd()
+		GAMEMODE:OnRoundResult( result, resulttext )
+	else // the result is a player
+		GAMEMODE:SetRoundWinner( result, resulttext )
+		GAMEMODE:RoundEnd()
+		GAMEMODE:OnRoundWinner( result, resulttext )
+	end
+end
+
+function GM:RoundEnd()
+	if ( !GAMEMODE:InRound() ) then 
+		MsgN("WARNING: RoundEnd being called while gamemode not in round...")
+		debug.Trace()
+		return 
+	end
+	GAMEMODE:OnRoundEnd( GetGlobalInt( "RoundNumber" ) )
+	self:SetInRound( false )
+	timer.Destroy( "RoundEndTimer" )
+	timer.Destroy( "CheckRoundEnd" )
+	SetGlobalFloat( "RoundEndTime", -1 )
+
+	timer.Simple( GAMEMODE.RoundPostLength, function()   GAMEMODE:PreRoundStart( GetGlobalInt( "RoundNumber" )+1 ) end )
 end
 
 function GM:PlayerSpawn(ply)	
@@ -90,6 +123,8 @@ function GM:PlayerSpawn(ply)
 		local model = GAMEMODE.Models.CT[math.random(1,#GAMEMODE.Models.CT)]
 		ply:SetModel(model)
 		GAMEMODE:SetPlayerSpeed(ply,150,211)
+		ply:SetNWBool("isdf", false)
+		ply:SetNWInt("dftime", 0)
 	end
 	ply:SetJumpPower(200)
 end
@@ -107,7 +142,9 @@ function GM:Diffuse(ply,entity)
 			for _,playr in pairs(player.GetAll()) do
 				playr:ConCommand("PlayAlert","cts_win")
 			end
-			GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST) end)
+			GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST) 
+			
+						end)
 		else
 		timer.Simple(0.125, function() ply:SetNWInt("dftime", old +1) GAMEMODE:Diffuse(ply,entity) end)
 		end
