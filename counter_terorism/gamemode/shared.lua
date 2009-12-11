@@ -7,9 +7,9 @@ DeriveGamemode("fretta")
 IncludePlayerClasses()
 
 GM.Alerts = {}
-GM.Alerts["cts_win"] = {text = "Counter-Terrorists Win", sound = "ct/ctwin.wav"}
-GM.Alerts["Bombplant"] = {text = "The Bomb Has been Planted", sound = "ct/bombpl.wav"}
-GM.Alerts["ts_win"] = {text = "Terrorists Win", sound = "ct/terwin.wav"}
+GM.Alerts["cts_win"] = {text = "Counter-Terrorists Win",Sound = "ct/ctwin.wav"}
+GM.Alerts["Bombplant"] = {text = "The Bomb Has been Planted",Sound = "ct/bombpl.wav"}
+GM.Alerts["ts_win"] = {text = "Terrorists Win",Sound = "ct/terwin.wav"}
 
 GM.Models = {
 	Female = {

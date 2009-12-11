@@ -74,7 +74,7 @@ end
 
 function GM:PlayAlert(type)
 	local client = LocalPlayer()
-	client:EmitSound(GAMEMODE.Alerts[type].sound, 100,100)
+	client:EmitSound(GAMEMODE.Alerts[type].Sound, 100,100)
 end
 
 concommand.Add("PlayAlert",function(ply,cmd,args) GAMEMODE:PlayAlert(tostring(args[1])) end)

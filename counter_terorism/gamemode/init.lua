@@ -56,16 +56,35 @@ function GM:CheckRoundEnd()
 	if !GAMEMODE:InRound() then return end
 	if team.NumPlayers(TEAM_COUNTERTERRORIST) <= 0 and team.NumPlayers(TEAM_TERRORIST) > 0 then
 		for _,playr in pairs(player.GetAll()) do
-			playr:ConCommand("PlayAlert","ts_win")
+			playr:ConCommand("PlayAlert ts_win")
 		end
 		GAMEMODE:RoundEndWithResult(TEAM_TERRORIST)
 	elseif team.NumPlayers(TEAM_COUNTERTERRORIST) > 0 and team.NumPlayers(TEAM_TERRORIST) <= 0 && !GAMEMODE.Bombplanted then
 		for _,playr in pairs(player.GetAll()) do
-			playr:ConCommand("PlayAlert","cts_win")
+			playr:ConCommand("PlayAlert cts_win")
 		end
 		GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST)
 	end
 	timer.Create("CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEnd() end)
+end
+
+function GM:CheckPlayerDeathRoundEnd()
+
+	if ( !GAMEMODE.RoundBased ) then return end
+	if ( !GAMEMODE:InRound() ) then return end
+
+	if team.NumPlayers(TEAM_COUNTERTERRORIST) <= 0 and team.NumPlayers(TEAM_TERRORIST) > 0 then
+		for _,playr in pairs(player.GetAll()) do
+			playr:ConCommand("PlayAlert ts_win")
+		end
+		GAMEMODE:RoundEndWithResult(TEAM_TERRORIST)
+	elseif team.NumPlayers(TEAM_COUNTERTERRORIST) > 0 and team.NumPlayers(TEAM_TERRORIST) <= 0 && !GAMEMODE.Bombplanted then
+		for _,playr in pairs(player.GetAll()) do
+			playr:ConCommand("PlayAlert cts_win")
+		end
+		GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST)
+	end
+
 end
 
 function GM:RoundTimerEnd()
@@ -75,19 +94,6 @@ function GM:RoundTimerEnd()
 	else
 		GAMEMODE:RoundEndWithResult(ROUND_RESULT_DRAW)
 	end	
-end
-
-function GM:RoundEndWithResult( result, resulttext )
-	resulttext = GAMEMODE:ProcessResultText( result, resulttext )
-	if type( result ) == "number" then // the result is a team ID
-		GAMEMODE:SetRoundResult( result, resulttext )
-		GAMEMODE:RoundEnd()
-		GAMEMODE:OnRoundResult( result, resulttext )
-	else // the result is a player
-		GAMEMODE:SetRoundWinner( result, resulttext )
-		GAMEMODE:RoundEnd()
-		GAMEMODE:OnRoundWinner( result, resulttext )
-	end
 end
 
 function GM:RoundEnd()
@@ -140,9 +146,9 @@ function GM:Diffuse(ply,entity)
 		
 			timer.Simple(3,	function() 
 			for _,playr in pairs(player.GetAll()) do
-				playr:ConCommand("PlayAlert","cts_win")
+				playr:ConCommand("PlayAlert cts_win")
 			end
-			GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST) 
+			//GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST) 
 			
 						end)
 		else

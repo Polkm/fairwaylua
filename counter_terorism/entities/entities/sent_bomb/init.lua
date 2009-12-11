@@ -21,6 +21,7 @@ function ENT:TimerAdd()
 		timer.Simple(1,function() self:TimerAdd() end)
 	end
 end
+
 function ENT:Asplode()
 	local effectdata = EffectData()
 	effectdata:SetOrigin(self:GetPos())
@@ -32,18 +33,24 @@ function ENT:Asplode()
 	timer.Simple(1,function() self:Remove() end)
 	timer.Simple(3,	
 	function()	for _,playr in pairs(player.GetAll()) do
-				playr:ConCommand("PlayAlert","ts_win")
+				playr:ConCommand("PlayAlert ts_win")
 			end
 	GAMEMODE:RoundEndWithResult(TEAM_TERRORIST)
 	
 	end)
 end
+
 function ENT:Think() 
 end
 
 function ENT:ChangeBeep()
 	self:EmitSound(Sound("weapons/c4/c4_beep1.wav"))
 	if self.Entity.Timer >= 25	then  
+		if !self.Beacon then 
+			local beacon = ents.Create("beacon_small")
+			beacon:SetPos(self:GetPos())
+			beacon:Spawn()
+		end
 		timer.Simple(0.5,function() self:EmitSound(Sound("weapons/c4/c4_beep1.wav")) end) 
 	end
 end
