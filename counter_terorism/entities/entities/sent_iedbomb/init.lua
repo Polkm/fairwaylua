@@ -37,3 +37,14 @@ function ENT:OnTakeDamage(dmg)
 		end
 	end
 end 
+
+function ENT:Asplodeied()
+	local effectdata = EffectData()
+	effectdata:SetOrigin(self:GetPos())
+	effectdata:SetNormal(self:GetPos())
+	util.Effect("eff_Boomboom",effectdata)
+	util.BlastDamage(self,self,self:GetPos(),100,200)
+	util.ScreenShake(self:GetPos(),15,5,0.6,1200)
+	self:EmitSound("weapon_AWP.Single",400,400)
+	end)
+end
