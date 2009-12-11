@@ -5,9 +5,11 @@ include("shared.lua")
 SetGlobalEntity("TERRORISTbomber", nil)
 
 function GM:ResetTeams()
-	for _, player in pairs(team.GetPlayers(TEAM_TERRORIST)) do
-		player:SetTeam(TEAM_COUNTERTERRORIST)
-		player:SetPlayerClass("class_ct")
+	for _, player in pairs(player.GetAll()) do
+		if player:Team() != 0 then 
+			player:SetTeam(TEAM_COUNTERTERRORIST)
+			player:SetPlayerClass("class_ct")
+		end
 	end
 end
 
@@ -20,7 +22,7 @@ function GM:OnPreRoundStart( num )
 		local randomguy = table.Random(team.GetPlayers(TEAM_COUNTERTERRORIST))
 		randomguy:SetTeam(TEAM_TERRORIST)
 		randomguy:SetPlayerClass("TERRORISTBomber")
-		randomguy:KillSilent()
+		//randomguy:KillSilent()
 		randomguy:Spawn()
 	end
 	UTIL_SpawnAllPlayers()
@@ -53,38 +55,74 @@ function GM:SpawningCitizens()
 end
 
 function GM:CheckRoundEnd()
-	if !GAMEMODE:InRound() then return end
-	if team.NumPlayers(TEAM_COUNTERTERRORIST) <= 0 and team.NumPlayers(TEAM_TERRORIST) > 0 then
-		for _,playr in pairs(player.GetAll()) do
-			playr:ConCommand("PlayAlert ts_win")
-		end
-		GAMEMODE:RoundEndWithResult(TEAM_TERRORIST)
-	elseif team.NumPlayers(TEAM_COUNTERTERRORIST) > 0 and team.NumPlayers(TEAM_TERRORIST) <= 0 && !GAMEMODE.Bombplanted then
-		for _,playr in pairs(player.GetAll()) do
-			playr:ConCommand("PlayAlert cts_win")
-		end
-		GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST)
-	end
-	timer.Create("CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEnd() end)
+
 end
 
 function GM:CheckPlayerDeathRoundEnd()
 
 	if ( !GAMEMODE.RoundBased ) then return end
 	if ( !GAMEMODE:InRound() ) then return end
-
-	if team.NumPlayers(TEAM_COUNTERTERRORIST) <= 0 and team.NumPlayers(TEAM_TERRORIST) > 0 then
+	local alivects = 0 
+	local alivets = 0 
+	for _,playr in pairs(player.GetAll()) do 
+		if playr:Team() == 1 then
+			alivects = alivects + 1 
+		elseif playr:Team() == 2 then
+			alivets = alivets + 1 
+		end
+	end
+	if alivects <= 0 and alivets > 0 then
 		for _,playr in pairs(player.GetAll()) do
 			playr:ConCommand("PlayAlert ts_win")
 		end
 		GAMEMODE:RoundEndWithResult(TEAM_TERRORIST)
-	elseif team.NumPlayers(TEAM_COUNTERTERRORIST) > 0 and team.NumPlayers(TEAM_TERRORIST) <= 0 && !GAMEMODE.Bombplanted then
+	elseif alivects > 0 and alivets <= 0 && !GAMEMODE.Bombplanted then
 		for _,playr in pairs(player.GetAll()) do
 			playr:ConCommand("PlayAlert cts_win")
 		end
 		GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST)
 	end
+end
 
+function GM:PlayerDeathThink( pl )
+
+	pl.DeathTime = pl.DeathTime or CurTime()
+	local timeDead = CurTime() - pl.DeathTime
+	
+	// If we're in deathcam mode, promote to a generic spectator mode
+	if ( GAMEMODE.DeathLingerTime > 0 && timeDead > GAMEMODE.DeathLingerTime && ( pl:GetObserverMode() == OBS_MODE_FREEZECAM || pl:GetObserverMode() == OBS_MODE_DEATHCAM ) ) then
+		GAMEMODE:BecomeObserver( pl )
+	end
+	
+	// If we're in a round based game, player NEVER spawns in death think
+	if ( GAMEMODE.NoAutomaticSpawning ) then return end
+	
+	// The gamemode is holding the player from respawning.
+	// Probably because they have to choose a class..
+	if ( !pl:CanRespawn() ) then return end
+
+	// Don't respawn yet - wait for minimum time...
+	if ( GAMEMODE.MinimumDeathLength ) then 
+	
+		pl:SetNWFloat( "RespawnTime", pl.DeathTime + GAMEMODE.MinimumDeathLength )
+		
+		if ( timeDead < pl:GetRespawnTime() ) then
+			return
+		end
+		
+	end
+
+	// Force respawn
+	if ( pl:GetRespawnTime() != 0 && GAMEMODE.MaximumDeathLength != 0 && timeDead > GAMEMODE.MaximumDeathLength ) then
+		pl:Spawn()
+		return
+	end
+
+	// We're between min and max death length, player can press a key to spawn.
+	if ( pl:KeyPressed( IN_ATTACK ) || pl:KeyPressed( IN_ATTACK2 ) || pl:KeyPressed( IN_JUMP ) ) then
+		pl:Spawn()
+	end
+	
 end
 
 function GM:RoundTimerEnd()
