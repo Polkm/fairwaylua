@@ -46,5 +46,4 @@ function ENT:Asplodeied()
 	util.BlastDamage(self,self,self:GetPos(),100,200)
 	util.ScreenShake(self:GetPos(),15,5,0.6,1200)
 	self:EmitSound("weapon_AWP.Single",400,400)
-	end)
 end
