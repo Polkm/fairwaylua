@@ -65,9 +65,9 @@ function GM:CheckPlayerDeathRoundEnd()
 	local alivects = 0 
 	local alivets = 0 
 	for _,playr in pairs(player.GetAll()) do 
-		if playr:Team() == 1 then
+		if playr:Team() == 1 && ply:Alive() then
 			alivects = alivects + 1 
-		elseif playr:Team() == 2 then
+		elseif playr:Team() == 2 && ply:Alive() then
 			alivets = alivets + 1 
 		end
 	end
