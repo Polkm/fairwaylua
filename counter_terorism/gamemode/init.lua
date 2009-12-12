@@ -5,7 +5,7 @@ include("shared.lua")
 SetGlobalEntity("TERRORISTbomber", nil)
 
 function GM:ResetTeams()
-	for _, player in pairs(player.GetAll()) do
+	for _, player in pairs(player.GetAll() ) do
 		if player:Team() != 0 then 
 			player:SetTeam(TEAM_COUNTERTERRORIST)
 			player:SetPlayerClass("class_ct")
@@ -36,8 +36,8 @@ function GM:OnRoundStart( num )
 end
 
 function GM:SpawningCitizens()
-	for j,h in pairs(ents.FindByClass("info_player_start")) do
-			for i=0, 25 do
+	for j,h in pairs(ents.FindByClass("info_player_counterterrorist")) do
+			for i=0, 5 do
 				local Blocked = false
 				for k,v in pairs(ents.FindInBox(h:GetPos()+ Vector(80,80,200),h:GetPos()+ Vector(-80,-80,-200))) do
 					if v:GetClass() == "snpc_citizen" or v:IsPlayer() then
