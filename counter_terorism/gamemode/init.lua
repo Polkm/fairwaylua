@@ -36,7 +36,7 @@ function GM:OnRoundStart( num )
 end
 
 function GM:SpawningCitizens()
-	for j,h in pairs(ents.FindByClass("info_player_counterterrorist")) do
+	for j,h in pairs(ents.FindByClass("info_player_start")) do
 			for i=0, 5 do
 				local Blocked = false
 				for k,v in pairs(ents.FindInBox(h:GetPos()+ Vector(80,80,200),h:GetPos()+ Vector(-80,-80,-200))) do
