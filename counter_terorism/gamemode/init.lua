@@ -5,11 +5,9 @@ include("shared.lua")
 SetGlobalEntity("TERRORISTbomber", nil)
 
 function GM:ResetTeams()
-	for _, player in pairs(player.GetAll() ) do
-		if player:Team() != 0 then 
-			player:SetTeam(TEAM_COUNTERTERRORIST)
-			player:SetPlayerClass("class_ct")
-		end
+	for _, player in pairs(team.GetPlayers(TEAM_TERRORIST)) do
+		player:SetTeam(TEAM_COUNTERTERRORIST)
+		player:SetPlayerClass("class_ct")
 	end
 end
 
@@ -22,9 +20,16 @@ function GM:OnPreRoundStart( num )
 		local randomguy = table.Random(team.GetPlayers(TEAM_COUNTERTERRORIST))
 		randomguy:SetTeam(TEAM_TERRORIST)
 		randomguy:SetPlayerClass("TERRORISTBomber")
-		//randomguy:KillSilent()
+		randomguy:KillSilent()
 		randomguy:Spawn()
 	end
+	if team.NumPlayers(TEAM_TERRORIST) >= 1 then 
+		local ChosenBomber = team.GetPlayers(TEAM_TERRORIST)[math.random(1,#team.GetPlayers(TEAM_TERRORIST))]
+		ChosenBomber:SetPlayerClass("TerroristIED")
+		ChosenBomber:KillSilent()
+		ChosenBomber:Spawn()
+	end
+	
 	UTIL_SpawnAllPlayers()
 	UTIL_FreezeAllPlayers()
 
@@ -33,6 +38,7 @@ end
 function GM:OnRoundStart( num )
 	UTIL_UnFreezeAllPlayers()
 	GAMEMODE:SpawningCitizens()
+	timer.Create( "CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEnd() end )
 end
 
 function GM:SpawningCitizens()
@@ -55,6 +61,15 @@ function GM:SpawningCitizens()
 end
 
 function GM:CheckRoundEnd()
+	if ( !GAMEMODE.RoundBased ) then return end
+	if ( !GAMEMODE:InRound() ) then return end
+	if team.NumPlayers(TEAM_COUNTERTERRORIST) <= 0 && team.NumPlayers(TEAM_TERRORIST) <= 0 then
+		GAMEMODE:RoundEndWithResult(ROUND_RESULT_DRAW)
+	elseif team.NumPlayers(TEAM_COUNTERTERRORIST) <= 0 then
+		GAMEMODE:RoundEndWithResult(ROUND_RESULT_DRAW)
+	elseif team.NumPlayers(TEAM_TERRORIST) <= 0 then
+		GAMEMODE:RoundEndWithResult(ROUND_RESULT_DRAW)	
+	end
 
 end
 
@@ -65,9 +80,9 @@ function GM:CheckPlayerDeathRoundEnd()
 	local alivects = 0 
 	local alivets = 0 
 	for _,playr in pairs(player.GetAll()) do 
-		if playr:Team() == 1 && ply:Alive() then
+		if playr:Team() == 1 && playr:Alive() then
 			alivects = alivects + 1 
-		elseif playr:Team() == 2 && ply:Alive() then
+		elseif playr:Team() == 2 && playr:Alive() then
 			alivets = alivets + 1 
 		end
 	end

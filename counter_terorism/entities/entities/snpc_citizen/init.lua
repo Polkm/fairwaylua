@@ -53,14 +53,14 @@ function ENT:OnTakeDamage(dmg)
 		self.Entity:EmitSound(Sound("vo/npc/male01/pain0"..math.random(1,9)..".wav"),100,100)
 	end
 	self.PanicEnt = dmg:GetAttacker()
-	--CHECK DIED
-	print(self:GetPos():Distance(dmg:GetAttacker():GetPos()))
-	if dmg:GetAttacker():GetActiveWeapon():GetClass() == "weapon_fiveseven" && self:GetPos():Distance(dmg:GetAttacker():GetPos()) >= 1000 then
+	-- Should alert other npcs?
+	if dmg:GetAttacker():IsPlayer() && dmg:GetAttacker():GetActiveWeapon():GetClass() != "weapon_knife_ct" && self:GetPos():Distance(dmg:GetAttacker():GetPos()) >= 1000 then
 		local beacon = ents.Create("beacon_small")
 		beacon:SetPos(self:GetPos()) 
 		beacon:Spawn()
 	end
 	self.Panic = true
+	--CHECK DIED
 	if self:Health() <= 0 then
 		if dmg:GetAttacker():IsPlayer() then
 			if dmg:GetAttacker():Team() == TEAM_COUNTERTERRORIST then
@@ -87,7 +87,6 @@ function ENT:SelectSchedule()
 	else
 		if ActionChose >= 8 then
 			self:StartSchedule(schdRun)
-
 		else
 			self:StartSchedule(schdWander)
 		end
