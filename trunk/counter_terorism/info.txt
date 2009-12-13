@@ -13,8 +13,7 @@
 
 	"fretta_maps"
 	{
-		"1"	"^gm_"
-		"2"	"^ld_"
+		"1"	"^ct_"
 	}
 
 	"selectable"	"1"

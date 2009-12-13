@@ -11,8 +11,6 @@ CLASS.DrawTeamRing			= false
 function CLASS:Loadout(ply)
 	ply:Give("weapon_knife_ct")
 	ply:Give("weapon_fiveseven_ct")
-	ply:Give("weapon_suicide")
-	ply:Give("weapon_ied")
 	ply:Give("weapon_bombpack")
 	ply:Give("weapon_idle_hands")
 	ply:SelectWeapon("weapon_idle_hands")
