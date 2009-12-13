@@ -64,14 +64,14 @@ function PANEL:AddItem(item, amount)
 		if tblItemTable.Desc then Tooltip = Format("%s\n%s", Tooltip, tblItemTable.Desc) end
 		if tblItemTable.Weight && tblItemTable.Weight > 0 then Tooltip = Format("%s\n%s Kgs", Tooltip, tblItemTable.Weight) end
 		IconItem:SetTooltip(Tooltip)
-		------Common Button------
+		------Double Click------
 		if tblItemTable.Use then
 			local useFunc = function()
 				RunConsoleCommand("UD_UseItem",item)
 			end
-			--IconItem:SetCommonButton("gui/cup_go", useFunc, "Use")
+			IconItem:SetDoubleClick(useFunc)
 		end
-		----Secondary Buttons----
+		-------Right Click-------
 		local menuFunc = function()
 			local ActionsMenu = DermaMenu()
 			if tblItemTable.Use then ActionsMenu:AddOption("Use", function() RunConsoleCommand("UD_UseItem", item) end) end
