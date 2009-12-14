@@ -4,6 +4,38 @@ include("shared.lua")
 
 SetGlobalEntity("TERRORISTbomber", nil)
 
+function GM:Initialize()
+		if ( GAMEMODE.GameLength > 0 ) then
+			timer.Simple( GAMEMODE.GameLength * 60, function() GAMEMODE:EndOfGame( true ) end )
+			SetGlobalFloat( "GameEndTime", CurTime() + GAMEMODE.GameLength * 60 )
+		end
+		
+		// If we're round based, wait 5 seconds before the first round starts
+		if ( GAMEMODE.RoundBased ) then
+			timer.Simple( 10, function() GAMEMODE:StartRoundBasedGame() end )
+		end
+		
+		if ( GAMEMODE.AutomaticTeamBalance ) then
+			timer.Create( "CheckTeamBalance", 30, 0, function() GAMEMODE:CheckTeamBalance() end )
+		end
+--Precache all the models
+	/*util.PrecacheModel(	"models/Humans/Group01/Male_01.mdl")
+	util.PrecacheModel("models/Humans/Group01/male_02.mdl")
+	util.PrecacheModel("models/Humans/Group01/male_03.mdl")
+	util.PrecacheModel("models/Humans/Group01/Male_04.mdl")
+	util.PrecacheModel("models/Humans/Group01/Male_05.mdl")
+	util.PrecacheModel("models/Humans/Group01/male_06.mdl")
+	util.PrecacheModel("models/Humans/Group01/male_07.mdl")
+	util.PrecacheModel("models/Humans/Group01/male_08.mdl")
+	util.PrecacheModel("models/Humans/Group01/male_09.mdl")
+	util.PrecacheModel(	"models/Humans/Group01/Female_01.mdl")
+	util.PrecacheModel(	"models/Humans/Group01/Female_02.mdl")
+	util.PrecacheModel(	"models/Humans/Group01/Female_03.mdl")
+	util.PrecacheModel(	"models/Humans/Group01/Female_04.mdl")
+	util.PrecacheModel(	"models/Humans/Group01/Female_06.mdl")
+	util.PrecacheModel(	"models/Humans/Group01/Female_07.mdl")*/
+end
+
 function GM:ResetTeams()
 	for _, player in pairs(team.GetPlayers(TEAM_TERRORIST)) do
 		player:SetTeam(TEAM_COUNTERTERRORIST)
@@ -32,32 +64,35 @@ function GM:OnPreRoundStart( num )
 	
 	UTIL_SpawnAllPlayers()
 	UTIL_FreezeAllPlayers()
+	GAMEMODE:SpawningCitizens()
 
 end
 
 function GM:OnRoundStart( num )
 	UTIL_UnFreezeAllPlayers()
-	GAMEMODE:SpawningCitizens()
 	timer.Create( "CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEnd() end )
 end
 
 function GM:SpawningCitizens()
+	local intervaltime = GAMEMODE.RoundPreStartTime / table.Count(ents.FindByClass("info_player_start"))
+	local number = 1
 	for j,h in pairs(ents.FindByClass("info_player_start")) do
-			for i=0, 5 do
-				local Blocked = false
-				for k,v in pairs(ents.FindInBox(h:GetPos()+ Vector(80,80,200),h:GetPos()+ Vector(-80,-80,-200))) do
-					if v:GetClass() == "snpc_citizen" or v:IsPlayer() then
-						Blocked = true
-					end
-				end
-				if !Blocked then
+		local Blocked = false
+		for k,v in pairs(ents.FindInBox(h:GetPos()+ Vector(80,80,200),h:GetPos()+ Vector(-80,-80,-200))) do
+			if v:GetClass() == "snpc_citizen" or v:IsPlayer() then
+				Blocked = true
+			end
+		end
+			if !Blocked then
+			timer.Simple(intervaltime * number, 
+				function()
 					local ent = ents.Create("snpc_citizen")
 					ent:SetPos(h:GetPos())
 					ent:Spawn()
-					break
-				end
-			end
+				end)
+			number = number + 1
 		end
+	end
 end
 
 function GM:CheckRoundEnd()
@@ -80,9 +115,9 @@ function GM:CheckPlayerDeathRoundEnd()
 	local alivects = 0 
 	local alivets = 0 
 	for _,playr in pairs(player.GetAll()) do 
-		if playr:Team() == 1 && playr:Alive() then
+		if playr:Team() == 2 && playr:Alive() then
 			alivects = alivects + 1 
-		elseif playr:Team() == 2 && playr:Alive() then
+		elseif playr:Team() == 1 && playr:Alive() then
 			alivets = alivets + 1 
 		end
 	end

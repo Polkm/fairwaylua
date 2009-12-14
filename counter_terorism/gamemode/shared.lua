@@ -6,6 +6,8 @@ GM.Website 	= ""
 DeriveGamemode("fretta")
 IncludePlayerClasses()
 
+
+
 GM.Alerts = {}
 GM.Alerts["cts_win"] = {text = "Counter-Terrorists Win",Sound = "ct/ctwin.wav"}
 GM.Alerts["Bombplant"] = {text = "The Bomb Has been Planted",Sound = "ct/bombpl.wav"}
@@ -48,7 +50,7 @@ GM.AllowAutoTeam = false
 GM.AllowSpectating = true
 GM.SelectClass = true
 GM.SecondsBetweenTeamSwitches = 0
-GM.GameLength = 10
+GM.GameLength = 15
 GM.RoundLength = 300
 GM.NoPlayerDamage = false
 GM.NoPlayerSelfDamage = false

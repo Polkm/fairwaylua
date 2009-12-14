@@ -26,6 +26,7 @@ SWEP.Secondary.DefaultClip	= 32				// Default number of bullets in a clip
 SWEP.Secondary.Automatic	= false				// Automatic/Semi Auto
 SWEP.Secondary.Ammo			= "Pistol"
 
+SWEP.LastBeacon = "lol"
 
 function SWEP:Initialize()
     if SERVER then self:SetWeaponHoldType(self.HoldType) end
@@ -35,14 +36,23 @@ function SWEP:Precache()
 end
 function SWEP:PrimaryAttack()
 	if (!self:CanPrimaryAttack()) then return end
-	
+	self.Weapon:TossWeaponSound()
 	if SERVER then
-		self.Weapon:TossWeaponSound();
-		local beacon = ents.Create("beacon_small")
-		beacon:SetPos(self:GetOwner():GetPos()) 
-		beacon:Spawn()
+		if self.LastBeacon == "lol"  then
+			local beacon = ents.Create("beacon_small")
+			beacon:SetPos(self:GetOwner():GetPos()) 
+			beacon:Spawn()
+			self.LastBeacon = beacon
+			print("maid")
+		elseif self.LastBeacon:IsValid() && self.LastBeacon:GetPos():Distance(self:GetOwner():GetPos()) >= 400 then
+			local beacon = ents.Create("beacon_small")
+			beacon:SetPos(self:GetOwner():GetPos()) 
+			beacon:Spawn()
+			self.LastBeacon = beacon
+			print("maid")
+		end
+		self:CSShootBullet(self.Primary.Damage,self.Primary.Recoil,self.Primary.NumShots,self.Primary.Cone)
 	end
-	self:CSShootBullet(self.Primary.Damage,self.Primary.Recoil,self.Primary.NumShots,self.Primary.Cone)
 	self.Owner:ViewPunch(Angle( math.Rand(-0.2,-0.1) * self.Primary.Recoil,math.Rand(-0.1,0.1) *self.Primary.Recoil,0)) 
 	self.Weapon:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 	self:TakePrimaryAmmo(1)
