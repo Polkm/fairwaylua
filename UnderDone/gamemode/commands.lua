@@ -6,7 +6,7 @@ local Player = FindMetaTable("Player")
 function Player:UseItem(strItem)
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
 	if tblItemTable && tblItemTable.Use && HasItem(self, strItem) then
-		tblItemTable:Use(self)
+		tblItemTable:Use(self, tblItemTable)
 		return true
 	end
 	return false

@@ -1,60 +1,75 @@
-GM.ItemCatagories = {}
-GM.ItemCatagories["Consumables"] = {PrintName = "Consumables"}
-GM.ItemCatagories["Weapons"] = {PrintName = "Weapons"}
+local function DeriveTable(tblWantedTable)
+	local tblNewTable = {}
+	for k, v in pairs(tblWantedTable) do tblNewTable[k] = v end
+	return tblNewTable
+end
 
-local Item = {}
+local BaseItem = {}
+BaseItem.Name = "default"
+BaseItem.PrintName = "No Name"
+BaseItem.Desc = "No Description"
+BaseItem.Icon = "icons/junk_metalcan1"
+BaseItem.Model = "models/props_junk/garbage_metalcan001a.mdl"
+BaseItem.Stackable = false
+BaseItem.Dropable = false
+BaseItem.Giveable = false
+BaseItem.Weight = 0
+
+local BaseFood = DeriveTable(BaseItem)
+BaseFood.AddedHealth = 25
+function BaseFood:Use(usr, itemtable)
+	if usr:Health() >= 100 or usr:Health() <= 0 then return end
+	usr:SetHealth(math.Clamp(usr:Health() + itemtable.AddedHealth, 0, 100))
+	RemoveItemFromInv(usr, itemtable.Name)
+end
+
+local BaseAmmo = DeriveTable(BaseItem)
+BaseAmmo.AmmoType = "pistol"
+BaseAmmo.AmmoAmount = 20
+function BaseAmmo:Use(usr, itemtable)
+	if usr:Health() <= 0 then return end
+	usr:GiveAmmo(itemtable.AmmoAmount, itemtable.AmmoType)
+	RemoveItemFromInv(usr, itemtable.Name)
+end
+
+
+local Item = DeriveTable(BaseItem)
 Item.Name = "money"
 Item.PrintName = "Money"
-Item.Color = Color(150, 200, 150, 200)
 Item.Desc = "It will bring you happy"
 Item.Icon = "icons/item_cash"
 Item.Model = "models/props_junk/wood_pallet001a_chunkb2.mdl"
 Item.Stackable = true
 Item.Dropable = true
 Item.Giveable = true
-Item.Takeable = true
-Item.Weight = 0
 Register.Item(Item)
 
-local Item = {}
+local Item = DeriveTable(BaseFood)
 Item.Name = "can"
-Item.PrintName = "Can"
-Item.Catagory = "Consumables"
---Item.Color = Color(200, 200, 150, 200)
-Item.Desc = "Restores your health by 25"
+Item.PrintName = "Can of Spoiling Meat"
+Item.Desc = "Restores your health by 10"
 Item.Icon = "icons/junk_metalcan1"
 Item.Model = "models/props_junk/garbage_metalcan001a.mdl"
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
-function Item:Use(usr)
-	if usr:Health() < 100 && usr:Health() > 0 then
-		usr:SetHealth(math.Clamp(usr:Health() + 25, 0, 100))
-		RemoveItemFromInv(usr, "can")
-	end
-end
+Item.AddedHealth = 10
 Register.Item(Item)
 
-local Item = {}
+local Item = DeriveTable(BaseAmmo)
 Item.Name = "pistolammo"
 Item.PrintName = "Pistol Ammo"
-Item.Catagory = "Consumables"
---Item.Color = Color(200, 200, 150, 200)
 Item.Desc = "Gives you 20 pistol bullets"
 Item.Icon = "gui/box"
 Item.Model = "models/Items/357ammobox.mdl"
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
-function Item:Use(usr)
-	if usr:Health() > 0 then
-		usr:GiveAmmo(20, "Pistol")
-		RemoveItemFromInv(usr, "pistolammo")
-	end
-end
+Item.AmmoType = "pistol"
+Item.AmmoAmount = 20
 Register.Item(Item)
 
-local Item = {}
+local Item = DeriveTable(BaseItem)
 Item.Name = "pistol"
 Item.PrintName = "Pistol"
 Item.Catagory = "Weapons"
@@ -83,7 +98,7 @@ function Item:RemovedFromInv(usr)
 end
 Register.Item(Item)
 
-local Item = {}
+local Item = DeriveTable(BaseItem)
 Item.Name = "shotgun"
 Item.PrintName = "Shotgun"
 Item.Catagory = "Weapons"

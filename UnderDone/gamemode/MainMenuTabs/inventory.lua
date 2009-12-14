@@ -1,10 +1,13 @@
 PANEL = {}
 PANEL.inventorylist = nil
+PANEL.ItemIconPadding = 1
+PANEL.ItemIconSize = 39
+PANEL.ItemRow = 7
 
 function PANEL:Init()
 	self.inventorylist = vgui.Create("DPanelList", self)
-	self.inventorylist:SetSpacing(1)
-	self.inventorylist:SetPadding(1)
+	self.inventorylist:SetSpacing(self.ItemIconPadding)
+	self.inventorylist:SetPadding(self.ItemIconPadding)
 	self.inventorylist:EnableHorizontal(true)
 	self.inventorylist:EnableVerticalScrollbar(true)
 	self.inventorylist.Paint = function()
@@ -16,13 +19,13 @@ end
 
 function PANEL:PerformLayout()
 	self.inventorylist:SetPos(0, 0)
-	self.inventorylist:SetSize(self:GetWide(), self:GetTall())
+	self.inventorylist:SetSize(((self.ItemIconSize + self.ItemIconPadding) * self.ItemRow) + self.ItemIconPadding, self:GetTall())
 end
 
 function PANEL:LoadInventory(boolTemp)
 	local TempInv = boolTemp or false
-	local WorkInv = Inventory
-	if TempInv then WorkInv = Inventory_Temp end
+	local WorkInv = GAMEMODE.Inventory
+	if TempInv then WorkInv = GAMEMODE.Inventory_Temp end
 	self.inventorylist:Clear()
 	self.inventorylist.catagories = {}
 	if WorkInv["money"] && WorkInv["money"] > 0 then self:AddItem("money", WorkInv["money"]) end
@@ -35,53 +38,46 @@ function PANEL:LoadInventory(boolTemp)
 end
 
 function PANEL:AddItem(item, amount)
-	local addlist = self.inventorylist
+	local lstAddList = self.inventorylist
 	local tblItemTable = GAMEMODE.DataBase.Items[item]
-	--[[if tblItemTable && tblItemTable.Catagory then
-		if !self.inventorylist.catagories[tblItemTable.Catagory] then
-			local tblCatagory = GAMEMODE.ItemCatagories[tblItemTable.Catagory]
-			local catagory = vgui.Create("FListItem")
-			catagory:SetNameText(tblCatagory.PrintName)
-			catagory:SetExpandable(true)
-			catagory:SetExpanded(true)
-			addlist:AddItem(catagory)
-			self.inventorylist.catagories[tblItemTable.Catagory] = catagory
-			addlist = catagory
-		else
-			addlist = self.inventorylist.catagories[tblItemTable.Catagory]
-		end
-	end]]
-	local ListItems = 1
-	if !tblItemTable.Stackable then ListItems = amount end
-	for i = 1, ListItems do
-		-------------------------
-		local IconItem = vgui.Create("FIconItem")
-		IconItem:SetSize(39, 39)
-		if tblItemTable.Icon then IconItem:SetIcon(tblItemTable.Icon) end
-		if tblItemTable.Stackable && amount > 1 then IconItem:SetAmount(amount) end
+	local intListItems = 1
+	if !tblItemTable.Stackable then intListItems = amount or 1 end
+	for i = 1, intListItems do
+		local icnItem = vgui.Create("FIconItem")
+		icnItem:SetSize(self.ItemIconSize, self.ItemIconSize)
+		if tblItemTable.Icon then icnItem:SetIcon(tblItemTable.Icon) end
+		if tblItemTable.Stackable && amount > 1 then icnItem:SetAmount(amount) end
 		---------ToolTip---------
 		local Tooltip = Format("%s", tblItemTable.PrintName)
 		if tblItemTable.Desc then Tooltip = Format("%s\n%s", Tooltip, tblItemTable.Desc) end
 		if tblItemTable.Weight && tblItemTable.Weight > 0 then Tooltip = Format("%s\n%s Kgs", Tooltip, tblItemTable.Weight) end
-		IconItem:SetTooltip(Tooltip)
+		icnItem:SetTooltip(Tooltip)
 		------Double Click------
 		if tblItemTable.Use then
 			local useFunc = function()
 				RunConsoleCommand("UD_UseItem",item)
 			end
-			IconItem:SetDoubleClick(useFunc)
+			icnItem:SetDoubleClick(useFunc)
 		end
 		-------Right Click-------
 		local menuFunc = function()
-			local ActionsMenu = DermaMenu()
-			if tblItemTable.Use then ActionsMenu:AddOption("Use", function() RunConsoleCommand("UD_UseItem", item) end) end
-			if tblItemTable.Dropable then ActionsMenu:AddOption("Drop", function()
-			if tblItemTable.Stackable and amount >= 5 then DisplayPromt("number", "How many to drop", function(itemamount) RunConsoleCommand("UD_DropItem", item, itemamount) end, item)
-			else RunConsoleCommand("UD_DropItem", item, 1) end end) end
+			GAMEMODE.MainMenu.ActiveMenu = DermaMenu()
+			if tblItemTable.Use then GAMEMODE.MainMenu.ActiveMenu:AddOption("Use", function() RunConsoleCommand("UD_UseItem", item) end) end
+			if tblItemTable.Dropable then
+				GAMEMODE.MainMenu.ActiveMenu:AddOption("Drop", function()
+					if tblItemTable.Stackable and amount >= 5 then
+						DisplayPromt("number", "How many to drop", function(itemamount) RunConsoleCommand("UD_DropItem", item, itemamount) end, item)
+					else
+						RunConsoleCommand("UD_DropItem", item, 1)
+					end
+				end)
+			end
 			if tblItemTable.Giveable then
-				local GiveSubMenu = ActionsMenu:AddSubMenu("Give ...")
 				for _, player in pairs(player.GetAll()) do
 					if player:GetPos():Distance(LocalPlayer():GetPos()) < 250 && player != LocalPlayer() then
+						if !GiveSubMenu then
+							local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...")
+						end
 						GiveSubMenu:AddOption(player:Nick(), function()
 							if tblItemTable.Stackable and amount >= 5 then 
 								DisplayPromt("number", "How many to give", function(itemamount) RunConsoleCommand("UD_GiveItem", item, itemamount, player:EntIndex()) end, item)
@@ -92,12 +88,11 @@ function PANEL:AddItem(item, amount)
 					end
 				end
 			end
-			ActionsMenu:Open()
+			GAMEMODE.MainMenu.ActiveMenu:Open()
 		end
-		IconItem:SetRightClick(menuFunc)
+		icnItem:SetRightClick(menuFunc)
 		-------------------------
-		if addlist == self.inventorylist then addlist:AddItem(IconItem)
-		else addlist:AddContent(IconItem) end
+		lstAddList:AddItem(icnItem)
 	end
 end
 

@@ -49,15 +49,15 @@ function PANEL:LoadPlayers()
 		ListItem:SetCommonButton(icon, toggleMuteFunc, tooltip)
 		----Secondary Buttons----
 		local menuFunc = function()
-			local ActionsMenu = DermaMenu()
+			GAMEMODE.MainMenu.ActiveMenu = DermaMenu()
 			local strText = "Mute"
 			if player:IsMuted() then strText = "Un Mute" end
-			ActionsMenu:AddOption(strText, toggleMuteFunc)
+			GAMEMODE.MainMenu.ActiveMenu:AddOption(strText, toggleMuteFunc)
 			if LocalPlayer():IsAdmin() then
-				ActionsMenu:AddSpacer()
-				ActionsMenu:AddOption("Kick", function() RunConsoleCommand("UD_Admin_Kick", player:EntIndex()) end)
+				GAMEMODE.MainMenu.ActiveMenu:AddSpacer()
+				GAMEMODE.MainMenu.ActiveMenu:AddOption("Kick", function() RunConsoleCommand("UD_Admin_Kick", player:EntIndex()) end)
 			end
-			ActionsMenu:Open()
+			GAMEMODE.MainMenu.ActiveMenu:Open()
 		end
 		ListItem:SetSecondaryButton("gui/cog", menuFunc, "Actions")
 		-------------------------
