@@ -20,3 +20,4 @@ schdWait:EngTask("TASK_WAIT_FOR_MOVEMENT", 0)
 schdFleeShot:EngTask("TASK_GET_PATH_TO_RANDOM_NODE", 1000)
 schdFleeShot:EngTask("TASK_RUN_PATH")
 schdFleeShot:EngTask("TASK_WAIT_FOR_MOVEMENT", 0)
+

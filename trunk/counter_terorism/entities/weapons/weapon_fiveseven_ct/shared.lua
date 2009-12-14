@@ -29,7 +29,7 @@ SWEP.AutoSwitchFrom		= false
 SWEP.ThreatLevel = 1
 
 SWEP.Primary.Sound			= Sound("weapons/glockre/glock18-1.wav")
-SWEP.Primary.Recoil			= .5
+SWEP.Primary.Recoil			= .1
 SWEP.Primary.Damage			= 17
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.06
