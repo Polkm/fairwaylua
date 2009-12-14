@@ -35,10 +35,11 @@ function GM:HUDPaint()
 		draw.RoundedBox(2, boxX + 4 + boaderSize, boxY + 21, Client:Health() * (FullBar / 100), 13, BarColor) 
 		draw.SimpleText("Health " .. Client:Health() .. "/" ..  100, "UiBold", boxX + 7 + boaderSize, boxY + 21, textColor, 0, 3)
 		--WeightBar
+		local intWeight = GAMEMODE.TotalWeight
 		BarColor = Color(20, 80, 200, 255)
 		draw.RoundedBox(2, boxX + 3 + boaderSize, boxY + 40, FullBar + (boaderSize * 2) , 15, boaderColor)
-		draw.RoundedBox(2, boxX + 4 + boaderSize, boxY + 41, Weight * (FullBar / MaxWeight), 13, BarColor) 
-		draw.SimpleText("Weight " .. Weight .. "/" ..  MaxWeight, "UiBold", boxX + 7 + boaderSize, boxY + 41, textColor, 0, 3)
+		draw.RoundedBox(2, boxX + 4 + boaderSize, boxY + 41, intWeight * (FullBar / MaxWeight), 13, BarColor) 
+		draw.SimpleText("Weight " .. intWeight .. "/" ..  MaxWeight, "UiBold", boxX + 7 + boaderSize, boxY + 41, textColor, 0, 3)
 
 	--Notifications
 	local yOffset = ScrH() - 35

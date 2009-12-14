@@ -3,9 +3,10 @@ PANEL.frame = nil
 PANEL.tabsheet = nil
 PANEL.InventoryTab = nil
 PANEL.PlayersTab = nil
+PANEL.ActiveMenu = nil
 
 function PANEL:Init()
-	self:SetSize(500, 500)
+	self:SetSize(500, 300)
 	self.frame = vgui.Create("DFrame")
 	self.frame:SetTitle("")
 	self.frame:SetDraggable(false)
@@ -51,7 +52,7 @@ function DisplayPromt(strType, strTitle, fncOkPressed, strItem)
 		PromtVarPicker:SetText("Amount")
 		PromtVarPicker:SetValue(1)
 		PromtVarPicker:SetMin(1)
-		PromtVarPicker:SetMax(Inventory[Item])
+		PromtVarPicker:SetMax(GAMEMODE.Inventory[Item])
 		PromtVarPicker:SetDecimals(0)
 	end
 	local okbutton = vgui.Create("DButton", frame)
@@ -59,7 +60,7 @@ function DisplayPromt(strType, strTitle, fncOkPressed, strItem)
 	okbutton:SetPos(75, 70)
 	okbutton:SetText("Done")
 	okbutton.DoClick = function(okbutton)
-		Func(math.Clamp(PromtVarPicker:GetValue(), 1, Inventory[Item]))
+		Func(math.Clamp(PromtVarPicker:GetValue(), 1, GAMEMODE.Inventory[Item]))
 		frame:Close()
 	end
 end
