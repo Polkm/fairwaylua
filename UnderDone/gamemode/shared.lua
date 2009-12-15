@@ -1,16 +1,16 @@
-GM.Name 		= "UnderDone RP"
-GM.Author 		= "Shell Shocked"
-GM.Email 		= ""
-GM.Website 		= ""
-GM.TeamBased 	= true
--------------
+-------------------------
+---------Generic---------
+GM.Name 		= "UnderDone"
+GM.Author 		= "Shell Shocked Gaming"
+GM.Email 		= "polkmpolkmpolkm@gmail.com"
+GM.Website 		= "http://shellshocked.net46.net/"
+-----Global Inv Vars-----
 MaxWeight = 20
--------------
-
+--------DataBase---------
 GM.DataBase = {}
 GM.DataBase.Items = {}
 GM.DataBase.NPCs = {}
-
+--------Register---------
 Register = {}
 function Register.Item(tblItem)
 	GM.DataBase.Items[tblItem.Name] = tblItem
