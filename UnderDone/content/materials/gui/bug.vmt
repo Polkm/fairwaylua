@@ -1,12 +1,7 @@
 "LightmappedGeneric"
 {
 	"$basetexture" "gui/bug"
-	$translucent	1
-	$distancealpha	1
-	$softedges	1
-	$edgesoftnessstart	.5
-	$edgesoftnessend	.40
-	$vertexcolor	1
-	$vertexalpha	1
-	$no_fullbright	1
+	"$vertexalpha" 1
+	"$vertexcolor" 1
+	"$nolod" 1
 }

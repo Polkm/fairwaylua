@@ -13,7 +13,7 @@ include("items.lua")
 include("player_ex.lua")
 include("commands.lua")
 include("inventory.lua")
-include("resoucre.lua")
+include("resource.lua")
 
 require("glon")
 include("savingloading.lua")
