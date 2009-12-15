@@ -17,9 +17,18 @@ BaseItem.Weight = 0
 
 local BaseFood = DeriveTable(BaseItem)
 BaseFood.AddedHealth = 25
+BaseFood.AddTime = 10
 function BaseFood:Use(usr, itemtable)
-	if usr:Health() >= 100 or usr:Health() <= 0 then return end
-	usr:SetHealth(math.Clamp(usr:Health() + itemtable.AddedHealth, 0, 100))
+	if !usr or !usr:IsValid() or usr:Health() >= 100 or usr:Health() <= 0 then return end
+	local intHealthToAdd = itemtable.AddedHealth
+	local intHealthGiven = 0
+	local function AddHealth()
+		if !usr or !usr:IsValid() or usr:Health() >= 100 or usr:Health() <= 0 or intHealthGiven >= intHealthToAdd then return end
+		usr:SetHealth(math.Clamp(usr:Health() + 1, 0, 100))
+		intHealthGiven = intHealthGiven + 1
+		timer.Simple(itemtable.AddTime / intHealthToAdd, AddHealth)
+	end
+	timer.Simple(itemtable.AddTime / intHealthToAdd, AddHealth)
 	RemoveItemFromInv(usr, itemtable.Name)
 end
 
@@ -54,13 +63,14 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.AddedHealth = 10
+Item.AddTime = 12
 Register.Item(Item)
 
 local Item = DeriveTable(BaseAmmo)
 Item.Name = "pistolammo"
 Item.PrintName = "Pistol Ammo"
 Item.Desc = "Gives you 20 pistol bullets"
-Item.Icon = "gui/box"
+Item.Icon = "icons/item_pistolammobox"
 Item.Model = "models/Items/357ammobox.mdl"
 Item.Dropable = true
 Item.Giveable = true

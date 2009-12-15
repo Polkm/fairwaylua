@@ -43,21 +43,15 @@ usermessage.Hook("UD_UpdateItem", UpdateItemUsrMsg)
 function GM:OnSpawnMenuOpen()
 	GAMEMODE.MainMenu = (GAMEMODE.MainMenu or vgui.Create("mainmenu"))
 	GAMEMODE.MainMenu:Center()
-	GAMEMODE.MainMenu:SetVisible(true)
-	GAMEMODE.MainMenu.frame:SetVisible(true)
+	GAMEMODE.MainMenu:SetTargetAlpha(255)
+	GAMEMODE.MainMenu.Frame:SetVisible(true)
 	gui.EnableScreenClicker(true)
 	RestoreCursorPosition()
 	GAMEMODE.MainMenu.PlayersTab:LoadPlayers()
 end
 
 function GM:OnSpawnMenuClose()
-	GAMEMODE.MainMenu:SetVisible(false)
-	GAMEMODE.MainMenu.frame:SetVisible(false)
-	if GAMEMODE.MainMenu.ActiveMenu then
-		GAMEMODE.MainMenu.ActiveMenu:Remove()
-	end
-	RememberCursorPosition()
-	gui.EnableScreenClicker(false)
+	GAMEMODE.MainMenu:SetTargetAlpha(0)
 end
 
 function GM:OnPlayerChat(plySpeaker, strText, boolTeamOnly, boolPlayerIsDead)

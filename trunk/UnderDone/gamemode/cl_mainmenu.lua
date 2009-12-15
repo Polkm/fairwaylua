@@ -1,41 +1,73 @@
 PANEL = {}
-PANEL.frame = nil
-PANEL.tabsheet = nil
+PANEL.Frame = nil
+PANEL.TabSheet = nil
+PANEL.TabPanels = {}
 PANEL.InventoryTab = nil
 PANEL.PlayersTab = nil
 PANEL.ActiveMenu = nil
 
+PANEL.TargetAlpha = 0
+PANEL.CurrentAlpha = 0
+
 function PANEL:Init()
 	self:SetSize(500, 300)
-	self.frame = vgui.Create("DFrame")
-	self.frame:SetTitle("")
-	self.frame:SetDraggable(false)
-	self.frame:ShowCloseButton(false)
-	self.frame.Paint = function() end
-	self.frame:MakePopup()
-		self.tabsheet = vgui.Create("DPropertySheet", self.frame)
-			self.InventoryTab = vgui.Create("inventorytab")
-			self.PlayersTab = vgui.Create("playerstab")
-		self.tabsheet:AddSheet("Inventory", self.InventoryTab, "gui/silkicons/user", false, false, "Minipulate your Items")
-		self.tabsheet:AddSheet("Players", self.PlayersTab, "gui/silkicons/group", false, false, "List of players")
+	self.Frame = vgui.Create("DFrame")
+	self.Frame:SetTitle("")
+	self.Frame:SetDraggable(false)
+	self.Frame:ShowCloseButton(false)
+	self.Frame.Paint = function() end
+	self.Frame:SetAlpha(0)
+	self.Frame:MakePopup()
+		self.TabSheet = vgui.Create("DPropertySheet", self.Frame)
+			self.InventoryTab = self:NewTab("Inventory", "inventorytab", "gui/silkicons/user", "Minipulate your Items")
+			self.PlayersTab = self:NewTab("Players", "playerstab", "gui/silkicons/group", "List of players")
 		self:PerformLayout()
 end
 
+function PANEL:SetTargetAlpha(intTargetAlpha)
+	self.TargetAlpha = intTargetAlpha
+end
+
+function PANEL:Paint()
+	if (self.TargetAlpha - self.CurrentAlpha) == 0 then return end
+	local intNewAlpha = self.CurrentAlpha + (((self.TargetAlpha - self.CurrentAlpha) / math.abs(self.TargetAlpha - self.CurrentAlpha)) * 10)
+	intNewAlpha = math.Clamp(intNewAlpha, 0, 255)
+	self.Frame:SetAlpha(intNewAlpha)
+	self.CurrentAlpha = intNewAlpha
+	if self.CurrentAlpha <= 0 then
+		GAMEMODE.MainMenu.Frame:SetVisible(false)
+		if GAMEMODE.MainMenu.ActiveMenu then
+			GAMEMODE.MainMenu.ActiveMenu:Remove()
+		end
+		RememberCursorPosition()
+		gui.EnableScreenClicker(false)
+	end
+end
+
+function PANEL:NewTab(strName, strPanelObject, strIcon, strDesc)
+	local newPanel = vgui.Create(strPanelObject)
+	self.TabSheet:AddSheet(strName, newPanel, strIcon, false, false, strDesc)
+	table.insert(self.TabPanels, newPanel)
+	return newPanel
+end
+
 function PANEL:PerformLayout()
-	self.frame:SetPos(self:GetPos())
-	self.frame:SetSize(self:GetSize())
-		self.tabsheet:SetPos(0,0)
-		self.tabsheet:SetSize(self:GetSize())
-			self.InventoryTab:SetSize(self.tabsheet:GetWide() - 10, self.tabsheet:GetTall() - 30)
-			self.InventoryTab:PerformLayout()
-			self.PlayersTab:SetSize(self.tabsheet:GetWide() - 10, self.tabsheet:GetTall() - 30)
-			self.PlayersTab:PerformLayout()
+	self.Frame:SetPos(self:GetPos())
+	self.Frame:SetSize(self:GetSize())
+		self.TabSheet:SetPos(0,0)
+		self.TabSheet:SetSize(self:GetSize())
+			if self.TabPanels then
+				for _, panel in pairs(self.TabPanels) do
+					panel:SetSize(self.TabSheet:GetWide() - 10, self.TabSheet:GetTall() - 30)
+					panel:PerformLayout()
+				end
+			end
 end
 vgui.Register("mainmenu", PANEL, "Panel")
 
 function DisplayPromt(strType, strTitle, fncOkPressed, strItem)
-	local Type = strType or "number"
-	local Title = strTitle or "Promt "..Type
+	local strType = strType or "number"
+	local Title = strTitle or "Promt "..strType
 	local Func = fncOkPressed or nil
 	local Item = strItem or nil
 	local frame = vgui.Create("DFrame")
@@ -45,7 +77,7 @@ function DisplayPromt(strType, strTitle, fncOkPressed, strItem)
 	frame:SetDraggable(false)
 	frame:ShowCloseButton(true)
 	frame:MakePopup()
-	if Type == "number" then
+	if strType == "number" then
 		PromtVarPicker = vgui.Create("DNumSlider", frame)
 		PromtVarPicker:SetPos(5,30)
 		PromtVarPicker:SetWide(240)
