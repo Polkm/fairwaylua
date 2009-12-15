@@ -1,14 +1,10 @@
 -------------------------
 --------Includes---------
 include('shared.lua')
-include("items.lua")
+include('sh_camera.lua')
+include('sh_resource.lua')
 include('cl_hud.lua')
 include('cl_mainmenu.lua')
-include('VGUIObjects/FListItem.lua')
-include('VGUIObjects/FIconItem.lua')
-include('VGUIObjects/FMultiLineLabel.lua')
-include('MainMenuTabs/inventory.lua')
-include('MainMenuTabs/players.lua')
 ----------Menus----------
 GM.MainMenu = nil
 --------Inventory--------
