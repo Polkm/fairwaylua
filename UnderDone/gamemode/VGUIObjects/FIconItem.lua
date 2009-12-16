@@ -81,4 +81,53 @@ function PANEL:SetDoubleClick(fncDoubleClick)
 	self.DoDoubleClick = fncDoubleClick
 end
 
+function PANEL:SetItem(tblItemTable, intAmount)
+	if tblItemTable.Icon then self:SetIcon(tblItemTable.Icon) end
+	if tblItemTable.Stackable && intAmount > 1 then self:SetAmount(intAmount) end
+	---------ToolTip---------
+	local Tooltip = Format("%s", tblItemTable.PrintName)
+	if tblItemTable.Desc then Tooltip = Format("%s\n%s", Tooltip, tblItemTable.Desc) end
+	if tblItemTable.Weight && tblItemTable.Weight > 0 then Tooltip = Format("%s\n%s Kgs", Tooltip, tblItemTable.Weight) end
+	self:SetTooltip(Tooltip)
+	------Double Click------
+	if tblItemTable.Use then
+		local useFunc = function()
+			RunConsoleCommand("UD_UseItem", tblItemTable.Name)
+		end
+		self:SetDoubleClick(useFunc)
+	end
+	-------Right Click-------
+	local menuFunc = function()
+		GAMEMODE.MainMenu.ActiveMenu = DermaMenu()
+		if tblItemTable.Use then GAMEMODE.MainMenu.ActiveMenu:AddOption("Use", function() RunConsoleCommand("UD_UseItem", tblItemTable.Name) end) end
+		if tblItemTable.Dropable then
+			GAMEMODE.MainMenu.ActiveMenu:AddOption("Drop", function()
+				if tblItemTable.Stackable and intAmount >= 5 then
+					DisplayPromt("number", "How many to drop", function(itemamount) RunConsoleCommand("UD_DropItem", tblItemTable.Name, itemamount) end, tblItemTable.Name)
+				else
+					RunConsoleCommand("UD_DropItem", tblItemTable.Name, 1)
+				end
+			end)
+		end
+		if tblItemTable.Giveable then
+			for _, player in pairs(player.GetAll()) do
+				if player:GetPos():Distance(LocalPlayer():GetPos()) < 250 && player != LocalPlayer() then
+					if !GiveSubMenu then
+						local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...")
+					end
+					GiveSubMenu:AddOption(player:Nick(), function()
+						if tblItemTable.Stackable and intAmount >= 5 then 
+							DisplayPromt("number", "How many to give", function(itemamount) RunConsoleCommand("UD_GiveItem", tblItemTable.Name, itemamount, player:EntIndex()) end, tblItemTable.Name)
+						else 
+							RunConsoleCommand("UD_GiveItem", tblItemTable.Name, 1, player:EntIndex())
+						end
+					 end)
+				end
+			end
+		end
+		GAMEMODE.MainMenu.ActiveMenu:Open()
+	end
+	self:SetRightClick(menuFunc)
+end
+
 vgui.Register("FIconItem", PANEL, "Label")

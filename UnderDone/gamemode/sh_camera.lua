@@ -1,18 +1,27 @@
 GM.IdealCammeraDistance = 50
-GM.CammeraSmoothness = 3
+GM.CammeraSmoothness = 15
 GM.SholderCam = true
+
+GM.LastLookPos = nil
 
 local Player = FindMetaTable("Player")
 function Player:GetIdealCamPos()
 	local vecPosition = self:GetPos()
 	local intDistance = GAMEMODE.IdealCammeraDistance + self.AddativeCamDistance
-	vecPosition = vecPosition + (self:EyeAngles():Forward() * -intDistance)
-	vecPosition = vecPosition + (self:EyeAngles():Right() * -20)
-	vecPosition = vecPosition + (self:EyeAngles():Up() * 70)
+	vecPosition.z = vecPosition.z + 70
+	local angForward = (self:EyeAngles():Forward() * -intDistance)
+	angForward.z = 0
+	vecPosition = vecPosition + angForward
+	vecPosition = vecPosition + (self:EyeAngles():Right() * 20)
+	
 	return vecPosition
 end
 function Player:GetIdealCamAngle()
-	local vecToLookPos = LocalPlayer():GetEyeTraceNoCursor().HitPos - LocalPlayer():GetIdealCamPos()
+	--local vecToLookPos = LocalPlayer():GetEyeTraceNoCursor().HitPos - LocalPlayer():GetIdealCamPos()
+	local vecOldPosition = GAMEMODE.LastLookPos or LocalPlayer():GetEyeTraceNoCursor().HitPos
+	local vecLookPos = vecOldPosition + ((LocalPlayer():GetEyeTraceNoCursor().HitPos - vecOldPosition) / 5)
+	local vecToLookPos = (vecLookPos - LocalPlayer():GetIdealCamPos())
+	GAMEMODE.LastLookPos = vecLookPos
 	return vecToLookPos:Angle()
 end
 
@@ -48,3 +57,5 @@ else
 	end
 	hook.Add("CalcView", "CalcViewHook", CalcViewHook)
 end
+
+ 
