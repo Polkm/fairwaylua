@@ -45,53 +45,7 @@ function PANEL:AddItem(item, amount)
 	for i = 1, intListItems do
 		local icnItem = vgui.Create("FIconItem")
 		icnItem:SetSize(self.ItemIconSize, self.ItemIconSize)
-		if tblItemTable.Icon then icnItem:SetIcon(tblItemTable.Icon) end
-		if tblItemTable.Stackable && amount > 1 then icnItem:SetAmount(amount) end
-		---------ToolTip---------
-		local Tooltip = Format("%s", tblItemTable.PrintName)
-		if tblItemTable.Desc then Tooltip = Format("%s\n%s", Tooltip, tblItemTable.Desc) end
-		if tblItemTable.Weight && tblItemTable.Weight > 0 then Tooltip = Format("%s\n%s Kgs", Tooltip, tblItemTable.Weight) end
-		icnItem:SetTooltip(Tooltip)
-		------Double Click------
-		if tblItemTable.Use then
-			local useFunc = function()
-				RunConsoleCommand("UD_UseItem",item)
-			end
-			icnItem:SetDoubleClick(useFunc)
-		end
-		-------Right Click-------
-		local menuFunc = function()
-			GAMEMODE.MainMenu.ActiveMenu = DermaMenu()
-			if tblItemTable.Use then GAMEMODE.MainMenu.ActiveMenu:AddOption("Use", function() RunConsoleCommand("UD_UseItem", item) end) end
-			if tblItemTable.Dropable then
-				GAMEMODE.MainMenu.ActiveMenu:AddOption("Drop", function()
-					if tblItemTable.Stackable and amount >= 5 then
-						DisplayPromt("number", "How many to drop", function(itemamount) RunConsoleCommand("UD_DropItem", item, itemamount) end, item)
-					else
-						RunConsoleCommand("UD_DropItem", item, 1)
-					end
-				end)
-			end
-			if tblItemTable.Giveable then
-				for _, player in pairs(player.GetAll()) do
-					if player:GetPos():Distance(LocalPlayer():GetPos()) < 250 && player != LocalPlayer() then
-						if !GiveSubMenu then
-							local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...")
-						end
-						GiveSubMenu:AddOption(player:Nick(), function()
-							if tblItemTable.Stackable and amount >= 5 then 
-								DisplayPromt("number", "How many to give", function(itemamount) RunConsoleCommand("UD_GiveItem", item, itemamount, player:EntIndex()) end, item)
-							else 
-								RunConsoleCommand("UD_GiveItem", item, 1, player:EntIndex())
-							end
-						 end)
-					end
-				end
-			end
-			GAMEMODE.MainMenu.ActiveMenu:Open()
-		end
-		icnItem:SetRightClick(menuFunc)
-		-------------------------
+		icnItem:SetItem(tblItemTable, amount)
 		lstAddList:AddItem(icnItem)
 	end
 end
