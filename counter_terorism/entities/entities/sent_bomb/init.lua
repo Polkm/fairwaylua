@@ -2,7 +2,9 @@ AddCSLuaFile( "shared.lua" )
 include('shared.lua')
 
 function ENT:Initialize()
-	GAMEMODE.Bombplanted = true
+	SetGlobalBool("Bombplanted",true)
+	SetGlobalEntity("TheBomb", self)
+	SetGlobalInt("BombTime",0)
 	self.Time = 0.5
 	self.Entity:SetModel("models/weapons/w_c4_planted.mdl")	
 	self.Entity:PhysicsInit(SOLID_VPHYSICS)
@@ -15,6 +17,7 @@ end
 
 function ENT:TimerAdd()
 	self.Entity.Timer = self.Entity.Timer + 1
+	SetGlobalInt("BombTime",self.Entity.Timer)
 	self:ChangeBeep()
 	if self.Entity.Timer >= 45 then	
 		self:Asplode()
@@ -35,6 +38,7 @@ function ENT:TimerAdd()
 		timer.Simple(1,function() if self:IsValid() then self:TimerAdd() end end)
 	end
 end
+
 function ENT:Asplode()
 	local effectdata = EffectData()
 	effectdata:SetOrigin(self:GetPos())

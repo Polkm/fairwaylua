@@ -44,16 +44,20 @@ function GM:ResetTeams()
 end
 
 function GM:OnPreRoundStart( num )
-
+	SetGlobalEntity("TheBomb",nil)
+	SetGlobalBool("Bombplanted",false)
+	SetGlobalInt("BombTime",0)
 	game.CleanUpMap()
 	UTIL_StripAllPlayers()
 	GAMEMODE:ResetTeams()
-	if team.NumPlayers(TEAM_TERRORIST) < team.NumPlayers(TEAM_COUNTERTERRORIST) / 3 then
-		local randomguy = table.Random(team.GetPlayers(TEAM_COUNTERTERRORIST))
-		randomguy:SetTeam(TEAM_TERRORIST)
-		randomguy:SetPlayerClass("TERRORISTBomber")
-		randomguy:KillSilent()
-		randomguy:Spawn()
+	for k,v in pairs(player.GetAll()) do 
+		if team.NumPlayers(TEAM_TERRORIST) < team.NumPlayers(TEAM_COUNTERTERRORIST) / 3 then
+			local randomguy = table.Random(team.GetPlayers(TEAM_COUNTERTERRORIST))
+			randomguy:SetTeam(TEAM_TERRORIST)
+			randomguy:SetPlayerClass("TERRORISTBomber")
+			randomguy:KillSilent()
+			randomguy:Spawn()
+		end
 	end
 	if team.NumPlayers(TEAM_TERRORIST) >= 1 then 
 		local ChosenBomber = team.GetPlayers(TEAM_TERRORIST)[math.random(1,#team.GetPlayers(TEAM_TERRORIST))]
@@ -70,7 +74,7 @@ end
 
 function GM:OnRoundStart( num )
 	UTIL_UnFreezeAllPlayers()
-	timer.Create( "CheckRoundEnd", 1, 0, function() GAMEMODE:CheckRoundEnd() end )
+	timer.Create( "CheckRoundEnd", 5, 0, function() GAMEMODE:CheckRoundEnd() end )
 end
 
 function GM:SpawningCitizens()
@@ -100,16 +104,40 @@ function GM:CheckRoundEnd()
 	if ( !GAMEMODE:InRound() ) then return end
 	if team.NumPlayers(TEAM_COUNTERTERRORIST) <= 0 && team.NumPlayers(TEAM_TERRORIST) <= 0 then
 		GAMEMODE:RoundEndWithResult(ROUND_RESULT_DRAW)
+		return
 	elseif team.NumPlayers(TEAM_COUNTERTERRORIST) <= 0 then
 		GAMEMODE:RoundEndWithResult(ROUND_RESULT_DRAW)
+		return
 	elseif team.NumPlayers(TEAM_TERRORIST) <= 0 then
 		GAMEMODE:RoundEndWithResult(ROUND_RESULT_DRAW)	
+		return
 	end
-
+	local alivects = 0 
+	local alivets = 0 
+	for _,playr in pairs(player.GetAll()) do 
+		if playr:Team() == 2 && playr:Alive() then
+			alivects = alivects + 1 
+		elseif playr:Team() == 1 && playr:Alive() then
+			alivets = alivets + 1 
+		end
+	end
+	if alivects <= 0 and alivets >= 1 then
+		for _,playr in pairs(player.GetAll()) do
+			playr:ConCommand("PlayAlert ts_win")
+		end
+		GAMEMODE:RoundEndWithResult(TEAM_TERRORIST)
+		return
+		return
+	elseif alivets <= 0 and alivects >= 1 && !GetGlobalBool("Bombplanted") then
+		for _,playr in pairs(player.GetAll()) do
+			playr:ConCommand("PlayAlert cts_win")
+		end
+		GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST)
+		return
+	end
 end
 
 function GM:CheckPlayerDeathRoundEnd()
-
 	if ( !GAMEMODE.RoundBased ) then return end
 	if ( !GAMEMODE:InRound() ) then return end
 	local alivects = 0 
@@ -121,12 +149,12 @@ function GM:CheckPlayerDeathRoundEnd()
 			alivets = alivets + 1 
 		end
 	end
-	if alivects <= 0 and alivets > 0 then
+	if alivects <= 0 and alivets >= 1 then
 		for _,playr in pairs(player.GetAll()) do
 			playr:ConCommand("PlayAlert ts_win")
 		end
 		GAMEMODE:RoundEndWithResult(TEAM_TERRORIST)
-	elseif alivects > 0 and alivets <= 0 && !GAMEMODE.Bombplanted then
+	elseif alivets <= 0 and alivects >= 1 && !GetGlobalBool("Bombplanted") then
 		for _,playr in pairs(player.GetAll()) do
 			playr:ConCommand("PlayAlert cts_win")
 		end

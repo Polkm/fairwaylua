@@ -27,7 +27,7 @@ SWEP.WorldModel		= "models/weapons/w_knife_t.mdl"
 SWEP.Spawnable			= false
 SWEP.AdminSpawnable		= false
 
-SWEP.Primary.Range			= 80
+SWEP.Primary.Range			= 90
 SWEP.Primary.Recoil			= 4.6
 SWEP.Primary.Delay			= .5
 SWEP.Primary.Damage			= 100

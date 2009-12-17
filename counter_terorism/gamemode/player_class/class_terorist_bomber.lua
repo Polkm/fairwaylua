@@ -11,7 +11,6 @@ CLASS.DrawTeamRing			= false
 function CLASS:Loadout(ply)
 	ply:Give("weapon_knife_ct")
 	ply:Give("weapon_fiveseven_ct")
-	local num = math.random(1,2)
 	ply:Give("weapon_suicide")
 	ply:Give("weapon_idle_hands")
 	ply:SelectWeapon("weapon_idle_hands")
