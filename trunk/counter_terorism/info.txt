@@ -1,6 +1,6 @@
 "Gamemode"
 {
-	"name"		"Counter Terorism"
+	"name"		"Counter Terrorism"
 	"version"	"1"
 
 	"author_name"	"Polkm & Noobulator"
@@ -17,5 +17,5 @@
 	}
 
 	"selectable"	"1"
-	"description"	"Terrorists explode bomb, counter terorist stop them."
+	"description"	"Terrorists must use stealth to plant the bomb, Counter-terrorist must seek out the terrorists and kill them."
 }
