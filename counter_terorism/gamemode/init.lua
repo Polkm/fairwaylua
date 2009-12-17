@@ -127,7 +127,6 @@ function GM:CheckRoundEnd()
 		end
 		GAMEMODE:RoundEndWithResult(TEAM_TERRORIST)
 		return
-		return
 	elseif alivets <= 0 and alivects >= 1 && !GetGlobalBool("Bombplanted") then
 		for _,playr in pairs(player.GetAll()) do
 			playr:ConCommand("PlayAlert cts_win")
