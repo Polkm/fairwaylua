@@ -32,26 +32,26 @@ function GM:HUDPaint()
 			draw.SimpleTextOutlined("YOU CAN PLANT HERE","ScoreboardHead",(SW/25),(SH/25),drawcolor,0,0,1,Color(55,55,55,255))
 		end
 	end
-	if GetGlobalBool("Bombplanted") && GetGlobalEntity("TheBomb"):IsValid() then
-			--BombDetection
-			local min,max,cen = GetGlobalEntity("TheBomb"):LocalToWorld(GetGlobalEntity("TheBomb"):OBBMins()), GetGlobalEntity("TheBomb"):LocalToWorld(GetGlobalEntity("TheBomb"):OBBMaxs()), GetGlobalEntity("TheBomb"):LocalToWorld(GetGlobalEntity("TheBomb"):OBBCenter())
-			local minl,maxl,cenp = min:Distance(cen), max:Distance(cen), cen:ToScreen()
-			local minp = (cen + (LocalPlayer():GetRight() * (-1 * minl)) + (LocalPlayer():GetUp() * (-1 * minl))):ToScreen()
-			local maxp = (cen + (LocalPlayer():GetRight() * maxl) + (LocalPlayer():GetUp() * maxl)):ToScreen()
-			if not cenp.visible then 
-				DrawTime = nil 
-			return end
-			local Color = Color(255,255 - math.Round((255/45) * GetGlobalInt("BombTime")),255 - math.Round((255/45) * GetGlobalInt("BombTime")))
-			surface.SetDrawColor(Color,175)
-			surface.DrawLine(minp.x,maxp.y,maxp.x,maxp.y)
-			surface.DrawLine(minp.x,maxp.y,minp.x,minp.y)
-			surface.DrawLine(minp.x,minp.y,maxp.x,minp.y)
-			surface.DrawLine(maxp.x,maxp.y,maxp.x,minp.y)
-			local text = string.ToMinutesSeconds(45 - GetGlobalInt("BombTime"))
-			surface.SetTextColor(Color,255)
-			surface.SetTextPos(minp.x+2,maxp.y-15)
-			surface.SetFont("DefaultSmallDropShadow")
-			surface.DrawText(text)
+	if GetGlobalBool("Bombplanted") && GetGlobalEntity("TheBomb"):IsValid() && GetGlobalInt("BombTime") >= 15 then
+		--BombDetection
+		local min,max,cen = GetGlobalEntity("TheBomb"):LocalToWorld(GetGlobalEntity("TheBomb"):OBBMins()), GetGlobalEntity("TheBomb"):LocalToWorld(GetGlobalEntity("TheBomb"):OBBMaxs()), GetGlobalEntity("TheBomb"):LocalToWorld(GetGlobalEntity("TheBomb"):OBBCenter())
+		local minl,maxl,cenp = min:Distance(cen), max:Distance(cen), cen:ToScreen()
+		local minp = (cen + (LocalPlayer():GetRight() * (-1 * minl)) + (LocalPlayer():GetUp() * (-1 * minl))):ToScreen()
+		local maxp = (cen + (LocalPlayer():GetRight() * maxl) + (LocalPlayer():GetUp() * maxl)):ToScreen()
+		if not cenp.visible then 
+			DrawTime = nil 
+		return end
+		local Color = Color(255,255 - math.Round((255/45) * GetGlobalInt("BombTime")),255 - math.Round((255/45) * GetGlobalInt("BombTime")))
+		surface.SetDrawColor(Color,175)
+		surface.DrawLine(minp.x,maxp.y,maxp.x,maxp.y)
+		surface.DrawLine(minp.x,maxp.y,minp.x,minp.y)
+		surface.DrawLine(minp.x,minp.y,maxp.x,minp.y)
+		surface.DrawLine(maxp.x,maxp.y,maxp.x,minp.y)
+		local text = string.ToMinutesSeconds(45 - GetGlobalInt("BombTime"))
+		surface.SetTextColor(Color,255)
+		surface.SetTextPos(minp.x+2,maxp.y-15)
+		surface.SetFont("DefaultSmallDropShadow")
+		surface.DrawText(text)
 	end
 end
 
