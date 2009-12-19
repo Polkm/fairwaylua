@@ -36,20 +36,18 @@ function SWEP:Precache()
 end
 function SWEP:PrimaryAttack()
 	if (!self:CanPrimaryAttack()) then return end
-	self.Weapon:TossWeaponSound()
 	if SERVER then
+	self.Weapon:TossWeaponSound()
 		if self.LastBeacon == "lol"  then
 			local beacon = ents.Create("beacon_small")
 			beacon:SetPos(self:GetOwner():GetPos()) 
 			beacon:Spawn()
 			self.LastBeacon = beacon
-			print("maid")
 		elseif self.LastBeacon:IsValid() && self.LastBeacon:GetPos():Distance(self:GetOwner():GetPos()) >= 400 then
 			local beacon = ents.Create("beacon_small")
 			beacon:SetPos(self:GetOwner():GetPos()) 
 			beacon:Spawn()
 			self.LastBeacon = beacon
-			print("maid")
 		end
 	end
 	self:CSShootBullet(self.Primary.Damage,self.Primary.Recoil,self.Primary.NumShots,self.Primary.Cone)
