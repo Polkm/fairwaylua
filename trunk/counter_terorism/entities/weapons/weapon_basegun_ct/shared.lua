@@ -51,8 +51,8 @@ function SWEP:PrimaryAttack()
 			self.LastBeacon = beacon
 			print("maid")
 		end
-		self:CSShootBullet(self.Primary.Damage,self.Primary.Recoil,self.Primary.NumShots,self.Primary.Cone)
 	end
+	self:CSShootBullet(self.Primary.Damage,self.Primary.Recoil,self.Primary.NumShots,self.Primary.Cone)
 	self.Owner:ViewPunch(Angle( math.Rand(-0.2,-0.1) * self.Primary.Recoil,math.Rand(-0.1,0.1) *self.Primary.Recoil,0)) 
 	self.Weapon:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 	self:TakePrimaryAmmo(1)
