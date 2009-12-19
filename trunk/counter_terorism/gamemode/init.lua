@@ -51,12 +51,14 @@ function GM:OnPreRoundStart( num )
 	UTIL_StripAllPlayers()
 	GAMEMODE:ResetTeams()
 	for k,v in pairs(player.GetAll()) do 
-		if team.NumPlayers(TEAM_TERRORIST) < team.NumPlayers(TEAM_COUNTERTERRORIST) / 3 then
-			local randomguy = table.Random(team.GetPlayers(TEAM_COUNTERTERRORIST))
-			randomguy:SetTeam(TEAM_TERRORIST)
-			randomguy:SetPlayerClass("TERRORISTBomber")
-			randomguy:KillSilent()
-			randomguy:Spawn()
+		if v:Team() == TEAM_COUNTERTERRORIST then
+			if team.NumPlayers(TEAM_TERRORIST) < team.NumPlayers(TEAM_COUNTERTERRORIST) / 3 then
+				local randomguy = table.Random(team.GetPlayers(TEAM_COUNTERTERRORIST))
+				randomguy:SetTeam(TEAM_TERRORIST)
+				randomguy:SetPlayerClass("TERRORISTBomber")
+				randomguy:KillSilent()
+				randomguy:Spawn()
+			end
 		end
 	end
 	if team.NumPlayers(TEAM_TERRORIST) >= 1 then 

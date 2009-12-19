@@ -82,11 +82,11 @@ TEAM_COUNTERTERRORIST = 2
 function GM:CreateTeams()
 	if !GAMEMODE.TeamBased then return end
 	
-	team.SetUp(TEAM_TERRORIST, "Terrorists", Color(155,0,0,120), false)
+	team.SetUp(TEAM_TERRORIST, "Terrorists", Color(155,0,0,200), false)
 	team.SetSpawnPoint(TEAM_TERRORIST, {"info_player_terrorist"})
 	team.SetClass(TEAM_TERRORIST, {"TERRORISTBomber", "TerroristIED"})
 	
-	team.SetUp(TEAM_COUNTERTERRORIST, "Counter TERRORISTs", Color(30,30,155,120))
+	team.SetUp(TEAM_COUNTERTERRORIST, "Counter TERRORISTs", Color(30,30,155,200))
 	team.SetSpawnPoint(TEAM_COUNTERTERRORIST, {"info_player_counterterrorist"}, true)
 	team.SetClass(TEAM_COUNTERTERRORIST, {"CT"})
 end
