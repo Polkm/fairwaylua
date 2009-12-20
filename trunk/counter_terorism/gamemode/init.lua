@@ -66,6 +66,7 @@ function GM:OnPreRoundStart( num )
 		ChosenBomber:SetPlayerClass("TerroristIED")
 		ChosenBomber:KillSilent()
 		ChosenBomber:Spawn()
+		SetGlobalEntity("TERRORISTbomber",ChosenBomber)
 	end
 	
 	UTIL_SpawnAllPlayers()
@@ -164,44 +165,62 @@ function GM:CheckPlayerDeathRoundEnd()
 end
 
 function GM:PlayerDeathThink( pl )
-
 	pl.DeathTime = pl.DeathTime or CurTime()
 	local timeDead = CurTime() - pl.DeathTime
-	
-	// If we're in deathcam mode, promote to a generic spectator mode
 	if ( GAMEMODE.DeathLingerTime > 0 && timeDead > GAMEMODE.DeathLingerTime && ( pl:GetObserverMode() == OBS_MODE_FREEZECAM || pl:GetObserverMode() == OBS_MODE_DEATHCAM ) ) then
 		GAMEMODE:BecomeObserver( pl )
 	end
-	
-	// If we're in a round based game, player NEVER spawns in death think
 	if ( GAMEMODE.NoAutomaticSpawning ) then return end
-	
-	// The gamemode is holding the player from respawning.
-	// Probably because they have to choose a class..
 	if ( !pl:CanRespawn() ) then return end
-
-	// Don't respawn yet - wait for minimum time...
 	if ( GAMEMODE.MinimumDeathLength ) then 
-	
 		pl:SetNWFloat( "RespawnTime", pl.DeathTime + GAMEMODE.MinimumDeathLength )
-		
 		if ( timeDead < pl:GetRespawnTime() ) then
 			return
 		end
-		
 	end
-
-	// Force respawn
 	if ( pl:GetRespawnTime() != 0 && GAMEMODE.MaximumDeathLength != 0 && timeDead > GAMEMODE.MaximumDeathLength ) then
 		pl:Spawn()
 		return
 	end
-
-	// We're between min and max death length, player can press a key to spawn.
 	if ( pl:KeyPressed( IN_ATTACK ) || pl:KeyPressed( IN_ATTACK2 ) || pl:KeyPressed( IN_JUMP ) ) then
 		pl:Spawn()
 	end
-	
+end
+
+function GM:PlayerDeath( Victim, Inflictor, Attacker )
+	--- Ct Stuff ---
+	if victim == GAMEMODE.BombCarrier && GAMEMODE:InRound() then
+		local ChosenBomber = team.GetPlayers(TEAM_TERRORIST)[math.random(1,#team.GetPlayers(TEAM_TERRORIST))]
+		ChosenBomber:Give("weapon_bombpack")
+		SetGlobalEntity("TERRORISTbomber",ChosenBomber)
+	end
+	-----
+	Victim.NextSpawnTime = CurTime() + 2
+	Victim.DeathTime = CurTime()
+	if ( Inflictor && Inflictor == Attacker && (Inflictor:IsPlayer() || Inflictor:IsNPC()) ) then	
+		Inflictor = Inflictor:GetActiveWeapon()
+		if ( !Inflictor || Inflictor == NULL ) then Inflictor = Attacker end
+	end
+	if (Attacker == Victim) then
+		umsg.Start( "PlayerKilledSelf" )
+			umsg.Entity( Victim )
+		umsg.End()
+		MsgAll( Attacker:Nick() .. " suicided!\n" )	
+	return end
+	if ( Attacker:IsPlayer() ) then
+		umsg.Start( "PlayerKilledByPlayer" )
+			umsg.Entity( Victim )
+			umsg.String( Inflictor:GetClass() )
+			umsg.Entity( Attacker )
+		umsg.End()
+		MsgAll( Attacker:Nick() .. " killed " .. Victim:Nick() .. " using " .. Inflictor:GetClass() .. "\n" )	
+	return end
+	umsg.Start( "PlayerKilled" )
+		umsg.Entity( Victim )
+		umsg.String( Inflictor:GetClass() )
+		umsg.String( Attacker:GetClass() )
+	umsg.End()
+	MsgAll( Victim:Nick() .. " was killed by " .. Attacker:GetClass() .. "\n" )
 end
 
 function GM:RoundTimerEnd()
@@ -228,7 +247,7 @@ function GM:RoundEnd()
 	timer.Simple( GAMEMODE.RoundPostLength, function()   GAMEMODE:PreRoundStart( GetGlobalInt( "RoundNumber" )+1 ) end )
 end
 
-function GM:PlayerSpawn(ply)	
+function GM:PlayerSpawn(ply)
 	self.BaseClass:PlayerSpawn(ply)
 	if ply:Team() == TEAM_TERRORIST then
 		--Decides Gender and Model
@@ -249,6 +268,7 @@ function GM:PlayerSpawn(ply)
 		ply:SetNWBool("isdf", false)
 		ply:SetNWInt("dftime", 0)
 	end
+	ply:SetCrouchedWalkSpeed(0.8)
 	ply:SetJumpPower(200)
 end
 
@@ -258,16 +278,13 @@ function GM:Diffuse(ply,entity)
 	if ply:Health() >= 1 then
 		if ply:GetNWInt("dftime") >= 64 then
 			ply:Freeze( false ) 
-			entity:Remove()
+			entity.Diffused = true
 			ply:SetNWBool("isdf", false)
-		
-			timer.Simple(3,	function() 
 			for _,playr in pairs(player.GetAll()) do
 				playr:ConCommand("PlayAlert cts_win")
 			end
-			//GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST) 
-			
-						end)
+			GAMEMODE:RoundEndWithResult(TEAM_COUNTERTERRORIST) 
+			return
 		else
 		timer.Simple(0.125, function() ply:SetNWInt("dftime", old +1) GAMEMODE:Diffuse(ply,entity) end)
 		end
@@ -275,9 +292,11 @@ function GM:Diffuse(ply,entity)
 end
 
 function PlayerDisconnectedHook(ply)
-	if ply == SetGlobalEntity("TERRORISTbomber") then 
-		PrintMessage(HUD_PRINTCENTER,"The bomb carrier has left, restarting")
-		SetGlobalEntity("TERRORISTbomber",nil)
+	if ply == SetGlobalEntity("TERRORISTbomber") && GAMEMODE:InRound() then
+		local ChosenBomber = team.GetPlayers(TEAM_TERRORIST)[math.random(1,#team.GetPlayers(TEAM_TERRORIST))]
+		ChosenBomber:Give("weapon_bombpack")
+		SetGlobalEntity("TERRORISTbomber",ChosenBomber)
+		ply.Camentity:Remove()
 	end		
 end
 hook.Add( "PlayerDisconnected", "PlayerDisconnectedHook", PlayerDisconnectedHook )

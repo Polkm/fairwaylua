@@ -57,15 +57,12 @@ end
 
 function GM:ShowClassChooser(TEAMID)
 	if !GAMEMODE.SelectClass then return end
-	print(GetGlobalEntity("TERRORISTbomber"))
 	if LocalPlayer() then return end
 	if ClassChooser then ClassChooser:Remove() end
-
 	ClassChooser = vgui.CreateFromTable(vgui_Splash)
 	ClassChooser:SetHeaderText("Choose Class")
 	ClassChooser:SetHoverText("What class do you want to be?")
 	Classes = team.GetClass(TEAMID)
-	
 	for _, name in SortedPairs(Classes) do
 		local displayname = name
 		local Class = player_class.Get(name)
@@ -87,7 +84,6 @@ function GM:ShowClassChooser(TEAMID)
 		local btn = ClassChooser:AddSelectButton(displayname, func, description)
 		btn.m_colBackground = team.GetColor(TEAMID)
 	end
-	
 	ClassChooser:AddCancelButton()
 	ClassChooser:MakePopup()
 	ClassChooser:NoFadeIn()
@@ -99,3 +95,6 @@ function GM:PlayAlert(type)
 end
 
 concommand.Add("PlayAlert",function(ply,cmd,args) GAMEMODE:PlayAlert(tostring(args[1])) end)
+
+
+

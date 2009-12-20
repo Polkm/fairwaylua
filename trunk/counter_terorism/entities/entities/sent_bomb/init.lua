@@ -16,6 +16,7 @@ function ENT:Initialize()
 end
 
 function ENT:TimerAdd()
+	if self.Diffused then return end
 	self.Entity.Timer = self.Entity.Timer + 1
 	SetGlobalInt("BombTime",self.Entity.Timer)
 	self:ChangeBeep()
