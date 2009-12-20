@@ -55,13 +55,18 @@ SWEP.FleshHitSounds = {
 }
 
 function SWEP:Initialize()
-    if SERVER then self:SetWeaponHoldType("melee") end
+    if SERVER then self:SetWeaponHoldType("normal") end
 	self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
 end 
 
 function SWEP:Deploy()
 	self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
 	self.Weapon:EmitSound(self.DeploySound,100,math.random(90,120))
+	if SERVER then
+		self:GetOwner():DrawViewModel(false)
+		self:SetWeaponHoldType("normal")
+	end
+	self.Hidden = true
 	return true
 end
 
@@ -69,8 +74,38 @@ function SWEP:CanPrimaryAttack()
 	return true
 end
 
+function SWEP:SecondaryAttack()
+	self.Weapon:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
+	self.Weapon:SetNextSecondaryFire(CurTime() + self.Primary.Delay)
+	if !self.Hidden then 
+		if SERVER then
+			self:GetOwner():DrawViewModel(false)
+			self:SetWeaponHoldType("normal")
+		end
+		self.Hidden = true
+		return 
+	else
+		self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
+		if SERVER then
+			self:GetOwner():DrawViewModel(true)
+			self:SetWeaponHoldType("melee")
+		end
+		self.Hidden = false
+		return 
+	end
+end
+
 function SWEP:PrimaryAttack()
 	if not self:CanPrimaryAttack() then return end
+	if self.Hidden then 
+		self.Weapon:SendWeaponAnim(ACT_VM_DRAW)
+		if SERVER then
+			self:GetOwner():DrawViewModel(false)
+		end
+		self:SetWeaponHoldType("melee")
+		self.Hidden = false
+		return 
+	end
 	self.Weapon:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
 	
  	local trace = util.GetPlayerTrace(self.Owner)
