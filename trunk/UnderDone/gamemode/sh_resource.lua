@@ -5,7 +5,6 @@ local function ProcessFolder(strLocation, boolProssesSubFolder, fncCallBack)
 			if (boolProssesSubFolder or false) && file.IsDir(strLocation .. fileName) then
 				ProcessFolder(strLocation .. fileName .. '/', true, fncCallBack)
 			else
-				local strOurLocation = string.gsub(strLocation .. fileName, '../gamemodes/UnderDone/content/', '')
 				if !string.find(strLocation, '.db') then
 					fncCallBack(fileName)
 				end
@@ -16,34 +15,38 @@ local function ProcessFolder(strLocation, boolProssesSubFolder, fncCallBack)
 end
 
 if SERVER then
-	ProcessFolder('../gamemodes/UnderDone/content/materials/', true, function(fileName)
+	ProcessFolder('../gamemodes/underdone/content/materials/', true, function(fileName)
 		resource.AddFile("materials/" ..fileName)
 	end)
 		
-	ProcessFolder('../gamemodes/UnderDone/gamemode/menutabs/', false, function(fileName)
-		AddCSLuaFile("menutabs/" .. fileName)
-		
-	end)
-	ProcessFolder('../gamemodes/UnderDone/gamemode/customvgui/', false, function(fileName)
-		AddCSLuaFile("customvgui/" .. fileName)
-	end)
-	ProcessFolder('../gamemodes/UnderDone/gamemode/itemdata/', false, function(fileName)
-		AddCSLuaFile("itemdata/" .. fileName)
-		include("itemdata/" .. fileName)
-	end)
+	local strPath = "gamemodes/underdone/gamemode/menutabs/"
+	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
+		AddCSLuaFile(strPath .. v)
+		print(v)
+	end
+	local strPath = "gamemodes/underdone/gamemode/customvgui/"
+	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
+		AddCSLuaFile(strPath .. v)
+	end
+	local strPath = "gamemodes/underdone/gamemode/itemdata/"
+	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
+		AddCSLuaFile(strPath .. v)
+		include(strPath .. v)
+	end
 end
 
 if !SERVER then
-	
-	ProcessFolder('../gamemodes/UnderDone/gamemode/menutabs/', false, function(fileName)
-		include("menutabs/" .. fileName)
-		print("included menutabs/" .. fileName)
-	end)
-	ProcessFolder('../gamemodes/UnderDone/gamemode/customvgui/', false, function(fileName)
-		include("customvgui/" .. fileName)
-	end)
-	ProcessFolder('../gamemodes/UnderDone/gamemode/itemdata/', false, function(fileName)
-		include("itemdata/" .. fileName)
-	end)
+	local strPath = "gamemodes/underdone/gamemode/menutabs/"
+	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
+		include(strPath .. v)
+	end
+	local strPath = "gamemodes/underdone/gamemode/customvgui/"
+	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
+		include(strPath .. v)
+	end
+	local strPath = "gamemodes/underdone/gamemode/itemdata/"
+	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
+		include(strPath .. v)
+	end
 end
 
