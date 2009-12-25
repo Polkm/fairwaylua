@@ -34,7 +34,12 @@ function RemoveItemFromInv(objTarget, strItem, intAmount)
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
 	if tblItemTable && HasItem(objTarget, strItem, intAmountToRemove) then
 		local tblDataTable = objTarget
-		if objTarget:GetClass() == "player" then tblDataTable = objTarget.Data end
+		if objTarget:GetClass() == "player" then
+			tblDataTable = objTarget.Data
+			if tblDataTable.Paperdoll && table.HasValue(tblDataTable.Paperdoll, strItem) && tblDataTable.Inventory[strItem] == 1 then
+				objTarget:EquiptItem(tblItemTable)
+			end
+		end
 		tblDataTable.Inventory[strItem] = tblDataTable.Inventory[strItem] - intAmountToRemove
 		if tblItemTable.RemovedFromInv then tblItemTable:RemovedFromInv(objTarget) end
 		objTarget.Weight = objTarget.Weight - (tblItemTable.Weight * intAmountToRemove)

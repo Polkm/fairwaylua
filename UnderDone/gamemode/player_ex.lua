@@ -1,5 +1,26 @@
 local Player = FindMetaTable("Player")
 
+function Player:EquiptItem(tblItemTable)
+	if !tblItemTable then return end
+	if !self.Data.Paperdoll then self.Data.Paperdoll = {} end
+	self:StripWeapons()
+	self.Loadout = {}
+	local strCurrentItem = self.Data.Paperdoll[tblItemTable.Slot]
+	if !strCurrentItem or (strCurrentItem && strCurrentItem != tblItemTable.Name) then
+		self:Give(tblItemTable.Weapon)
+		self.Loadout[tblItemTable.Weapon] = true
+		self.Data.Paperdoll[tblItemTable.Slot] = tblItemTable.Name
+	else
+		self.Data.Paperdoll[tblItemTable.Slot] = nil
+	end
+	umsg.Start("UD_UpdatePapperDoll", objTarget)
+	umsg.String(tblItemTable.Slot)
+	if self.Data.Paperdoll[tblItemTable.Slot] then
+		umsg.String(tblItemTable.Name)
+	end
+	umsg.End()
+end
+
 --[[function Player:GetENTInv(entTarget)
 	local DataTable = {}
 	if entTarget:GetClass() == "player" then
