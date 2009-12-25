@@ -20,30 +20,30 @@ if SERVER then
 		resource.AddFile("materials/" ..fileName)
 	end)
 		
-	ProcessFolder('../gamemodes/UnderDone/gamemode/mainmenutabs/', false, function(fileName)
-		AddCSLuaFile("mainmenutabs/" .. fileName)
+	ProcessFolder('../gamemodes/UnderDone/gamemode/menutabs/', false, function(fileName)
+		AddCSLuaFile("menutabs/" .. fileName)
 		
 	end)
-	ProcessFolder('../gamemodes/UnderDone/gamemode/vguiobjects/', false, function(fileName)
-		AddCSLuaFile("vguiobjects/" .. fileName)
+	ProcessFolder('../gamemodes/UnderDone/gamemode/customvgui/', false, function(fileName)
+		AddCSLuaFile("customvgui/" .. fileName)
 	end)
-	ProcessFolder('../gamemodes/UnderDone/gamemode/items/', false, function(fileName)
-		AddCSLuaFile("items/" .. fileName)
-		include("items/" .. fileName)
+	ProcessFolder('../gamemodes/UnderDone/gamemode/itemdata/', false, function(fileName)
+		AddCSLuaFile("itemdata/" .. fileName)
+		include("itemdata/" .. fileName)
 	end)
 end
 
 if !SERVER then
 	
-	ProcessFolder('../gamemodes/UnderDone/gamemode/mainmenutabs/', false, function(fileName)
-		include("mainmenutabs/" .. fileName)
-		print("included mainmenutabs/" .. fileName)
+	ProcessFolder('../gamemodes/UnderDone/gamemode/menutabs/', false, function(fileName)
+		include("menutabs/" .. fileName)
+		print("included menutabs/" .. fileName)
 	end)
-	ProcessFolder('../gamemodes/UnderDone/gamemode/vguiobjects/', false, function(fileName)
-		include("vguiobjects/" .. fileName)
+	ProcessFolder('../gamemodes/UnderDone/gamemode/customvgui/', false, function(fileName)
+		include("customvgui/" .. fileName)
 	end)
-	ProcessFolder('../gamemodes/UnderDone/gamemode/items/', false, function(fileName)
-		include("items/" .. fileName)
+	ProcessFolder('../gamemodes/UnderDone/gamemode/itemdata/', false, function(fileName)
+		include("itemdata/" .. fileName)
 	end)
 end
 
