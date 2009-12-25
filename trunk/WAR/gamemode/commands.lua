@@ -22,6 +22,7 @@ end)
 function Player:MoveSellectedSquad(vecPostion)
 	local TotalUnits = 0
 	local SurfaceNeeded = 0
+	if !self.SellectedSquads then return end
 	for _, Squad in pairs(self.SellectedSquads) do
 		TotalUnits = TotalUnits + #Squad.Units
 		Squad.HomePos = vecPostion
@@ -40,7 +41,7 @@ end)
 
 function Player:AttackWithSellected(tblSquadTable)
 	if tblSquadTable && tblSquadTable.Units then
-		for _, Squad in pairs(self.SellectedSquads) do 
+		for _, Squad in pairs(self.SellectedSquads) do
 			for _, Unit in pairs(Squad.Units) do
 				local entRandomTarget = table.Random(tblSquadTable.Units)
 				Unit:Attack(entRandomTarget)
