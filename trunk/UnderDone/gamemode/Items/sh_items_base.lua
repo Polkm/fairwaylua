@@ -40,3 +40,12 @@ function BaseAmmo:Use(usr, itemtable)
 	usr:GiveAmmo(itemtable.AmmoAmount, itemtable.AmmoType)
 	RemoveItemFromInv(usr, itemtable.Name)
 end
+
+BaseEquiptment = DeriveTable(BaseItem)
+BaseEquiptment.Slot = "slot_primaryweapon"
+BaseEquiptment.Weapon = "weapon_pistol"
+function BaseEquiptment:Use(usr, itemtable)
+	if usr:Health() <= 0 && usr:IsPlayer() then return end
+	if !usr.Data.Paperdoll then usr.Data.Paperdoll = {} end
+	usr:EquiptItem(itemtable)
+end

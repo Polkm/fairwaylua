@@ -17,7 +17,7 @@ function Player:LoadGame()
 	local strSteamID = string.Replace(self:SteamID(), ":", "!")
 	if strSteamID != "STEAM_ID_PENDING" then
 		local strFileName = "UnderDone/" .. strSteamID .. ".txt"
-		if file.Exists(strFileName) then
+		if file.Exists(strFileName) && 1 == 2 then
 			local tblDecodedTable = glon.decode(file.Read(strFileName))
 			if tblDecodedTable.Inventory then
 				for item, amount in pairs(tblDecodedTable.Inventory) do
@@ -34,16 +34,16 @@ function Player:SaveGame()
 	local strSteamID = string.Replace(self:SteamID(), ":", "!")
 	if strSteamID != "STEAM_ID_PENDING" then
 		local strFileName = "UnderDone/" .. strSteamID .. ".txt"
-		local tblSaveTable = {}
-		tblSaveTable.Inventory = {}
+		local tblNewDataTable = {}
+		tblNewDataTable.Inventory = {}
 		--Polkm: Space saver loop
 		if self.Data.Inventory then
 			for item, amount in pairs(self.Data.Inventory) do
 				if amount > 0 then
-					tblSaveTable.Inventory[item] = amount
+					tblNewDataTable.Inventory[item] = amount
 				end
 			end
-			self.Data.Inventory = tblSaveTable.Inventory
+			self.Data.Inventory = tblNewDataTable.Inventory
 		end
 		print(strFileName)
 		file.Write(strFileName, glon.encode(self.Data))

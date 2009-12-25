@@ -52,10 +52,11 @@ function PANEL:Paint()
 		surface.SetDrawColor(255, 255, 255, 50)
 		surface.SetTexture(matGlossIcon)
 		surface.DrawTexturedRect(0, 0, self:GetWide(), self:GetTall())
-		surface.SetDrawColor(255, 255, 255, 255)
-		surface.SetTexture(matBoarderIcon)
-		surface.DrawTexturedRect(0, 0, self:GetWide(), self:GetTall())
 	end
+	surface.SetDrawColor(255, 255, 255, 255)
+	surface.SetTexture(matBoarderIcon)
+	surface.DrawTexturedRect(0, 0, self:GetWide(), self:GetTall())
+	
 	if self.Amount then
 		local width, tall = surface.GetTextSize(tostring(self.Amount)) 
 		surface.SetTextColor(255, 255, 255, 255)
@@ -66,7 +67,10 @@ function PANEL:Paint()
 end
 
 function PANEL:SetIcon(strIconText)
-	self.Icon = surface.GetTextureID(strIconText)
+	self.Icon = strIconText
+	if strIconText then
+		self.Icon = surface.GetTextureID(strIconText)
+	end
 end
 
 function PANEL:SetAmount(itnAmount)
@@ -82,6 +86,8 @@ function PANEL:SetDoubleClick(fncDoubleClick)
 end
 
 function PANEL:SetItem(tblItemTable, intAmount)
+	tblItemTable = tblItemTable or BaseItem
+	intAmount = intAmount or 1
 	if tblItemTable.Icon then self:SetIcon(tblItemTable.Icon) end
 	if tblItemTable.Stackable && intAmount > 1 then self:SetAmount(intAmount) end
 	---------ToolTip---------
@@ -128,6 +134,19 @@ function PANEL:SetItem(tblItemTable, intAmount)
 		GAMEMODE.MainMenu.ActiveMenu:Open()
 	end
 	self:SetRightClick(menuFunc)
+end
+
+function PANEL:SetSlot(tblSlotTable)
+	local strIcon = nil
+	local strToolTip = ""
+	if tblSlotTable then
+		if tblSlotTable.PrintName then strToolTip = Format("%s", tblSlotTable.PrintName) end
+		if tblSlotTable.Desc then strToolTip = Format("%s\n%s", strToolTip, tblSlotTable.Desc) end
+	end
+	self:SetIcon(strIcon)
+	self:SetTooltip(strToolTip)
+	self:SetDoubleClick(function() end)
+	self:SetRightClick(function() end)
 end
 
 vgui.Register("FIconItem", PANEL, "Label")

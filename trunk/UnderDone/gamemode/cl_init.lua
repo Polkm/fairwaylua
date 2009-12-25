@@ -10,6 +10,7 @@ GM.MainMenu = nil
 --------Inventory--------
 GM.Inventory = {}
 GM.Inventory_Temp = {}
+GM.Paperdoll = {}
 GM.TotalWeight = 0
 ----------Colors---------
 clrGray = Color(97, 95, 90, 255)
@@ -35,6 +36,19 @@ function UpdateItemUsrMsg(usrMsg)
 	end
 end
 usermessage.Hook("UD_UpdateItem", UpdateItemUsrMsg)
+
+function UpdatePapperDollUsrMsg(usrMsg)
+	local strSlot = usrMsg:ReadString()
+	local strItem = usrMsg:ReadString()
+	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
+	if !strSlot then return end
+	if !tblItemTable then strItem = nil end
+	GAMEMODE.Paperdoll[strSlot] = strItem
+	if GAMEMODE.MainMenu then
+		GAMEMODE.MainMenu.InventoryTab:LoadInventory()
+	end
+end
+usermessage.Hook("UD_UpdatePapperDoll", UpdatePapperDollUsrMsg)
 
 function GM:OnSpawnMenuOpen()
 	GAMEMODE.MainMenu = (GAMEMODE.MainMenu or vgui.Create("mainmenu"))

@@ -9,11 +9,15 @@ MaxWeight = 20
 --------DataBase---------
 GM.DataBase = {}
 GM.DataBase.Items = {}
+GM.DataBase.Slots = {}
 GM.DataBase.NPCs = {}
 --------Register---------
 Register = {}
 function Register.Item(tblItem)
 	GM.DataBase.Items[tblItem.Name] = tblItem
+end
+function Register.Slot(tblItem)
+	GM.DataBase.Slots[tblItem.Name] = tblItem
 end
 function Register.NPC(tblItem)
 	GM.DataBase.NPCs[tblItem.Name] = tblItem
@@ -41,3 +45,19 @@ function NPC:GenerateInv(npc)
 	npc.Inventory["pistol"] = 1
 end
 Register.NPC(NPC)
+
+
+
+
+local SLOT = {}
+SLOT.Name = "slot_primaryweapon"
+SLOT.PrintName = "Primary Weapon"
+SLOT.Position = Vector(10, 10, 0)
+Register.Slot(SLOT)
+
+
+
+
+
+
+
