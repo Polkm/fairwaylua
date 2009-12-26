@@ -43,9 +43,40 @@ end
 
 BaseEquiptment = DeriveTable(BaseItem)
 BaseEquiptment.Slot = "slot_primaryweapon"
-BaseEquiptment.Weapon = "weapon_pistol"
 function BaseEquiptment:Use(usr, itemtable)
 	if usr:Health() <= 0 && usr:IsPlayer() then return end
 	if !usr.Data.Paperdoll then usr.Data.Paperdoll = {} end
-	usr:EquiptItem(itemtable)
+	if !itemtable then return end
+	if !usr.Data.Paperdoll then usr.Data.Paperdoll = {} end
+	local strCurrentItem = usr.Data.Paperdoll[itemtable.Slot]
+	if !strCurrentItem or (strCurrentItem && strCurrentItem != itemtable.Name) then
+		usr.Data.Paperdoll[itemtable.Slot] = itemtable.Name
+	else
+		usr.Data.Paperdoll[itemtable.Slot] = nil
+	end
+	umsg.Start("UD_UpdatePapperDoll", usr)
+	umsg.String(itemtable.Slot)
+	if usr.Data.Paperdoll[itemtable.Slot] then
+		umsg.String(itemtable.Name)
+	end
+	umsg.End()
 end
+
+BaseWeapon = DeriveTable(BaseEquiptment)
+BaseWeapon.Weapon = "weapon_pistol"
+function BaseWeapon:Use(usr, itemtable)
+	BaseEquiptment:Use(usr, itemtable)
+	usr:StripWeapons()
+	usr.Loadout = {}
+	if usr.Data.Paperdoll[itemtable.Slot] == itemtable.Name then
+		usr:Give("weapon_primaryweapon")
+		usr.Loadout["weapon_primaryweapon"] = true
+		usr:GetWeapon("weapon_primaryweapon"):SetWeapon(itemtable)
+		
+	end
+end
+
+
+
+
+
