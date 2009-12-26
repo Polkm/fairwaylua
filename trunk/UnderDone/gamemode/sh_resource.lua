@@ -1,52 +1,50 @@
-local function ProcessFolder(strLocation, boolProssesSubFolder, fncCallBack)
-	for _, fileName in pairs(file.Find(strLocation .. '*')) do
-		if !string.find(strLocation, ".svn") then
-		
-			if (boolProssesSubFolder or false) && file.IsDir(strLocation .. fileName) then
-				ProcessFolder(strLocation .. fileName .. '/', true, fncCallBack)
-			else
-				if !string.find(strLocation, '.db') then
-					fncCallBack(fileName)
-				end
+local tblSharedFolders = {}
+tblSharedFolders[1] = "underdone/gamemode/itemdata/"
+
+local tblClientFolders = {}
+tblClientFolders[1] = "underdone/gamemode/menutabs/"
+tblClientFolders[2] = "underdone/gamemode/customvgui/"
+
+
+if SERVER then
+	local strPath = "underdone/content/materials/gui/"
+	for _, file in pairs(file.FindInLua(strPath .. "*")) do
+		if string.find(file, ".vmt") or string.find(file, ".vtf") then
+			strPath = string.Replace(strPath, "underdone/content/", "")
+			resource.AddFile(strPath ..file)
+		end
+	end
+	local strPath = "underdone/content/materials/icons/"
+	for _, file in pairs(file.FindInLua(strPath .. "*")) do
+		if string.find(file, ".vmt") or string.find(file, ".vtf") then
+			strPath = string.Replace(strPath, "underdone/content/", "")
+			resource.AddFile(strPath .. file)
+		end
+	end
+	
+	local tblTotalFolder = {}
+	table.Add(tblTotalFolder, tblSharedFolders)
+	table.Add(tblTotalFolder, tblClientFolders)
+	for _, path in pairs(tblTotalFolder) do
+		for _, file in pairs(file.FindInLua(path .. "*.lua")) do
+			if table.HasValue(tblClientFolders, path) or table.HasValue(tblSharedFolders, path) then
+				AddCSLuaFile(path .. file)
 			end
-			
+			if table.HasValue(tblSharedFolders, path) then
+				include(path .. file)
+			end
 		end
 	end
 end
 
-if SERVER then
-	ProcessFolder('../gamemodes/underdone/content/materials/', true, function(fileName)
-		resource.AddFile("materials/" ..fileName)
-	end)
-		
-	local strPath = "gamemodes/underdone/gamemode/menutabs/"
-	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
-		AddCSLuaFile(strPath .. v)
-		print(v)
-	end
-	local strPath = "gamemodes/underdone/gamemode/customvgui/"
-	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
-		AddCSLuaFile(strPath .. v)
-	end
-	local strPath = "gamemodes/underdone/gamemode/itemdata/"
-	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
-		AddCSLuaFile(strPath .. v)
-		include(strPath .. v)
-	end
-end
-
 if !SERVER then
-	local strPath = "gamemodes/underdone/gamemode/menutabs/"
-	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
-		include(strPath .. v)
-	end
-	local strPath = "gamemodes/underdone/gamemode/customvgui/"
-	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
-		include(strPath .. v)
-	end
-	local strPath = "gamemodes/underdone/gamemode/itemdata/"
-	for _, v in pairs(file.FindInLua(strPath .. "*.lua")) do
-		include(strPath .. v)
+	local tblTotalFolder = {}
+	table.Add(tblTotalFolder, tblSharedFolders)
+	table.Add(tblTotalFolder, tblClientFolders)
+	for _, path in pairs(tblTotalFolder) do
+		for _, file in pairs(file.FindInLua(path .. "*.lua")) do
+			include(path .. file)
+		end
 	end
 end
 

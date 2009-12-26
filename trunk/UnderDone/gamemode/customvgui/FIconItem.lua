@@ -1,13 +1,11 @@
 --[[
-                     `.--.                                                      
-  sMMMMMMMNds.    -yNMMMMMMdo`    sMMM         dMMd   `sMMNs` -MMMMs    .mMMMs  
-  sMMM+++sMMMM-  sMMMh/--+NMMN-   sMMM         dMMd  :NMMh.   -MMMMM+  `mMMMMs  
-  sMMM    hMMM/ /MMMh     -NMMm`  sMMM         dMMd`hMMm:     -MMMmMM/ hMmMMMs  
-  sMMMssymMMMy  sMMM+      dMMM-  sMMM         dMMNNMMN-      -MMM+hMNyMN-MMMs  
-  sMMMddddyo.   +MMMs     `NMMN.  sMMM         dMMNodMMMo`    -MMM+`mMMM: MMMs  
-  sMMM          `hMMMs. `:dMMM+   sMMM------.  dMMd  +NMMm:   -MMM+ .ss+  MMMs  
-  sMMM            +mMMMMMMMMy-    sMMMMMMMMMd  dMMd   .hMMMy` -MMM+       MMMs  
-  .---              `:/++/-       .---------.  .--.     ----. `---`       ---.  2009
+	+oooooo+-`    `:oyyys+-`    +oo.       /oo-   .oo+-  ooo+`   `ooo+  
+	NMMhyhmMMm-  omMNyosdMMd:   NMM:       hMM+ `oNMd:  `MMMMy`  yMMMN  
+	NMM:  .NMMo /MMN:    sMMN`  NMM:       hMMo/dMm/`   `MMMmMs`oMmMMN  
+	NMMhyhmMNh. yMMm     -MMM:  NMM:       hMMmNMMo     `MMM:mMhMd/MMN  
+	NMMyoo+/.   /MMN:    sMMN`  NMM:       hMMy:dMMh-   `MMM`:NMN.:MMN  
+	NMM:         +NMNyosdMMd:   NMMdyyyyy. hMM+ `+NMNo` `MMM` ... :MMN  
+	+oo.          `:oyyys+-`    +oooooooo` /oo-   .ooo/  ooo`     .oo+  2009
 ]]
 
 local PANEL = {}
@@ -118,9 +116,7 @@ function PANEL:SetItem(tblItemTable, intAmount)
 		if tblItemTable.Giveable then
 			for _, player in pairs(player.GetAll()) do
 				if player:GetPos():Distance(LocalPlayer():GetPos()) < 250 && player != LocalPlayer() then
-					if !GiveSubMenu then
-						local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...")
-					end
+					local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...")
 					GiveSubMenu:AddOption(player:Nick(), function()
 						if tblItemTable.Stackable and intAmount >= 5 then 
 							DisplayPromt("number", "How many to give", function(itemamount) RunConsoleCommand("UD_GiveItem", tblItemTable.Name, itemamount, player:EntIndex()) end, tblItemTable.Name)

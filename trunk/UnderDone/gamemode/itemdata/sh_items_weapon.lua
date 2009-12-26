@@ -1,4 +1,4 @@
-local Item = DeriveTable(BaseEquiptment)
+local Item = DeriveTable(BaseWeapon)
 Item.Name = "pistol"
 Item.PrintName = "Pistol"
 Item.Desc = "Pasively gives you a pistol"
@@ -10,7 +10,7 @@ Item.Weight = 3
 Item.Weapon = "weapon_pistol"
 Register.Item(Item)
 
-local Item = DeriveTable(BaseEquiptment)
+local Item = DeriveTable(BaseWeapon)
 Item.Name = "shotgun"
 Item.PrintName = "Shotgun"
 Item.Desc = "Pasively gives you a shotgun"

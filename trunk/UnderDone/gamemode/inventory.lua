@@ -37,7 +37,7 @@ function RemoveItemFromInv(objTarget, strItem, intAmount)
 		if objTarget:GetClass() == "player" then
 			tblDataTable = objTarget.Data
 			if tblDataTable.Paperdoll && table.HasValue(tblDataTable.Paperdoll, strItem) && tblDataTable.Inventory[strItem] == 1 then
-				objTarget:EquiptItem(tblItemTable)
+				tblItemTable:Use(objTarget, tblItemTable)
 			end
 		end
 		tblDataTable.Inventory[strItem] = tblDataTable.Inventory[strItem] - intAmountToRemove
