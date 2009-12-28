@@ -28,7 +28,7 @@ function PANEL:GhostIcon()
 	GhostIcon:SetSize( self:GetWide(), self:GetTall() )
 	GhostIcon.Icon = self.Icon
 	GhostIcon.Amount = self.Amount
-	GhostIcon:SetAlpha(200)
+	GhostIcon:SetAlpha(0)
 	GhostIcon:MakePopup()
 end
 
