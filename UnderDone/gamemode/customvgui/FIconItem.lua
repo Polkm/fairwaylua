@@ -7,13 +7,30 @@
 	NMM:         +NMNyosdMMd:   NMMdyyyyy. hMM+ `+NMNo` `MMM` ... :MMN  
 	+oo.          `:oyyys+-`    +oooooooo` /oo-   .ooo/  ooo`     .oo+  2009
 ]]
-
 local PANEL = {}
+
 local matGlossIcon = surface.GetTextureID("icons/icon_gloss")
 local matBoarderIcon = surface.GetTextureID("icons/icon_boarder")
 PANEL.Icon = nil
 PANEL.Amount = nil
 PANEL.LastClick = nil
+
+function PANEL:AllowedDrop(Wide,Tall,X,Y,Alpha)
+	AllowedDrop = vgui.Create("DPanel")
+	AllowedDrop:SetSize( Wide, Tall )
+	AllowedDrop:SetPos( X, Y )
+	AllowedDrop:SetAlpha(Alpha)
+	AllowedDrop:MakePopup()
+end
+
+function PANEL:GhostIcon()
+	GhostIcon = vgui.Create("FIconItem")
+	GhostIcon:SetSize( self:GetWide(), self:GetTall() )
+	GhostIcon.Icon = self.Icon
+	GhostIcon.Amount = self.Amount
+	GhostIcon:SetAlpha(200)
+	GhostIcon:MakePopup()
+end
 
 function PANEL:Init()
 	--RightClick Dectection--
@@ -21,13 +38,34 @@ function PANEL:Init()
 	self:SetMouseInputEnabled(true)
 	self.OnMousePressed = function(self, mousecode)
 		self:MouseCapture(true)
+		if mousecode == MOUSE_LEFT then
+			if self.Icon then
+				self.ClickedIcon = true
+				self:GhostIcon()
+				self:AllowedDrop(self:GetWide(), self:GetTall(),ScrW() *	0.565,ScrH() * 0.31,200)
+			end	
+		end
 	end
 	self.OnMouseReleased = function(self, mousecode)
 		self:MouseCapture(false)
 		if mousecode == MOUSE_RIGHT then
 			PCallError(self.DoRightClick, self)
+			if self.ClickedIcon then
+				self.ClickedIcon = false
+				GhostIcon:Remove()
+				AllowedDrop:Remove()
+			end
 		end
 		if mousecode == MOUSE_LEFT then
+			if self.HasEntered then
+				PCallError(self.EnteredFrame, self)
+				AllowedDrop:Remove()
+			end
+			if self.ClickedIcon then
+				self.ClickedIcon = false
+				GhostIcon:Remove()
+				AllowedDrop:Remove()
+			end
 			if (SysTime() - self.LastClick) < 0.3 then
 				PCallError(self.DoDoubleClick, self) return
 			end
@@ -39,7 +77,20 @@ function PANEL:Init()
 	self.DoClick = function() end
 	self.DoRightClick = function() end
 	self.DoDoubleClick = function() end
+	self.EnteredFrame = function() end
 	-------------------------
+end
+
+function PANEL:Think()
+	if self.ClickedIcon then
+		local Position = GhostIcon:GetPos() - AllowedDrop:GetPos()
+		if Position < 38  && Position > 0 then	
+			self.HasEntered = true
+		else
+			self.HasEntered = false
+		end
+		GhostIcon:SetPos( gui.MouseX(),gui.MouseY())
+	end
 end
 
 function PANEL:Paint()
@@ -83,6 +134,10 @@ function PANEL:SetDoubleClick(fncDoubleClick)
 	self.DoDoubleClick = fncDoubleClick
 end
 
+function PANEL:SetEnteredFrame(fncEnteredFrame)
+	self.EnteredFrame = fncEnteredFrame
+end
+
 function PANEL:SetItem(tblItemTable, intAmount)
 	tblItemTable = tblItemTable or BaseItem
 	intAmount = intAmount or 1
@@ -99,6 +154,10 @@ function PANEL:SetItem(tblItemTable, intAmount)
 			RunConsoleCommand("UD_UseItem", tblItemTable.Name)
 		end
 		self:SetDoubleClick(useFunc)
+		local EnterFrame = function()
+			RunConsoleCommand("UD_UseItem", tblItemTable.Name)
+		end
+		self:SetEnteredFrame(EnterFrame)
 	end
 	-------Right Click-------
 	local menuFunc = function()
