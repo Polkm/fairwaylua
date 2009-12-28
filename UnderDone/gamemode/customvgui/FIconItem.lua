@@ -28,7 +28,7 @@ function PANEL:GhostIcon()
 	GhostIcon:SetSize( self:GetWide(), self:GetTall() )
 	GhostIcon.Icon = self.Icon
 	GhostIcon.Amount = self.Amount
-	GhostIcon:SetAlpha(0)
+	GhostIcon:SetAlpha(2000)
 	GhostIcon:MakePopup()
 end
 
@@ -42,7 +42,7 @@ function PANEL:Init()
 			if self.Icon then
 				self.ClickedIcon = true
 				self:GhostIcon()
-				self:AllowedDrop(self:GetWide(), self:GetTall(),ScrW() *	0.565,ScrH() * 0.31,200)
+				self:AllowedDrop(self:GetWide(), self:GetTall(),ScrW() *	0.565,ScrH() * 0.31,0)
 			end	
 		end
 	end
