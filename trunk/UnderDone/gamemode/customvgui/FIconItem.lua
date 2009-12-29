@@ -14,86 +14,53 @@ local matBoarderIcon = surface.GetTextureID("icons/icon_boarder")
 PANEL.Icon = nil
 PANEL.Amount = nil
 PANEL.LastClick = nil
-
-function PANEL:AllowedDrop(Wide,Tall,X,Y,Alpha)
-	AllowedDrop = vgui.Create("DPanel")
-	AllowedDrop:SetSize( Wide, Tall )
-	AllowedDrop:SetPos( X, Y )
-	AllowedDrop:SetAlpha(Alpha)
-	AllowedDrop:MakePopup()
-end
-
-function PANEL:GhostIcon()
-	GhostIcon = vgui.Create("FIconItem")
-	GhostIcon:SetSize( self:GetWide(), self:GetTall() )
-	GhostIcon.Icon = self.Icon
-	GhostIcon.Amount = self.Amount
-	GhostIcon:SetAlpha(2000)
-	GhostIcon:MakePopup()
-end
+PANEL.Draggable = false
+PANEL.LeftMouseDown = false
 
 function PANEL:Init()
 	--RightClick Dectection--
 	self.LastClick = 0
-	self:SetMouseInputEnabled(true)
-	self.OnMousePressed = function(self, mousecode)
-		self:MouseCapture(true)
-		if mousecode == MOUSE_LEFT then
-			if self.Icon then
-				self.ClickedIcon = true
-				self:GhostIcon()
-				self:AllowedDrop(self:GetWide(), self:GetTall(),ScrW() *	0.565,ScrH() * 0.31,0)
-			end	
-		end
-	end
-	self.OnMouseReleased = function(self, mousecode)
-		self:MouseCapture(false)
-		if mousecode == MOUSE_RIGHT then
-			PCallError(self.DoRightClick, self)
-			if self.ClickedIcon then
-				self.ClickedIcon = false
-				GhostIcon:Remove()
-				AllowedDrop:Remove()
-			end
-		end
-		if mousecode == MOUSE_LEFT then
-			if self.HasEntered then
-				PCallError(self.EnteredFrame, self)
-				AllowedDrop:Remove()
-			end
-			if self.ClickedIcon then
-				self.ClickedIcon = false
-				GhostIcon:Remove()
-				AllowedDrop:Remove()
-			end
-			if (SysTime() - self.LastClick) < 0.3 then
-				PCallError(self.DoDoubleClick, self) return
-			end
-			PCallError(self.DoClick, self)
-			self.LastClick = SysTime()
-		end
-	end
+	--self:SetMouseInputEnabled(true)
 	-------------------------
 	self.DoClick = function() end
 	self.DoRightClick = function() end
 	self.DoDoubleClick = function() end
-	self.EnteredFrame = function() end
+	self.DoDropedOn = function() end
 	-------------------------
+	GAMEMODE:AddHoverObject(self)
 end
 
-function PANEL:Think()
-	if self.ClickedIcon then
-		local GhostPosx, GhostPosy = GhostIcon:GetPos()
-		local AllowedDropx, AllowedDropy = AllowedDrop:GetPos()
-		local Positionx = GhostPosx - AllowedDropx
-		local Positiony = GhostPosy - AllowedDropy
-		
-		if Positionx < 38 and Positionx > 0 and Positiony < 38 and Positiony > 0 then
-			self.HasEntered = true
-		else
-			self.HasEntered = false
+function PANEL:OnMousePressed(mousecode)
+	if mousecode == MOUSE_LEFT then
+		timer.Simple(0.1, function()
+			if self.Icon && input.IsMouseDown(MOUSE_LEFT) then
+				GAMEMODE.DraggingPanel = self
+			end
+		end)
+	end
+end
+
+function PANEL:OnMouseReleased(mousecode)
+	if mousecode == MOUSE_RIGHT then
+		self.DoRightClick()
+		if GAMEMODE.DraggingPanel then
+			GAMEMODE.DraggingPanel = nil
+			return
 		end
-		GhostIcon:SetPos( gui.MouseX(),gui.MouseY())
+	end
+	if mousecode == MOUSE_LEFT then
+		if GAMEMODE.DraggingPanel then
+			if GAMEMODE.HoveredIcon then
+				GAMEMODE.HoveredIcon.DoDropedOn()
+			end
+			GAMEMODE.DraggingPanel = nil
+		end
+		if (SysTime() - self.LastClick) < 0.3 then
+			self.DoDoubleClick()
+			return
+		end
+		self.DoClick()
+		self.LastClick = SysTime()
 	end
 end
 
@@ -138,8 +105,8 @@ function PANEL:SetDoubleClick(fncDoubleClick)
 	self.DoDoubleClick = fncDoubleClick
 end
 
-function PANEL:SetEnteredFrame(fncEnteredFrame)
-	self.EnteredFrame = fncEnteredFrame
+function PANEL:SetDropedOn(fncDropedOn)
+	self.DoDropedOn = fncDropedOn
 end
 
 function PANEL:SetItem(tblItemTable, intAmount)
@@ -147,6 +114,17 @@ function PANEL:SetItem(tblItemTable, intAmount)
 	intAmount = intAmount or 1
 	if tblItemTable.Icon then self:SetIcon(tblItemTable.Icon) end
 	if tblItemTable.Stackable && intAmount > 1 then self:SetAmount(intAmount) end
+	if tblItemTable.Slot then self.Slot = tblItemTable.Slot end
+	if tblItemTable.Name then self.Item = tblItemTable.Name end
+	if tblItemTable.Dropable then
+		self.DoDropItem = function()
+			if tblItemTable.Stackable and intAmount >= 5 then
+				DisplayPromt("number", "How many to drop", function(itemamount) RunConsoleCommand("UD_DropItem", tblItemTable.Name, itemamount) end, tblItemTable.Name)
+			else
+				RunConsoleCommand("UD_DropItem", tblItemTable.Name, 1)
+			end
+		end
+	end
 	---------ToolTip---------
 	local Tooltip = Format("%s", tblItemTable.PrintName)
 	if tblItemTable.Desc then Tooltip = Format("%s\n%s", Tooltip, tblItemTable.Desc) end
@@ -158,23 +136,13 @@ function PANEL:SetItem(tblItemTable, intAmount)
 			RunConsoleCommand("UD_UseItem", tblItemTable.Name)
 		end
 		self:SetDoubleClick(useFunc)
-		local EnterFrame = function()
-			RunConsoleCommand("UD_UseItem", tblItemTable.Name)
-		end
-		self:SetEnteredFrame(EnterFrame)
 	end
 	-------Right Click-------
 	local menuFunc = function()
 		GAMEMODE.MainMenu.ActiveMenu = DermaMenu()
 		if tblItemTable.Use then GAMEMODE.MainMenu.ActiveMenu:AddOption("Use", function() RunConsoleCommand("UD_UseItem", tblItemTable.Name) end) end
 		if tblItemTable.Dropable then
-			GAMEMODE.MainMenu.ActiveMenu:AddOption("Drop", function()
-				if tblItemTable.Stackable and intAmount >= 5 then
-					DisplayPromt("number", "How many to drop", function(itemamount) RunConsoleCommand("UD_DropItem", tblItemTable.Name, itemamount) end, tblItemTable.Name)
-				else
-					RunConsoleCommand("UD_DropItem", tblItemTable.Name, 1)
-				end
-			end)
+			GAMEMODE.MainMenu.ActiveMenu:AddOption("Drop", self.DoDropItem)
 		end
 		if tblItemTable.Giveable then
 			for _, player in pairs(player.GetAll()) do
@@ -202,10 +170,18 @@ function PANEL:SetSlot(tblSlotTable)
 		if tblSlotTable.PrintName then strToolTip = Format("%s", tblSlotTable.PrintName) end
 		if tblSlotTable.Desc then strToolTip = Format("%s\n%s", strToolTip, tblSlotTable.Desc) end
 	end
+	self.IsPapperDollSlot = true
 	self:SetIcon(strIcon)
 	self:SetTooltip(strToolTip)
+	self:SetDropedOn(function()
+		if GAMEMODE.DraggingPanel && GAMEMODE.DraggingPanel.Slot && GAMEMODE.DraggingPanel.Slot == tblSlotTable.Name then
+			if GAMEMODE.DraggingPanel.Item && GAMEMODE.Paperdoll[tblSlotTable.Name] != GAMEMODE.DraggingPanel.Item then
+				GAMEMODE.DraggingPanel.DoDoubleClick()
+			end
+		end
+	end)
 	self:SetDoubleClick(function() end)
 	self:SetRightClick(function() end)
 end
 
-vgui.Register("FIconItem", PANEL, "Label")
+vgui.Register("FIconItem", PANEL, "Panel")

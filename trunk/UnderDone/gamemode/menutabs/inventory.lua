@@ -14,6 +14,17 @@ function PANEL:Init()
 	self.inventorylist.Paint = function()
 		draw.RoundedBox(4, 0, 0, self.inventorylist:GetWide(), self.inventorylist:GetTall(), Color(50, 50, 50, 255))
 	end
+	self.inventorylist.DoDropedOn = function()
+		if !GAMEMODE.Paperdoll or !GAMEMODE.DraggingPanel or !GAMEMODE.DraggingPanel.IsPapperDollSlot then return end
+		if GAMEMODE.DraggingPanel.Item && GAMEMODE.DraggingPanel.Slot then
+			if GAMEMODE.Paperdoll[GAMEMODE.DraggingPanel.Slot] == GAMEMODE.DraggingPanel.Item then
+				GAMEMODE.DraggingPanel.DoDoubleClick()
+			end
+		end
+	end
+	GAMEMODE:AddHoverObject(self.inventorylist)
+	GAMEMODE:AddHoverObject(self.inventorylist.pnlCanvas, self.inventorylist)
+	
 	self.inventorylist.catagories = {}
 	
 	self.Paperdoll = vgui.Create("FPaperDoll", self)

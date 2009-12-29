@@ -72,9 +72,9 @@ function BaseWeapon:Use(usr, itemtable)
 		usr:Give("weapon_primaryweapon")
 		usr.Loadout["weapon_primaryweapon"] = true
 		usr:GetWeapon("weapon_primaryweapon"):SetWeapon(itemtable)
-		
 	end
 end
+
 
 
 
