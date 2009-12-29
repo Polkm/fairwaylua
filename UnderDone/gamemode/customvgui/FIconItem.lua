@@ -83,8 +83,12 @@ end
 
 function PANEL:Think()
 	if self.ClickedIcon then
-		local Position = GhostIcon:GetPos() - AllowedDrop:GetPos()
-		if Position < 38  && Position > 0 then	
+		local GhostPosx, GhostPosy = GhostIcon:GetPos()
+		local AllowedDropx, AllowedDropy = AllowedDrop:GetPos()
+		local Positionx = GhostPosx - AllowedDropx
+		local Positiony = GhostPosy - AllowedDropy
+		
+		if Positionx < 38 and Positionx > 0 and Positiony < 38 and Positiony > 0 then
 			self.HasEntered = true
 		else
 			self.HasEntered = false
