@@ -8,35 +8,33 @@
 	+oo.          `:oyyys+-`    +oooooooo` /oo-   .ooo/  ooo`     .oo+  2009
 ]]
 local PANEL = {}
-
 local matGlossIcon = surface.GetTextureID("icons/icon_gloss")
 local matBoarderIcon = surface.GetTextureID("icons/icon_boarder")
 PANEL.Icon = nil
 PANEL.Amount = nil
-PANEL.LastClick = nil
+PANEL.LastClick = 0
 PANEL.Draggable = false
+PANEL.Item = nil
+PANEL.Slot = nil
 PANEL.LeftMouseDown = false
+PANEL.DoClick = function() end
+PANEL.DoRightClick = function() end
+PANEL.DoDoubleClick = function() end
+PANEL.DoDropedOn = function() end
 
 function PANEL:Init()
-	--RightClick Dectection--
-	self.LastClick = 0
-	--self:SetMouseInputEnabled(true)
-	-------------------------
-	self.DoClick = function() end
-	self.DoRightClick = function() end
-	self.DoDoubleClick = function() end
-	self.DoDropedOn = function() end
-	-------------------------
 	GAMEMODE:AddHoverObject(self)
 end
 
 function PANEL:OnMousePressed(mousecode)
 	if mousecode == MOUSE_LEFT then
-		timer.Simple(0.1, function()
-			if self.Icon && input.IsMouseDown(MOUSE_LEFT) then
-				GAMEMODE.DraggingPanel = self
-			end
-		end)
+		if self.Draggable then
+			timer.Simple(0.1, function()
+				if self.Draggable && input.IsMouseDown(MOUSE_LEFT) then
+					GAMEMODE.DraggingPanel = self
+				end
+			end)
+		end
 	end
 end
 
@@ -45,7 +43,6 @@ function PANEL:OnMouseReleased(mousecode)
 		self.DoRightClick()
 		if GAMEMODE.DraggingPanel then
 			GAMEMODE.DraggingPanel = nil
-			return
 		end
 	end
 	if mousecode == MOUSE_LEFT then
@@ -54,12 +51,13 @@ function PANEL:OnMouseReleased(mousecode)
 				GAMEMODE.HoveredIcon.DoDropedOn()
 			end
 			GAMEMODE.DraggingPanel = nil
+		else
+			if (SysTime() - self.LastClick) < 0.3 then
+				self.DoDoubleClick()
+			else
+				self.DoClick()
+			end
 		end
-		if (SysTime() - self.LastClick) < 0.3 then
-			self.DoDoubleClick()
-			return
-		end
-		self.DoClick()
 		self.LastClick = SysTime()
 	end
 end
@@ -78,9 +76,10 @@ function PANEL:Paint()
 	surface.DrawTexturedRect(0, 0, self:GetWide(), self:GetTall())
 	
 	if self.Amount then
+		surface.SetFont("DefaultFixedOutline")
 		local width, tall = surface.GetTextSize(tostring(self.Amount)) 
 		surface.SetTextColor(255, 255, 255, 255)
-		surface.SetTextPos(self:GetWide() - width - 1, self:GetTall() - tall - 2) 
+		surface.SetTextPos(self:GetWide() - width - 2, self:GetTall() - tall - 1) 
 		surface.DrawText(tostring(self.Amount))
 	end
 	return true
@@ -97,6 +96,10 @@ function PANEL:SetAmount(itnAmount)
 	self.Amount = itnAmount
 end
 
+function PANEL:SetDragable(boolDraggable)
+	self.Draggable = boolDraggable
+end
+
 function PANEL:SetRightClick(fncRightClick)
 	self.DoRightClick = fncRightClick
 end
@@ -110,12 +113,12 @@ function PANEL:SetDropedOn(fncDropedOn)
 end
 
 function PANEL:SetItem(tblItemTable, intAmount)
-	tblItemTable = tblItemTable or BaseItem
 	intAmount = intAmount or 1
+	self:SetDragable(true)
 	if tblItemTable.Icon then self:SetIcon(tblItemTable.Icon) end
 	if tblItemTable.Stackable && intAmount > 1 then self:SetAmount(intAmount) end
-	if tblItemTable.Slot then self.Slot = tblItemTable.Slot end
 	if tblItemTable.Name then self.Item = tblItemTable.Name end
+	if tblItemTable.Slot then self.Slot = tblItemTable.Slot end
 	if tblItemTable.Dropable then
 		self.DoDropItem = function()
 			if tblItemTable.Stackable and intAmount >= 5 then
@@ -125,36 +128,41 @@ function PANEL:SetItem(tblItemTable, intAmount)
 			end
 		end
 	end
-	---------ToolTip---------
-	local Tooltip = Format("%s", tblItemTable.PrintName)
-	if tblItemTable.Desc then Tooltip = Format("%s\n%s", Tooltip, tblItemTable.Desc) end
-	if tblItemTable.Weight && tblItemTable.Weight > 0 then Tooltip = Format("%s\n%s Kgs", Tooltip, tblItemTable.Weight) end
-	self:SetTooltip(Tooltip)
-	------Double Click------
+	if tblItemTable.Giveable then
+		self.DoGiveItem = function(plyGivePlayer)
+			if tblItemTable.Stackable and intAmount >= 5 then 
+				DisplayPromt("number", "How many to give", function(itemamount)
+					RunConsoleCommand("UD_GiveItem", tblItemTable.Name, itemamount, plyGivePlayer:EntIndex())
+				end, tblItemTable.Name)
+			else 
+				RunConsoleCommand("UD_GiveItem", tblItemTable.Name, 1, plyGivePlayer:EntIndex())
+			end
+		end
+	end
 	if tblItemTable.Use then
-		local useFunc = function()
+		self.DoUseItem = function()
 			RunConsoleCommand("UD_UseItem", tblItemTable.Name)
 		end
-		self:SetDoubleClick(useFunc)
+	end
+	---------ToolTip---------
+	local strTooltip = Format("%s", tblItemTable.PrintName)
+	if tblItemTable.Desc then strTooltip = Format("%s\n%s", strTooltip, tblItemTable.Desc) end
+	if tblItemTable.Weight && tblItemTable.Weight > 0 then strTooltip = Format("%s\n%s Kgs", strTooltip, tblItemTable.Weight) end
+	self:SetTooltip(strTooltip)
+	------Double Click------
+	if tblItemTable.Use then
+		self:SetDoubleClick(self.DoUseItem)
 	end
 	-------Right Click-------
 	local menuFunc = function()
 		GAMEMODE.MainMenu.ActiveMenu = DermaMenu()
-		if tblItemTable.Use then GAMEMODE.MainMenu.ActiveMenu:AddOption("Use", function() RunConsoleCommand("UD_UseItem", tblItemTable.Name) end) end
-		if tblItemTable.Dropable then
-			GAMEMODE.MainMenu.ActiveMenu:AddOption("Drop", self.DoDropItem)
-		end
+		if tblItemTable.Use then GAMEMODE.MainMenu.ActiveMenu:AddOption("Use", self.DoUseItem) end
+		if tblItemTable.Dropable then GAMEMODE.MainMenu.ActiveMenu:AddOption("Drop", self.DoDropItem) end
 		if tblItemTable.Giveable then
 			for _, player in pairs(player.GetAll()) do
 				if player:GetPos():Distance(LocalPlayer():GetPos()) < 250 && player != LocalPlayer() then
-					local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...")
-					GiveSubMenu:AddOption(player:Nick(), function()
-						if tblItemTable.Stackable and intAmount >= 5 then 
-							DisplayPromt("number", "How many to give", function(itemamount) RunConsoleCommand("UD_GiveItem", tblItemTable.Name, itemamount, player:EntIndex()) end, tblItemTable.Name)
-						else 
-							RunConsoleCommand("UD_GiveItem", tblItemTable.Name, 1, player:EntIndex())
-						end
-					 end)
+					if !GiveSubMenu then local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...") end
+					GiveSubMenu:AddOption(player:Nick(), self.DoGiveItem(player))
 				end
 			end
 		end
@@ -164,14 +172,14 @@ function PANEL:SetItem(tblItemTable, intAmount)
 end
 
 function PANEL:SetSlot(tblSlotTable)
-	local strIcon = nil
 	local strToolTip = ""
 	if tblSlotTable then
 		if tblSlotTable.PrintName then strToolTip = Format("%s", tblSlotTable.PrintName) end
 		if tblSlotTable.Desc then strToolTip = Format("%s\n%s", strToolTip, tblSlotTable.Desc) end
 	end
 	self.IsPapperDollSlot = true
-	self:SetIcon(strIcon)
+	self:SetDragable(false)
+	self:SetIcon(nil)
 	self:SetTooltip(strToolTip)
 	self:SetDropedOn(function()
 		if GAMEMODE.DraggingPanel && GAMEMODE.DraggingPanel.Slot && GAMEMODE.DraggingPanel.Slot == tblSlotTable.Name then
