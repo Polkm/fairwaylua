@@ -7,6 +7,9 @@ include('cl_hud.lua')
 include('cl_mainmenu.lua')
 ----------Menus----------
 GM.MainMenu = nil
+GM.HoveredIcon = nil
+GM.DraggingPanel = nil
+GM.DraggingGhost = nil
 --------Inventory--------
 GM.Inventory = {}
 GM.Inventory_Temp = {}
@@ -50,6 +53,52 @@ function UpdatePapperDollUsrMsg(usrMsg)
 end
 usermessage.Hook("UD_UpdatePapperDoll", UpdatePapperDollUsrMsg)
 
+function GM:Think()
+	if GAMEMODE.DraggingPanel then
+		if !GAMEMODE.DraggingGhost then
+			GAMEMODE.DraggingGhost = vgui.Create("FIconItem")
+			GAMEMODE.DraggingGhost:SetSize(GAMEMODE.DraggingPanel:GetWide(), GAMEMODE.DraggingPanel:GetTall())
+			GAMEMODE.DraggingGhost.Icon = GAMEMODE.DraggingPanel.Icon
+			GAMEMODE.DraggingGhost.Amount = GAMEMODE.DraggingPanel.Amount
+			GAMEMODE.DraggingGhost:SetAlpha(255)
+			GAMEMODE.DraggingGhost:MakePopup()
+			GAMEMODE.DraggingGhost.IsGhost = true
+		end
+		GAMEMODE.DraggingGhost:SetPos(gui.MouseX() + 1, gui.MouseY() + 1)
+		if !input.IsMouseDown(MOUSE_LEFT) then
+			if GAMEMODE.HoveredIcon then
+				GAMEMODE.HoveredIcon.DoDropedOn()
+			end
+			GAMEMODE.DraggingPanel = nil
+		end
+	else
+		if GAMEMODE.DraggingGhost then
+			GAMEMODE.DraggingGhost:Remove()
+			GAMEMODE.DraggingGhost = nil
+		end
+	end
+end
+
+function GM:GUIMouseReleased(mousecode)
+	if GAMEMODE.DraggingPanel then
+		if GAMEMODE.DraggingPanel.DoDropItem then
+			GAMEMODE.DraggingPanel.DoDropItem()
+		end
+		GAMEMODE.DraggingPanel = nil
+	end
+end
+
+function GM:AddHoverObject(pnlNewHoverObject, pnlParentObject)
+	if !pnlNewHoverObject.IsGhost then
+		pnlNewHoverObject.OnCursorEntered = function()
+			GAMEMODE.HoveredIcon = pnlParentObject or pnlNewHoverObject
+		end
+		pnlNewHoverObject.OnCursorExited = function()
+			GAMEMODE.HoveredIcon = nil
+		end
+	end
+end
+
 function GM:OnSpawnMenuOpen()
 	GAMEMODE.MainMenu = (GAMEMODE.MainMenu or vgui.Create("mainmenu"))
 	GAMEMODE.MainMenu:Center()
@@ -62,6 +111,9 @@ end
 
 function GM:OnSpawnMenuClose()
 	GAMEMODE.MainMenu:SetTargetAlpha(0)
+	if GAMEMODE.DraggingGhost then
+		GAMEMODE.DraggingPanel = nil
+	end
 end
 
 function GM:OnPlayerChat(plySpeaker, strText, boolTeamOnly, boolPlayerIsDead)
