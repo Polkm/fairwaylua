@@ -24,7 +24,7 @@ function SWEP:SetWeapon(tblWeapon)
 end
 
 function SWEP:PrimaryAttack()
-	self:FireBullet()
+	self:WeaponAttack()
 end
 
 function SWEP:SecondaryAttack()
@@ -39,8 +39,12 @@ function SWEP:OnRemove()
 	end
 end
 
-function SWEP:FireBullet()
+function SWEP:WeaponAttack()
+	if SERVER then 
+		GAMEMODE:SetPlayerAnimation(self.Owner, PLAYER_ATTACK1)
+	end
 	if self.WeaponTable then
+		if self.WeaponTable.HoldType == "melee" then self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate)) return end
 		local tblBullet = {}
 		tblBullet.Src 		= self.Owner:GetShootPos()
 		tblBullet.Dir 		= self.Owner:GetAimVector()
@@ -53,7 +57,7 @@ function SWEP:FireBullet()
 		self.Owner:FireBullets(tblBullet)
 		
 		self.Owner:MuzzleFlash()
-		if SERVER then GAMEMODE:SetPlayerAnimation(self.Owner, PLAYER_ATTACK1) end
+
 		--self:EmitSound(self.WeaponTable.Snd)
 		
 		self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate))
