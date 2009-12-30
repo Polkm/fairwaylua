@@ -31,7 +31,7 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:OnRemove()
-	if self.entWoldModel then
+	if self.entWoldModel && self.entWoldModel:IsValid() then
 		for _, ent in pairs(self.entWoldModel.Children or {}) do
 			if ent && ent:IsValid() then ent:Remove() end
 		end
