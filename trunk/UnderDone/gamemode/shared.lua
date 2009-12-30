@@ -22,6 +22,29 @@ end
 function Register.NPC(tblItem)
 	GM.DataBase.NPCs[tblItem.Name] = tblItem
 end
+-------------------------
+function GM:BuildModel(tblModelTable)
+	local tblLoopTable = tblModelTable
+	if type(tblModelTable) == "string" then
+		tblLoopTable = {}
+		tblLoopTable[1] = {Model = tblModelTable, Position = Vector(0, 0, 0), Angle = Angle(0, 0, 0)}
+	end
+	local entReturnEnt = nil
+	local entNewPart = nil
+	for key, modelinfo in pairs(tblLoopTable) do
+		entNewPart = ents.Create("prop_physics")
+		entNewPart:SetModel(modelinfo.Model)
+		if entReturnEnt then entNewPart:SetPos(entReturnEnt:GetPos()) print("parent position addd") end
+		entNewPart:SetPos(entNewPart:GetPos() + modelinfo.Position)
+		if entReturnEnt then entNewPart:SetAngles(entReturnEnt:GetAngles()) end
+		entNewPart:SetAngles(entNewPart:GetAngles() + modelinfo.Angle)
+		entNewPart:SetParent(entReturnEnt)
+		entNewPart:Spawn()
+		entNewPart:SetCollisionGroup(GROUP_NONE)
+		if key == 1 then entReturnEnt = entNewPart end
+	end
+	return entReturnEnt
+end
 
 --Polkm: Example NPCs
 local NPC = {}
