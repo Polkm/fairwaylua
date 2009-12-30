@@ -13,6 +13,19 @@ Item.HoldType = "pistol"
 Register.Item(Item)
 
 local Item = DeriveTable(BaseWeapon)
+Item.Name = "Frying Pan"
+Item.PrintName = "Frying Pan"
+Item.Desc = "Frying Pan :D"
+Item.Icon = "icons/weapon_pistol"
+Item.Model = {}
+Item.Model[1] = {Model = "models/props_interiors/pot02a.mdl", Position = Vector(1.5, 6, 6.5), Angle = Angle(150, 180, 270)}
+Item.Dropable = true
+Item.Giveable = true
+Item.Weight = 3
+Item.HoldType = "melee"
+Register.Item(Item)
+
+local Item = DeriveTable(BaseWeapon)
 Item.Name = "shotgun"
 Item.PrintName = "Shotgun"
 Item.Desc = "Pasively gives you a shotgun"
