@@ -74,11 +74,10 @@ Register.NPC(NPC)
 
 
 
-
 local SLOT = {}
-SLOT.Name = "slot_primaryweapon"
-SLOT.PrintName = "Primary Weapon"
-SLOT.Desc = "Your main weapon"
+SLOT.Name = "slot_necklace"
+SLOT.PrintName = "Necklace"
+SLOT.Desc = "Goes over your head"
 SLOT.Position = Vector(10, 10, 0)
 Register.Slot(SLOT)
 
@@ -86,8 +85,33 @@ local SLOT = {}
 SLOT.Name = "slot_helm"
 SLOT.PrintName = "Helmet/Hat"
 SLOT.Desc = "Goes on your head"
-SLOT.Position = Vector(80, 10, 0)
+SLOT.Position = Vector(155, 10, 0)
 Register.Slot(SLOT)
+
+local SLOT = {}
+SLOT.Name = "slot_armor"
+SLOT.PrintName = "Armor"
+SLOT.Desc = "Your Armor"
+SLOT.Position = Vector(155, 60, 0)
+Register.Slot(SLOT)
+
+local SLOT = {}
+SLOT.Name = "slot_primaryweapon"
+SLOT.PrintName = "Primary Weapon"
+SLOT.Desc = "Your main weapon"
+SLOT.Position = Vector(10,110, 0)
+Register.Slot(SLOT)
+
+local SLOT = {}
+SLOT.Name = "slot_shoes"
+SLOT.PrintName = "Shoes"
+SLOT.Desc = "Goes on your feet"
+SLOT.Position = Vector(10,220, 0)
+Register.Slot(SLOT)
+
+
+
+
 
 
 
