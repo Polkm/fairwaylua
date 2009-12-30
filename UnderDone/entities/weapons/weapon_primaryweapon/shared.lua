@@ -16,7 +16,7 @@ end
 function SWEP:SetWeapon(tblWeapon)
 	if tblWeapon then
 		self.WeaponTable = tblWeapon
-		self:SetNWString("worldmodel", self.WeaponTable.Model)
+		self:SetNWString("item", self.WeaponTable.Name)
 		self:SetWeaponHoldType("pistol")
 		return true
 	end

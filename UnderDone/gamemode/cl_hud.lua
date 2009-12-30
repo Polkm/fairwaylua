@@ -1,9 +1,9 @@
-local Client = LocalPlayer()
 local boxX, boxY = 10, ScrH() - 80
 local boxWidth, boxHieght = 250, 60
 local boxColor = Color(180, 180, 180, 100)
 local boaderSize = 1
 local boaderColor = Color(40, 40, 40, 100)
+local FullBar = boxWidth - (boaderSize * 2) - 8
 	
 Notifications = {}
 function GM:HUDPaint()
@@ -12,8 +12,7 @@ function GM:HUDPaint()
 	--HUDBos Innerbox
 	draw.RoundedBox(2, boxX + boaderSize, boxY + boaderSize, boxWidth - (boaderSize * 2), boxHieght - (boaderSize * 2), boxColor)
 	--NameLabel
-	draw.SimpleText(Client:Nick() , "MenuLarge", boxX + 5, boxY + 5, Color(220, 220, 220, 255), 0, 3)
-		
+	draw.SimpleText(LocalPlayer():Nick() , "MenuLarge", boxX + 5, boxY + 5, Color(220, 220, 220, 255), 0, 3)
 	self:HealthBar()
 	self:WeightBar()
 	self:Notifications()
@@ -22,11 +21,10 @@ end
 function GM:HealthBar()
 	local textColor = Color(60, 60, 60, 255)
 	local BarColor = Color(80, 200, 20, 255)
-	if Client:Health() <= 20 then BarColor = Color(200, 50, 10, 255) end
-	local FullBar = boxWidth - (boaderSize * 2) - 8
+	if LocalPlayer():Health() <= 20 then BarColor = Color(200, 50, 10, 255) end
 	draw.RoundedBox(2, boxX + 3 + boaderSize, boxY + 20, FullBar + (boaderSize * 2) , 15, boaderColor)
-	draw.RoundedBox(2, boxX + 4 + boaderSize, boxY + 21, Client:Health() * (FullBar / 100), 13, BarColor) 
-	draw.SimpleText("Health " .. Client:Health() .. "/" ..  100, "UiBold", boxX + 7 + boaderSize, boxY + 21, textColor, 0, 3)
+	draw.RoundedBox(2, boxX + 4 + boaderSize, boxY + 21, LocalPlayer():Health() * (FullBar / 100), 13, BarColor) 
+	draw.SimpleText("Health " .. LocalPlayer():Health() .. "/" ..  100, "UiBold", boxX + 7 + boaderSize, boxY + 21, textColor, 0, 3)
 end
 
 function GM:WeightBar()

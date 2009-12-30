@@ -11,7 +11,7 @@ function PANEL:Init()
 		self.servercatagory = vgui.Create("FListItem")
 		self.servercatagory:SetNameText("Server")
 		self.servercatagory:SetDescText(#player:GetAll() .. " Player(s)")
-		self.servercatagory:SetIcon("gui/world")
+		self.servercatagory:SetIcon("gui/server")
 		self.servercatagory:SetColor(Color(170, 170, 170, 200))
 		self.servercatagory:SetExpandable(true)
 		self.servercatagory:SetExpanded(true)
@@ -31,21 +31,21 @@ function PANEL:LoadPlayers()
 		local ListItem = vgui.Create("FListItem")
 		-------------------------
 		ListItem:SetNameText(player:Nick())
-		ListItem:SetIcon("gui/silkicons/user")
-		if player:GetFriendStatus() then ListItem:SetIcon("gui/user_green") end
-		if player:IsAdmin() then ListItem:SetIcon("gui/silkicons/shield") end
+		ListItem:SetIcon("gui/player")
+		if player:GetFriendStatus() then ListItem:SetIcon("gui/player_green") end
+		if player:IsAdmin() then ListItem:SetIcon("gui/admin") end
 		------Common Button------
 		local toggleMuteFunc = function()
 			player:SetMuted()
-			local icon = "gui/sound"
+			local icon = "gui/sound_on"
 			local tooltip = "Mute"
-			if player:IsMuted(player) then icon = "gui/sound_mute" tooltip = "Un Mute" end
+			if player:IsMuted(player) then icon = "gui/sound_off" tooltip = "Un Mute" end
 			ListItem.CommonButton:SetMaterial(icon)
 			ListItem.CommonButton:SetTooltip(tooltip)
 		end
-		local icon = "gui/sound"
+		local icon = "gui/sound_on"
 		local tooltip = "Mute"
-		if player:IsMuted() then icon = "gui/sound_mute" tooltip = "Un Mute" end
+		if player:IsMuted() then icon = "gui/sound_off" tooltip = "Un Mute" end
 		ListItem:SetCommonButton(icon, toggleMuteFunc, tooltip)
 		----Secondary Buttons----
 		local menuFunc = function()
@@ -59,7 +59,7 @@ function PANEL:LoadPlayers()
 			end
 			GAMEMODE.MainMenu.ActiveMenu:Open()
 		end
-		ListItem:SetSecondaryButton("gui/cog", menuFunc, "Actions")
+		ListItem:SetSecondaryButton("gui/options", menuFunc, "Actions")
 		-------------------------
 		ListItem.DoRightClick = menuFunc
 		-------------------------

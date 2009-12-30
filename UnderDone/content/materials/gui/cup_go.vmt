@@ -1,7 +1,0 @@
-"UnlitGeneric"
-{
-	"$basetexture" "gui/cup_go"
-	"$vertexalpha" 1
-	"$vertexcolor" 1
-	"$nolod" 1
-}
