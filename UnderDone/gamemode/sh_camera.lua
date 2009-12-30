@@ -8,7 +8,7 @@ local Player = FindMetaTable("Player")
 function Player:GetIdealCamPos()
 	local vecPosition = self:GetPos()
 	local intDistance = GAMEMODE.IdealCammeraDistance + self.AddativeCamDistance
-	vecPosition.z = vecPosition.z + 100
+	vecPosition.z = vecPosition.z + ( (self:EyeAngles():Forward() * -intDistance).z) + 70
 	local angForward = (self:EyeAngles():Forward() * -intDistance)
 	angForward.z = 0
 	vecPosition = vecPosition + angForward
