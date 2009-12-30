@@ -18,8 +18,7 @@ end)
 function Player:DropItem(strItem, intAmount)
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
 	if HasItem(self, strItem, intAmount) && tblItemTable.Dropable then
-		local dropeditem = ents.Create("prop_physics")
-		dropeditem:SetModel(tblItemTable.Model)
+		local dropeditem = GAMEMODE:BuildModel(tblItemTable.Model)
 		dropeditem:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 		dropeditem:SetPos(self:EyePos() + (self:GetAimVector() * 25))
 		local trace = self:GetEyeTrace()

@@ -17,7 +17,7 @@ function SWEP:SetWeapon(tblWeapon)
 	if tblWeapon then
 		self.WeaponTable = tblWeapon
 		self:SetNWString("item", self.WeaponTable.Name)
-		self:SetWeaponHoldType("pistol")
+		self:SetWeaponHoldType(self.WeaponTable.HoldType)
 		return true
 	end
 	return false
@@ -26,30 +26,36 @@ end
 function SWEP:PrimaryAttack()
 	self:FireBullet()
 end
+
 function SWEP:SecondaryAttack()
 end
 
-function SWEP:FireBullet()
-	--[[if !self.WeaponTable or self.WeaponTable.Key != self:GetNWString("key") then
-		self.WeaponTable = GAMEMODE.WeaponsDataBase[self:GetNWString("key")]
+function SWEP:OnRemove()
+	if self.entWoldModel then
+		for _, ent in pairs(self.entWoldModel.Children or {}) do
+			if ent && ent:IsValid() then ent:Remove() end
+		end
+		self.entWoldModel:Remove()
 	end
+end
+
+function SWEP:FireBullet()
 	if self.WeaponTable then
 		local tblBullet = {}
 		tblBullet.Src 		= self.Owner:GetShootPos()
 		tblBullet.Dir 		= self.Owner:GetAimVector()
-		tblBullet.Force		= self.WeaponTable.Pwr / 2
-		local intRealAcuracy = (1 / (self.WeaponTable.Accrcy / 3))
-		tblBullet.Spread 	= Vector(intRealAcuracy, intRealAcuracy, 0)
-		tblBullet.Num 		= self.WeaponTable.Bllts
-		tblBullet.Damage	= self.WeaponTable.Pwr
+		tblBullet.Force		= self.WeaponTable.Power / 2
+		tblBullet.Spread 	= Vector(self.WeaponTable.Accuracy, self.WeaponTable.Accuracy, 0)
+		tblBullet.Num 		= self.WeaponTable.NumOfBullets
+		tblBullet.Damage	= self.WeaponTable.Power
 		tblBullet.Tracer	= 2
 		tblBullet.AmmoType	= "Pistol"
 		self.Owner:FireBullets(tblBullet)
 		
 		self.Owner:MuzzleFlash()
 		if SERVER then GAMEMODE:SetPlayerAnimation(self.Owner, PLAYER_ATTACK1) end
-		self:EmitSound(self.WeaponTable.Snd)
+		--self:EmitSound(self.WeaponTable.Snd)
 		
-		self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FrRt))
-	end]]
+		self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate))
+	end
 end

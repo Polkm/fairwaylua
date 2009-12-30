@@ -63,7 +63,11 @@ function BaseEquiptment:Use(usr, itemtable)
 end
 
 BaseWeapon = DeriveTable(BaseEquiptment)
-BaseWeapon.Weapon = "weapon_pistol"
+BaseWeapon.HoldType = "pistol"
+BaseWeapon.NumOfBullets = 1
+BaseWeapon.Power = 1
+BaseWeapon.Accuracy = 0.01
+BaseWeapon.FireRate = 3
 function BaseWeapon:Use(usr, itemtable)
 	BaseEquiptment:Use(usr, itemtable)
 	usr:StripWeapons()
