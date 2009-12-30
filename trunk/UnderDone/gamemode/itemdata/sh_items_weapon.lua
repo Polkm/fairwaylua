@@ -10,6 +10,9 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 3
 Item.HoldType = "pistol"
+Item.Power = 8
+Item.Accuracy = 0.01
+Item.FireRate = 2
 Register.Item(Item)
 
 local Item = DeriveTable(BaseWeapon)
@@ -23,6 +26,8 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 3
 Item.HoldType = "melee"
+Item.Power = 8
+Item.FireRate = 3
 Register.Item(Item)
 
 local Item = DeriveTable(BaseWeapon)
@@ -36,4 +41,8 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 5
 Item.HoldType = "shotgun"
+Item.NumOfBullets = 8
+Item.Power = 1
+Item.Accuracy = 0.1
+Item.FireRate = 1
 Register.Item(Item)
