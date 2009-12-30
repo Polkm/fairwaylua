@@ -6,6 +6,7 @@ function Player:NewGame()
 	AddItemToInv(self, "pistol", 2)
 	AddItemToInv(self, "pistolammo", 1)
 	AddItemToInv(self, "shotgun", 1)
+	AddItemToInv(self, "Frying Pan", 1)
 	print("NEW GAME BITCHES")
 	--self:SaveGame()
 end
