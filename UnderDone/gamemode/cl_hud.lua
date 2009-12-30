@@ -1,43 +1,44 @@
-local boxX, boxY = 10, ScrH() - 80
-local boxWidth, boxHieght = 250, 60
 local boxColor = Color(180, 180, 180, 100)
-local boaderSize = 1
+local textColor = Color(60, 60, 60, 255)
 local boaderColor = Color(40, 40, 40, 100)
-local FullBar = boxWidth - (boaderSize * 2) - 8
-	
+
 Notifications = {}
 function GM:HUDPaint()
-	--HUDBox Outline
-	draw.RoundedBox(2, boxX, boxY, boxWidth, boxHieght, boaderColor)
-	--HUDBos Innerbox
-	draw.RoundedBox(2, boxX + boaderSize, boxY + boaderSize, boxWidth - (boaderSize * 2), boxHieght - (boaderSize * 2), boxColor)
-	--NameLabel
-	draw.SimpleText(LocalPlayer():Nick() , "MenuLarge", boxX + 5, boxY + 5, Color(220, 220, 220, 255), 0, 3)
-	self:HealthBar()
-	self:WeightBar()
+	self.PlayerBox = jdraw.NewPanel()
+	self.PlayerBox:SetDemensions(10, ScrH() - 49, 250, 39)
+	self.PlayerBox:SetStyle(4, Color(180, 180, 180, 100))
+	self.PlayerBox:SetBoarder(1, Color(40, 40, 40, 150))
+	jdraw.DrawPanel(self.PlayerBox)
+	self:DrawHealthBar()
+	self:DrawWeightBar()
 	self:Notifications()
 end
 
-function GM:HealthBar()
-	local textColor = Color(60, 60, 60, 255)
-	local BarColor = Color(80, 200, 20, 255)
-	if LocalPlayer():Health() <= 20 then BarColor = Color(200, 50, 10, 255) end
-	draw.RoundedBox(2, boxX + 3 + boaderSize, boxY + 20, FullBar + (boaderSize * 2) , 15, boaderColor)
-	draw.RoundedBox(2, boxX + 4 + boaderSize, boxY + 21, LocalPlayer():Health() * (FullBar / 100), 13, BarColor) 
-	draw.SimpleText("Health " .. LocalPlayer():Health() .. "/" ..  100, "UiBold", boxX + 7 + boaderSize, boxY + 21, textColor, 0, 3)
+function GM:DrawHealthBar()
+	local clrBarColor = Color(80, 200, 20, 255)
+	if LocalPlayer():Health() <= 20 then clrBarColor = Color(200, 50, 10, 255) end
+	self.HealthBar = jdraw.NewProgressBar(self.PlayerBox, true)
+	self.HealthBar:SetDemensions(3, 3, self.PlayerBox.Size.Width - 6, 15)
+	self.HealthBar:SetStyle(4, clrBarColor)
+	self.HealthBar:SetValue(LocalPlayer():Health(), 100)
+	self.HealthBar:SetText("UiBold", "Health " .. LocalPlayer():Health() .. "/" ..  100, textColor)
+	jdraw.DrawProgressBar(self.HealthBar)
 end
 
-function GM:WeightBar()
-	local intWeight = GAMEMODE.TotalWeight
-	BarColor = Color(20, 80, 200, 255)
-	draw.RoundedBox(2, boxX + 3 + boaderSize, boxY + 40, FullBar + (boaderSize * 2) , 15, boaderColor)
-	draw.RoundedBox(2, boxX + 4 + boaderSize, boxY + 41, intWeight * (FullBar / MaxWeight), 13, BarColor) 
-	draw.SimpleText("Weight " .. intWeight .. "/" ..  MaxWeight, "UiBold", boxX + 7 + boaderSize, boxY + 41, textColor, 0, 3)
+function GM:DrawWeightBar()
+	local intWeight = self.TotalWeight
+	local clrBarColor = Color(20, 80, 200, 255)
+	self.WeightBar = jdraw.NewProgressBar(self.PlayerBox, true)
+	self.WeightBar:SetDemensions(3, self.HealthBar.Size.Hieght + 6, self.PlayerBox.Size.Width - 6, 15)
+	self.WeightBar:SetStyle(4, clrBarColor)
+	self.WeightBar:SetValue(intWeight, MaxWeight)
+	self.WeightBar:SetText("UiBold", "Weight " .. intWeight .. "/" ..  MaxWeight, textColor)
+	jdraw.DrawProgressBar(self.WeightBar)
 end
 
 function GM:Notifications()
 	local yOffset = ScrH() - 35
-	for k, strNocification in pairs(Notifications) do
+	for _, strNocification in pairs(Notifications) do
 		surface.SetFont("MenuLarge")
 		local wide, high = surface.GetTextSize(strNocification)
 		draw.RoundedBox(2, ScrW() - math.Clamp(wide + 20, 220, 5000), yOffset, math.Clamp(wide + 10, 200, 5000), 20, boaderColor)

@@ -5,6 +5,7 @@ include('sh_camera.lua')
 include('sh_resource.lua')
 include('cl_hud.lua')
 include('cl_mainmenu.lua')
+include('cl_jdraw.lua')
 ----------Menus----------
 GM.MainMenu = nil
 GM.HoveredIcon = nil
