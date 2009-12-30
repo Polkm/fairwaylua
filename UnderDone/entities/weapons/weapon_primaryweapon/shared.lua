@@ -44,7 +44,8 @@ function SWEP:WeaponAttack()
 		GAMEMODE:SetPlayerAnimation(self.Owner, PLAYER_ATTACK1)
 	end
 	if self.WeaponTable then
-		if self.WeaponTable.HoldType == "melee" then self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate)) return end
+		local isMelee = self.WeaponTable.HoldType == "melee"
+		local intRange = self.Owner:GetEyeTrace().HitPos:Distance(self.Owner:GetEyeTrace().StartPos)
 		local tblBullet = {}
 		tblBullet.Src 		= self.Owner:GetShootPos()
 		tblBullet.Dir 		= self.Owner:GetAimVector()
@@ -53,13 +54,19 @@ function SWEP:WeaponAttack()
 		tblBullet.Num 		= self.WeaponTable.NumOfBullets
 		tblBullet.Damage	= self.WeaponTable.Power
 		tblBullet.Tracer	= 2
+		if isMelee then tblBullet.Tracer = 0 end
 		tblBullet.AmmoType	= "Pistol"
-		self.Owner:FireBullets(tblBullet)
-		
-		self.Owner:MuzzleFlash()
-
-		--self:EmitSound(self.WeaponTable.Snd)
-		
+		if !isMelee then
+			self.Owner:FireBullets(tblBullet)
+		else
+			if intRange <= 50 then
+				self.Owner:FireBullets(tblBullet)
+			end
+		end
+		if !isMelee then
+			self.Owner:MuzzleFlash()
+		end
+		--self:EmitSound(self.WeaponTable.Sound)
 		self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate))
 	end
 end
