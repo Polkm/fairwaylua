@@ -1,4 +1,4 @@
-GM.IdealCammeraDistance = 20
+GM.IdealCammeraDistance = 50
 GM.CammeraSmoothness = 15
 GM.SholderCam = true
 
@@ -8,11 +8,11 @@ local Player = FindMetaTable("Player")
 function Player:GetIdealCamPos()
 	local vecPosition = self:GetPos()
 	local intDistance = GAMEMODE.IdealCammeraDistance + self.AddativeCamDistance
-	vecPosition.z = vecPosition.z + 70
+	vecPosition.z = vecPosition.z + 100
 	local angForward = (self:EyeAngles():Forward() * -intDistance)
 	angForward.z = 0
 	vecPosition = vecPosition + angForward
-	vecPosition = vecPosition + (self:EyeAngles():Right() * 20)
+	vecPosition = vecPosition + (self:EyeAngles():Right() * 0)
 	
 	return vecPosition
 end
