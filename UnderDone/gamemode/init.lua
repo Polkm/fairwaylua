@@ -23,19 +23,19 @@ function GM:PlayerAuthed(ply, SteamID, UniqueID)
 end
 
 function GM:PlayerSpawn(ply)
-	--[[
-	ply:ConCommand("UD_AddNotification You got an alowance of " .. tostring(alowence) .. " Dollars") 
-	]]
+	--ply:ConCommand("UD_AddNotification You got an alowance of " .. tostring(alowence) .. " Dollars") 
 	hook.Call("PlayerLoadout", GAMEMODE, ply)
 	hook.Call("PlayerSetModel", GAMEMODE, ply)
 end
 
 function GM:PlayerLoadout(ply)
-	if ply.Loadout then
-		for weapon, hasWeapon in pairs(ply.Loadout) do
-			if hasWeapon then ply:Give(weapon) end
-		end
-	end
+	if !ply.Data or !ply.Data.Paperdoll then return end
+	local strPrimaryWeapon = ply.Data.Paperdoll["slot_primaryweapon"]
+	if !strPrimaryWeapon then return end
+	local tblItemTable = GAMEMODE.DataBase.Items[strPrimaryWeapon]
+	if !tblItemTable then return end
+	ply:Give("weapon_primaryweapon")
+	ply:GetWeapon("weapon_primaryweapon"):SetWeapon(tblItemTable)
 	return true
 end
 

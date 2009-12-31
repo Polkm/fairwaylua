@@ -5,7 +5,7 @@ Item.Desc = "Protects"
 Item.Icon = "icons/junk_pan1"
 Item.Slot = "slot_helm"
 Item.Model = {}
-Item.Model[1] = {Model = "models/props_interiors/pot02a.mdl", Position = Vector(-1, -9, -3), Angle = Angle(180, -100, -10)}
+Item.Model[1] = {Model = "models/props_interiors/pot02a.mdl", Position = Vector(-1, -8, -3.5), Angle = Angle(180, -100, -20)}
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
