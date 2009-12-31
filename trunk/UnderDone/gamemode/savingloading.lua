@@ -29,13 +29,9 @@ function Player:LoadGame()
 		else
 			self:NewGame()
 		end
-		print("Test")
 		for _, ply in pairs(player.GetAll()) do
-			print("Test2")
-			if ply.Data.Paperdoll && #ply.Data.Paperdoll > 0 then
-				print("Test3")
+			if ply.Data.Paperdoll then
 				for slot, item in pairs(ply.Data.Paperdoll) do
-					print("Updated new guy with " .. item)
 					local tblItemTable = GAMEMODE.DataBase.Items[item]
 					umsg.Start("UD_UpdatePapperDoll", self)
 					umsg.Entity(ply)

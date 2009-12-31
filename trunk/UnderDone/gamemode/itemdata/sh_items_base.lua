@@ -76,7 +76,6 @@ function BaseWeapon:Use(usr, itemtable)
 	usr.Loadout = {}
 	if usr.Data.Paperdoll[itemtable.Slot] == itemtable.Name then
 		usr:Give("weapon_primaryweapon")
-		usr.Loadout["weapon_primaryweapon"] = true
 		usr:GetWeapon("weapon_primaryweapon"):SetWeapon(itemtable)
 	end
 end
