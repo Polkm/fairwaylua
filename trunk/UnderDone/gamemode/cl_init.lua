@@ -6,6 +6,7 @@ include('sh_resource.lua')
 include('cl_hud.lua')
 include('cl_mainmenu.lua')
 include('cl_jdraw.lua')
+include('cl_papperdoll.lua')
 ----------Menus----------
 GM.MainMenu = nil
 GM.HoveredIcon = nil
@@ -42,14 +43,18 @@ end
 usermessage.Hook("UD_UpdateItem", UpdateItemUsrMsg)
 
 function UpdatePapperDollUsrMsg(usrMsg)
+	local plyActivePlayer = usrMsg:ReadEntity()
 	local strSlot = usrMsg:ReadString()
 	local strItem = usrMsg:ReadString()
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
 	if !strSlot then return end
 	if !tblItemTable then strItem = nil end
-	GAMEMODE.Paperdoll[strSlot] = strItem
-	if GAMEMODE.MainMenu then
-		GAMEMODE.MainMenu.InventoryTab:LoadInventory()
+	plyActivePlayer:PapperDollBuildSlot(strSlot, strItem)
+	if plyActivePlayer == LocalPlayer() then
+		GAMEMODE.Paperdoll[strSlot] = strItem
+		if GAMEMODE.MainMenu then
+			GAMEMODE.MainMenu.InventoryTab:LoadInventory()
+		end
 	end
 end
 usermessage.Hook("UD_UpdatePapperDoll", UpdatePapperDollUsrMsg)

@@ -6,7 +6,8 @@ function Player:NewGame()
 	AddItemToInv(self, "pistol", 2)
 	AddItemToInv(self, "pistolammo", 1)
 	AddItemToInv(self, "shotgun", 1)
-	AddItemToInv(self, "Frying Pan", 1)
+	AddItemToInv(self, "frying_pan", 1)
+	AddItemToInv(self, "helm", 1)
 	print("NEW GAME BITCHES")
 	--self:SaveGame()
 end
@@ -27,6 +28,24 @@ function Player:LoadGame()
 			end
 		else
 			self:NewGame()
+		end
+		print("Test")
+		for _, ply in pairs(player.GetAll()) do
+			print("Test2")
+			if ply.Data.Paperdoll && #ply.Data.Paperdoll > 0 then
+				print("Test3")
+				for slot, item in pairs(ply.Data.Paperdoll) do
+					print("Updated new guy with " .. item)
+					local tblItemTable = GAMEMODE.DataBase.Items[item]
+					umsg.Start("UD_UpdatePapperDoll", self)
+					umsg.Entity(ply)
+					umsg.String(tblItemTable.Slot)
+					if ply.Data.Paperdoll[tblItemTable.Slot] then
+						umsg.String(tblItemTable.Name)
+					end
+					umsg.End()
+				end
+			end
 		end
 	end
 end

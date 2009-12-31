@@ -6,6 +6,7 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("cl_hud.lua")
 AddCSLuaFile("cl_mainmenu.lua")
 AddCSLuaFile("cl_jdraw.lua")
+AddCSLuaFile("cl_papperdoll.lua")
 include("shared.lua")
 include("sh_camera.lua")
 include("sh_resource.lua")
@@ -15,7 +16,6 @@ include("inventory.lua")
 include("savingloading.lua")
 
 function GM:PlayerInitialSpawn(ply)
-	ply:KillSilent()
 end
 
 function GM:PlayerAuthed(ply, SteamID, UniqueID)
@@ -24,13 +24,6 @@ end
 
 function GM:PlayerSpawn(ply)
 	--[[
-	if ply.Ragdoll then
-		for k,v in pairs(ply.Ragdoll.Inventory) do
-			TransferItem(ply, ply.Ragdoll, k, v)
-		end
-	end
-	local alowence = 50
-	AddItemToInv(ply, "money", alowence)
 	ply:ConCommand("UD_AddNotification You got an alowance of " .. tostring(alowence) .. " Dollars") 
 	]]
 	hook.Call("PlayerLoadout", GAMEMODE, ply)

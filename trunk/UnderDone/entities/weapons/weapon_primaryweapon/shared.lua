@@ -1,18 +1,6 @@
 SWEP.WorldModel	= "models/weapons/w_pistol.mdl"
 SWEP.Primary.Automatic = true
 
-function SWEP:Initialize()
-	if CLIENT then
-		self.entWoldModel = ents.Create("prop_physics")
-		self.entWoldModel:SetModel(self.WorldModel)
-		self.entWoldModel:Spawn()
-		self.entWoldModel:SetPos(self:GetPos())
-		self.entWoldModel:SetAngles(self:GetAngles())
-		self.entWoldModel:SetParent(self)
-		self.entWoldModel:SetCollisionGroup(GROUP_NONE)
-	end
-end
-
 function SWEP:SetWeapon(tblWeapon)
 	if tblWeapon then
 		self.WeaponTable = tblWeapon
@@ -23,6 +11,13 @@ function SWEP:SetWeapon(tblWeapon)
 	return false
 end
 
+function SWEP:Think()
+	if self.Item != self:GetNWString("item") then
+		self.Item = self:GetNWString("item")
+		self.WeaponTable = GAMEMODE.DataBase.Items[self.Item]
+	end
+end
+
 function SWEP:PrimaryAttack()
 	self:WeaponAttack()
 end
@@ -31,17 +26,11 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:OnRemove()
-	if self.entWoldModel && self.entWoldModel:IsValid() then
-		for _, ent in pairs(self.entWoldModel.Children or {}) do
-			if ent && ent:IsValid() then ent:Remove() end
-		end
-		self.entWoldModel:Remove()
-	end
 end
 
 function SWEP:WeaponAttack()
 	if SERVER then 
-		GAMEMODE:SetPlayerAnimation(self.Owner, PLAYER_ATTACK1)
+		self.Owner:RestartGesture(self.Owner:Weapon_TranslateActivity(ACT_HL2MP_GESTURE_RANGE_ATTACK))
 	end
 	if self.WeaponTable then
 		local isMelee = self.WeaponTable.HoldType == "melee"
@@ -66,7 +55,7 @@ function SWEP:WeaponAttack()
 		if !isMelee then
 			self.Owner:MuzzleFlash()
 		end
-		--self:EmitSound(self.WeaponTable.Sound)
+		self:EmitSound(self.WeaponTable.Sound)
 		self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate))
 	end
 end
