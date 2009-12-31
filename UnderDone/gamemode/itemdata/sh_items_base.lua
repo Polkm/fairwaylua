@@ -54,7 +54,8 @@ function BaseEquiptment:Use(usr, itemtable)
 	else
 		usr.Data.Paperdoll[itemtable.Slot] = nil
 	end
-	umsg.Start("UD_UpdatePapperDoll", usr)
+	umsg.Start("UD_UpdatePapperDoll")
+	umsg.Entity(usr)
 	umsg.String(itemtable.Slot)
 	if usr.Data.Paperdoll[itemtable.Slot] then
 		umsg.String(itemtable.Name)
@@ -68,6 +69,7 @@ BaseWeapon.NumOfBullets = 1
 BaseWeapon.Power = 1
 BaseWeapon.Accuracy = 0.01
 BaseWeapon.FireRate = 3
+BaseWeapon.Sound = "weapons/pistol/pistol_fire2.wav"
 function BaseWeapon:Use(usr, itemtable)
 	BaseEquiptment:Use(usr, itemtable)
 	usr:StripWeapons()
