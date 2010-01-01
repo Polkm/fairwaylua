@@ -91,9 +91,9 @@ SLOT.Attachment = "eyes"
 Register.Slot(SLOT)
 
 local SLOT = {}
-SLOT.Name = "slot_armor"
-SLOT.PrintName = "Armor"
-SLOT.Desc = "Your Armor"
+SLOT.Name = "slot_chest"
+SLOT.PrintName = "Chest Piece"
+SLOT.Desc = "Goes on your chest"
 SLOT.Position = Vector(155, 60, 0)
 SLOT.Attachment = "chest"
 Register.Slot(SLOT)
