@@ -1,17 +1,3 @@
-local Item = DeriveTable(BaseEquiptment)
-Item.Name = "helm"
-Item.PrintName = "Helmet"
-Item.Desc = "Protects"
-Item.Icon = "icons/junk_pan1"
-Item.Slot = "slot_helm"
-Item.Model = {}
-Item.Model[1] = {Model = "models/props_interiors/pot02a.mdl", Position = Vector(-1, -8, -3.5), Angle = Angle(180, -100, -20)}
-Item.Dropable = true
-Item.Giveable = true
-Item.Weight = 1
-Register.Item(Item)
-
-
 local Item = DeriveTable(BaseWeapon)
 Item.Name = "pistol"
 Item.PrintName = "Pistol"
@@ -36,7 +22,23 @@ Item.PrintName = "Frying Pan"
 Item.Desc = "Frying Pan :D"
 Item.Icon = "icons/junk_pan2"
 Item.Model = {}
-Item.Model[1] = {Model = "models/props_interiors/pot02a.mdl", Position = Vector(1, 8, -0.5), Angle = Angle(0, 0, 90)}
+Item.Model[1] = {Model = "models/props_interiors/pot02a.mdl", Position = Vector(0.8, 8, -0.5), Angle = Angle(0, 0, 90)}
+Item.Dropable = true
+Item.Giveable = true
+Item.Weight = 1
+Item.HoldType = "melee"
+Item.Power = 8
+Item.FireRate = 3
+Item.Sound = "weapons/iceaxe/iceaxe_swing1.wav"
+Register.Item(Item)
+
+local Item = DeriveTable(BaseWeapon)
+Item.Name = "meat_cleaver"
+Item.PrintName = "Cleaver"
+Item.Desc = "Fur chopping meat ... or monstors"
+Item.Icon = "icons/junk_box1"
+Item.Model = {}
+Item.Model[1] = {Model = "models/props_lab/Cleaver.mdl", Position = Vector(-1.3, 0.7, 0.2), Angle = Angle(98.5, 0, 98.5)}
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1

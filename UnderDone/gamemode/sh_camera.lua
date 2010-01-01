@@ -8,12 +8,11 @@ local Player = FindMetaTable("Player")
 function Player:GetIdealCamPos()
 	local vecPosition = self:GetPos()
 	local intDistance = GAMEMODE.IdealCammeraDistance + self.AddativeCamDistance
-	vecPosition.z = vecPosition.z + ( (self:EyeAngles():Forward() * -intDistance).z) + 85
-	local angForward = (self:EyeAngles():Forward() * -intDistance)
-	angForward.z = 0
-	vecPosition = vecPosition + angForward
+	vecPosition.z = vecPosition.z + ((self:EyeAngles():Forward() * -intDistance).z) + 85
+	local vecForward = (self:EyeAngles():Forward() * -intDistance)
+	vecForward.z = 0
+	vecPosition = vecPosition + vecForward
 	vecPosition = vecPosition + (self:EyeAngles():Right() * 0)
-	
 	return vecPosition
 end
 function Player:GetIdealCamAngle()
@@ -57,7 +56,6 @@ else
 		client:SetCycle(client.AntiStutterAnimate)
 		if client.AntiStutterAnimate > 1 then client.AntiStutterAnimate = 0 end
 	end
-	
 	function CalcViewHook(plyClient, vecOrigin, angAngles, fovFieldOfView)
 		if !GAMEMODE.SholderCam then return end
 		local client = plyClient

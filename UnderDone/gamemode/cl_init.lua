@@ -2,11 +2,13 @@
 --------Includes---------
 include('shared.lua')
 include('sh_camera.lua')
+include('itemdata/sh_items_base.lua')
 include('sh_resource.lua')
 include('cl_hud.lua')
 include('cl_mainmenu.lua')
 include('cl_jdraw.lua')
 include('cl_papperdoll.lua')
+include('cl_papperdoll_editor.lua')
 ----------Menus----------
 GM.MainMenu = nil
 GM.HoveredIcon = nil
