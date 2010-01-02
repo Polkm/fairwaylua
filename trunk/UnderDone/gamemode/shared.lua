@@ -34,7 +34,6 @@ function GM:BuildModel(tblModelTable)
 	for key, modelinfo in pairs(tblLoopTable) do
 		entNewPart = ents.Create("prop_physics")
 		entNewPart:SetModel(modelinfo.Model)
-		entNewPart:SetModelScale(modelinfo.Scale or Vector(1, 1, 1))
 		if entReturnEnt then entNewPart:SetAngles(entReturnEnt:GetAngles()) end
 		if entReturnEnt then entNewPart:SetAngles(entNewPart:LocalToWorldAngles(modelinfo.Angle)) end
 		if !entReturnEnt then entNewPart:SetAngles(modelinfo.Angle) end
