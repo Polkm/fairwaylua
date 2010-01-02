@@ -34,9 +34,13 @@ function GM:BuildModel(tblModelTable)
 	for key, modelinfo in pairs(tblLoopTable) do
 		entNewPart = ents.Create("prop_physics")
 		entNewPart:SetModel(modelinfo.Model)
+		entNewPart:SetModelScale(modelinfo.Scale or Vector(1, 1, 1))
+		if entReturnEnt then entNewPart:SetAngles(entReturnEnt:GetAngles()) end
+		if entReturnEnt then entNewPart:SetAngles(entNewPart:LocalToWorldAngles(modelinfo.Angle)) end
+		if !entReturnEnt then entNewPart:SetAngles(modelinfo.Angle) end
 		if entReturnEnt then entNewPart:SetPos(entReturnEnt:GetPos()) end
-		entNewPart:SetPos(entNewPart:GetPos() + modelinfo.Position)
-		entNewPart:SetAngles(modelinfo.Angle)
+		if entReturnEnt then entNewPart:SetPos(entNewPart:LocalToWorld(modelinfo.Position)) end
+		if !entReturnEnt then entNewPart:SetPos(modelinfo.Position) end
 		entNewPart:SetParent(entReturnEnt)
 		entNewPart:Spawn()
 		entNewPart:SetCollisionGroup(GROUP_NONE)

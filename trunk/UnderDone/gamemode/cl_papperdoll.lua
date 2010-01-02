@@ -23,20 +23,40 @@ function Player:PapperDollBuildSlot(strSlot, strItem)
 end
 
 function DrawPapperDoll()
-	for _, player in pairs(player.GetAll()) do
-		if player.PapperDollEnts then
-			for slot, ent in pairs(player.PapperDollEnts) do
+	if !SinglePlayer() then
+		for _, player in pairs(player.GetAll()) do
+			for slot, ent in pairs(player.PapperDollEnts or {}) do
 				local tblItemTable = GAMEMODE.DataBase.Items[ent.Item]
-				local intAttachment = player:LookupAttachment(ent.Attachment)
-				local boolIsBeingEdited = player == LocalPlayer() && GAMEMODE.PapperDollEditor.CurrentSlot && GAMEMODE.PapperDollEditor.CurrentSlot == slot
-				local vecAddVector = tblItemTable.Model[1].Position
-				if boolIsBeingEdited then vecAddVector = GAMEMODE.PapperDollEditor.CurrentAddedVector end
-				local angAddAngle = tblItemTable.Model[1].Angle
-				if boolIsBeingEdited then angAddAngle = GAMEMODE.PapperDollEditor.CurrentAddedAngle end
-				ent:SetPos(player:GetAttachment(intAttachment).Pos)
-				ent:SetPos(ent:LocalToWorld(vecAddVector))
-				ent:SetAngles(player:GetAttachment(intAttachment).Ang)
-				ent:SetAngles(ent:LocalToWorldAngles(angAddAngle))
+				local tblAttachment = player:GetAttachment(player:LookupAttachment(ent.Attachment))
+				ent:SetAngles(tblAttachment.Ang)
+				ent:SetAngles(ent:LocalToWorldAngles(tblItemTable.Model[1].Angle))
+				ent:SetPos(tblAttachment.Pos)
+				ent:SetPos(ent:LocalToWorld(tblItemTable.Model[1].Position))
+			end
+		end
+		return
+	end
+	local player = LocalPlayer()
+	for slot, ent in pairs(player.PapperDollEnts or {}) do
+		local tblItemTable = GAMEMODE.DataBase.Items[ent.Item]
+		local tblAttachment = player:GetAttachment(player:LookupAttachment(ent.Attachment))
+		local boolIsBeingEdited = player == LocalPlayer() && GAMEMODE.PapperDollEditor.CurrentSlot && GAMEMODE.PapperDollEditor.CurrentSlot == slot
+		local angAddAngle = tblItemTable.Model[1].Angle
+		if boolIsBeingEdited && GAMEMODE.PapperDollEditor.CurrentObject == 1 then angAddAngle = GAMEMODE.PapperDollEditor.CurrentAddedAngle end
+		ent:SetAngles(tblAttachment.Ang)
+		ent:SetAngles(ent:LocalToWorldAngles(angAddAngle))
+		local vecAddVector = tblItemTable.Model[1].Position
+		if boolIsBeingEdited && GAMEMODE.PapperDollEditor.CurrentObject == 1 then vecAddVector = GAMEMODE.PapperDollEditor.CurrentAddedVector end
+		ent:SetPos(tblAttachment.Pos)
+		ent:SetPos(ent:LocalToWorld(vecAddVector))
+		for k, kid in pairs(ent.Children or {}) do
+			if boolIsBeingEdited && GAMEMODE.PapperDollEditor.CurrentObject == k + 1 then
+				local vecAddVector = GAMEMODE.PapperDollEditor.CurrentAddedVector
+				local angAddAngle = GAMEMODE.PapperDollEditor.CurrentAddedAngle
+				kid:SetAngles(ent:GetAngles())
+				kid:SetAngles(kid:LocalToWorldAngles(angAddAngle))
+				kid:SetPos(ent:GetPos())
+				kid:SetPos(kid:LocalToWorld(vecAddVector))
 			end
 		end
 	end
