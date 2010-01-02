@@ -19,6 +19,7 @@ function Player:GetIdealCamAngle()
 	--local vecToLookPos = LocalPlayer():GetEyeTraceNoCursor().HitPos - LocalPlayer():GetIdealCamPos()
 	local vecOldPosition = GAMEMODE.LastLookPos or LocalPlayer():GetEyeTraceNoCursor().HitPos
 	local vecLookPos = vecOldPosition + ((LocalPlayer():GetEyeTraceNoCursor().HitPos - vecOldPosition) / 5)
+	--local vecLookPos = LocalPlayer():GetPos() + Vector(0, 0, 50)
 	local vecToLookPos = (vecLookPos - LocalPlayer():GetIdealCamPos())
 	GAMEMODE.LastLookPos = vecLookPos
 	return vecToLookPos:Angle()

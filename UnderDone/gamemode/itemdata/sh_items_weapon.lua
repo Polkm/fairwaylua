@@ -5,7 +5,7 @@ Item.Desc = "Pasively gives you a pistol"
 Item.Icon = "icons/weapon_pistol"
 Item.Model = {}
 Item.Model[1] = {Model = "models/Weapons/W_pistol.mdl", Position = Vector(-3, 0, 3.5), Angle = Angle(0, 180, 0)}
-Item.Model[2] = {Model = "models/props_junk/garbage_metalcan001a.mdl", Position = Vector(6, 0, 0), Angle = Angle(90, 0, 0)}
+Item.Model[2] = {Model = "models/props_junk/garbage_metalcan001a.mdl", Position = Vector(0, 0, -7.2), Angle = Angle(90, 0, 0)}
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
