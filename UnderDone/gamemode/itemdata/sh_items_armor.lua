@@ -17,14 +17,8 @@ Item.PrintName = "Junky Armor"
 Item.Desc = "Protects your heart and lungs from gettin pwnd"
 Item.Icon = "icons/junk_box1"
 Item.Model = {}
-Item.Model[1] = {
-	Model = "models/Gibs/Shield_Scanner_Gib2.mdl",
-	Position = Vector(-0.2, 0.2, -3.3), Angle = Angle(-95.9, -10.5, 0)
-}
-Item.Model[2] = {
-	Model = "models/Gibs/Scanner_gib02.mdl",
-	Position = Vector(-4.4, 3.1, 3.9), Angle = Angle(46, 9.2, -116.9)
-}
+Item.Model[1] = {Model = "models/Gibs/Shield_Scanner_Gib2.mdl", Position = Vector(-0.2, 0.2, -3.3), Angle = Angle(-95.9, -10.5, 0)}
+Item.Model[2] = {Model = "models/Gibs/Scanner_gib02.mdl", Position = Vector(-4.4, 3.1, 3.9), Angle = Angle(46, 9.2, -116.9)}
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1

@@ -3,6 +3,8 @@ GM.PapperDollEditor.CurrentSlot = nil
 GM.PapperDollEditor.CurrentObject = 1
 GM.PapperDollEditor.CurrentAddedVector = Vector(0, 0, 0)
 GM.PapperDollEditor.CurrentAddedAngle = Angle(0, 0, 0)
+GM.PapperDollEditor.CurrentCamRotation = nil
+GM.PapperDollEditor.CurrentCamDistance = nil
 
 function GM.PapperDollEditor.OpenPapperDollEditor()
 	local frmPapperDollFrame = vgui.Create("DFrame")
@@ -13,16 +15,22 @@ function GM.PapperDollEditor.OpenPapperDollEditor()
 	pnlControlsList:AddItem(mlcObjectSellector)
 	local cpcVectorControls = GAMEMODE.PapperDollEditor.AddVectorControls(pnlControlsList)
 	local cpcAngleControls = GAMEMODE.PapperDollEditor.AddAngleControls(pnlControlsList)
+	local cpcCammeraControls = GAMEMODE.PapperDollEditor.AddCammeraControls(pnlControlsList)
 	local btnPrintButton = vgui.Create("DButton")
 	pnlControlsList:AddItem(btnPrintButton)
 	
 	frmPapperDollFrame:SetPos(50, 50)
-	frmPapperDollFrame:SetSize(300, 450)
+	frmPapperDollFrame:SetSize(325, 450)
 	frmPapperDollFrame:SetTitle("Papper Doll Editor")
 	frmPapperDollFrame:SetVisible(true)
 	frmPapperDollFrame:SetDraggable(true)
 	frmPapperDollFrame:ShowCloseButton(true)
 	frmPapperDollFrame:MakePopup()
+	frmPapperDollFrame.btnClose.DoClick = function(btn)
+		frmPapperDollFrame:Close()
+		GAMEMODE.PapperDollEditor.CurrentCamRotation = nil
+		GAMEMODE.PapperDollEditor.CurrentCamDistance = nil
+	end
 	
 	pnlControlsList:SetPos(5, 30)
 	pnlControlsList:SetSize(frmPapperDollFrame:GetWide() - 10, frmPapperDollFrame:GetTall() - 35)
@@ -97,6 +105,15 @@ function GM.PapperDollEditor.AddAngleControls(pnlAddList)
 	return cpcNewCollapseCat
 end
 
+function GM.PapperDollEditor.AddCammeraControls(pnlAddList)
+	local cpcNewCollapseCat = GAMEMODE.PapperDollEditor.CreateGenericCollapse(pnlAddList, "Cammera Controls")
+	local nmsNewRotationSlider = GAMEMODE.PapperDollEditor.CreateGenericSlider(cpcNewCollapseCat.List, "Rotation", 180, 3)
+	nmsNewRotationSlider.ValueChanged = function(self, value) GAMEMODE.PapperDollEditor.CurrentCamRotation = value end
+	local nmsNewDistanceSlider = GAMEMODE.PapperDollEditor.CreateGenericSlider(cpcNewCollapseCat.List, "Distance", GAMEMODE.IdealCammeraDistance)
+	nmsNewDistanceSlider.ValueChanged = function(self, value) GAMEMODE.PapperDollEditor.CurrentCamDistance = value end
+	return cpcNewCollapseCat
+end
+
 function GM.PapperDollEditor.CreateGenericCollapse(pnlAddList, strName)
 	local cpcNewCollapseCat = vgui.Create("DCollapsibleCategory")
 	cpcNewCollapseCat:SetLabel(strName)
@@ -110,12 +127,12 @@ function GM.PapperDollEditor.CreateGenericCollapse(pnlAddList, strName)
 	return cpcNewCollapseCat
 end
 
-function GM.PapperDollEditor.CreateGenericSlider(pnlAddList, strName, intRange)
+function GM.PapperDollEditor.CreateGenericSlider(pnlAddList, strName, intRange, intDecimals)
 	local nmsNewSlider = vgui.Create("DNumSlider")
 	nmsNewSlider:SetText(strName)
 	nmsNewSlider:SetMin(-intRange)
 	nmsNewSlider:SetMax(intRange)
-	nmsNewSlider:SetDecimals(1)
+	nmsNewSlider:SetDecimals(intDecimals or 1)
 	nmsNewSlider.UpdateSlider = function(intNewValue)
 		nmsNewSlider:SetValue(intNewValue)
 		nmsNewSlider.Slider:SetSlideX(nmsNewSlider.Wang:GetFraction())
