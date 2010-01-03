@@ -1,25 +1,31 @@
 GM.IdealCammeraDistance = 100
-GM.CammeraSmoothness = 10
-GM.SholderCam = true
-
+GM.AddativeCammeraDistance = 0
+GM.CammeraSmoothness = 5
 GM.LastLookPos = nil
 
 local Player = FindMetaTable("Player")
 function Player:GetIdealCamPos()
 	local vecPosition = self:GetPos()
-	local intDistance = GAMEMODE.IdealCammeraDistance + self.AddativeCamDistance
-	vecPosition.z = vecPosition.z + ((self:EyeAngles():Forward() * -intDistance).z) + 85
-	local vecForward = (self:EyeAngles():Forward() * -intDistance)
-	vecForward.z = 0
-	vecPosition = vecPosition + vecForward
-	vecPosition = vecPosition + (self:EyeAngles():Right() * 0)
+	local intDistance = GAMEMODE.IdealCammeraDistance + GAMEMODE.AddativeCammeraDistance
+	local intEditorRadiants = GAMEMODE.PapperDollEditor.CurrentCamRotation
+	local intEditorDistance = GAMEMODE.PapperDollEditor.CurrentCamDistance
+	if intEditorRadiants or intEditorDistance then
+		intDistance = intDistance + (intEditorDistance or 0)
+		vecPosition.x = vecPosition.x + (math.cos(math.rad(intEditorRadiants or 0)) * intDistance)
+		vecPosition.y = vecPosition.y + (math.sin(math.rad(intEditorRadiants or 0)) * intDistance)
+		vecPosition.z = vecPosition.z + 75
+	else
+		vecPosition = vecPosition + (self:EyeAngles():Forward() * -intDistance) + Vector(0, 0, 85)
+	end
 	return vecPosition
 end
 function Player:GetIdealCamAngle()
-	--local vecToLookPos = LocalPlayer():GetEyeTraceNoCursor().HitPos - LocalPlayer():GetIdealCamPos()
 	local vecOldPosition = GAMEMODE.LastLookPos or LocalPlayer():GetEyeTraceNoCursor().HitPos
-	local vecLookPos = vecOldPosition + ((LocalPlayer():GetEyeTraceNoCursor().HitPos - vecOldPosition) / 5)
-	--local vecLookPos = LocalPlayer():GetPos() + Vector(0, 0, 50)
+	local vecLookPos = vecOldPosition + ((LocalPlayer():GetEyeTraceNoCursor().HitPos - vecOldPosition) / (GAMEMODE.CammeraSmoothness / 2))
+	local intEditorRadiants = GAMEMODE.PapperDollEditor.CurrentCamRotation
+	if intEditorRadiants then
+		vecLookPos = LocalPlayer():GetPos() + Vector(0, 0, 55)
+	end
 	local vecToLookPos = (vecLookPos - LocalPlayer():GetIdealCamPos())
 	GAMEMODE.LastLookPos = vecLookPos
 	return vecToLookPos:Angle()
@@ -27,7 +33,6 @@ end
 
 if SERVER then
 	function PlayerSpawnHook(plySpawned)
-		if !GAMEMODE.SholderCam then return end
 		local entViewEntity = ents.Create("prop_dynamic")
 		entViewEntity:SetModel("models/error.mdl")
 		entViewEntity:Spawn()
@@ -58,7 +63,6 @@ else
 		if client.AntiStutterAnimate > 1 then client.AntiStutterAnimate = 0 end
 	end
 	function CalcViewHook(plyClient, vecOrigin, angAngles, fovFieldOfView)
-		if !GAMEMODE.SholderCam then return end
 		local client = plyClient
 		--This is for fixing laggy animations in multiplayer for the local player (thanks CapsAdmin :D)
 		antiStutterPos = (antiStutterPos or client:GetPos()) + ((client:GetPos() - (antiStutterPos or client:GetPos())) /  5)
@@ -67,8 +71,6 @@ else
 		--end of fix
 		if !GAMEMODE.CammeraPosition then GAMEMODE.CammeraPosition = client:GetPos() end
 		if !GAMEMODE.CammeraAngle then GAMEMODE.CammeraAngle = Angle(0, 0, 0) end
-		client.AddativeCamAngle = Vector(0, 0, 0)
-		client.AddativeCamDistance = 0
 		GAMEMODE.CammeraPosition = GAMEMODE.CammeraPosition + ((client:GetIdealCamPos() - GAMEMODE.CammeraPosition) / GAMEMODE.CammeraSmoothness)
 		GAMEMODE.CammeraAngle = client:GetIdealCamAngle()
 		local tblView = {}
