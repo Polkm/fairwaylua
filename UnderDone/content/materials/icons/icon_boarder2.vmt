@@ -1,6 +1,6 @@
 "UnlitGeneric"
 {
-	"$basetexture" "icons/icon_boarder"
+	"$basetexture" "icons/icon_boarder2"
 	"$vertexalpha" 1
 	"$vertexcolor" 1
 	"$nolod" 1

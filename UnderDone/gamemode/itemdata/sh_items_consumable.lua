@@ -12,14 +12,14 @@ Item.AddTime = 12
 Register.Item(Item)
 
 local Item = DeriveTable(BaseAmmo)
-Item.Name = "pistolammo"
-Item.PrintName = "Pistol Ammo"
-Item.Desc = "Gives you 20 pistol bullets"
+Item.Name = "small_ammo"
+Item.PrintName = "9mm Rounds"
+Item.Desc = "Gives you 20 9mm bullets"
 Item.Icon = "icons/item_pistolammobox"
 Item.Model = "models/Items/357ammobox.mdl"
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
-Item.AmmoType = "pistol"
+Item.AmmoType = "smg1"
 Item.AmmoAmount = 20
 Register.Item(Item)

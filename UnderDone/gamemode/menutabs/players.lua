@@ -4,18 +4,25 @@ PANEL.servercatagory = nil
 
 function PANEL:Init()
 	self.mainlist = vgui.Create("DPanelList", self)
-	self.mainlist:SetSpacing(1)
-	self.mainlist:SetPadding(1)
+	self.mainlist:SetSpacing(2)
+	self.mainlist:SetPadding(2)
 	self.mainlist:EnableHorizontal(false)
 	self.mainlist:EnableVerticalScrollbar(true)
 		self.servercatagory = vgui.Create("FListItem")
 		self.servercatagory:SetNameText("Server")
 		self.servercatagory:SetDescText(#player:GetAll() .. " Player(s)")
 		self.servercatagory:SetIcon("gui/server")
-		self.servercatagory:SetColor(Color(170, 170, 170, 200))
+		self.servercatagory:SetColor(clrTan)
 		self.servercatagory:SetExpandable(true)
 		self.servercatagory:SetExpanded(true)
 	self.mainlist:AddItem(self.servercatagory)
+	self.mainlist.Paint = function()
+		local tblPaintPanle = jdraw.NewPanel()
+		tblPaintPanle:SetDemensions(0, 0, self.mainlist:GetWide(), self.mainlist:GetTall())
+		tblPaintPanle:SetStyle(4, clrGray)
+		tblPaintPanle:SetBoarder(1, clrDrakGray)
+		jdraw.DrawPanel(tblPaintPanle)
+	end
 	self:LoadPlayers()
 end
 
@@ -32,6 +39,7 @@ function PANEL:LoadPlayers()
 		-------------------------
 		ListItem:SetNameText(player:Nick())
 		ListItem:SetIcon("gui/player")
+		ListItem:SetColor(clrGray)
 		if player:GetFriendStatus() then ListItem:SetIcon("gui/player_green") end
 		if player:IsAdmin() then ListItem:SetIcon("gui/admin") end
 		------Common Button------

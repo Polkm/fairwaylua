@@ -65,10 +65,12 @@ end
 
 BaseWeapon = DeriveTable(BaseEquiptment)
 BaseWeapon.HoldType = "pistol"
+BaseWeapon.AmmoType = "none"
 BaseWeapon.NumOfBullets = 1
 BaseWeapon.Power = 1
 BaseWeapon.Accuracy = 0.01
 BaseWeapon.FireRate = 3
+BaseWeapon.ClipSize = 5
 BaseWeapon.Sound = "weapons/pistol/pistol_fire2.wav"
 function BaseWeapon:Use(usr, itemtable)
 	BaseEquiptment:Use(usr, itemtable)
