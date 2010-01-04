@@ -10,9 +10,11 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.HoldType = "pistol"
+Item.AmmoType = "smg1"
 Item.Power = 8
 Item.Accuracy = 0.01
 Item.FireRate = 2
+Item.ClipSize = 9
 Item.Sound = "weapons/pistol/pistol_fire2.wav"
 Register.Item(Item)
 
@@ -27,10 +29,12 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 3
 Item.HoldType = "shotgun"
+Item.AmmoType = "buckshot"
 Item.NumOfBullets = 8
 Item.Power = 1
 Item.Accuracy = 0.1
 Item.FireRate = 1
+Item.ClipSize = 4
 Item.Sound = "weapons/shotgun/shotgun_fire6.wav"
 Register.Item(Item)
 
@@ -72,7 +76,7 @@ Item.PrintName = "Axe"
 Item.Desc = "For chopping wood"
 Item.Icon = "icons/weapon_axe"
 Item.Model = {}
-Item.Model[1] = {Model = "models/props_forest/axe.mdl", Position = Vector(0.4, -7.9, -0.4), Angle = Angle(14.5, 94.6, -80.1)}
+Item.Model[1] = {Model = "models/props_forest/axe.mdl", Position = Vector(-0.3, -5.2, -1), Angle = Angle(-0.7, 78.3, -82.3)}
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1

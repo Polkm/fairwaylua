@@ -11,9 +11,10 @@ function Player:GetIdealCamPos()
 	local intEditorDistance = GAMEMODE.PapperDollEditor.CurrentCamDistance
 	if intEditorRadiants or intEditorDistance then
 		intDistance = intDistance + (intEditorDistance or 0)
+		local intAddedHeight = 75
 		vecPosition.x = vecPosition.x + (math.cos(math.rad(intEditorRadiants or 0)) * intDistance)
 		vecPosition.y = vecPosition.y + (math.sin(math.rad(intEditorRadiants or 0)) * intDistance)
-		vecPosition.z = vecPosition.z + 75
+		vecPosition.z = vecPosition.z + intAddedHeight
 	else
 		vecPosition = vecPosition + (self:EyeAngles():Forward() * -intDistance) + Vector(0, 0, 85)
 	end

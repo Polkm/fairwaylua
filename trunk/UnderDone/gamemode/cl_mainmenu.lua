@@ -21,6 +21,29 @@ function PANEL:Init()
 		self.TabSheet = vgui.Create("DPropertySheet", self.Frame)
 			self.InventoryTab = self:NewTab("Inventory", "inventorytab", "gui/silkicons/user", "Minipulate your Items")
 			self.PlayersTab = self:NewTab("Players", "playerstab", "gui/silkicons/group", "List of players")
+		for _, sheet in pairs(self.TabSheet.Items) do
+			sheet.Tab.Paint = function(panel)
+				local clrBackColor = clrGray
+				if panel:GetPropertySheet():GetActiveTab() == panel then clrBackColor = clrTan end
+				local tblPaintPanle = jdraw.NewPanel()
+				tblPaintPanle:SetDemensions(0, 0, sheet.Tab:GetWide(), sheet.Tab:GetTall() - 1)
+				tblPaintPanle:SetStyle(4, clrBackColor)
+				tblPaintPanle:SetBoarder(1, clrDrakGray)
+				jdraw.DrawPanel(tblPaintPanle)
+				if panel:GetPropertySheet():GetActiveTab() == panel then
+					draw.RoundedBox(0, 1, sheet.Tab:GetTall() - 4, sheet.Tab:GetWide() - 2, 5, clrBackColor)
+				else
+					draw.RoundedBox(0, 1, sheet.Tab:GetTall() - 4, sheet.Tab:GetWide() - 2, 2, clrBackColor)
+				end
+			end
+		end
+		self.TabSheet.Paint = function()
+			local tblPaintPanle = jdraw.NewPanel()
+			tblPaintPanle:SetDemensions(0, 20, self.TabSheet:GetWide(), self.TabSheet:GetTall() - 20)
+			tblPaintPanle:SetStyle(4, clrTan)
+			tblPaintPanle:SetBoarder(1, clrDrakGray)
+			jdraw.DrawPanel(tblPaintPanle)
+		end
 		self:PerformLayout()
 end
 

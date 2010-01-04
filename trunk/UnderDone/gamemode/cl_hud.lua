@@ -1,39 +1,60 @@
-local boxColor = Color(180, 180, 180, 100)
-local textColor = Color(60, 60, 60, 255)
+local boxColor = Color(100, 100, 100, 255)
+local textColor = Color(255, 255, 255, 200)
 local boaderColor = Color(40, 40, 40, 100)
+clrGray = Color(97, 95, 77, 255)
+clrDrakGray = Color(54, 53, 42, 255)
+clrGreen = Color(194, 255, 72, 255)
+clrOrange = Color(212, 143, 57, 255)
+clrPurple = Color(140, 84, 178, 255)
+clrBlue = Color(74, 124, 178, 255)
+clrRed = Color(89, 33, 26, 255)
+clrTan = Color(178, 161, 126, 255)
+clrWhite = Color(255, 242, 200, 255)
 
 Notifications = {}
 function GM:HUDPaint()
+	local boolShouldDrawAmmo = true
+	if !LocalPlayer():GetActiveWeapon() or !LocalPlayer():GetActiveWeapon():IsValid() then boolShouldDrawAmmo = false end
+	if !LocalPlayer():GetActiveWeapon().WeaponTable or LocalPlayer():GetActiveWeapon().WeaponTable.AmmoType == "none" then boolShouldDrawAmmo = false end
 	self.PlayerBox = jdraw.NewPanel()
-	self.PlayerBox:SetDemensions(10, ScrH() - 49, 250, 39)
-	self.PlayerBox:SetStyle(4, Color(180, 180, 180, 100))
-	self.PlayerBox:SetBoarder(1, Color(40, 40, 40, 150))
+	if !boolShouldDrawAmmo then
+		self.PlayerBox:SetDemensions(10, ScrH() - 31, 300, 21)
+	else
+		self.PlayerBox:SetDemensions(10, ScrH() - 49, 300, 39)
+	end
+	self.PlayerBox:SetStyle(4, clrTan)
+	self.PlayerBox:SetBoarder(1, clrDrakGray)
 	jdraw.DrawPanel(self.PlayerBox)
 	self:DrawHealthBar()
-	self:DrawWeightBar()
+	if boolShouldDrawAmmo then
+		self:DrawAmmoThingy()
+	end
 	self:Notifications()
 end
 
 function GM:DrawHealthBar()
-	local clrBarColor = Color(80, 200, 20, 255)
-	if LocalPlayer():Health() <= 20 then clrBarColor = Color(200, 50, 10, 255) end
+	local clrBarColor = clrGreen
+	if LocalPlayer():Health() <= 20 then clrBarColor = clrRed end
 	self.HealthBar = jdraw.NewProgressBar(self.PlayerBox, true)
 	self.HealthBar:SetDemensions(3, 3, self.PlayerBox.Size.Width - 6, 15)
 	self.HealthBar:SetStyle(4, clrBarColor)
 	self.HealthBar:SetValue(LocalPlayer():Health(), 100)
-	self.HealthBar:SetText("UiBold", "Health " .. LocalPlayer():Health() .. "/" ..  100, textColor)
+	self.HealthBar:SetText("UiBold", "Health " .. LocalPlayer():Health(), clrDrakGray)
 	jdraw.DrawProgressBar(self.HealthBar)
 end
 
-function GM:DrawWeightBar()
-	local intWeight = self.TotalWeight
-	local clrBarColor = Color(20, 80, 200, 255)
-	self.WeightBar = jdraw.NewProgressBar(self.PlayerBox, true)
-	self.WeightBar:SetDemensions(3, self.HealthBar.Size.Hieght + 6, self.PlayerBox.Size.Width - 6, 15)
-	self.WeightBar:SetStyle(4, clrBarColor)
-	self.WeightBar:SetValue(intWeight, MaxWeight)
-	self.WeightBar:SetText("UiBold", "Weight " .. intWeight .. "/" ..  MaxWeight, textColor)
-	jdraw.DrawProgressBar(self.WeightBar)
+function GM:DrawAmmoThingy()
+	local entActiveWeapon = LocalPlayer():GetActiveWeapon()
+	local intCurrentClip = entActiveWeapon:Clip1()
+	local tblWeaponTable = entActiveWeapon.WeaponTable or {}
+	local strAmmoType = tblWeaponTable.AmmoType or "none"
+	local clrBarColor = clrBlue
+	self.AmmoBar = jdraw.NewProgressBar(self.PlayerBox, true)
+	self.AmmoBar:SetDemensions(3, self.HealthBar.Size.Hieght + 6, self.PlayerBox.Size.Width - 6, 15)
+	self.AmmoBar:SetStyle(4, clrBarColor)
+	self.AmmoBar:SetValue(intCurrentClip, tblWeaponTable.ClipSize or 1)
+	self.AmmoBar:SetText("UiBold", "Ammo " .. intCurrentClip .. "  " .. LocalPlayer():GetAmmoCount(strAmmoType), clrDrakGray)
+	jdraw.DrawProgressBar(self.AmmoBar)
 end
 
 function GM:Notifications()
@@ -63,7 +84,7 @@ function GM:HUDShouldDraw(name)
 			return wep.HUDShouldDraw(wep, name)
 		end
 	end
-	if name == "CHudHealth" or name == "CHudBattery" or name == "CHudAmmo" then
+	if name == "CHudHealth" or name == "CHudBattery" or name == "CHudAmmo" or name == "CHudSecondaryAmmo" then
 		return false
 	end
 	return true

@@ -9,7 +9,7 @@
 ]]
 local PANEL = {}
 local matGlossIcon = surface.GetTextureID("icons/icon_gloss")
-local matBoarderIcon = surface.GetTextureID("icons/icon_boarder")
+local matBoarderIcon = surface.GetTextureID("icons/icon_boarder2")
 PANEL.Icon = nil
 PANEL.Amount = nil
 PANEL.LastClick = 0

@@ -42,8 +42,8 @@ function PANEL:Init()
 end
 
 function PANEL:PerformLayout()
-	if self.Expanded then self:SetSize(self:GetParent():GetWide() - 2, self.ExpandedSize) end
-	if !self.Expanded then self:SetSize(self:GetParent():GetWide() - 2, 18) end
+	if self.Expanded then self:SetSize(self:GetWide(), self.ExpandedSize) end
+	if !self.Expanded then self:SetSize(self:GetWide(), 18) end
 	if self.CommonButton then
 		self.CommonButton:SetPos(self:GetWide() - 17, 1)
 		if self.SecondaryButton then self.CommonButton:SetPos(self:GetWide() - 36, 1) end
@@ -52,26 +52,25 @@ function PANEL:PerformLayout()
 		self.SecondaryButton:SetPos(self:GetWide() - 17, 1)
 	end
 	if self.ContentList then
-		self.ContentList:SetSize(self:GetWide() - 2, self:GetTall() - 22)
-		self.ContentList:SetPos(1, 21)
+		self.ContentList:SetSize(self:GetWide() - 4, self:GetTall() - 23)
+		self.ContentList:SetPos(2, 21)
 	end
 	self:GetParent():InvalidateLayout()
 end
 
 function PANEL:Paint()
+	local clrBackGroundColor
 	local x, y = self:CursorPos()
 	if x > 0 && x < self:GetWide() && y > 0 && y < self:GetTall() then
-		draw.RoundedBox(4, 0, 0, self:GetWide(), self:GetTall(), self.Color_hover)
+		clrBackGroundColor = self.Color_hover
 	else
-		draw.RoundedBox(4, 0, 0, self:GetWide(""), self:GetTall(), self.Color)
+		clrBackGroundColor = self.Color
 	end
-	draw.RoundedBox(0, 2, 0, self:GetWide() - 4, 1, Color(200, 200, 200, 100))
-	--Div
-	draw.RoundedBox(0, 1, 19, self:GetWide() - 2, 1, Color(50, 50, 50, 100))
-	--Grdiant
-	surface.SetDrawColor(0, 0, 0, 100)
-	surface.SetTexture(self.GradientTexture)
-	surface.DrawTexturedRect(0, 0, self:GetWide(), self:GetTall())
+	local tblPaintPanle = jdraw.NewPanel()
+	tblPaintPanle:SetDemensions(0, 0, self:GetWide(), self:GetTall())
+	tblPaintPanle:SetStyle(4, clrBackGroundColor)
+	tblPaintPanle:SetBoarder(1, clrDrakGray)
+	jdraw.DrawPanel(tblPaintPanle)
 	--Icon
 	if self.Icon then
 		local IconTexture = surface.GetTextureID(self.Icon)
@@ -145,12 +144,19 @@ function PANEL:AddContent(objItem)
 	if !self.ContentList then
 		self.ContentList = vgui.Create("DPanelList", self)
 		self.ContentList:SetSpacing(1)
-		self.ContentList:SetPadding(1)
+		self.ContentList:SetPadding(2)
 		self.ContentList:EnableHorizontal(false)
 		self.ContentList:EnableVerticalScrollbar(true)
+		self.ContentList.Paint = function()
+			local tblPaintPanle = jdraw.NewPanel()
+			tblPaintPanle:SetDemensions(0, 0, self.ContentList:GetWide(), self.ContentList:GetTall())
+			tblPaintPanle:SetStyle(4, clrGray)
+			tblPaintPanle:SetBoarder(1, clrDrakGray)
+			jdraw.DrawPanel(tblPaintPanle)
+		end
 	end
 	self.ContentList:AddItem(objItem)
-	local ExpandSize = 18 + 5
+	local ExpandSize = 22 + 4
 	for _,ListItem in pairs(self.ContentList:GetItems()) do ExpandSize = ExpandSize + 19 end
 	self.ExpandedSize = ExpandSize
 	self:PerformLayout()

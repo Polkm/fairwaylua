@@ -16,9 +16,17 @@ function PANEL:Init()
 	for _, slotTable in pairs(GAMEMODE.DataBase.Slots) do
 		local icnItem = vgui.Create("FIconItem", self)
 		icnItem:SetSize(self.ItemIconSize, self.ItemIconSize)
-		icnItem:SetPos(slotTable.Position.x, slotTable.Position.y)
 		icnItem:SetSlot(slotTable)
 		self.Slots[slotTable.Name] = icnItem
+	end
+end
+
+function PANEL:PerformLayout()
+	for name, icnItem in pairs(self.Slots) do
+		local tblSlotTable = GAMEMODE.DataBase.Slots[name]
+		local intX = (self:GetWide() * (tblSlotTable.Position.x / 100)) - (self.ItemIconSize / 2)
+		local intY = (self:GetTall() * (tblSlotTable.Position.y / 100)) - (self.ItemIconSize / 2)
+		icnItem:SetPos(intX, intY)
 	end
 end
 
