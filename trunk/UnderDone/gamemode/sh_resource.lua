@@ -1,5 +1,6 @@
 local tblSharedFolders = {}
 tblSharedFolders[1] = "underdone/gamemode/itemdata/"
+tblSharedFolders[2] = "underdone/gamemode/sharedfiles/"
 
 local tblClientFolders = {}
 tblClientFolders[1] = "underdone/gamemode/menutabs/"

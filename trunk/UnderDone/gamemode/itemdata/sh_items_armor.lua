@@ -9,6 +9,7 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.Slot = "slot_helm"
+Item.Buffs = {}
 Register.Item(Item)
 
 local Item = DeriveTable(BaseEquiptment)
@@ -24,4 +25,5 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.Slot = "slot_chest"
+Item.Buffs["stat_maxhealth"] = 5
 Register.Item(Item)

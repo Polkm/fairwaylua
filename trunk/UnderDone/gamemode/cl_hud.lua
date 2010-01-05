@@ -18,14 +18,15 @@ function GM:HUDPaint()
 	if !LocalPlayer():GetActiveWeapon().WeaponTable or LocalPlayer():GetActiveWeapon().WeaponTable.AmmoType == "none" then boolShouldDrawAmmo = false end
 	self.PlayerBox = jdraw.NewPanel()
 	if !boolShouldDrawAmmo then
-		self.PlayerBox:SetDemensions(10, ScrH() - 31, 300, 21)
+		self.PlayerBox:SetDemensions(10, ScrH() - 55, 300, 45)
 	else
-		self.PlayerBox:SetDemensions(10, ScrH() - 49, 300, 39)
+		self.PlayerBox:SetDemensions(10, ScrH() - 73, 300, 63)
 	end
 	self.PlayerBox:SetStyle(4, clrTan)
 	self.PlayerBox:SetBoarder(1, clrDrakGray)
 	jdraw.DrawPanel(self.PlayerBox)
 	self:DrawHealthBar()
+	self:DrawLevelBar()
 	if boolShouldDrawAmmo then
 		self:DrawAmmoThingy()
 	end
@@ -36,11 +37,23 @@ function GM:DrawHealthBar()
 	local clrBarColor = clrGreen
 	if LocalPlayer():Health() <= 20 then clrBarColor = clrRed end
 	self.HealthBar = jdraw.NewProgressBar(self.PlayerBox, true)
-	self.HealthBar:SetDemensions(3, 3, self.PlayerBox.Size.Width - 6, 15)
+	self.HealthBar:SetDemensions(3, 3, self.PlayerBox.Size.Width - 6, 20)
 	self.HealthBar:SetStyle(4, clrBarColor)
-	self.HealthBar:SetValue(LocalPlayer():Health(), 100)
+	self.HealthBar:SetValue(LocalPlayer():Health(), LocalPlayer():GetStat("stat_maxhealth"))
 	self.HealthBar:SetText("UiBold", "Health " .. LocalPlayer():Health(), clrDrakGray)
 	jdraw.DrawProgressBar(self.HealthBar)
+end
+
+function GM:DrawLevelBar()
+	local intCurrentLevelExp = toExp(LocalPlayer():GetLevel())
+	local intNextLevelExp = toExp(LocalPlayer():GetLevel() + 1)
+	local clrBarColor = clrOrange
+	self.LevelBar = jdraw.NewProgressBar(self.PlayerBox, true)
+	self.LevelBar:SetDemensions(3, self.HealthBar.Size.Hieght + 6, self.PlayerBox.Size.Width - 6, 15)
+	self.LevelBar:SetStyle(4, clrBarColor)
+	self.LevelBar:SetValue(LocalPlayer():GetNWInt("exp") - intCurrentLevelExp, intNextLevelExp - intCurrentLevelExp)
+	self.LevelBar:SetText("UiBold", "Level " .. LocalPlayer():GetLevel(), clrDrakGray)
+	jdraw.DrawProgressBar(self.LevelBar)
 end
 
 function GM:DrawAmmoThingy()
@@ -50,7 +63,7 @@ function GM:DrawAmmoThingy()
 	local strAmmoType = tblWeaponTable.AmmoType or "none"
 	local clrBarColor = clrBlue
 	self.AmmoBar = jdraw.NewProgressBar(self.PlayerBox, true)
-	self.AmmoBar:SetDemensions(3, self.HealthBar.Size.Hieght + 6, self.PlayerBox.Size.Width - 6, 15)
+	self.AmmoBar:SetDemensions(3, self.HealthBar.Size.Hieght + self.LevelBar.Size.Hieght + 9, self.PlayerBox.Size.Width - 6, 15)
 	self.AmmoBar:SetStyle(4, clrBarColor)
 	self.AmmoBar:SetValue(intCurrentClip, tblWeaponTable.ClipSize or 1)
 	self.AmmoBar:SetText("UiBold", "Ammo " .. intCurrentClip .. "  " .. LocalPlayer():GetAmmoCount(strAmmoType), clrDrakGray)
