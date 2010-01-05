@@ -43,6 +43,7 @@ end
 
 BaseEquiptment = DeriveTable(BaseItem)
 BaseEquiptment.Slot = "slot_primaryweapon"
+BaseEquiptment.Buffs = {}
 function BaseEquiptment:Use(usr, itemtable)
 	if usr:Health() <= 0 && usr:IsPlayer() then return end
 	if !usr.Data.Paperdoll then usr.Data.Paperdoll = {} end
@@ -54,6 +55,14 @@ function BaseEquiptment:Use(usr, itemtable)
 	else
 		usr.Data.Paperdoll[itemtable.Slot] = nil
 	end
+	for name, amount in pairs(itemtable.Buffs or {}) do
+		print(name, amount)
+		if usr.Data.Paperdoll[itemtable.Slot] then
+			usr:AddStat(name, amount)
+		else
+			usr:AddStat(name, -amount)	
+		end
+	end
 	umsg.Start("UD_UpdatePapperDoll")
 	umsg.Entity(usr)
 	umsg.String(itemtable.Slot)
@@ -61,6 +70,7 @@ function BaseEquiptment:Use(usr, itemtable)
 		umsg.String(itemtable.Name)
 	end
 	umsg.End()
+	usr:SaveGame()
 end
 
 BaseWeapon = DeriveTable(BaseEquiptment)

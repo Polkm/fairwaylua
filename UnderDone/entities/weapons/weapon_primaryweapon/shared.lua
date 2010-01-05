@@ -45,7 +45,7 @@ function SWEP:Reload()
 		timer.Simple(1.5, function()
 			if !self or !self.Owner or !self.Owner:Alive() then return end
 			self.Owner:RemoveAmmo(self.WeaponTable.ClipSize - self:Clip1(), self.WeaponTable.AmmoType)
-			self:SetClip1(self.WeaponTable.ClipSize)
+			self:SetClip1(math.Clamp(self.WeaponTable.ClipSize, 0, intCurrentAmmo))
 			self:SetNWBool("reloading", false)
 		end)
 	end

@@ -1,7 +1,6 @@
 -------------------------
 --------Includes---------
 include('shared.lua')
-include('sh_camera.lua')
 include('itemdata/sh_items_base.lua')
 include('sh_resource.lua')
 include('cl_hud.lua')
@@ -60,6 +59,13 @@ function UpdatePapperDollUsrMsg(usrMsg)
 	end
 end
 usermessage.Hook("UD_UpdatePapperDoll", UpdatePapperDollUsrMsg)
+
+function UpdateStatUsrMsg(usrMsg)
+	local strStat = usrMsg:ReadString()
+	local intAmount = usrMsg:ReadLong()
+	LocalPlayer():SetStat(strStat, intAmount)
+end
+usermessage.Hook("UD_UpdateStats", UpdateStatUsrMsg)
 
 function GM:Think()
 	if GAMEMODE.DraggingPanel then

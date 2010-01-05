@@ -1,5 +1,6 @@
 PANEL = {}
 PANEL.inventorylist = nil
+PANEL.WeightBar = nil
 PANEL.Paperdoll = nil
 PANEL.ItemIconPadding = 1
 PANEL.ItemIconSize = 39
@@ -28,8 +29,12 @@ function PANEL:Init()
 	end
 	GAMEMODE:AddHoverObject(self.inventorylist)
 	GAMEMODE:AddHoverObject(self.inventorylist.pnlCanvas, self.inventorylist)
-	
 	self.inventorylist.catagories = {}
+	
+	self.WeightBar = vgui.Create("FPercentBar", self)
+	self.WeightBar:SetMax(MaxWeight)
+	self.WeightBar:SetValue(GAMEMODE.TotalWeight)
+	self.WeightBar:SetText("Weight " .. GAMEMODE.TotalWeight .. "/" ..  MaxWeight)
 	
 	self.Paperdoll = vgui.Create("FPaperDoll", self)
 	self.Paperdoll.Paint = function()
@@ -39,11 +44,19 @@ function PANEL:Init()
 		tblPaintPanle:SetBoarder(1, clrDrakGray)
 		jdraw.DrawPanel(tblPaintPanle)
 	end
-	
-	self.WeightBar = vgui.Create("FPercentBar", self)
-	self.WeightBar:SetMax(MaxWeight)
-	self.WeightBar:SetValue(GAMEMODE.TotalWeight)
-	self.WeightBar:SetText("Weight " .. GAMEMODE.TotalWeight .. "/" ..  MaxWeight)
+
+	self.StatsDisplay = vgui.Create("DPanelList", self)
+	self.StatsDisplay:SetSpacing(2)
+	self.StatsDisplay:SetPadding(4)
+	self.StatsDisplay:EnableHorizontal(false)
+	self.StatsDisplay:EnableVerticalScrollbar(false)
+	self.StatsDisplay.Paint = function()
+		local tblPaintPanle = jdraw.NewPanel()
+		tblPaintPanle:SetDemensions(0, 0, self.StatsDisplay:GetWide(), self.StatsDisplay:GetTall())
+		tblPaintPanle:SetStyle(4, clrGray)
+		tblPaintPanle:SetBoarder(1, clrDrakGray)
+		jdraw.DrawPanel(tblPaintPanle)
+	end
 	
 	self:LoadInventory()
 end
@@ -52,11 +65,14 @@ function PANEL:PerformLayout()
 	self.inventorylist:SetPos(0, 20)
 	self.inventorylist:SetSize(((self.ItemIconSize + self.ItemIconPadding) * self.ItemRow) + self.ItemIconPadding, self:GetTall() - 20)
 	
-	self.Paperdoll:SetPos(self.inventorylist:GetWide() + 5, 0)
-	self.Paperdoll:SetSize(self:GetWide() - (self.inventorylist:GetWide() + 5), self:GetTall())
-	
 	self.WeightBar:SetPos(0, 0)
 	self.WeightBar:SetSize(self.inventorylist:GetWide(), 15)
+	
+	self.Paperdoll:SetPos(self.inventorylist:GetWide() + 5, 0)
+	self.Paperdoll:SetSize(self:GetWide() - (self.inventorylist:GetWide() + 5), self:GetTall() - 75)
+	
+	self.StatsDisplay:SetPos(self.inventorylist:GetWide() + 5, self.Paperdoll:GetTall() + 5)
+	self.StatsDisplay:SetSize(self.Paperdoll:GetWide(), self:GetTall() - self.Paperdoll:GetTall() - 5)
 end
 
 function PANEL:LoadInventory(boolTemp)
@@ -72,13 +88,25 @@ function PANEL:LoadInventory(boolTemp)
 		end
 	end
 	
-	for _, slotTable in pairs(GAMEMODE.DataBase.Slots) do
+	for name, slotTable in pairs(GAMEMODE.DataBase.Slots) do
 		if self.Paperdoll.Slots[slotTable.Name] then
 			if GAMEMODE.Paperdoll[slotTable.Name] then
 				self.Paperdoll.Slots[slotTable.Name]:SetItem(GAMEMODE.DataBase.Items[GAMEMODE.Paperdoll[slotTable.Name]])
 			else
 				self.Paperdoll.Slots[slotTable.Name]:SetSlot(slotTable)
 			end
+		end
+	end
+	
+	self.StatsDisplay:Clear()
+	for name, stat in pairs(GAMEMODE.DataBase.Stats) do
+		if LocalPlayer().Stats then
+			local lblNewStat = vgui.Create("DLabel")
+			lblNewStat:SetFont("UiBold")
+			lblNewStat:SetColor(clrDrakGray)
+			lblNewStat:SetText(stat.PrintName .. " " .. LocalPlayer().Stats[name])
+			lblNewStat:SizeToContents()
+			self.StatsDisplay:AddItem(lblNewStat)
 		end
 	end
 	
