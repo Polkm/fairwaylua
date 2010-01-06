@@ -20,8 +20,11 @@ end
 function Register.Slot(tblItem)
 	GM.DataBase.Slots[tblItem.Name] = tblItem
 end
+local intStatIndex = 1
 function Register.Stat(tblItem)
 	GM.DataBase.Stats[tblItem.Name] = tblItem
+	GM.DataBase.Stats[tblItem.Name].Index = intStatIndex
+	intStatIndex = intStatIndex + 1
 end
 function Register.NPC(tblItem)
 	GM.DataBase.NPCs[tblItem.Name] = tblItem

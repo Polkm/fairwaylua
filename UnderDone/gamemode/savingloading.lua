@@ -12,6 +12,7 @@ function Player:NewGame()
 	AddItemToInv(self, "axe", 1)
 	AddItemToInv(self, "helm", 1)
 	AddItemToInv(self, "armor_junk_chest", 1)
+	AddItemToInv(self, "goggles_scanner", 1)
 	print("NEW GAME BITCHES")
 	self:SaveGame()
 end
@@ -75,6 +76,6 @@ function Player:SaveGame()
 		end
 		local tblSaveTable = self.Data
 		tblSaveTable.Exp = self:GetNWInt("exp") or 0
-		file.Write(strFileName, glon.encode(tblSaveTable))
+		--file.Write(strFileName, glon.encode(tblSaveTable))
 	end
 end

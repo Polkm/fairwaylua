@@ -46,8 +46,8 @@ function PANEL:Init()
 	end
 
 	self.StatsDisplay = vgui.Create("DPanelList", self)
-	self.StatsDisplay:SetSpacing(2)
-	self.StatsDisplay:SetPadding(4)
+	self.StatsDisplay:SetSpacing(0)
+	self.StatsDisplay:SetPadding(3)
 	self.StatsDisplay:EnableHorizontal(false)
 	self.StatsDisplay:EnableVerticalScrollbar(false)
 	self.StatsDisplay.Paint = function()
@@ -69,7 +69,7 @@ function PANEL:PerformLayout()
 	self.WeightBar:SetSize(self.inventorylist:GetWide(), 15)
 	
 	self.Paperdoll:SetPos(self.inventorylist:GetWide() + 5, 0)
-	self.Paperdoll:SetSize(self:GetWide() - (self.inventorylist:GetWide() + 5), self:GetTall() - 75)
+	self.Paperdoll:SetSize(self:GetWide() - (self.inventorylist:GetWide() + 5), self:GetTall() - 85)
 	
 	self.StatsDisplay:SetPos(self.inventorylist:GetWide() + 5, self.Paperdoll:GetTall() + 5)
 	self.StatsDisplay:SetSize(self.Paperdoll:GetWide(), self:GetTall() - self.Paperdoll:GetTall() - 5)
@@ -99,12 +99,15 @@ function PANEL:LoadInventory(boolTemp)
 	end
 	
 	self.StatsDisplay:Clear()
-	for name, stat in pairs(GAMEMODE.DataBase.Stats) do
+	local tblAddTable = table.Copy(GAMEMODE.DataBase.Stats)
+	tblAddTable = table.ClearKeys(tblAddTable)
+	table.sort(tblAddTable, function(statA, statB) return statA.Index < statB.Index end)
+	for key, stat in pairs(tblAddTable) do
 		if LocalPlayer().Stats then
 			local lblNewStat = vgui.Create("DLabel")
 			lblNewStat:SetFont("UiBold")
 			lblNewStat:SetColor(clrDrakGray)
-			lblNewStat:SetText(stat.PrintName .. " " .. LocalPlayer().Stats[name])
+			lblNewStat:SetText(stat.PrintName .. " " .. LocalPlayer().Stats[stat.Name])
 			lblNewStat:SizeToContents()
 			self.StatsDisplay:AddItem(lblNewStat)
 		end
