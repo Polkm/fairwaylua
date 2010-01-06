@@ -13,6 +13,20 @@ Item.Buffs = {}
 Register.Item(Item)
 
 local Item = DeriveTable(BaseEquiptment)
+Item.Name = "goggles_scanner"
+Item.PrintName = "Scanner Goggles"
+Item.Desc = "Scan like a scanner"
+Item.Icon = "icons/junk_box1"
+Item.Model = {}
+Item.Model[1] = {Model = "models/Gibs/Shield_Scanner_Gib1.mdl", Position = Vector(-0.3, -0.3, 0.1), Angle = Angle(121.1, -83.6, -95.7)}
+Item.Dropable = true
+Item.Giveable = true
+Item.Weight = 1
+Item.Slot = "slot_helm"
+Item.Buffs = {}
+Register.Item(Item)
+
+local Item = DeriveTable(BaseEquiptment)
 Item.Name = "armor_junk_chest"
 Item.PrintName = "Junky Armor"
 Item.Desc = "Protects your heart and lungs from gettin pwnd"
