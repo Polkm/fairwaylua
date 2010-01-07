@@ -19,24 +19,25 @@ BaseFood = DeriveTable(BaseItem)
 BaseFood.AddedHealth = 25
 BaseFood.AddTime = 10
 function BaseFood:Use(usr, itemtable)
-	if !usr or !usr:IsValid() or usr:Health() >= 100 or usr:Health() <= 0 then return end
+	if !usr or !usr:IsValid() or usr:Health() >= usr:GetStat("stat_maxhealth") or usr:Health() <= 0 then return end
 	local intHealthToAdd = itemtable.AddedHealth
 	local intHealthGiven = 0
 	local function AddHealth()
-		if !usr or !usr:IsValid() or usr:Health() >= 100 or usr:Health() <= 0 or intHealthGiven >= intHealthToAdd then return end
-		usr:SetHealth(math.Clamp(usr:Health() + 1, 0, 100))
+		if !usr or !usr:IsValid() or usr:Health() >= usr:GetStat("stat_maxhealth") or usr:Health() <= 0 or intHealthGiven >= intHealthToAdd then return end
+		usr:SetHealth(math.Clamp(usr:Health() + 1, 0, usr:GetStat("stat_maxhealth")))
 		intHealthGiven = intHealthGiven + 1
 		timer.Simple(itemtable.AddTime / intHealthToAdd, AddHealth)
 	end
 	timer.Simple(itemtable.AddTime / intHealthToAdd, AddHealth)
 	RemoveItemFromInv(usr, itemtable.Name)
+	usr:ConCommand("UD_AddNotification Look at you you ate a food your weird") 
 end
 
 BaseAmmo = DeriveTable(BaseItem)
 BaseAmmo.AmmoType = "pistol"
 BaseAmmo.AmmoAmount = 20
 function BaseAmmo:Use(usr, itemtable)
-	if usr:Health() <= 0 then return end
+	if !usr or !usr:IsValid() or usr:Health() <= 0 then return false end
 	usr:GiveAmmo(itemtable.AmmoAmount, itemtable.AmmoType)
 	RemoveItemFromInv(usr, itemtable.Name)
 end
@@ -44,20 +45,18 @@ end
 BaseEquiptment = DeriveTable(BaseItem)
 BaseEquiptment.Slot = "slot_primaryweapon"
 BaseEquiptment.Buffs = {}
-function BaseEquiptment:Use(usr, itemtable)
-	if usr:Health() <= 0 && usr:IsPlayer() then return end
+function BaseEquiptment:Use(usr, tblItemTable)
+	if !usr or !usr:IsValid() or usr:Health() <= 0 then return false end
+	if !tblItemTable or !tblItemTable.Slot then return false end
 	if !usr.Data.Paperdoll then usr.Data.Paperdoll = {} end
-	if !itemtable then return end
-	if !usr.Data.Paperdoll then usr.Data.Paperdoll = {} end
-	local strCurrentItem = usr.Data.Paperdoll[itemtable.Slot]
-	if !strCurrentItem or (strCurrentItem && strCurrentItem != itemtable.Name) then
-		usr.Data.Paperdoll[itemtable.Slot] = itemtable.Name
+	local strCurrentItem = usr.Data.Paperdoll[tblItemTable.Slot]
+	if !strCurrentItem or (strCurrentItem && strCurrentItem != tblItemTable.Name) then
+		usr.Data.Paperdoll[tblItemTable.Slot] = tblItemTable.Name
 	else
-		usr.Data.Paperdoll[itemtable.Slot] = nil
+		usr.Data.Paperdoll[tblItemTable.Slot] = nil
 	end
-	for name, amount in pairs(itemtable.Buffs or {}) do
-		print(name, amount)
-		if usr.Data.Paperdoll[itemtable.Slot] then
+	for name, amount in pairs(tblItemTable.Buffs or {}) do
+		if usr.Data.Paperdoll[tblItemTable.Slot] then
 			usr:AddStat(name, amount)
 		else
 			usr:AddStat(name, -amount)	
@@ -65,12 +64,23 @@ function BaseEquiptment:Use(usr, itemtable)
 	end
 	umsg.Start("UD_UpdatePapperDoll")
 	umsg.Entity(usr)
-	umsg.String(itemtable.Slot)
-	if usr.Data.Paperdoll[itemtable.Slot] then
-		umsg.String(itemtable.Name)
+	umsg.String(tblItemTable.Slot)
+	if usr.Data.Paperdoll[tblItemTable.Slot] then
+		umsg.String(tblItemTable.Name)
 	end
 	umsg.End()
 	usr:SaveGame()
+	for slot, item in pairs(usr.Data.Paperdoll) do
+		if slot != tblItemTable.Slot then
+			local tblSlotTable = GAMEMODE.DataBase.Slots[slot]
+			if tblSlotTable.ShouldClear then
+				if tblSlotTable:ShouldClear(usr, tblItemTable) then
+					usr:UseItem(item)
+				end
+			end
+		end
+	end
+	return true
 end
 
 BaseWeapon = DeriveTable(BaseEquiptment)
@@ -83,9 +93,8 @@ BaseWeapon.FireRate = 3
 BaseWeapon.ClipSize = 5
 BaseWeapon.Sound = "weapons/pistol/pistol_fire2.wav"
 function BaseWeapon:Use(usr, itemtable)
-	BaseEquiptment:Use(usr, itemtable)
+	if !BaseEquiptment:Use(usr, itemtable) then return end
 	usr:StripWeapons()
-	usr.Loadout = {}
 	if usr.Data.Paperdoll[itemtable.Slot] == itemtable.Name then
 		usr:Give("weapon_primaryweapon")
 		usr:GetWeapon("weapon_primaryweapon"):SetWeapon(itemtable)

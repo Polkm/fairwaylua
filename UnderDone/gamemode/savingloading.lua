@@ -13,6 +13,7 @@ function Player:NewGame()
 	AddItemToInv(self, "helm", 1)
 	AddItemToInv(self, "armor_junk_chest", 1)
 	AddItemToInv(self, "goggles_scanner", 1)
+	AddItemToInv(self, "sheild", 1)
 	print("NEW GAME BITCHES")
 	self:SaveGame()
 end

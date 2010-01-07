@@ -71,20 +71,23 @@ function GM:DrawAmmoThingy()
 end
 
 function GM:Notifications()
-	local yOffset = ScrH() - 35
+	local yOffset = ScrH() - 30
 	for _, strNocification in pairs(Notifications) do
 		surface.SetFont("MenuLarge")
 		local wide, high = surface.GetTextSize(strNocification)
-		draw.RoundedBox(2, ScrW() - math.Clamp(wide + 20, 220, 5000), yOffset, math.Clamp(wide + 10, 200, 5000), 20, boaderColor)
-		draw.RoundedBox(2, ScrW() - math.Clamp(wide + 19, 219, 5000), yOffset + 1, math.Clamp(wide + 8, 198, 5000), 18, boxColor)
-		draw.SimpleText(strNocification, "MenuLarge", ScrW() - math.Clamp(wide + 15, 215, 5000), yOffset + 3, textColor, 0, 3)
+		local pnlNotification = jdraw.NewPanel()
+		pnlNotification:SetDemensions(ScrW() - math.Clamp(wide + 40, 215, wide + 40), yOffset, wide + 30, 20)
+		pnlNotification:SetStyle(4, clrTan)
+		pnlNotification:SetBoarder(1, clrDrakGray)
+		jdraw.DrawPanel(pnlNotification)
+		draw.SimpleText(strNocification, "MenuLarge", pnlNotification.Position.X + 20, pnlNotification.Position.Y + 3, clrDrakGray, 0, 3)
 		yOffset = yOffset - 25
 	end
 end
 
 function AddNotification(strNotification)
 	table.insert(Notifications, 1, strNotification)
-	timer.Simple(10, function() table.remove(Notifications, #Notifications) end)
+	timer.Simple(15, function() table.remove(Notifications, #Notifications) end)
 end
 concommand.Add("UD_AddNotification", function(ply, command, args) AddNotification(table.concat(args," ")) end)
 
