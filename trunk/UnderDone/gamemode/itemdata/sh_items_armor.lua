@@ -24,6 +24,7 @@ Item.Giveable = true
 Item.Weight = 1
 Item.Slot = "slot_helm"
 Item.Buffs = {}
+Item.Buffs["stat_strength"] = 5
 Register.Item(Item)
 
 local Item = DeriveTable(BaseEquiptment)
@@ -39,5 +40,20 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.Slot = "slot_chest"
+Item.Buffs = {}
 Item.Buffs["stat_maxhealth"] = 5
+Register.Item(Item)
+
+local Item = DeriveTable(BaseEquiptment)
+Item.Name = "sheild"
+Item.PrintName = "Sheild"
+Item.Desc = "Protects"
+Item.Icon = "icons/junk_metalcan2"
+Item.Model = {}
+Item.Model[1] = {Model = "models/props_mining/elevator_winch_cog.mdl", Position = Vector(0, 5.7, 5), Angle = Angle(-83.6, -7.4, 0)}
+Item.Dropable = true
+Item.Giveable = true
+Item.Weight = 1
+Item.Slot = "slot_offhand"
+Item.Buffs = {}
 Register.Item(Item)
