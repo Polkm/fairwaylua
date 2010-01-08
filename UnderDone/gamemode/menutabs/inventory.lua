@@ -20,9 +20,9 @@ function PANEL:Init()
 		jdraw.DrawPanel(tblPaintPanle)
 	end
 	self.inventorylist.DoDropedOn = function()
-		if !GAMEMODE.Paperdoll or !GAMEMODE.DraggingPanel or !GAMEMODE.DraggingPanel.IsPapperDollSlot then return end
+		if !LocalPlayer().Data.Paperdoll or !GAMEMODE.DraggingPanel or !GAMEMODE.DraggingPanel.IsPapperDollSlot then return end
 		if GAMEMODE.DraggingPanel.Item && GAMEMODE.DraggingPanel.Slot then
-			if GAMEMODE.Paperdoll[GAMEMODE.DraggingPanel.Slot] == GAMEMODE.DraggingPanel.Item then
+			if LocalPlayer().Data.Paperdoll[GAMEMODE.DraggingPanel.Slot] == GAMEMODE.DraggingPanel.Item then
 				GAMEMODE.DraggingPanel.DoDoubleClick()
 			end
 		end
@@ -89,8 +89,8 @@ function PANEL:LoadInventory(boolTemp)
 	
 	for name, slotTable in pairs(GAMEMODE.DataBase.Slots) do
 		if self.Paperdoll.Slots[slotTable.Name] then
-			if GAMEMODE.Paperdoll[slotTable.Name] then
-				self.Paperdoll.Slots[slotTable.Name]:SetItem(GAMEMODE.DataBase.Items[GAMEMODE.Paperdoll[slotTable.Name]])
+			if LocalPlayer().Data.Paperdoll[slotTable.Name] then
+				self.Paperdoll.Slots[slotTable.Name]:SetItem(GAMEMODE.DataBase.Items[LocalPlayer().Data.Paperdoll[slotTable.Name]])
 			else
 				self.Paperdoll.Slots[slotTable.Name]:SetSlot(slotTable)
 			end
@@ -120,7 +120,7 @@ function PANEL:AddItem(item, amount)
 	local tblItemTable = GAMEMODE.DataBase.Items[item]
 	local intListItems = 1
 	if !tblItemTable.Stackable then intListItems = amount or 1 end
-	if table.HasValue(GAMEMODE.Paperdoll, item) then intListItems = intListItems - 1 end
+	if table.HasValue(LocalPlayer().Data.Paperdoll or {}, item) then intListItems = intListItems - 1 end
 	for i = 1, intListItems do
 		local icnItem = vgui.Create("FIconItem")
 		icnItem:SetSize(self.ItemIconSize, self.ItemIconSize)

@@ -30,36 +30,6 @@ function Register.NPC(tblItem)
 	GM.DataBase.NPCs[tblItem.Name] = tblItem
 end
 -------------------------
-function GM:BuildModel(tblModelTable)
-	local tblLoopTable = tblModelTable
-	if type(tblModelTable) == "string" then
-		tblLoopTable = {}
-		tblLoopTable[1] = {Model = tblModelTable, Position = Vector(0, 0, 0), Angle = Angle(0, 0, 0)}
-	end
-	local entReturnEnt = nil
-	local entNewPart = nil
-	for key, modelinfo in pairs(tblLoopTable) do
-		entNewPart = ents.Create("prop_physics")
-		entNewPart:SetModel(modelinfo.Model)
-		if entReturnEnt then entNewPart:SetAngles(entReturnEnt:GetAngles()) end
-		if entReturnEnt then entNewPart:SetAngles(entNewPart:LocalToWorldAngles(modelinfo.Angle)) end
-		if !entReturnEnt then entNewPart:SetAngles(modelinfo.Angle) end
-		if entReturnEnt then entNewPart:SetPos(entReturnEnt:GetPos()) end
-		if entReturnEnt then entNewPart:SetPos(entNewPart:LocalToWorld(modelinfo.Position)) end
-		if !entReturnEnt then entNewPart:SetPos(modelinfo.Position) end
-		entNewPart:SetParent(entReturnEnt)
-		entNewPart:Spawn()
-		if CLIENT then
-			entNewPart:SetCollisionGroup(COLLISION_GROUP_NONE)
-		end
-		if entReturnEnt then
-			entReturnEnt.Children = entReturnEnt.Children or {}
-			table.insert(entReturnEnt.Children, entNewPart)
-		end
-		if !entReturnEnt then entReturnEnt = entNewPart end
-	end
-	return entReturnEnt
-end
 
 --Polkm: Example NPCs
 local NPC = {}
@@ -83,7 +53,6 @@ function NPC:GenerateInv(npc)
 	npc.Inventory["pistol"] = 1
 end
 Register.NPC(NPC)
-
 
 
 local SLOT = {}

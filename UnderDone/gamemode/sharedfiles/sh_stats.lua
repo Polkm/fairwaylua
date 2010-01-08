@@ -86,3 +86,10 @@ if SERVER then
 		end
 	end)
 end
+
+if CLIENT then
+	function UpdateStatUsrMsg(usrMsg)
+		LocalPlayer():SetStat(usrMsg:ReadString(), usrMsg:ReadLong())
+	end
+	usermessage.Hook("UD_UpdateStats", UpdateStatUsrMsg)
+end

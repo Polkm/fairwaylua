@@ -1,6 +1,7 @@
 local Entity = FindMetaTable("Entity")
 
 function Entity:AddItem(strItem, intAmount)
+	if !self or !self:IsValid() then return false end
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
 	if !tblItemTable then return false end
 	intAmount = tonumber(intAmount) or 1
