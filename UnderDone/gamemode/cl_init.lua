@@ -28,6 +28,14 @@ clrBlue = Color(74, 124, 178, 255)
 clrRed = Color(89, 33, 26, 255)
 clrTan = Color(178, 161, 126, 255)
 clrWhite = Color(242, 242, 242, 255)
+GM.TranslateColor = {}
+GM.TranslateColor["green"] = clrGreen
+GM.TranslateColor["orange"] = clrOrange
+GM.TranslateColor["purple"] = clrPurple
+GM.TranslateColor["blue"] = clrBlue
+GM.TranslateColor["red"] = clrRed
+GM.TranslateColor["tan"] = clrTan
+GM.TranslateColor["white"] = clrWhite
 -------------------------
 
 function UpdateItemUsrMsg(usrMsg)
@@ -66,6 +74,12 @@ function UpdateStatUsrMsg(usrMsg)
 	LocalPlayer():SetStat(strStat, intAmount)
 end
 usermessage.Hook("UD_UpdateStats", UpdateStatUsrMsg)
+
+function GM:GetColor(strColorName)
+	local clrTranslated = GAMEMODE.TranslateColor[strColorName]
+	if clrTranslated then return clrTranslated end
+	return clrWhite
+end
 
 function GM:Think()
 	if GAMEMODE.DraggingPanel then

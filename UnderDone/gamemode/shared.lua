@@ -49,7 +49,9 @@ function GM:BuildModel(tblModelTable)
 		if !entReturnEnt then entNewPart:SetPos(modelinfo.Position) end
 		entNewPart:SetParent(entReturnEnt)
 		entNewPart:Spawn()
-		entNewPart:SetCollisionGroup(GROUP_NONE)
+		if CLIENT then
+			entNewPart:SetCollisionGroup(COLLISION_GROUP_NONE)
+		end
 		if entReturnEnt then
 			entReturnEnt.Children = entReturnEnt.Children or {}
 			table.insert(entReturnEnt.Children, entNewPart)

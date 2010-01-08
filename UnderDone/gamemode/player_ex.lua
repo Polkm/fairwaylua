@@ -1,5 +1,21 @@
 local Player = FindMetaTable("Player")
 
+function Player:GiveExp(intAmount)
+	local intCurrentExp = self:GetNWInt("exp")
+	if intCurrentExp + intAmount >= 0 then
+		self:SetNWInt("exp", intCurrentExp + intAmount)
+	end
+end
+
+function Player:CreateIndacator(strMessage, vecPosition, strColor)
+	local strSendColor = strColor or "white"
+	local tblVector = {}
+	tblVector[1] = math.Round(vecPosition.x)
+	tblVector[2] = math.Round(vecPosition.y)
+	tblVector[3] = math.Round(vecPosition.z)
+	self:ConCommand("UD_AddDamageIndacator " .. strMessage .. " " .. table.concat(tblVector, "!") .. " " .. strSendColor)
+end
+
 --[[function Player:GetENTInv(entTarget)
 	local DataTable = {}
 	if entTarget:GetClass() == "player" then
