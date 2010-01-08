@@ -11,10 +11,16 @@ function Entity:AddItem(strItem, intAmount)
 	self.Weight = self.Weight or 0
 	local intMaxItems = math.Clamp(math.floor((MaxWeight - self.Weight) / tblItemTable.Weight), 0, intAmount)
 	intAmount = math.Clamp(intAmount, -self.Data.Inventory[strItem], intMaxItems)
+	if SERVER then
+		if self.Data.Paperdoll then
+			if self.Data.Inventory[strItem] == 1 && self.Data.Paperdoll[tblItemTable.Slot] == strItem then
+				self:UseItem(strItem)
+			end
+		end
+	end
 	self.Data.Inventory[strItem] = self.Data.Inventory[strItem] + intAmount
 	self.Weight = self.Weight + (tblItemTable.Weight * intAmount)
 	if SERVER then
-		if tblItemTable.AddedToInv then tblItemTable:AddedToInv(self) end
 		if self:GetClass() == "player" then
 			umsg.Start("UD_UpdateItem", self)
 			umsg.String(strItem)

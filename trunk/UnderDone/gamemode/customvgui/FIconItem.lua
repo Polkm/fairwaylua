@@ -183,7 +183,7 @@ function PANEL:SetSlot(tblSlotTable)
 	self:SetTooltip(strToolTip)
 	self:SetDropedOn(function()
 		if GAMEMODE.DraggingPanel && GAMEMODE.DraggingPanel.Slot && GAMEMODE.DraggingPanel.Slot == tblSlotTable.Name then
-			if GAMEMODE.DraggingPanel.Item && GAMEMODE.Paperdoll[tblSlotTable.Name] != GAMEMODE.DraggingPanel.Item then
+			if GAMEMODE.DraggingPanel.Item && LocalPlayer().Data.Paperdoll[tblSlotTable.Name] != GAMEMODE.DraggingPanel.Item then
 				GAMEMODE.DraggingPanel.DoDoubleClick()
 			end
 		end
