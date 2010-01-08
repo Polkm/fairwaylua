@@ -11,6 +11,7 @@ function GM:HUDPaint()
 	else
 		self.PlayerBox:SetDemensions(10, ScrH() - 73, 300, 63)
 	end
+	
 	self.PlayerBox:SetStyle(4, clrTan)
 	self.PlayerBox:SetBoarder(1, clrDrakGray)
 	jdraw.DrawPanel(self.PlayerBox)
@@ -21,6 +22,13 @@ function GM:HUDPaint()
 	end
 	self:Notifications()
 	self:DrawDamageIndacators()
+	
+	local intSize = 2
+ 	local intCenterX = ScrW() / 2
+ 	local intCenterY = ScrH() / 2
+	surface.SetDrawColor(clrGreen)
+	surface.DrawLine(intCenterX - intSize, intCenterY, intCenterX + intSize, intCenterY)
+	surface.DrawLine(intCenterX, intCenterY - intSize, intCenterX, intCenterY + intSize)
 	
 	local entLookEnt = LocalPlayer():GetEyeTrace().Entity
 	if entLookEnt:GetNWInt("level") > 0 then
