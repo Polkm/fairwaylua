@@ -57,3 +57,18 @@ Item.Weight = 1
 Item.Slot = "slot_offhand"
 Item.Buffs = {}
 Register.Item(Item)
+
+
+local Item = DeriveTable(BaseEquiptment)
+Item.Name = "saw_sheild"
+Item.PrintName = "Saw Sheild"
+Item.Desc = "Protects"
+Item.Icon = "icons/junk_metalcan2"
+Item.Model = {}
+Item.Model[1] = {Model = "models/props_junk/sawblade001a.mdl", Position = Vector(0.3, 1, 3.2), Angle = Angle(-89, -7.4, 0)}
+Item.Dropable = true
+Item.Giveable = true
+Item.Weight = 1
+Item.Slot = "slot_offhand"
+Item.Buffs = {}
+Register.Item(Item)
