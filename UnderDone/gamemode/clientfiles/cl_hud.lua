@@ -23,17 +23,10 @@ function GM:HUDPaint()
 	self:Notifications()
 	self:DrawDamageIndacators()
 	
-	local intSize = 2
- 	local intCenterX = ScrW() / 2
- 	local intCenterY = ScrH() / 2
-	surface.SetDrawColor(clrGreen)
-	surface.DrawLine(intCenterX - intSize, intCenterY, intCenterX + intSize, intCenterY)
-	surface.DrawLine(intCenterX, intCenterY - intSize, intCenterX, intCenterY + intSize)
-	
-	local entLookEnt = LocalPlayer():GetEyeTrace().Entity
-	if entLookEnt:GetNWInt("level") > 0 then
-		local intLevel = entLookEnt:GetNWInt("level")
-		local posNPCPos = (entLookEnt:GetPos() + Vector(0, 0, 80)):ToScreen()
+	local trcEyeTrace = LocalPlayer():GetEyeTraceNoCursor()
+	if trcEyeTrace.Entity:GetNWInt("level") > 0 then
+		local intLevel = trcEyeTrace.Entity:GetNWInt("level")
+		local posNPCPos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 80)):ToScreen()
 		draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCPos.x, posNPCPos.y, clrWhite, 1, 1, 1, clrDrakGray)
 	end
 end
