@@ -1,3 +1,4 @@
+GM.DamageIndacators = {}
 local boxColor = Color(100, 100, 100, 255)
 local textColor = Color(255, 255, 255, 200)
 local boaderColor = Color(40, 40, 40, 100)
@@ -31,6 +32,7 @@ function GM:HUDPaint()
 		self:DrawAmmoThingy()
 	end
 	self:Notifications()
+	self:DrawDamageIndacators()
 end
 
 function GM:DrawHealthBar()
@@ -90,6 +92,38 @@ function AddNotification(strNotification)
 	timer.Simple(15, function() table.remove(Notifications, #Notifications) end)
 end
 concommand.Add("UD_AddNotification", function(ply, command, args) AddNotification(table.concat(args," ")) end)
+
+function GM:DrawDamageIndacators()
+	if GAMEMODE.DamageIndacators[1] then
+		for _, tblInfo in pairs(GAMEMODE.DamageIndacators) do
+			local posIndicatorPos = tblInfo.Position:ToScreen()
+			local clrDrawColor = tblInfo.Color
+			local clrDrawColorBoarder = Color(clrGray.r, clrGray.g, clrGray.b, clrDrawColor.a)
+			draw.SimpleTextOutlined(tblInfo.String, "ScoreboardText", posIndicatorPos.x, posIndicatorPos.y, clrDrawColor, 1, 1, 1, clrDrawColorBoarder)
+			tblInfo.Color.a = math.Clamp(tblInfo.Color.a - 1, 0, 255)
+			tblInfo.Velocity.z = tblInfo.Velocity.z  - 0.02
+			tblInfo.Velocity = tblInfo.Velocity / 1.1
+			tblInfo.Position = tblInfo.Position + tblInfo.Velocity
+		end
+	end
+end
+
+function GM:AddDamageIndacator(tblInfo)
+	table.insert(GAMEMODE.DamageIndacators, 1, tblInfo)
+	timer.Simple(2, function() table.remove(GAMEMODE.DamageIndacators, #GAMEMODE.DamageIndacators) end)
+end
+concommand.Add("UD_AddDamageIndacator", function(ply, command, args)
+	local tblRecevedTable = string.Explode("!", args[2])
+	local vecPosition = Vector(tblRecevedTable[1], tblRecevedTable[2], tblRecevedTable[3])
+	local clrColor = clrWhite
+	local tblInfo = {}
+	tblInfo.String = string.gsub(args[1], "_", " ")
+	if args[3] then clrColor = GAMEMODE:GetColor(args[3]) end
+	tblInfo.Color = Color(clrColor.r, clrColor.g, clrColor.b, 255)
+	tblInfo.Velocity = Vector(math.random(-3, 3), math.random(-3, 3), 3)
+	tblInfo.Position = vecPosition + Vector(math.random(-10, 10), math.random(-10, 10), math.random(0, 20))
+	GAMEMODE:AddDamageIndacator(tblInfo)
+end)
 
 
 function GM:HUDShouldDraw(name)

@@ -1,7 +1,7 @@
 local Player = FindMetaTable("Player")
 
 function Player:NewGame()
-	self:SetNWInt("exp", 100)
+	self:SetNWInt("exp", 0)
 	AddItemToInv(self, "money", 200)
 	AddItemToInv(self, "can", 5)
 	AddItemToInv(self, "pistol", 2)
