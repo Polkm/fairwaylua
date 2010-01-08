@@ -5,7 +5,7 @@ local Player = FindMetaTable("Player")
 ----------------------------------------------------------------
 function Player:UseItem(strItem)
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
-	if tblItemTable && tblItemTable.Use && HasItem(self, strItem) then
+	if tblItemTable && tblItemTable.Use && self:HasItem(strItem) then
 		tblItemTable:Use(self, tblItemTable)
 		return true
 	end
@@ -17,7 +17,7 @@ end)
 
 function Player:DropItem(strItem, intAmount)
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
-	if HasItem(self, strItem, intAmount) && tblItemTable.Dropable then
+	if self:HasItem(strItem, intAmount) && tblItemTable.Dropable then
 		local dropeditem = GAMEMODE:BuildModel(tblItemTable.Model)
 		dropeditem:SetCollisionGroup(COLLISION_GROUP_WEAPON)
 		dropeditem:SetPos(self:EyePos() + (self:GetAimVector() * 25))
@@ -28,7 +28,7 @@ function Player:DropItem(strItem, intAmount)
 		dropeditem.Item = strItem
 		dropeditem.Amount = intAmount
 		dropeditem:Spawn()
-		RemoveItemFromInv(self, strItem, intAmount)
+		self:AddItem(strItem, -intAmount)
 		return true
 	end
 	return false

@@ -33,8 +33,8 @@ function PANEL:Init()
 	
 	self.WeightBar = vgui.Create("FPercentBar", self)
 	self.WeightBar:SetMax(MaxWeight)
-	self.WeightBar:SetValue(GAMEMODE.TotalWeight)
-	self.WeightBar:SetText("Weight " .. GAMEMODE.TotalWeight .. "/" ..  MaxWeight)
+	self.WeightBar:SetValue(LocalPlayer().Weight)
+	self.WeightBar:SetText("Weight " .. LocalPlayer().Weight .. "/" ..  MaxWeight)
 	
 	self.Paperdoll = vgui.Create("FPaperDoll", self)
 	self.Paperdoll.Paint = function()
@@ -77,8 +77,7 @@ end
 
 function PANEL:LoadInventory(boolTemp)
 	local TempInv = boolTemp or false
-	local WorkInv = GAMEMODE.Inventory
-	if TempInv then WorkInv = GAMEMODE.Inventory_Temp end
+	local WorkInv = LocalPlayer().Data.Inventory or {}
 	self.inventorylist:Clear()
 	self.inventorylist.catagories = {}
 	if WorkInv["money"] && WorkInv["money"] > 0 then self:AddItem("money", WorkInv["money"]) end
