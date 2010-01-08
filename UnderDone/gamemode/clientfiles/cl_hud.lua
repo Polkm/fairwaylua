@@ -1,7 +1,4 @@
 GM.DamageIndacators = {}
-local boxColor = Color(100, 100, 100, 255)
-local textColor = Color(255, 255, 255, 200)
-local boaderColor = Color(40, 40, 40, 100)
 clrGray = Color(97, 95, 77, 255)
 clrDrakGray = Color(54, 53, 42, 255)
 clrGreen = Color(194, 255, 72, 255)

@@ -2,27 +2,25 @@ local Player = FindMetaTable("Player")
 
 function Player:NewGame()
 	self:SetNWInt("exp", 0)
-	AddItemToInv(self, "money", 200)
-	AddItemToInv(self, "can", 5)
-	AddItemToInv(self, "pistol", 2)
-	AddItemToInv(self, "small_ammo", 1)
-	AddItemToInv(self, "shotgun", 1)
-	AddItemToInv(self, "frying_pan", 1)
-	AddItemToInv(self, "meat_cleaver", 1)
-	AddItemToInv(self, "axe", 1)
-	AddItemToInv(self, "helm", 1)
-	AddItemToInv(self, "armor_junk_chest", 1)
-	AddItemToInv(self, "goggles_scanner", 1)
-	AddItemToInv(self, "sheild", 1)
-	AddItemToInv(self, "saw_sheild", 1)
-
-	print("NEW GAME BITCHES")
+	self:AddItem("money", 200)
+	self:AddItem("can", 3)
+	self:AddItem("pistol", 1)
+	self:AddItem("small_ammo", 3)
+	self:AddItem("shotgun", 1)
+	self:AddItem("frying_pan", 1)
+	self:AddItem("meat_cleaver", 1)
+	self:AddItem("axe", 1)
+	self:AddItem("helm", 1)
+	self:AddItem("armor_junk_chest", 1)
+	self:AddItem("goggles_scanner", 1)
+	self:AddItem("sheild", 1)
+	self:AddItem("saw_sheild", 1)
 	self:SaveGame()
+	print("New Game")
 end
 
 function Player:LoadGame()
 	self.Data = {}
-	self.Weight = 0
 	for name, stat in pairs(GAMEMODE.DataBase.Stats) do
 		self:SetStat(name, stat.Default)
 	end
@@ -33,7 +31,7 @@ function Player:LoadGame()
 			local tblDecodedTable = glon.decode(file.Read(strFileName))
 			if tblDecodedTable.Inventory then
 				for item, amount in pairs(tblDecodedTable.Inventory) do
-					AddItemToInv(self, item, amount)
+					self:AddItem(item, amount)
 				end
 			end
 			if tblDecodedTable.Paperdoll then

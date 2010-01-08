@@ -5,6 +5,7 @@ tblSharedFolders[2] = "underdone/gamemode/sharedfiles/"
 local tblClientFolders = {}
 tblClientFolders[1] = "underdone/gamemode/menutabs/"
 tblClientFolders[2] = "underdone/gamemode/customvgui/"
+tblClientFolders[3] = "underdone/gamemode/clientfiles/"
 
 
 if SERVER then
