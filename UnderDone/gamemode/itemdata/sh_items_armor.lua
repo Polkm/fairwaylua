@@ -65,7 +65,7 @@ Item.PrintName = "Saw Sheild"
 Item.Desc = "Protects"
 Item.Icon = "icons/junk_metalcan2"
 Item.Model = {}
-Item.Model[1] = {Model = "models/props_junk/sawblade001a.mdl", Position = Vector(0.3, 1, 3.2), Angle = Angle(-89, -7.4, 0)}
+Item.Model[1] = {Model = "models/props_junk/sawblade001a.mdl", Position = Vector(0.3, 1, -2.1), Angle = Angle(-89, 68.9, 4.7)}
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
