@@ -1,7 +1,9 @@
 if SERVER then
 	numerozombies = 0
+	numeroboss = 0
 	function GM:Initialize()
 		timer.Simple(5, function() GAMEMODE:GenerateMonster() end)
+		timer.Simple(10, function() GAMEMODE:GenerateBoss() end)
 	end
 
 	function GM:GenerateMonster()
@@ -11,13 +13,25 @@ if SERVER then
 		local npcZombie = ents.Create("npc_zombie")
 		npcZombie:SetPos(Vector(math.random(-2000, 2000), math.random(-2000, 2000), 40))
 		npcZombie:Spawn()
-		npcZombie:SetNWInt("level", math.random(1, intaverageLevel + 1))
+		npcZombie:SetNWInt("level", math.random(1,10))
 		npcZombie:SetMaxHealth(npcZombie:GetNWInt("level") * 10)
 		npcZombie:SetHealth(npcZombie:GetNWInt("level") * 10)
-		--npcZombie:SetModel("models/Zombie/Fast.mdl")
 		
 		timer.Simple(5, function() GAMEMODE:GenerateMonster() end)
 		numerozombies = numerozombies + 1
+	end
+	
+	function GM:GenerateBoss()
+		if numeroboss > 0 then timer.Simple(10, function() GAMEMODE:GenerateBoss() end) return end
+		local npcantlionguard = ents.Create("npc_antlionguard")
+		npcantlionguard :SetPos(Vector(math.random(-6000, 6000), math.random(-6000, 6000), 40))
+		npcantlionguard :Spawn()
+		npcantlionguard :SetNWInt("level", math.random(20, 30))
+		npcantlionguard :SetMaxHealth(npcantlionguard:GetNWInt("level") * 10)
+		npcantlionguard:SetHealth(npcantlionguard:GetNWInt("level") * 10)
+		
+		timer.Simple(10, function() GAMEMODE:GenerateBoss() end)
+		numeroboss = numeroboss + 1
 	end
 
 	function GM:OnNPCKilled(npc, killer, weapon)
@@ -30,6 +44,9 @@ if SERVER then
 		end
 		if npc:GetClass() == "npc_zombie" then
 			numerozombies = numerozombies - 1
+		end
+		if npc:GetClass() == "npc_antlionguard" then
+			numeroboss = numeroboss - 1
 		end
 	end
 
