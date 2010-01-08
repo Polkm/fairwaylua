@@ -29,7 +29,7 @@ function BaseFood:Use(usr, itemtable)
 		timer.Simple(itemtable.AddTime / intHealthToAdd, AddHealth)
 	end
 	timer.Simple(itemtable.AddTime / intHealthToAdd, AddHealth)
-	RemoveItemFromInv(usr, itemtable.Name)
+	usr:AddItem(itemtable.Name, -1)
 	usr:ConCommand("UD_AddNotification Look at you you ate a food your weird") 
 end
 
@@ -39,47 +39,15 @@ BaseAmmo.AmmoAmount = 20
 function BaseAmmo:Use(usr, itemtable)
 	if !usr or !usr:IsValid() or usr:Health() <= 0 then return false end
 	usr:GiveAmmo(itemtable.AmmoAmount, itemtable.AmmoType)
-	RemoveItemFromInv(usr, itemtable.Name)
+	usr:AddItem(itemtable.Name, -1)
 end
 
 BaseEquiptment = DeriveTable(BaseItem)
 BaseEquiptment.Slot = "slot_primaryweapon"
 BaseEquiptment.Buffs = {}
 function BaseEquiptment:Use(usr, tblItemTable)
-	if !usr or !usr:IsValid() or usr:Health() <= 0 then return false end
-	if !tblItemTable or !tblItemTable.Slot then return false end
-	if !usr.Data.Paperdoll then usr.Data.Paperdoll = {} end
-	local strCurrentItem = usr.Data.Paperdoll[tblItemTable.Slot]
-	if !strCurrentItem or (strCurrentItem && strCurrentItem != tblItemTable.Name) then
-		usr.Data.Paperdoll[tblItemTable.Slot] = tblItemTable.Name
-	else
-		usr.Data.Paperdoll[tblItemTable.Slot] = nil
-	end
-	for name, amount in pairs(tblItemTable.Buffs or {}) do
-		if usr.Data.Paperdoll[tblItemTable.Slot] then
-			usr:AddStat(name, amount)
-		else
-			usr:AddStat(name, -amount)	
-		end
-	end
-	umsg.Start("UD_UpdatePapperDoll")
-	umsg.Entity(usr)
-	umsg.String(tblItemTable.Slot)
-	if usr.Data.Paperdoll[tblItemTable.Slot] then
-		umsg.String(tblItemTable.Name)
-	end
-	umsg.End()
-	usr:SaveGame()
-	for slot, item in pairs(usr.Data.Paperdoll) do
-		if slot != tblItemTable.Slot then
-			local tblSlotTable = GAMEMODE.DataBase.Slots[slot]
-			if tblSlotTable.ShouldClear then
-				if tblSlotTable:ShouldClear(usr, tblItemTable) then
-					usr:UseItem(item)
-				end
-			end
-		end
-	end
+	if usr:Health() <= 0 then return false end
+	usr:SetPaperDoll(tblItemTable.Slot, tblItemTable.Name)
 	return true
 end
 

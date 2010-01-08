@@ -4,8 +4,6 @@ include('itemdata/sh_items_base.lua')
 include('sh_resource.lua')
 ----------Menus----------
 GM.MainMenu = nil
---------Inventory--------
-GM.Paperdoll = {}
 ----------Colors---------
 clrGray = Color(97, 95, 90, 255)
 clrDrakGray = Color(54, 53, 42, 255)
@@ -25,31 +23,6 @@ GM.TranslateColor["red"] = clrRed
 GM.TranslateColor["tan"] = clrTan
 GM.TranslateColor["white"] = clrWhite
 -------------------------
-
-function UpdatePapperDollUsrMsg(usrMsg)
-	local plyActivePlayer = usrMsg:ReadEntity()
-	local strSlot = usrMsg:ReadString()
-	local strItem = usrMsg:ReadString()
-	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
-	if !strSlot then return end
-	if !tblItemTable then strItem = nil end
-	plyActivePlayer:PapperDollBuildSlot(strSlot, strItem)
-	if plyActivePlayer == LocalPlayer() then
-		GAMEMODE.Paperdoll[strSlot] = strItem
-		if GAMEMODE.MainMenu then
-			GAMEMODE.MainMenu.InventoryTab:LoadInventory()
-		end
-	end
-end
-usermessage.Hook("UD_UpdatePapperDoll", UpdatePapperDollUsrMsg)
-
-function UpdateStatUsrMsg(usrMsg)
-	local strStat = usrMsg:ReadString()
-	local intAmount = usrMsg:ReadLong()
-	LocalPlayer():SetStat(strStat, intAmount)
-end
-usermessage.Hook("UD_UpdateStats", UpdateStatUsrMsg)
-
 function GM:GetColor(strColorName)
 	local clrTranslated = GAMEMODE.TranslateColor[strColorName]
 	if clrTranslated then return clrTranslated end
