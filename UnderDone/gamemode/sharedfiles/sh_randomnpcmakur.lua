@@ -17,7 +17,7 @@ if SERVER then
 		local npcZombie = ents.Create("npc_zombie")
 		npcZombie:SetPos(Vector(math.random(-2000, 2000), math.random(-2000, 2000), 40))
 		npcZombie:Spawn()
-		npcZombie:SetNWInt("level", math.random(math.Clamp(intaverageLevel - 5, 0), intaverageLevel + 2))
+		npcZombie:SetNWInt("level", math.random(math.Clamp(intaverageLevel - 5, 1), intaverageLevel + 2))
 		npcZombie:SetMaxHealth(npcZombie:GetNWInt("level") * 10)
 		npcZombie:SetHealth(npcZombie:GetNWInt("level") * 10)
 		
@@ -28,10 +28,10 @@ if SERVER then
 	function GM:GenerateBoss()
 		if numeroboss > 0 then timer.Simple(10, function() GAMEMODE:GenerateBoss() end) return end
 		local npcantlionguard = ents.Create("npc_antlionguard")
-		npcantlionguard :SetPos(Vector(math.random(-6000, 6000), math.random(-6000, 6000), 40))
-		npcantlionguard :Spawn()
-		npcantlionguard :SetNWInt("level", math.random(5, 10))
-		npcantlionguard :SetMaxHealth(npcantlionguard:GetNWInt("level") * 10)
+		npcantlionguard:SetPos(Vector(math.random(-6000, 6000), math.random(-6000, 6000), 40))
+		npcantlionguard:Spawn()
+		npcantlionguard:SetNWInt("level", math.random(5, 10))
+		npcantlionguard:SetMaxHealth(npcantlionguard:GetNWInt("level") * 10)
 		npcantlionguard:SetHealth(npcantlionguard:GetNWInt("level") * 10)
 		
 		timer.Simple(10, function() GAMEMODE:GenerateBoss() end)
@@ -42,7 +42,7 @@ if SERVER then
 		if npc:GetNWInt("level") > 0 && killer:IsPlayer() then
 			local intPlayerLevel = toLevel(killer:GetNWInt("exp"))
 			local intNPCLevel = npc:GetNWInt("level")
-			local intExptoGive = math.Round(10 * (intNPCLevel / intPlayerLevel))
+			local intExptoGive =  math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 10)
 			killer:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos(), "green")
 			killer:GiveExp(intExptoGive)
 		end
@@ -59,7 +59,7 @@ if SERVER then
 		if plyAttacker:IsPlayer() then
 			dmginfo:ScaleDamage(1)
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
-			local intPlayerLevel = toLevel(plyAttacker:GetNWInt("exp"))
+			local intPlayerLevel = plyAttacker:GetLevel()
 			local intNPCLevel = npc:GetNWInt("level")
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * (intPlayerLevel / intNPCLevel)))
 			if dmginfo:GetDamage() > 0 then
