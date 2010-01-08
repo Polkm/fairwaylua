@@ -21,15 +21,17 @@ function Player:GetIdealCamPos()
 	return vecPosition
 end
 function Player:GetIdealCamAngle()
-	local vecOldPosition = GAMEMODE.LastLookPos or LocalPlayer():GetEyeTraceNoCursor().HitPos
-	local vecLookPos = vecOldPosition + ((LocalPlayer():GetEyeTraceNoCursor().HitPos - vecOldPosition) / (GAMEMODE.CammeraSmoothness / 2))
 	local intEditorRadiants = GAMEMODE.PapperDollEditor.CurrentCamRotation
-	if intEditorRadiants then
+	local intEditorDistance = GAMEMODE.PapperDollEditor.CurrentCamDistance
+	if intEditorRadiants or intEditorDistance then
+		local vecOldPosition = GAMEMODE.LastLookPos or LocalPlayer():GetEyeTraceNoCursor().HitPos
+		local vecLookPos = vecOldPosition + ((LocalPlayer():GetEyeTraceNoCursor().HitPos - vecOldPosition) / (GAMEMODE.CammeraSmoothness / 2))
 		vecLookPos = LocalPlayer():GetPos() + Vector(0, 0, 55)
+		local vecToLookPos = (vecLookPos - LocalPlayer():GetIdealCamPos())
+		GAMEMODE.LastLookPos = vecLookPos
+		return vecToLookPos:Angle()
 	end
-	local vecToLookPos = (vecLookPos - LocalPlayer():GetIdealCamPos())
-	GAMEMODE.LastLookPos = vecLookPos
-	return vecToLookPos:Angle()
+	return nil
 end
 
 if SERVER then
@@ -73,7 +75,7 @@ else
 		if !GAMEMODE.CammeraPosition then GAMEMODE.CammeraPosition = client:GetPos() end
 		if !GAMEMODE.CammeraAngle then GAMEMODE.CammeraAngle = Angle(0, 0, 0) end
 		GAMEMODE.CammeraPosition = GAMEMODE.CammeraPosition + ((client:GetIdealCamPos() - GAMEMODE.CammeraPosition) / GAMEMODE.CammeraSmoothness)
-		GAMEMODE.CammeraAngle = client:GetIdealCamAngle()
+		GAMEMODE.CammeraAngle = client:GetIdealCamAngle() or angAngles
 		local tblView = {}
 		tblView.origin = GAMEMODE.CammeraPosition
 		tblView.angles = GAMEMODE.CammeraAngle

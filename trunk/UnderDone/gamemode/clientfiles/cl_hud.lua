@@ -1,15 +1,6 @@
 GM.DamageIndacators = {}
-clrGray = Color(97, 95, 77, 255)
-clrDrakGray = Color(54, 53, 42, 255)
-clrGreen = Color(194, 255, 72, 255)
-clrOrange = Color(212, 143, 57, 255)
-clrPurple = Color(140, 84, 178, 255)
-clrBlue = Color(74, 124, 178, 255)
-clrRed = Color(89, 33, 26, 255)
-clrTan = Color(178, 161, 126, 255)
-clrWhite = Color(255, 242, 200, 255)
-
 Notifications = {}
+
 function GM:HUDPaint()
 	local boolShouldDrawAmmo = true
 	if !LocalPlayer():GetActiveWeapon() or !LocalPlayer():GetActiveWeapon():IsValid() then boolShouldDrawAmmo = false end
@@ -30,6 +21,13 @@ function GM:HUDPaint()
 	end
 	self:Notifications()
 	self:DrawDamageIndacators()
+	
+	local entLookEnt = LocalPlayer():GetEyeTrace().Entity
+	if entLookEnt:GetNWInt("level") > 0 then
+		local intLevel = entLookEnt:GetNWInt("level")
+		local posNPCPos = (entLookEnt:GetPos() + Vector(0, 0, 80)):ToScreen()
+		draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCPos.x, posNPCPos.y, clrWhite, 1, 1, 1, clrDrakGray)
+	end
 end
 
 function GM:DrawHealthBar()
@@ -95,8 +93,8 @@ function GM:DrawDamageIndacators()
 		for _, tblInfo in pairs(GAMEMODE.DamageIndacators) do
 			local posIndicatorPos = tblInfo.Position:ToScreen()
 			local clrDrawColor = tblInfo.Color
-			local clrDrawColorBoarder = Color(clrGray.r, clrGray.g, clrGray.b, clrDrawColor.a)
-			draw.SimpleTextOutlined(tblInfo.String, "ScoreboardText", posIndicatorPos.x, posIndicatorPos.y, clrDrawColor, 1, 1, 1, clrDrawColorBoarder)
+			local clrDrawColorBoarder = Color(clrDrakGray.r, clrDrakGray.g, clrDrakGray.b, clrDrawColor.a)
+			draw.SimpleTextOutlined(tblInfo.String, "Trebuchet24", posIndicatorPos.x, posIndicatorPos.y, clrDrawColor, 1, 1, 1, clrDrawColorBoarder)
 			tblInfo.Color.a = math.Clamp(tblInfo.Color.a - 1, 0, 255)
 			tblInfo.Velocity.z = tblInfo.Velocity.z  - 0.02
 			tblInfo.Velocity = tblInfo.Velocity / 1.1

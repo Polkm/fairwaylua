@@ -84,7 +84,6 @@ function SWEP:WeaponAttack()
 			self.Owner:FireBullets(tblBullet)
 		else
 			if intRange <= 70 then
-				print(intRange)
 				self.Owner:FireBullets(tblBullet)
 			end
 		end
