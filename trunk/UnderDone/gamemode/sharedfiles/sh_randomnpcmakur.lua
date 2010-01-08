@@ -8,12 +8,16 @@ if SERVER then
 
 	function GM:GenerateMonster()
 		if numerozombies > 5 then timer.Simple(5, function() GAMEMODE:GenerateMonster() end) return end
-		local intaverageLevel = 3
+		local intaverageLevel = 1
+		for _, ply in pairs(player.GetAll()) do
+			intaverageLevel = intaverageLevel + ply:GetLevel()
+		end
+		intaverageLevel = intaverageLevel / #player.GetAll()
 		
 		local npcZombie = ents.Create("npc_zombie")
 		npcZombie:SetPos(Vector(math.random(-2000, 2000), math.random(-2000, 2000), 40))
 		npcZombie:Spawn()
-		npcZombie:SetNWInt("level", math.random(1,10))
+		npcZombie:SetNWInt("level", math.random(math.Clamp(intaverageLevel - 5, 0), intaverageLevel + 2))
 		npcZombie:SetMaxHealth(npcZombie:GetNWInt("level") * 10)
 		npcZombie:SetHealth(npcZombie:GetNWInt("level") * 10)
 		
@@ -26,7 +30,7 @@ if SERVER then
 		local npcantlionguard = ents.Create("npc_antlionguard")
 		npcantlionguard :SetPos(Vector(math.random(-6000, 6000), math.random(-6000, 6000), 40))
 		npcantlionguard :Spawn()
-		npcantlionguard :SetNWInt("level", math.random(20, 30))
+		npcantlionguard :SetNWInt("level", math.random(5, 10))
 		npcantlionguard :SetMaxHealth(npcantlionguard:GetNWInt("level") * 10)
 		npcantlionguard:SetHealth(npcantlionguard:GetNWInt("level") * 10)
 		
