@@ -67,6 +67,8 @@ function PANEL:PerformLayout()
 	
 	self.WeightBar:SetPos(0, 0)
 	self.WeightBar:SetSize(self.inventorylist:GetWide(), 15)
+	self.WeightBar:SetValue(LocalPlayer().Weight)
+	self.WeightBar:SetText("Weight " .. LocalPlayer().Weight .. "/" ..  MaxWeight)
 	
 	self.Paperdoll:SetPos(self.inventorylist:GetWide() + 5, 0)
 	self.Paperdoll:SetSize(self:GetWide() - (self.inventorylist:GetWide() + 5), self:GetTall() - 85)

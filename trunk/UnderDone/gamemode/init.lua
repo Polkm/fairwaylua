@@ -12,7 +12,6 @@ include("itemdata/sh_items_base.lua")
 include("sh_resource.lua")
 include("player_ex.lua")
 include("commands.lua")
-include("inventory.lua")
 include("savingloading.lua")
 
 function GM:PlayerInitialSpawn(ply)
@@ -46,20 +45,4 @@ function GM:PlayerUse(ply, entity)
 		if ply:AddItem(entity.Item, intAmount) then entity:Remove() end
 	end
 	return true
-end
-
-function GM:CanHearPlayersVoice(plyFirst, plySecond)
-	if !IsValid(plySecond) || !IsValid(plyFirst) then return false end --InValid
-	local intChatDistance = 1000
-	if plyFirst:GetPos():Distance(plySecond:GetPos()) >= intChatDistance then return false end --Too Far
-	return true --All good :)
-end
-
-function GM:PlayerCanSeePlayersChat(strText, bTeamOnly, pListener, pSpeaker)
-	if !IsValid(pSpeaker) || !IsValid(pListener) then return false end --InValid
-	local tblText = string.ToTable(strText)
-	local intChatDistance = 700
-	if tblText[#tblText] == "!" && #tblText > 1 then intChatDistance = 5000 end
-	if pListener:GetPos():Distance(pSpeaker:GetPos()) >= intChatDistance then return false end --Too Far
-	return true --All good :)
 end

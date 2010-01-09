@@ -29,6 +29,11 @@ function GM:HUDPaint()
 		local posNPCPos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 80)):ToScreen()
 		draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCPos.x, posNPCPos.y, clrWhite, 1, 1, 1, clrDrakGray)
 	end
+	local intX = ScrW() / 2.0
+	local intY = LocalPlayer():GetEyeTraceNoCursor().HitPos:ToScreen().y
+	surface.SetDrawColor(clrGreen)
+	surface.DrawLine(intX - 2, intY, intX + 2, intY)
+	surface.DrawLine(intX, intY + 2, intX, intY - 2)
 end
 
 function GM:DrawHealthBar()

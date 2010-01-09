@@ -18,6 +18,7 @@ function Entity:AddItem(strItem, intAmount)
 			end
 		end
 	end
+	print(strItem, intAmount)
 	self.Data.Inventory[strItem] = self.Data.Inventory[strItem] + intAmount
 	self.Weight = self.Weight + (tblItemTable.Weight * intAmount)
 	if SERVER then
@@ -34,6 +35,15 @@ function Entity:AddItem(strItem, intAmount)
 		end
 	end
 	return true
+end
+
+function Entity:TransferItem(objTarget, strItem1, intAmount1, strItem2, intAmount2)
+	intAmount1 = tonumber(intAmount1) or 1
+	intAmount2 = tonumber(intAmount2) or 0
+	if strItem1 then if !objTarget:HasItem(strItem1, intAmount1) then return false end end
+	if strItem2 then if !self:HasItem(strItem2, intAmount2) then return false end end
+	if strItem1 then if self:AddItem(strItem1, intAmount1) then objTarget:AddItem(strItem1, -intAmount1) end end
+	if strItem2 then if objTarget:AddItem(strItem2, intAmount2) then self:AddItem(strItem2, -intAmount2) end end
 end
 
 function Entity:HasItem(strItem, intAmount)

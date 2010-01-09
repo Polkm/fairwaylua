@@ -8,11 +8,12 @@ GM.MainMenu = nil
 clrGray = Color(97, 95, 90, 255)
 clrDrakGray = Color(54, 53, 42, 255)
 clrGreen = Color(194, 255, 72, 255)
-clrOrange = Color(212, 143, 57, 255)
+clrOrange = Color(255, 137, 44, 255)
 clrPurple = Color(140, 84, 178, 255)
-clrBlue = Color(74, 124, 178, 255)
+clrBlue = Color(59, 142, 209, 255)
 clrRed = Color(89, 33, 26, 255)
 clrTan = Color(178, 161, 126, 255)
+clrCream = Color(245, 255, 154, 255)
 clrWhite = Color(242, 242, 242, 255)
 GM.TranslateColor = {}
 GM.TranslateColor["green"] = clrGreen
@@ -44,19 +45,4 @@ function GM:OnSpawnMenuClose()
 	if GAMEMODE.DraggingGhost then
 		GAMEMODE.DraggingPanel = nil
 	end
-end
-
-function GM:OnPlayerChat(plySpeaker, strText, boolTeamOnly, boolPlayerIsDead)
-	local tblText = string.ToTable(strText)
-	local clrChat = clrWhite
-	local boolDisplayName = true
-	if plySpeaker == LocalPlayer() then clrChat = clrTan end
-	if tblText[1] == "*" and tblText[#tblText] == "*" && #tblText > 2 then clrChat = clrGreen end
-	if tblText[#tblText] == "!" && #tblText > 1 then clrChat = clrOrange end
-	if boolDisplayName then
-		chat.AddText(clrWhite, plySpeaker:Nick(), clrTan, ": ", clrChat,  strText)
-	else
-		chat.AddText(clrChat, strText)
-	end
-	return true
 end

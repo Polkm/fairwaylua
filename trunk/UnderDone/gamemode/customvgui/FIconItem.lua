@@ -159,9 +159,10 @@ function PANEL:SetItem(tblItemTable, intAmount)
 		if tblItemTable.Use then GAMEMODE.MainMenu.ActiveMenu:AddOption("Use", self.DoUseItem) end
 		if tblItemTable.Dropable then GAMEMODE.MainMenu.ActiveMenu:AddOption("Drop", self.DoDropItem) end
 		if tblItemTable.Giveable then
+			local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...")
 			for _, player in pairs(player.GetAll()) do
 				if player:GetPos():Distance(LocalPlayer():GetPos()) < 250 && player != LocalPlayer() then
-					if !GiveSubMenu then local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...") end
+					
 					GiveSubMenu:AddOption(player:Nick(), self.DoGiveItem(player))
 				end
 			end
