@@ -134,7 +134,6 @@ function GM:BuildModel(tblModelTable)
 		if entReturnEnt then entNewPart:SetPos(entReturnEnt:GetPos()) end
 		if entReturnEnt then entNewPart:SetPos(entNewPart:LocalToWorld(modelinfo.Position)) end
 		if !entReturnEnt then entNewPart:SetPos(modelinfo.Position) end
-		entNewPart:SetCollisionGroup(COLLISION_GROUP_NONE)
 		entNewPart:SetParent(entReturnEnt)
 		entNewPart:Spawn()
 		if entReturnEnt then
@@ -145,7 +144,3 @@ function GM:BuildModel(tblModelTable)
 	end
 	return entReturnEnt
 end
-
-
-
-

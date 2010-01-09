@@ -24,12 +24,19 @@ function Player:DropItem(strItem, intAmount)
 		if trace.HitPos:Distance(self:GetPos()) < 80 then 
 			entDropEnt:SetPos(trace.HitPos)
 		end
-		entDropEnt:PhysicsInitBox( Vector( -30, -30, 0 ), Vector( 30, 30, 128 ) )
-		entDropEnt:SetCollisionBounds( Vector( -30, -30, 0 ), Vector( 30, 30, 128 ) )
 		entDropEnt.Item = strItem
 		entDropEnt.Amount = intAmount
+		entDropEnt:SetCollisionGroup(COLLISION_GROUP_WORLD)
 		entDropEnt:Spawn()
-		entDropEnt:GetPhysicsObject():Wake()
+		if !util.IsValidProp(entDropEnt:GetModel()) then
+			local entCan = ents.Create("prop_physics")
+			entCan:SetModel("models/props_junk/PopCan01a.mdl")
+			entCan:SetPos(entDropEnt:GetPos())
+			entCan:SetAngles(entDropEnt:GetAngles())
+			entCan:SetCollisionGroup(COLLISION_GROUP_WORLD)
+			entCan:Spawn()
+			entDropEnt:SetParent(entCan)
+		end
 		self:AddItem(strItem, -intAmount)
 		return true
 	end
