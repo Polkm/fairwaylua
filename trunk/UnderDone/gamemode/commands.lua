@@ -27,6 +27,7 @@ function Player:DropItem(strItem, intAmount)
 		entDropEnt.Item = strItem
 		entDropEnt.Amount = intAmount
 		entDropEnt:Spawn()
+		entDropEnt:GetPhysicsObject():Wake()
 		self:AddItem(strItem, -intAmount)
 		return true
 	end
