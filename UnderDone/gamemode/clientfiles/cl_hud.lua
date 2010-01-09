@@ -102,7 +102,7 @@ function GM:DrawDamageIndacators()
 			local clrDrawColor = tblInfo.Color
 			local clrDrawColorBoarder = Color(clrDrakGray.r, clrDrakGray.g, clrDrakGray.b, clrDrawColor.a)
 			draw.SimpleTextOutlined(tblInfo.String, "Trebuchet24", posIndicatorPos.x, posIndicatorPos.y, clrDrawColor, 1, 1, 1, clrDrawColorBoarder)
-			tblInfo.Color.a = math.Clamp(tblInfo.Color.a - 1, 0, 255)
+			tblInfo.Color.a = math.Clamp(tblInfo.Color.a - 0.5, 0, 255)
 			tblInfo.Velocity.z = tblInfo.Velocity.z  - 0.02
 			tblInfo.Velocity = tblInfo.Velocity / 1.1
 			tblInfo.Position = tblInfo.Position + tblInfo.Velocity
@@ -112,7 +112,7 @@ end
 
 function GM:AddDamageIndacator(tblInfo)
 	table.insert(GAMEMODE.DamageIndacators, 1, tblInfo)
-	timer.Simple(2, function() table.remove(GAMEMODE.DamageIndacators, #GAMEMODE.DamageIndacators) end)
+	timer.Simple(7, function() table.remove(GAMEMODE.DamageIndacators, #GAMEMODE.DamageIndacators) end)
 end
 concommand.Add("UD_AddDamageIndacator", function(ply, command, args)
 	local tblRecevedTable = string.Explode("!", args[2])
