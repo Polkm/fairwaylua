@@ -24,8 +24,8 @@ function Player:DropItem(strItem, intAmount)
 		if trace.HitPos:Distance(self:GetPos()) < 80 then 
 			entDropEnt:SetPos(trace.HitPos)
 		end
-		entDropEnt:PhysicsInit( SOLID_VPHYSICS )
-		entDropEnt:SetSolid( SOLID_VPHYSICS )
+		entDropEnt:PhysicsInitBox( Vector( -30, -30, 0 ), Vector( 30, 30, 128 ) )
+		entDropEnt:SetCollisionBounds( Vector( -30, -30, 0 ), Vector( 30, 30, 128 ) )
 		entDropEnt.Item = strItem
 		entDropEnt.Amount = intAmount
 		entDropEnt:Spawn()
