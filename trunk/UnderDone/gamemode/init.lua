@@ -43,7 +43,7 @@ function GM:PlayerUse(ply, entity)
 		local intAmount = 1
 		if entity.Amount then intAmount = entity.Amount end
 		if ply:AddItem(entity.Item, intAmount) then entity:Remove() end
-		entity:Remove()
 	end
 	return true
+	entity:Remove()
 end
