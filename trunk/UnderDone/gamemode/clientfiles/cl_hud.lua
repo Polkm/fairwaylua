@@ -27,7 +27,8 @@ function GM:HUDPaint()
 	if trcEyeTrace.Entity:GetNWInt("level") > 0 then
 		local intLevel = trcEyeTrace.Entity:GetNWInt("level")
 		local posNPCPos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 80)):ToScreen()
-		draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCPos.x, posNPCPos.y, clrWhite, 1, 1, 1, clrDrakGray)
+		draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCPos.x, posNPCPos.y * 0.95, clrWhite, 1, 1, 1, clrDrakGray)
+		draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCPos.x , posNPCPos.y, clrWhite, 1, 1, 1, clrDrakGray)
 	end
 	local intX = ScrW() / 2.0
 	local intY = LocalPlayer():GetEyeTraceNoCursor().HitPos:ToScreen().y

@@ -20,6 +20,7 @@ if SERVER then
 		npcZombie:SetNWInt("level", math.random(math.Clamp(intaverageLevel - 5, 1), intaverageLevel + 2))
 		npcZombie:SetMaxHealth(npcZombie:GetNWInt("level") * 10)
 		npcZombie:SetHealth(npcZombie:GetNWInt("level") * 10)
+		npcZombie:SetNWInt("Health", npcZombie:Health())
 		
 		timer.Simple(5, function() GAMEMODE:GenerateMonster() end)
 		numerozombies = numerozombies + 1
@@ -33,6 +34,7 @@ if SERVER then
 		npcantlionguard:SetNWInt("level", math.random(5, 10))
 		npcantlionguard:SetMaxHealth(npcantlionguard:GetNWInt("level") * 10)
 		npcantlionguard:SetHealth(npcantlionguard:GetNWInt("level") * 10)
+		npcantlionguard:SetNWInt("Health", npcantlionguard:Health())
 		
 		timer.Simple(10, function() GAMEMODE:GenerateBoss() end)
 		numeroboss = numeroboss + 1
@@ -63,6 +65,7 @@ if SERVER then
 			local intNPCLevel = npc:GetNWInt("level")
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * (intPlayerLevel / intNPCLevel)))
 			if dmginfo:GetDamage() > 0 then
+				npc:SetNWInt("Health",npc:Health() - dmginfo:GetDamage() )
 				plyAttacker:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition())
 			elseif dmginfo:GetDamage() <= 0 then
 				plyAttacker:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
