@@ -2,8 +2,8 @@ if SERVER then
 	numerozombies = 0
 	numeroboss = 0
 	function GM:Initialize()
-		--timer.Simple(5, function() GAMEMODE:GenerateMonster() end)
-		--timer.Simple(10, function() GAMEMODE:GenerateBoss() end)
+		timer.Simple(5, function() GAMEMODE:GenerateMonster() end)
+		timer.Simple(10, function() GAMEMODE:GenerateBoss() end)
 	end
 
 	function GM:GenerateMonster()
