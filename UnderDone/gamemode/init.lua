@@ -41,9 +41,9 @@ end
 function UseKeyPressed(ply, key)
 	local vecHitPos = ply:GetEyeTrace().HitPos
 	local tblUseEnts = ents.FindInSphere(vecHitPos, 20)
-	local entLookEnt = tblUseEnts[1]
+	local entLookEnt = nil
 	for _, ent in pairs(tblUseEnts or {}) do
-		if ent.Item then
+		if ent.Item && ent:GetPos():Distance(ply:GetPos()) < 70 then
 			if !entLookEnt or ent:GetPos():Distance(vecHitPos) < entLookEnt:GetPos():Distance(vecHitPos) then
 				entLookEnt = ent
 			end
