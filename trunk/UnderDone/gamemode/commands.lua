@@ -18,16 +18,15 @@ end)
 function Player:DropItem(strItem, intAmount)
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
 	if self:HasItem(strItem, intAmount) && tblItemTable.Dropable then
-		local dropeditem = GAMEMODE:BuildModel(tblItemTable.Model)
-		dropeditem:SetCollisionGroup(COLLISION_GROUP_WEAPON)
-		dropeditem:SetPos(self:EyePos() + (self:GetAimVector() * 25))
+		local entDropEnt = GAMEMODE:BuildModel(tblItemTable.Model)
+		entDropEnt:SetPos(self:EyePos() + (self:GetAimVector() * 25))
 		local trace = self:GetEyeTrace()
 		if trace.HitPos:Distance(self:GetPos()) < 80 then 
-			dropeditem:SetPos(trace.HitPos)
+			entDropEnt:SetPos(trace.HitPos)
 		end
-		dropeditem.Item = strItem
-		dropeditem.Amount = intAmount
-		dropeditem:Spawn()
+		entDropEnt.Item = strItem
+		entDropEnt.Amount = intAmount
+		entDropEnt:Spawn()
 		self:AddItem(strItem, -intAmount)
 		return true
 	end
@@ -59,7 +58,7 @@ concommand.Add("UD_TakeItem", function(ply, command, args) ply:TakeItem(args[1],
 function AdminKick(plyOffender, strReason)
 	if !plyOffender:IsPlayer() then return end
 	if strReason == "" then strReason = nil end
-	local Reason = strReason or "Don't do that again"
+	strReason = strReason or "Don't do that again"
 	plyOffender:Kick(Reason)
 end
 concommand.Add("UD_Admin_Kick", function(ply, command, args)

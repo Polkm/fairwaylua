@@ -8,6 +8,10 @@ Stat.Default = 100
 function Stat:OnSet(ply, intMaxHealth, intOldMaxHealth)
 	ply:SetMaxHealth(intMaxHealth)
 end
+function Stat:OnSpawn(ply, intMaxHealth)
+	print(intMaxHealth, ply:GetMaxHealth())
+	ply:Health(intMaxHealth)
+end
 Register.Stat(Stat)
 
 local Stat = {}
@@ -82,7 +86,13 @@ end
 if SERVER then
 	hook.Add("PlayerSpawn", "PlayerSpawn_Stats", function(ply)
 		for name, stat in pairs(GAMEMODE.DataBase.Stats) do
-			if ply.Stats then ply:SetStat(name, ply:GetStat(name)) end
+			if ply.Stats then
+				ply:SetStat(name, ply:GetStat(name))
+				PrintTable(stat)
+				if stat.OnSpawn then
+					stat:OnSpawn(ply, ply:GetStat(name))
+				end
+			end
 		end
 	end)
 end

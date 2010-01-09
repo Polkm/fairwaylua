@@ -2,8 +2,20 @@ local Player = FindMetaTable("Player")
 
 function Player:GiveExp(intAmount)
 	local intCurrentExp = self:GetNWInt("exp")
+	local intPreExpLevel = self:GetLevel()
 	if intCurrentExp + intAmount >= 0 then
 		self:SetNWInt("exp", intCurrentExp + intAmount)
+		local intPostExpLevel = self:GetLevel()
+		if intPreExpLevel < intPostExpLevel then
+			self:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos(), "purple")
+			self:CreateIndacator("Nice_Man!", self:GetPos(), "blue")
+			self:CreateIndacator("You_Are_Epic!", self:GetPos(), "orange")
+			self:CreateIndacator("I_Wish_I_Was_As_Cool_As_You!", self:GetPos(), "purple")
+			self:CreateIndacator("I_Jizzed!", self:GetPos(), "blue")
+			self:CreateIndacator("Gratz!", self:GetPos(), "orange")
+			self:CreateIndacator("Call_Me!", self:GetPos(), "purple")
+			self:CreateIndacator("You_Should_Model!", self:GetPos(), "orange")
+		end
 	end
 end
 
