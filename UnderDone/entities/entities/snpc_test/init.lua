@@ -43,16 +43,15 @@ function ENT:Initialize()
  
 	//don't touch stuff above here
 	self:SetHealth(100)
-	self:Give( "weapon_ak47" ) //Can be given sweps.
- 
+
 end
  
- function ENT:OnTakeDamage(dmg)
-  self:SetHealth(self:Health() - dmg:GetDamage())
-  if self:Health() <= 0 then //run on death
-  self:SetSchedule( SCHED_FALL_TO_GROUND ) //because it's given a new schedule, the old one will end.
-  end
- end 
+function ENT:OnTakeDamage(dmg)
+	self:SetHealth(self:Health() - dmg:GetDamage())
+	if self:Health() <= 0 then //run on death
+		self:SetSchedule( SCHED_FALL_TO_GROUND ) //because it's given a new schedule, the old one will end.
+	end
+end 
  
  
 /*---------------------------------------------------------
