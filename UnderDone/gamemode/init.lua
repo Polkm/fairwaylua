@@ -39,7 +39,6 @@ function GM:PlayerLoadout(ply)
 end
 
 function GM:PlayerUse(ply, entity)
-	entity:Remove()
 	if entity.Item then
 		local intAmount = 1
 		if entity.Amount then intAmount = entity.Amount end
