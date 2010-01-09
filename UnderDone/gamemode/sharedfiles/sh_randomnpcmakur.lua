@@ -42,7 +42,7 @@ if SERVER then
 		if npc:GetNWInt("level") > 0 && killer:IsPlayer() then
 			local intPlayerLevel = toLevel(killer:GetNWInt("exp"))
 			local intNPCLevel = npc:GetNWInt("level")
-			local intExptoGive =  math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 10)
+			local intExptoGive =  math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 5)
 			killer:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos(), "green")
 			killer:GiveExp(intExptoGive)
 		end
@@ -64,9 +64,11 @@ if SERVER then
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * (intPlayerLevel / intNPCLevel)))
 			if dmginfo:GetDamage() > 0 then
 				plyAttacker:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition())
+			elseif dmginfo:GetDamage() <= 0 then
+				plyAttacker:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
 			end
 			if npc:GetClass() == "npc_headcrab" then
-				dmginfo:SetDamage(9999)
+				dmginfo:SetDamage(999)
 			end
 		end
 	end

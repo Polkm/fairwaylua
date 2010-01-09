@@ -107,7 +107,7 @@ function DisplayPromt(strType, strTitle, fncOkPressed, strItem)
 		PromtVarPicker:SetText("Amount")
 		PromtVarPicker:SetValue(1)
 		PromtVarPicker:SetMin(1)
-		PromtVarPicker:SetMax(GAMEMODE.Inventory[Item])
+		PromtVarPicker:SetMax(LocalPlayer().Data.Inventory[Item])
 		PromtVarPicker:SetDecimals(0)
 	end
 	local okbutton = vgui.Create("DButton", frame)
@@ -115,7 +115,7 @@ function DisplayPromt(strType, strTitle, fncOkPressed, strItem)
 	okbutton:SetPos(75, 70)
 	okbutton:SetText("Done")
 	okbutton.DoClick = function(okbutton)
-		Func(math.Clamp(PromtVarPicker:GetValue(), 1, GAMEMODE.Inventory[Item]))
+		Func(math.Clamp(PromtVarPicker:GetValue(), 1, LocalPlayer().Data.Inventory[Item]))
 		frame:Close()
 	end
 end
