@@ -38,12 +38,21 @@ function GM:PlayerLoadout(ply)
 	return true
 end
 
-function GM:PlayerUse(ply, entity)
-	print("entity")
-	if entity.Item then
-		local intAmount = 1
-		if entity.Amount then intAmount = entity.Amount end
-		if ply:AddItem(entity.Item, intAmount) then entity:Remove() end
+function UseKeyPressed(ply, key)
+	local vecHitPos = ply:GetEyeTrace().HitPos
+	local tblUseEnts = ents.FindInSphere(vecHitPos, 20)
+	local entLookEnt = tblUseEnts[1]
+	for _, ent in pairs(tblUseEnts or {}) do
+		if ent.Item then
+			if !entLookEnt or ent:GetPos():Distance(vecHitPos) < entLookEnt:GetPos():Distance(vecHitPos) then
+				entLookEnt = ent
+			end
+		end
 	end
-	return true
+	if entLookEnt && entLookEnt.Item then
+		local intAmount = 1
+		if entLookEnt.Amount then intAmount = entLookEnt.Amount end
+		if ply:AddItem(entLookEnt.Item, intAmount) then entLookEnt:Remove() end
+	end
 end
+hook.Add("KeyPress", "UseKeyPressed", function(ply, key) if key == IN_USE then UseKeyPressed(ply, key) end end)
