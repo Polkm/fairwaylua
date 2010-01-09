@@ -52,7 +52,12 @@ function UseKeyPressed(ply, key)
 	if entLookEnt && entLookEnt.Item then
 		local intAmount = 1
 		if entLookEnt.Amount then intAmount = entLookEnt.Amount end
-		if ply:AddItem(entLookEnt.Item, intAmount) then entLookEnt:Remove() end
+		if ply:AddItem(entLookEnt.Item, intAmount) then
+			if entLookEnt:GetParent() && entLookEnt:GetParent():IsValid() then
+				entLookEnt:GetParent():Remove()
+			end
+			entLookEnt:Remove()
+		end
 	end
 end
 hook.Add("KeyPress", "UseKeyPressed", function(ply, key) if key == IN_USE then UseKeyPressed(ply, key) end end)
