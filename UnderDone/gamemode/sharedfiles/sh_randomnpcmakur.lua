@@ -1,12 +1,9 @@
-local Spawn ={}
-
-Spawn[1] = {}
-Spawn[1].Entity = "npc_zombie"
-Spawn[1].SpawnPoint = Vector(819, 61, 141)
-Spawn[1].Level = 5
-Spawn[1].Health = 50
-Spawn[1].MaxHealth = 50
-Spawn[1].SpawnTime = 10
+local tblSpawnPoints = {}
+tblSpawnPoints[1] = {}
+tblSpawnPoints[1].NPC = "zombie"
+tblSpawnPoints[1].SpawnPoint = Vector(819, 61, 141)
+tblSpawnPoints[1].Level = 5
+tblSpawnPoints[1].SpawnTime = 10
 
 if SERVER then
 	numerozombies = 0
@@ -16,18 +13,23 @@ if SERVER then
 	end
 
 	function GenerateMonster()
-		for k,v in pairs(Spawn) do
-			if (!Spawn[k].NextSpawn) then Spawn[k].NextSpawn = CurTime() end
-			if (CurTime() > Spawn[k].NextSpawn) then
-				local MonsterNPC = ents.Create(Spawn[k].Entity)
-				MonsterNPC:SetPos(Spawn[k].SpawnPoint)
-				MonsterNPC:Spawn()
-				MonsterNPC:SetNWInt("level", Spawn[k].Level)
-				MonsterNPC:SetMaxHealth(Spawn[k].MaxHealth)
-				MonsterNPC:SetHealth(Spawn[k].Health)
-				MonsterNPC:SetNWInt("Health", Spawn[k].Health)
-				MonsterNPC.SpawnTime = Spawn[k].SpawnTime
-				Spawn[k].NextSpawn = CurTime() + Spawn[k].SpawnTime
+		for _, Spawn in pairs(tblSpawnPoints) do
+			if !Spawn.Monster or !Spawn.Monster:IsValid() then
+				if !Spawn.NextSpawn then Spawn.NextSpawn = CurTime() + Spawn.SpawnTime end
+				if CurTime() >= Spawn.NextSpawn then
+					local tblNPCTable = GAMEMODE.DataBase.NPCs[Spawn.NPC]
+					local entNewMonster = ents.Create(tblNPCTable.SpawnName)
+					entNewMonster:SetPos(Spawn.SpawnPoint)
+					entNewMonster:Spawn()
+					entNewMonster:SetNWInt("level", Spawn.Level)
+					local intHealth = Spawn.Level * tblNPCTable.HealthPerLevel
+					entNewMonster:SetMaxHealth(intHealth)
+					entNewMonster:SetHealth(intHealth)
+					entNewMonster:SetNWInt("Health", intHealth)
+					entNewMonster.SpawnTime = Spawn.SpawnTime
+					Spawn.Monster = entNewMonster
+					Spawn.NextSpawn = nil
+				end
 			end
 		end
 	end
