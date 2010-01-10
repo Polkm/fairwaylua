@@ -4,20 +4,13 @@ tblSpawnPoints[1].NPC = "zombie"
 tblSpawnPoints[1].SpawnPoint = Vector(819, 61, 141)
 tblSpawnPoints[1].Level = 5
 tblSpawnPoints[1].SpawnTime = 10
-
+tblSpawnPoints[2] = {}
 tblSpawnPoints[2].NPC = "npc_antlionguard"
-tblSpawnPoints[2].Boss = true
-tblSpawnPoints[2].SpawnPoint = Vector(1374, 3917, 110)
+tblSpawnPoints[2].SpawnPoint = Vector(1374, 3917,	110)
 tblSpawnPoints[2].Level = 5
 tblSpawnPoints[2].SpawnTime = 10
 
 if SERVER then
-	numerozombies = 0
-	numeroboss = 0
-	function GM:Initialize()
-		timer.Simple(10, function() GAMEMODE:GenerateBoss() end)
-	end
-
 	function GenerateMonster()
 		for _, Spawn in pairs(tblSpawnPoints) do
 			if !Spawn.Monster or !Spawn.Monster:IsValid() then
@@ -42,20 +35,6 @@ if SERVER then
 	end
 	hook.Add("Tick", "GenerateMonster", GenerateMonster)
 
-	function GM:GenerateBoss()
-		if numeroboss > 0 then timer.Simple(10, function() GAMEMODE:GenerateBoss() end) return end
-		local npcantlionguard = ents.Create("npc_antlionguard")
-		npcantlionguard:SetPos(Vector(math.random(-6000, 6000), math.random(-6000, 6000), 40))
-		npcantlionguard:Spawn()
-		npcantlionguard:SetNWInt("level", math.random(5, 10))
-		npcantlionguard:SetMaxHealth(npcantlionguard:GetNWInt("level") * 13 + math.random(-2, 2))
-		npcantlionguard:SetHealth(npcantlionguard:GetNWInt("level") * 13 + math.random(-2, 2))
-		npcantlionguard:SetNWInt("Health", npcantlionguard:Health())
-		
-		timer.Simple(10, function() GAMEMODE:GenerateBoss() end)
-		numeroboss = numeroboss + 1
-	end
-
 	function GM:OnNPCKilled(npc, killer, weapon)
 		if npc:GetNWInt("level") > 0 && killer:IsPlayer() then
 			local intPlayerLevel = toLevel(killer:GetNWInt("exp"))
@@ -63,12 +42,6 @@ if SERVER then
 			local intExptoGive =  math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 5)
 			killer:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
 			killer:GiveExp(intExptoGive)
-		end
-		if npc:GetClass() == "npc_zombie" then
-			numerozombies = numerozombies - 1
-		end
-		if npc:GetClass() == "npc_antlionguard" then
-			numeroboss = numeroboss - 1
 		end
 	end
 
