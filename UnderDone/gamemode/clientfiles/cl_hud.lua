@@ -33,8 +33,8 @@ function GM:HUDPaint()
 		self.NpcHealthBar:SetDemensions(posNPCpos.x  - (ScrW()*0.05 / 2), posNPCpos.y - (ScrH()*0.02 / 2) ,  ScrW()*0.05, ScrH()*0.02)
 		self.NpcHealthBar:SetStyle(4, clrBarColor)
 		self.NpcHealthBar:SetText("UiBold", trcEyeTrace.Entity:GetNWInt("Health"), clrDrakGray)
-		jdraw.DrawProgressBar(self.NpcHealthBar)
 		self.NpcHealthBar:SetValue(trcEyeTrace.Entity:GetNWInt("Health"), trcEyeTrace.Entity:GetNWInt("MaxHealth"))
+		jdraw.DrawProgressBar(self.NpcHealthBar)
 		if  intLevel < plylevel then
 			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrBlue, 1, 1, 1, clrDrakGray)
 		end
