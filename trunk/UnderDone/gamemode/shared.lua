@@ -36,25 +36,10 @@ end
 
 --Polkm: Example NPCs
 local NPC = {}
-NPC.Name = "citezen"
-NPC.Gender = "random"
-NPC.Wander = true
-function NPC:GenerateInv(npc)
-	npc.Inventory = {}
-	npc.Inventory["money"] = math.random(5,25)
-end
-Register.NPC(NPC)
-
-local NPC = {}
-NPC.Name = "cop"
-NPC.Gender = "random"
-NPC.Wander = true
-NPC.Cop = true
-function NPC:GenerateInv(npc)
-	npc.Inventory = {}
-	npc.Inventory["money"] = math.random(5,50)
-	npc.Inventory["pistol"] = 1
-end
+NPC.Name = "zombie"
+NPC.PrintName = "Zombie"
+NPC.SpawnName = "npc_zombie"
+NPC.HealthPerLevel = 10
 Register.NPC(NPC)
 
 
