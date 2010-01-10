@@ -55,6 +55,9 @@ if SERVER then
 		local entNewMonster = ents.Create(tblNPCTable.SpawnName)
 		entNewMonster:SetPos(tblSpawnPoint.SpawnPoint)
 		entNewMonster:Spawn()
+		for _, ply in pairs(player.GetAll()) do
+			entNewMonster:AddEntityRelationship(ply, 2, 99 )
+		end
 		entNewMonster:SetNWInt("level", tblSpawnPoint.Level)
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
 		entNewMonster:SetMaxHealth(intHealth)
