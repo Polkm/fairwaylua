@@ -7,14 +7,14 @@ function Player:GiveExp(intAmount)
 		self:SetNWInt("exp", intCurrentExp + intAmount)
 		local intPostExpLevel = self:GetLevel()
 		if intPreExpLevel < intPostExpLevel then
-			self:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos(), "purple")
-			self:CreateIndacator("Nice_Man!", self:GetPos(), "blue")
-			self:CreateIndacator("You_Are_Epic!", self:GetPos(), "orange")
-			self:CreateIndacator("I_Wish_I_Was_As_Cool_As_You!", self:GetPos(), "purple")
-			self:CreateIndacator("I_Jizzed!", self:GetPos(), "blue")
-			self:CreateIndacator("Gratz!", self:GetPos(), "orange")
-			self:CreateIndacator("Call_Me!", self:GetPos(), "purple")
-			self:CreateIndacator("You_Should_Model!", self:GetPos(), "orange")
+			self:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos() + Vector(0, 0, 70), "purple")
+			self:CreateIndacator("Nice_Man!", self:GetPos() + Vector(0, 0, 70), "blue")
+			self:CreateIndacator("You_Are_Epic!", self:GetPos() + Vector(0, 0, 70), "orange")
+			self:CreateIndacator("I_Wish_I_Was_As_Cool_As_You!", self:GetPos() + Vector(0, 0, 70), "purple")
+			self:CreateIndacator("I_Jizzed!", self:GetPos() + Vector(0, 0, 70), "blue")
+			self:CreateIndacator("Gratz!", self:GetPos() + Vector(0, 0, 70), "orange")
+			self:CreateIndacator("Call_Me!", self:GetPos() + Vector(0, 0, 70), "purple")
+			self:CreateIndacator("You_Should_Model!", self:GetPos() + Vector(0, 0, 70), "orange")
 		end
 	end
 end
