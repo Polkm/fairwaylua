@@ -26,14 +26,14 @@ function Player:DropItem(strItem, intAmount)
 		end
 		entDropEnt.Item = strItem
 		entDropEnt.Amount = intAmount
-		entDropEnt:SetCollisionGroup(COLLISION_GROUP_WORLD)
 		entDropEnt:Spawn()
 		if !util.IsValidProp(entDropEnt:GetModel()) then
 			local entCan = ents.Create("prop_physics")
-			entCan:SetModel("models/props_junk/PopCan01a.mdl")
+			entCan:SetModel("models/props_junk/cardboard_box004a.mdl")
 			entCan:SetPos(entDropEnt:GetPos())
 			entCan:SetAngles(entDropEnt:GetAngles())
 			entCan:SetCollisionGroup(COLLISION_GROUP_WORLD)
+			entCan:SetColor(0, 0, 0, 0)
 			entCan:Spawn()
 			entDropEnt:SetParent(entCan)
 		end
