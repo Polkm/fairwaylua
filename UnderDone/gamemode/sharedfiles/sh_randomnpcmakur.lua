@@ -26,6 +26,7 @@ if SERVER then
 					entNewMonster:SetMaxHealth(intHealth)
 					entNewMonster:SetHealth(intHealth)
 					entNewMonster:SetNWInt("Health", intHealth)
+					entNewMonster:SetNWInt("MaxHealth", intHealth)
 					entNewMonster.SpawnTime = Spawn.SpawnTime
 					Spawn.Monster = entNewMonster
 					Spawn.NextSpawn = nil
