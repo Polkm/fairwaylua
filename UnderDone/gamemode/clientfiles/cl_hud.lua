@@ -27,15 +27,15 @@ function GM:HUDPaint()
 		local intLevel = trcEyeTrace.Entity:GetNWInt("level")
 		local plylevel = LocalPlayer():GetLevel()
 		local posNPCpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 90)):ToScreen()
-		if plylevel < intLevel then
+		if  intLevel < plylevel then
 			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrBlue, 1, 1, 1, clrDrakGray)
 			draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrBlue, 1, 1, 1, clrDrakGray)
 		end
-		if plylevel == intLevel then
+		if intLevel ==  plylevel then
 			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrWhite, 1, 1, 1, clrDrakGray)
 			draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrWhite, 1, 1, 1, clrDrakGray)
 		end
-		if plylevel > intLevel then
+		if intLevel > plylevel  then
 			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrRed, 1, 1, 1, clrDrakGray)
 			draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrRed, 1, 1, 1, clrDrakGray)
 		end
