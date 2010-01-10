@@ -44,7 +44,7 @@ function Player:LoadGame()
 			self:NewGame()
 		end
 		for _, ply in pairs(player.GetAll()) do
-			if ply.Data.Paperdoll then
+			if ply.Data && ply.Data.Paperdoll then
 				for slot, item in pairs(ply.Data.Paperdoll) do
 					local tblItemTable = GAMEMODE.DataBase.Items[item]
 					umsg.Start("UD_UpdatePapperDoll", self)
