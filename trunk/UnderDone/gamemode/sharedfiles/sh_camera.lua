@@ -1,6 +1,6 @@
 GM.IdealCammeraDistance = 100
 GM.AddativeCammeraDistance = 0
-GM.CammeraSmoothness = 5
+GM.CammeraDelta = 0.2
 GM.LastLookPos = nil
 
 local Player = FindMetaTable("Player")
@@ -25,7 +25,7 @@ function Player:GetIdealCamAngle()
 	local intEditorDistance = GAMEMODE.PapperDollEditor.CurrentCamDistance
 	if intEditorRadiants or intEditorDistance then
 		local vecOldPosition = GAMEMODE.LastLookPos or LocalPlayer():GetEyeTraceNoCursor().HitPos
-		local vecLookPos = vecOldPosition + ((LocalPlayer():GetEyeTraceNoCursor().HitPos - vecOldPosition) / (GAMEMODE.CammeraSmoothness / 2))
+		local vecLookPos = LerpVector(GAMEMODE.CammeraDelta * 2, vecOldPosition, LocalPlayer():GetEyeTraceNoCursor().HitPos)
 		vecLookPos = LocalPlayer():GetPos() + Vector(0, 0, 55)
 		local vecToLookPos = (vecLookPos - LocalPlayer():GetIdealCamPos())
 		GAMEMODE.LastLookPos = vecLookPos
@@ -68,13 +68,13 @@ else
 	function CalcViewHook(plyClient, vecOrigin, angAngles, fovFieldOfView)
 		local client = plyClient
 		--This is for fixing laggy animations in multiplayer for the local player (thanks CapsAdmin :D)
-		antiStutterPos = (antiStutterPos or client:GetPos()) + ((client:GetPos() - (antiStutterPos or client:GetPos())) /  5)
+		antiStutterPos = LerpVector(0.2, antiStutterPos or client:GetPos(), client:GetPos())
 		client:SetPos(antiStutterPos)
 		if client:IsOnGround() and not SinglePlayer() then GAMEMODE:StutteryFix() end
 		--end of fix
 		if !GAMEMODE.CammeraPosition then GAMEMODE.CammeraPosition = client:GetPos() end
 		if !GAMEMODE.CammeraAngle then GAMEMODE.CammeraAngle = Angle(0, 0, 0) end
-		GAMEMODE.CammeraPosition = GAMEMODE.CammeraPosition + ((client:GetIdealCamPos() - GAMEMODE.CammeraPosition) / GAMEMODE.CammeraSmoothness)
+		GAMEMODE.CammeraPosition = LerpVector(GAMEMODE.CammeraDelta, GAMEMODE.CammeraPosition, client:GetIdealCamPos())
 		GAMEMODE.CammeraAngle = client:GetIdealCamAngle() or angAngles
 		local tblView = {}
 		tblView.origin = GAMEMODE.CammeraPosition
