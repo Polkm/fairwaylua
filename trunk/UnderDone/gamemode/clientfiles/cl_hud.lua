@@ -36,8 +36,8 @@ function GM:HUDPaint()
 			draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrWhite, 1, 1, 1, clrDrakGray)
 		end
 		if intLevel > plylevel  then
-			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrRed, 1, 1, 1, clrDrakGray)
-			draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrRed, 1, 1, 1, clrDrakGray)
+			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrOrange, 1, 1, 1, clrDrakGray)
+			draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrOrange, 1, 1, 1, clrDrakGray)
 		end
 	end
 	local intX = ScrW() / 2.0
@@ -55,7 +55,9 @@ function GM:DrawHealthBar()
 	self.HealthBar:SetStyle(4, clrBarColor)
 	self.HealthBar:SetValue(LocalPlayer():Health(), LocalPlayer():GetStat("stat_maxhealth"))
 	self.HealthBar:SetText("UiBold", "Health " .. LocalPlayer():Health(), clrDrakGray)
-	jdraw.DrawProgressBar(self.HealthBar)
+	if LocalPlayer():Health() > 0 then
+		jdraw.DrawProgressBar(self.HealthBar)
+	end
 end
 
 function GM:DrawLevelBar()
@@ -67,7 +69,9 @@ function GM:DrawLevelBar()
 	self.LevelBar:SetStyle(4, clrBarColor)
 	self.LevelBar:SetValue(LocalPlayer():GetNWInt("exp") - intCurrentLevelExp, intNextLevelExp - intCurrentLevelExp)
 	self.LevelBar:SetText("UiBold", "Level " .. LocalPlayer():GetLevel(), clrDrakGray)
-	jdraw.DrawProgressBar(self.LevelBar)
+	if LocalPlayer():GetNWInt("exp") > 0 then
+		jdraw.DrawProgressBar(self.LevelBar)
+	end
 end
 
 function GM:DrawAmmoThingy()
