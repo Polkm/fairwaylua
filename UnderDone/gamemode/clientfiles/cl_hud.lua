@@ -24,6 +24,9 @@ function GM:HUDPaint()
 	self:DrawDamageIndacators()
 	local trcEyeTrace = LocalPlayer():GetEyeTraceNoCursor()
 	if trcEyeTrace.Entity:GetNWInt("level") > 0 then
+		local intLevel = trcEyeTrace.Entity:GetNWInt("level")
+		local plylevel = LocalPlayer():GetLevel()
+		local posNPCpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 90)):ToScreen()
 		local clrBarColor = clrGreen
 		if trcEyeTrace.Entity:GetNWInt("Health") <= 20 then clrBarColor = clrRed end
 		self.NpcHealthBar = jdraw.NewProgressBar(self.NpcBox, true)
@@ -31,9 +34,6 @@ function GM:HUDPaint()
 		self.NpcHealthBar:SetStyle(4, clrBarColor)
 		self.NpcHealthBar:SetValue(trcEyeTrace.Entity:GetNWInt("Health"), trcEyeTrace.Entity:GetNWInt("MaxHealth"))
 		jdraw.DrawProgressBar(self.NpcHealthBar)
-		local intLevel = trcEyeTrace.Entity:GetNWInt("level")
-		local plylevel = LocalPlayer():GetLevel()
-		local posNPCpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 90)):ToScreen()
 		if  intLevel < plylevel then
 			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrBlue, 1, 1, 1, clrDrakGray)
 			draw.SimpleTextOutlined(trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrBlue, 1, 1, 1, clrDrakGray)
