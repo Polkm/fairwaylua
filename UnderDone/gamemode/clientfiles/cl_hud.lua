@@ -41,7 +41,7 @@ function GM:HUDPaint()
 		end
 	end
 	local clrBarColor = clrGreen
-	if LocalPlayer():Health() <= 20 then clrBarColor = clrRed end
+	if trcEyeTrace.Entity:GetNWInt("Health") <= 20 then clrBarColor = clrRed end
 	self:DrawCBar( pos.x, pos.y, w*0.05, h*0.02, castle:GetHealth(), green, red )
 	self.NpcHealthBar = jdraw.NewProgressBar(self.NpcBox, true)
 	self.NpcHealthBar:SetDemensions(pos.x, pos.y, w*0.05, h*0.02)
