@@ -135,6 +135,9 @@ function GM:BuildModel(tblModelTable)
 		if entReturnEnt then entNewPart:SetPos(entNewPart:LocalToWorld(modelinfo.Position)) end
 		if !entReturnEnt then entNewPart:SetPos(modelinfo.Position) end
 		entNewPart:SetParent(entReturnEnt)
+		if SERVER then
+			entNewPart:SetCollisionGroup(COLLISION_GROUP_WORLD)
+		end
 		entNewPart:Spawn()
 		if entReturnEnt then
 			entReturnEnt.Children = entReturnEnt.Children or {}
