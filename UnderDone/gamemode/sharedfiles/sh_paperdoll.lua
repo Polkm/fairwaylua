@@ -88,10 +88,12 @@ if CLIENT then
 				for slot, ent in pairs(player.PapperDollEnts or {}) do
 					local tblItemTable = GAMEMODE.DataBase.Items[ent.Item]
 					local tblAttachment = player:GetAttachment(player:LookupAttachment(ent.Attachment))
-					ent:SetAngles(tblAttachment.Ang)
-					ent:SetAngles(ent:LocalToWorldAngles(tblItemTable.Model[1].Angle))
-					ent:SetPos(tblAttachment.Pos)
-					ent:SetPos(ent:LocalToWorld(tblItemTable.Model[1].Position))
+					if tblAttachment then
+						ent:SetAngles(tblAttachment.Ang)
+						ent:SetAngles(ent:LocalToWorldAngles(tblItemTable.Model[1].Angle))
+						ent:SetPos(tblAttachment.Pos)
+						ent:SetPos(ent:LocalToWorld(tblItemTable.Model[1].Position))
+					end
 				end
 			end
 			return
