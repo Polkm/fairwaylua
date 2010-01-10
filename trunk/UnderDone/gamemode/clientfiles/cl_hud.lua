@@ -22,13 +22,23 @@ function GM:HUDPaint()
 	end
 	self:Notifications()
 	self:DrawDamageIndacators()
-	
 	local trcEyeTrace = LocalPlayer():GetEyeTraceNoCursor()
 	if trcEyeTrace.Entity:GetNWInt("level") > 0 then
 		local intLevel = trcEyeTrace.Entity:GetNWInt("level")
-		local posNPCPos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 80)):ToScreen()
-		draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCPos.x, posNPCPos.y * 0.965, clrWhite, 1, 1, 1, clrDrakGray)
-		draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCPos.x , posNPCPos.y, clrWhite, 1, 1, 1, clrDrakGray)
+		local plylevel = LocalPlayer():GetLevel()
+		local posNPCpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 90)):ToScreen()
+		if plylevel < intLevel then
+			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrBlue, 1, 1, 1, clrDrakGray)
+			draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrBlue, 1, 1, 1, clrDrakGray)
+		end
+		if plylevel == intLevel then
+			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrWhite, 1, 1, 1, clrDrakGray)
+			draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrWhite, 1, 1, 1, clrDrakGray)
+		end
+		if plylevel > intLevel then
+			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrRed, 1, 1, 1, clrDrakGray)
+			draw.SimpleTextOutlined("Health " .. trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrRed, 1, 1, 1, clrDrakGray)
+		end
 	end
 	local intX = ScrW() / 2.0
 	local intY = LocalPlayer():GetEyeTraceNoCursor().HitPos:ToScreen().y
