@@ -1,16 +1,23 @@
 if SERVER then
 	GM.MapEntities = {}
 	GM.MapEntities.NPCSpawnPoints = {}
-	--[[GM.MapEntities.NPCSpawnPoints[1] = {}
+	GM.MapEntities.NPCSpawnPoints[1] = {}
 	GM.MapEntities.NPCSpawnPoints[1].NPC = "zombie"
 	GM.MapEntities.NPCSpawnPoints[1].SpawnPoint = Vector(819, 61, 141)
 	GM.MapEntities.NPCSpawnPoints[1].Level = 5
 	GM.MapEntities.NPCSpawnPoints[1].SpawnTime = 10
+	GM.MapEntities.NPCSpawnPoints[1].Feel = 3
 	GM.MapEntities.NPCSpawnPoints[2] = {}
-	GM.MapEntities.NPCSpawnPoints[2].NPC = "antlionguard"
-	GM.MapEntities.NPCSpawnPoints[2].SpawnPoint = Vector(1374, 3917, 110)
+	GM.MapEntities.NPCSpawnPoints[2].NPC = "zombie"
+	GM.MapEntities.NPCSpawnPoints[2].SpawnPoint = Vector(919, 101, 141)
 	GM.MapEntities.NPCSpawnPoints[2].Level = 5
-	GM.MapEntities.NPCSpawnPoints[2].SpawnTime = 10]]
+	GM.MapEntities.NPCSpawnPoints[2].SpawnTime = 10
+	GM.MapEntities.NPCSpawnPoints[2].Feel = 1
+	GM.MapEntities.NPCSpawnPoints[3] = {}
+	GM.MapEntities.NPCSpawnPoints[3].NPC = "antlionguard"
+	GM.MapEntities.NPCSpawnPoints[3].SpawnPoint = Vector(1374, 3917, 110)
+	GM.MapEntities.NPCSpawnPoints[3].Level = 5
+	GM.MapEntities.NPCSpawnPoints[3].SpawnTime = 10
 	
 	function GM:LoadMapObjects()
 		local strFileName = "UnderDone/Maps/" .. game.GetMap() .. ".txt"
@@ -56,7 +63,14 @@ if SERVER then
 		entNewMonster:SetPos(tblSpawnPoint.SpawnPoint)
 		entNewMonster:Spawn()
 		for _, ply in pairs(player.GetAll()) do
-			entNewMonster:AddEntityRelationship(ply, 2, 99 )
+			entNewMonster:AddEntityRelationship(ply,tblSpawnPoint.Feel, 99 )
+		end
+		if tblSpawnPoint.Feel == 1 then
+			GAMEMODe.DiplomacyChange:AddEntityRelationship(entNewMonster,1, 99 )
+			entNewMonster:AddEntityRelationship(GAMEMODE.Diplomacy,1, 99 )
+		end
+		if tblSpawnPoint.Feel == 3 then
+			GAMEMODE.Diplomacy = entNewMonster
 		end
 		entNewMonster:SetNWInt("level", tblSpawnPoint.Level)
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
