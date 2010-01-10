@@ -55,9 +55,7 @@ function GM:DrawHealthBar()
 	self.HealthBar:SetStyle(4, clrBarColor)
 	self.HealthBar:SetValue(LocalPlayer():Health(), LocalPlayer():GetStat("stat_maxhealth"))
 	self.HealthBar:SetText("UiBold", "Health " .. LocalPlayer():Health(), clrDrakGray)
-	if LocalPlayer():Health() > 0 then
-		jdraw.DrawProgressBar(self.HealthBar)
-	end
+	jdraw.DrawProgressBar(self.HealthBar)
 end
 
 function GM:DrawLevelBar()
@@ -69,9 +67,7 @@ function GM:DrawLevelBar()
 	self.LevelBar:SetStyle(4, clrBarColor)
 	self.LevelBar:SetValue(LocalPlayer():GetNWInt("exp") - intCurrentLevelExp, intNextLevelExp - intCurrentLevelExp)
 	self.LevelBar:SetText("UiBold", "Level " .. LocalPlayer():GetLevel(), clrDrakGray)
-	if LocalPlayer():GetNWInt("exp") > 0 then
-		jdraw.DrawProgressBar(self.LevelBar)
-	end
+	jdraw.DrawProgressBar(self.LevelBar)
 end
 
 function GM:DrawAmmoThingy()

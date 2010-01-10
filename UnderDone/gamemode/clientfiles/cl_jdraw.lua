@@ -79,7 +79,9 @@ function jdraw.DrawProgressBar(tblPanelTable)
 	if intRadius > intBarWidth then intRadius = 1 end
 	draw.RoundedBox(intRadius, intX, intY, intWidth, intHieght, tblPanelTable.BoarderColor)
 	draw.RoundedBox(intRadius, intX + intBoarder, intY + intBoarder, intWidth  - (intBoarder * 2), intHieght - (intBoarder * 2), clrGray)
-	draw.RoundedBox(intRadius, intX + intBoarder, intY + intBoarder, intBarWidth, intHieght - (intBoarder * 2), tblPanelTable.Color)
+	if intValue then
+		draw.RoundedBox(intRadius, intX + intBoarder, intY + intBoarder, intBarWidth, intHieght - (intBoarder * 2), tblPanelTable.Color)
+	end
 	if strText && strText != "" then
 		draw.SimpleText(strText, tblPanelTable.Font, intX + (intWidth / 2), intY + (intHieght / 2), tblPanelTable.TextColor, 1, 1)
 	end
