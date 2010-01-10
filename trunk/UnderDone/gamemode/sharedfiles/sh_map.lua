@@ -67,10 +67,10 @@ if SERVER then
 		end
 		if tblSpawnPoint.Feel == 1 then
 			GAMEMODE.DiplomacyChange:AddEntityRelationship(entNewMonster,1, 99 )
-			entNewMonster:AddEntityRelationship(GAMEMODE.Diplomacy,1, 99 )
+			entNewMonster:AddEntityRelationship(GAMEMODE.DiplomacyChange,1, 99 )
 		end
 		if tblSpawnPoint.Feel == 3 then
-			GAMEMODE.Diplomacy = entNewMonster
+			GAMEMODE.DiplomacyChange = entNewMonster
 		end
 		entNewMonster:SetNWInt("level", tblSpawnPoint.Level)
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
