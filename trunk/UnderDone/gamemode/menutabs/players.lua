@@ -31,7 +31,7 @@ function PANEL:PerformLayout()
 end
 
 function PANEL:LoadPlayers()
-	--if self.servercatagory.ContentList then self.servercatagory.ContentList:Clear() end
+	if self.servercatagory.ContentList then self.servercatagory.ContentList:Clear() end
 	self.servercatagory:SetDescText(#player:GetAll() .. " Player(s)")
 	for _, player in pairs(player:GetAll()) do
 		-------------------------
