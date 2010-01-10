@@ -15,10 +15,12 @@ PANEL.NameText = nil
 PANEL.DescText = nil
 PANEL.CommonButton = nil
 PANEL.SecondaryButton = nil
+PANEL.AvatarImage = nil
 PANEL.ContentList = nil
 PANEL.Expanded = false
 PANEL.Expandable = false
 PANEL.ExpandedSize = nil
+PANEL.HeaderSize = nil
 PANEL.GradientTexture = nil
 
 function PANEL:Init()
@@ -28,6 +30,7 @@ function PANEL:Init()
 	self.NameText = "Test"
 	self.DescText = ""
 	self.ExpandedSize = 50
+	self.HeaderSize = 18
 	--RightClick Dectection--
 	self:SetMouseInputEnabled(true)
 	self.OnMousePressed = function(self,mousecode) self:MouseCapture(true) end
@@ -43,22 +46,27 @@ end
 
 function PANEL:PerformLayout()
 	if self.Expanded then self:SetSize(self:GetWide(), self.ExpandedSize) end
-	if !self.Expanded then self:SetSize(self:GetWide(), 18) end
+	if !self.Expanded then self:SetSize(self:GetWide(), self.HeaderSize) end
 	if self.CommonButton then
-		self.CommonButton:SetPos(self:GetWide() - 17, 1)
-		if self.SecondaryButton then self.CommonButton:SetPos(self:GetWide() - 36, 1) end
+		self.CommonButton:SetPos(self:GetWide() - 17, (self.HeaderSize / 2) - (self.CommonButton:GetTall() / 2))
+		if self.SecondaryButton then self.CommonButton:SetPos(self:GetWide() - 36, (self.HeaderSize / 2) - (self.CommonButton:GetTall() / 2)) end
 	end
 	if self.SecondaryButton then
-		self.SecondaryButton:SetPos(self:GetWide() - 17, 1)
+		self.SecondaryButton:SetPos(self:GetWide() - 17, (self.HeaderSize / 2) - (self.SecondaryButton:GetTall() / 2))
 	end
 	if self.ContentList then
-		self.ContentList:SetSize(self:GetWide() - 4, self:GetTall() - 23)
-		self.ContentList:SetPos(2, 21)
+		self.ContentList:SetSize(self:GetWide() - 10, self:GetTall() - self.HeaderSize - 7)
+		self.ContentList:SetPos(5, self.HeaderSize + 2)
+	end
+	if self.AvatarImage then
+		self.AvatarImage:SetPos(3, (self.HeaderSize / 2) - (self.AvatarImage:GetTall() / 2))
 	end
 	self:GetParent():InvalidateLayout()
 end
 
 function PANEL:Paint()
+	local intIconSize = 16
+	local intIconSize_small = 12
 	local clrBackGroundColor
 	local x, y = self:CursorPos()
 	if x > 0 && x < self:GetWide() && y > 0 && y < self:GetTall() then
@@ -71,24 +79,25 @@ function PANEL:Paint()
 	tblPaintPanle:SetStyle(4, clrBackGroundColor)
 	tblPaintPanle:SetBoarder(1, clrDrakGray)
 	jdraw.DrawPanel(tblPaintPanle)
+	--Text
+	surface.SetFont("MenuLarge")
+	local wide, high = surface.GetTextSize(self.NameText)
+	local intXOffSet = 1
+	if self.AvatarImage then intXOffSet = self.AvatarImage:GetWide() + 8 end
+	if self.Icon && !self.AvatarImage then intXOffSet = 20 end
+	draw.SimpleText(self.NameText, "MenuLarge", intXOffSet, (self.HeaderSize / 2) - 1, clrWhite, 0, 1)
+	draw.SimpleText(self.DescText, "DefaultSmall", wide + intXOffSet + 5, (self.HeaderSize / 2), clrDrakGray, 0, 1)
 	--Icon
-	if self.Icon then
+	if self.Icon && !self.AvatarImage then
 		local IconTexture = surface.GetTextureID(self.Icon)
 		surface.SetDrawColor(255, 255, 255, 255)
 		surface.SetTexture(IconTexture)
 		if x > 0 && x < self:GetWide() && y > 0 && y < self:GetTall() then
-			surface.DrawTexturedRect(1, 1, 16, 16)
+			surface.DrawTexturedRect(1, (self.HeaderSize / 2) - (intIconSize / 2), intIconSize, intIconSize)
 		else
-			surface.DrawTexturedRect(3, 3, 12, 12)
+			surface.DrawTexturedRect(3, (self.HeaderSize / 2) - (intIconSize_small / 2), intIconSize_small, intIconSize_small)
 		end
 	end
-	--Text
-	if self.Icon then draw.SimpleText(self.NameText, "MenuLarge", 20, 1, clrWhite, 0, 3)
-	else draw.SimpleText(self.NameText, "MenuLarge", 1, 1, clrWhite, 0, 3) end
-	surface.SetFont("MenuLarge")
-	local wide, high = surface.GetTextSize(self.NameText)
-	if self.Icon then draw.SimpleText(self.DescText, "DefaultSmall", wide + 25, 4, clrDrakGray, 0, 3)
-	else draw.SimpleText(self.DescText, "DefaultSmall", wide + 5, 4, clrDrakGray, 0, 3) end
 	return true
 end
 
@@ -111,6 +120,9 @@ end
 function PANEL:SetDescText(strDescText)
 	self.DescText = strDescText
 end
+function PANEL:SetHeaderSize(intHeaderSize)
+	self.HeaderSize = intHeaderSize
+end
 function PANEL:SetExpandable(boolExpandable)
 	self.Expandable = boolExpandable
 end
@@ -118,7 +130,7 @@ function PANEL:SetExpanded(boolExpanded)
 	if self.Expandable then
 		self.Expanded = boolExpanded
 		if self.Expanded then self:SetTall(self.ExpandedSize) end
-		if !self.Expanded then self:SetTall(18) end
+		if !self.Expanded then self:SetTall(self.HeaderSize) end
 		self:GetParent():InvalidateLayout()
 	end
 end
@@ -140,6 +152,11 @@ function PANEL:SetSecondaryButton(strTexture, fncPressedFunction, strToolTip)
 	self.SecondaryButton.DoClick = fncPressedFunction
 	self.SecondaryButton:SetTooltip(strToolTip)
 end
+function PANEL:SetAvatar(plyPlayer, intAvatarSize)
+	self.AvatarImage = vgui.Create("AvatarImage", self)
+	self.AvatarImage:SetSize(intAvatarSize, intAvatarSize)
+	self.AvatarImage:SetPlayer(plyPlayer)
+end
 function PANEL:AddContent(objItem)
 	if !self.ContentList then
 		self.ContentList = vgui.Create("DPanelList", self)
@@ -156,8 +173,8 @@ function PANEL:AddContent(objItem)
 		end
 	end
 	self.ContentList:AddItem(objItem)
-	local ExpandSize = 22 + 4
-	for _,ListItem in pairs(self.ContentList:GetItems()) do ExpandSize = ExpandSize + 19 end
+	local ExpandSize = self.HeaderSize + 10
+	for _, ListItem in pairs(self.ContentList:GetItems()) do ExpandSize = ExpandSize + ListItem.HeaderSize + 1 end
 	self.ExpandedSize = ExpandSize
 	self:PerformLayout()
 end

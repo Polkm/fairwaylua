@@ -9,8 +9,7 @@ function Stat:OnSet(ply, intMaxHealth, intOldMaxHealth)
 	ply:SetMaxHealth(intMaxHealth)
 end
 function Stat:OnSpawn(ply, intMaxHealth)
-	print(intMaxHealth, ply:GetMaxHealth())
-	ply:Health(intMaxHealth)
+	ply:SetHealth(intMaxHealth)
 end
 Register.Stat(Stat)
 
@@ -88,7 +87,6 @@ if SERVER then
 		for name, stat in pairs(GAMEMODE.DataBase.Stats) do
 			if ply.Stats then
 				ply:SetStat(name, ply:GetStat(name))
-				PrintTable(stat)
 				if stat.OnSpawn then
 					stat:OnSpawn(ply, ply:GetStat(name))
 				end

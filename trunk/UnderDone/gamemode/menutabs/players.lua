@@ -31,15 +31,17 @@ function PANEL:PerformLayout()
 end
 
 function PANEL:LoadPlayers()
-	if self.servercatagory.ContentList then self.servercatagory.ContentList:Clear() end
+	--if self.servercatagory.ContentList then self.servercatagory.ContentList:Clear() end
 	self.servercatagory:SetDescText(#player:GetAll() .. " Player(s)")
 	for _, player in pairs(player:GetAll()) do
 		-------------------------
 		local ListItem = vgui.Create("FListItem")
+		ListItem:SetHeaderSize(25)
+		ListItem:SetAvatar(player, 20)
 		-------------------------
 		ListItem:SetNameText(player:Nick())
-		ListItem:SetIcon("gui/player")
 		ListItem:SetColor(clrGray)
+		ListItem:SetIcon("gui/player")
 		if player:GetFriendStatus() then ListItem:SetIcon("gui/player_green") end
 		if player:IsAdmin() then ListItem:SetIcon("gui/admin") end
 		------Common Button------

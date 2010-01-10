@@ -32,8 +32,8 @@ if SERVER then
 		npcantlionguard:SetPos(Vector(math.random(-6000, 6000), math.random(-6000, 6000), 40))
 		npcantlionguard:Spawn()
 		npcantlionguard:SetNWInt("level", math.random(5, 10))
-		npcantlionguard:SetMaxHealth(npcantlionguard:GetNWInt("level") * 10)
-		npcantlionguard:SetHealth(npcantlionguard:GetNWInt("level") * 10)
+		npcantlionguard:SetMaxHealth(npcantlionguard:GetNWInt("level") * 13 + math.random(-2, 2))
+		npcantlionguard:SetHealth(npcantlionguard:GetNWInt("level") * 13 + math.random(-2, 2))
 		npcantlionguard:SetNWInt("Health", npcantlionguard:Health())
 		
 		timer.Simple(10, function() GAMEMODE:GenerateBoss() end)
@@ -44,8 +44,8 @@ if SERVER then
 		if npc:GetNWInt("level") > 0 && killer:IsPlayer() then
 			local intPlayerLevel = toLevel(killer:GetNWInt("exp"))
 			local intNPCLevel = npc:GetNWInt("level")
-			local intExptoGive =  math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 2)
-			killer:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos(), "green")
+			local intExptoGive =  math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 5)
+			killer:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
 			killer:GiveExp(intExptoGive)
 		end
 		if npc:GetClass() == "npc_zombie" then
@@ -59,20 +59,26 @@ if SERVER then
 	function GM:ScaleNPCDamage(npc, hitgroup, dmginfo)
 		local plyAttacker = dmginfo:GetAttacker()
 		if plyAttacker:IsPlayer() then
-			dmginfo:ScaleDamage(1)
-			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
+			local clrDisplayColor = "white"
 			local intPlayerLevel = plyAttacker:GetLevel()
 			local intNPCLevel = npc:GetNWInt("level")
-			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * (intPlayerLevel / intNPCLevel)))
-			if dmginfo:GetDamage() > 0 then
-				npc:SetNWInt("Health",npc:Health() - dmginfo:GetDamage() )
-				plyAttacker:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition())
+			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * (1 / intNPCLevel)))
+			if npc:GetClass() == "npc_headcrab" then dmginfo:SetDamage(999) end --I fuckin hate headcrabs
+			if math.random(1, 20) == 1 then
+				dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * 2))
+				plyAttacker:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue")
+				clrDisplayColor = "blue"
+			end
+			
+			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
+			if dmginfo:GetDamage() > 0 && dmginfo:GetDamage() < 990 then
+				plyAttacker:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
 			elseif dmginfo:GetDamage() <= 0 then
 				plyAttacker:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
 			end
-			if npc:GetClass() == "npc_headcrab" then
-				dmginfo:SetDamage(999)
-			end
 		end
+		npc:SetHealth(npc:Health() - dmginfo:GetDamage())
+		npc:SetNWInt("Health", npc:Health())
+		dmginfo:SetDamage(0)
 	end
 end
