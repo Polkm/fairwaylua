@@ -42,6 +42,13 @@ NPC.SpawnName = "npc_zombie"
 NPC.HealthPerLevel = 10
 Register.NPC(NPC)
 
+local NPC = {}
+NPC.Name = "antlionguard"
+NPC.PrintName = "Antlion Boss"
+NPC.SpawnName = "npc_antlionguard"
+NPC.HealthPerLevel = 13
+Register.NPC(NPC)
+
 
 
 
