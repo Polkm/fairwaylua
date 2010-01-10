@@ -1,40 +1,4 @@
-local tblSpawnPoints = {}
-tblSpawnPoints[1] = {}
-tblSpawnPoints[1].NPC = "zombie"
-tblSpawnPoints[1].SpawnPoint = Vector(819, 61, 141)
-tblSpawnPoints[1].Level = 5
-tblSpawnPoints[1].SpawnTime = 10
-tblSpawnPoints[2] = {}
-tblSpawnPoints[2].NPC = "antlionguard"
-tblSpawnPoints[2].SpawnPoint = Vector(1374, 3917,	110)
-tblSpawnPoints[2].Level = 5
-tblSpawnPoints[2].SpawnTime = 10
-
 if SERVER then
-	function GenerateMonster()
-		for _, Spawn in pairs(tblSpawnPoints) do
-			if !Spawn.Monster or !Spawn.Monster:IsValid() then
-				if !Spawn.NextSpawn then Spawn.NextSpawn = CurTime() + Spawn.SpawnTime end
-				if CurTime() >= Spawn.NextSpawn then
-					local tblNPCTable = GAMEMODE.DataBase.NPCs[Spawn.NPC]
-					local entNewMonster = ents.Create(tblNPCTable.SpawnName)
-					entNewMonster:SetPos(Spawn.SpawnPoint)
-					entNewMonster:Spawn()
-					entNewMonster:SetNWInt("level", Spawn.Level)
-					local intHealth = Spawn.Level * tblNPCTable.HealthPerLevel
-					entNewMonster:SetMaxHealth(intHealth)
-					entNewMonster:SetHealth(intHealth)
-					entNewMonster:SetNWInt("Health", intHealth)
-					entNewMonster:SetNWInt("MaxHealth", intHealth)
-					entNewMonster.SpawnTime = Spawn.SpawnTime
-					Spawn.Monster = entNewMonster
-					Spawn.NextSpawn = nil
-				end
-			end
-		end
-	end
-	hook.Add("Tick", "GenerateMonster", GenerateMonster)
-
 	function GM:OnNPCKilled(npc, killer, weapon)
 		if npc:GetNWInt("level") > 0 && killer:IsPlayer() then
 			local intPlayerLevel = toLevel(killer:GetNWInt("exp"))
