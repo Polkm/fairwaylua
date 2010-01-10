@@ -36,15 +36,15 @@ function GM:HUDPaint()
 		jdraw.DrawProgressBar(self.NpcHealthBar)
 		if  intLevel < plylevel then
 			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrBlue, 1, 1, 1, clrDrakGray)
-			draw.SimpleTextOutlined(trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrBlue, 1, 1, 1, clrDrakGray)
+			self.NpcHealthBar:SetText("UiBold", LocalPlayer():Health(), clrBlue)
 		end
 		if intLevel ==  plylevel then
 			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrWhite, 1, 1, 1, clrDrakGray)
-			draw.SimpleTextOutlined(trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrWhite, 1, 1, 1, clrDrakGray)
+			self.NpcHealthBar:SetText("UiBold", LocalPlayer():Health(), clrWhite)
 		end
 		if intLevel > plylevel  then
 			draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrOrange, 1, 1, 1, clrDrakGray)
-			draw.SimpleTextOutlined(trcEyeTrace.Entity:GetNWInt("Health"), "ScoreboardText", posNPCpos.x , posNPCpos.y, clrOrange, 1, 1, 1, clrDrakGray)
+			self.NpcHealthBar:SetText("UiBold", LocalPlayer():Health(), clrOrange)
 		end
 	end
 	local intX = ScrW() / 2.0
