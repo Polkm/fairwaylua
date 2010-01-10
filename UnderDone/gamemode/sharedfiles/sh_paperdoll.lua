@@ -1,5 +1,12 @@
 local Player = FindMetaTable("Player")
 
+function Player:GetSlot(strSlot)
+	if self.Data && self.Data.Paperdoll && self.Data.Paperdoll[strSlot] then
+		return self.Data.Paperdoll[strSlot]
+	end
+	return
+end
+
 function Player:SetPaperDoll(strSlot, strItem)
 	if !self or !self:IsValid() then return false end
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem] or {}

@@ -29,8 +29,8 @@ SLOT.Desc = "Your main weapon"
 SLOT.Position = Vector(25, 40, 0)
 SLOT.Attachment = "anim_attachment_RH"
 function SLOT:ShouldClear(ply, tblItemTable)
-	local tblPrimaryWeapon = GAMEMODE.DataBase.Items[ply.Data.Paperdoll["slot_primaryweapon"]]
-	local tblSheild = GAMEMODE.DataBase.Items[ply.Data.Paperdoll["slot_offhand"]]
+	local tblPrimaryWeapon = ItemTable(ply:GetSlot("slot_primaryweapon"))
+	local tblSheild = ItemTable(ply:GetSlot("slot_offhand"))
 	if !tblSheild or (tblSheild and tblPrimaryWeapon.HoldType and tblPrimaryWeapon.HoldType == "melee") then
 		return false
 	end
@@ -45,7 +45,7 @@ SLOT.Desc = "A off hand object for melee weapons"
 SLOT.Position = Vector(75, 40, 0)
 SLOT.Attachment = "anim_attachment_LH"
 function SLOT:ShouldClear(ply, tblItemTable)
-	local tblPrimaryWeapon = GAMEMODE.DataBase.Items[ply.Data.Paperdoll["slot_primaryweapon"]]
+	local tblPrimaryWeapon = ItemTable(ply:GetSlot("slot_primaryweapon"))
 	if !tblPrimaryWeapon or (tblPrimaryWeapon and tblPrimaryWeapon.HoldType and tblPrimaryWeapon.HoldType == "melee") then
 		return false
 	end
