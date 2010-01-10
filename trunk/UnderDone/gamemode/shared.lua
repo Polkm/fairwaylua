@@ -17,6 +17,9 @@ Register = {}
 function Register.Item(tblItem)
 	GM.DataBase.Items[tblItem.Name] = tblItem
 end
+function ItemTable(strItem)
+	return GAMEMODE.DataBase.Items[strItem]
+end
 function Register.Slot(tblItem)
 	GM.DataBase.Slots[tblItem.Name] = tblItem
 end

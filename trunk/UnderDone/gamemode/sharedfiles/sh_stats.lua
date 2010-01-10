@@ -21,6 +21,12 @@ Stat.Default = 1
 function Stat:OnSet(ply, intStrength, intOldStrength)
 	ply:AddStat("stat_maxhealth", (intStrength - intOldStrength) * 0.5)
 end
+function Stat:DamageMod(ply, intStrength, intDamage)
+	if ply:IsMelee() then
+		intDamage = intDamage * math.Clamp(intStrength / 3, 1, intStrength)
+	end
+	return intDamage
+end
 Register.Stat(Stat)
 
 local Stat = {}
@@ -28,6 +34,12 @@ Stat.Name = "stat_dexterity"
 Stat.PrintName = "Dexterity"
 Stat.Desc = "The more you have more damage ranged attack will do"
 Stat.Default = 1
+function Stat:DamageMod(ply, intDexterity, intDamage)
+	if !ply:IsMelee() then
+		intDamage = intDamage * math.Clamp(intDexterity / 3, 1, intStrength)
+	end
+	return intDamage
+end
 Register.Stat(Stat)
 
 local Stat = {}
@@ -79,7 +91,10 @@ function Player:SetStat(strStat, intAmount)
 end
 
 function Player:GetStat(strStat)
-	return self.Stats[strStat]
+	if self.Stats && self.Stats[strStat] then
+		return self.Stats[strStat]
+	end
+	return
 end
 
 if SERVER then

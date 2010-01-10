@@ -69,7 +69,11 @@ if SERVER then
 				plyAttacker:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue")
 				clrDisplayColor = "blue"
 			end
-			
+			for name, stat in pairs(GAMEMODE.DataBase.Stats) do
+				if plyAttacker:GetStat(name) && stat.DamageMod then
+					dmginfo:SetDamage(stat:DamageMod(plyAttacker, plyAttacker:GetStat(name), dmginfo:GetDamage()))
+				end
+			end
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
 			if dmginfo:GetDamage() > 0 && dmginfo:GetDamage() < 990 then
 				plyAttacker:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
@@ -77,6 +81,7 @@ if SERVER then
 				plyAttacker:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
 			end
 		end
+		dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage()), 0, 999))
 		npc:SetHealth(npc:Health() - dmginfo:GetDamage())
 		npc:SetNWInt("Health", npc:Health())
 		dmginfo:SetDamage(0)
