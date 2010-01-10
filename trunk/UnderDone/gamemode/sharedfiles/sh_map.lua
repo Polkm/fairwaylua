@@ -66,7 +66,7 @@ if SERVER then
 			entNewMonster:AddEntityRelationship(ply,tblSpawnPoint.Feel, 99 )
 		end
 		if tblSpawnPoint.Feel == 1 then
-			GAMEMODe.DiplomacyChange:AddEntityRelationship(entNewMonster,1, 99 )
+			GAMEMODE.DiplomacyChange:AddEntityRelationship(entNewMonster,1, 99 )
 			entNewMonster:AddEntityRelationship(GAMEMODE.Diplomacy,1, 99 )
 		end
 		if tblSpawnPoint.Feel == 3 then
