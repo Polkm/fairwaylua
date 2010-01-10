@@ -6,6 +6,8 @@ GM.PapperDollEditor.CurrentAddedAngle = Angle(0, 0, 0)
 GM.PapperDollEditor.CurrentCamRotation = nil
 GM.PapperDollEditor.CurrentCamDistance = nil
 
+if !SinglePlayer() then return end
+
 function GM.PapperDollEditor.OpenPapperDollEditor()
 	local frmPapperDollFrame = vgui.Create("DFrame")
 	local pnlControlsList = vgui.Create("DPanelList", frmPapperDollFrame)
