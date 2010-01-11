@@ -66,11 +66,18 @@ if SERVER then
 			entNewMonster:AddEntityRelationship(ply,tblSpawnPoint.Feel, 99 )
 		end
 		if tblSpawnPoint.Feel == 1 then
-			GAMEMODE.DiplomacyChange:AddEntityRelationship(entNewMonster,1, 99 )
-			entNewMonster:AddEntityRelationship(GAMEMODE.DiplomacyChange,1, 99 )
+			GAMEMODE.NPCEnemy = entNewMonster
+			if GAMEMODE.NPCAlly then
+				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster,1, 99 )
+				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly,1, 99 )
+			end
 		end
 		if tblSpawnPoint.Feel == 3 then
-			GAMEMODE.DiplomacyChange = entNewMonster
+			GAMEMODE.NPCAlly = entNewMonster
+			if GAMEMODE.NPCEnemy then
+				GAMEMODE.NPCEnemy:AddEntityRelationship(entNewMonster,1, 99 )
+				entNewMonster:AddEntityRelationship(GAMEMODE.NPCEnemy,1, 99 )
+			end
 		end
 		entNewMonster:SetNWInt("level", tblSpawnPoint.Level)
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
@@ -80,10 +87,6 @@ if SERVER then
 		entNewMonster:SetNWInt("MaxHealth", intHealth)
 		return entNewMonster
 	end
-	
-	
-	
-	
 	
 	function GM:AdminPlaceNPCSpawPoint(plyAdmin, strNPCType, intLevel, intSpawnTime)
 		local tblNewSpawnPoint = {}
