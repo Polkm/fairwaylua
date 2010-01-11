@@ -44,6 +44,13 @@ if SERVER then
 		if killer:IsNPC( ) && victim:IsPlayer() then
 			if killer.Relation == Like then
 				killer:AddEntityRelationship(victim, Like, 99)
+				for _, ent in pairs(ents.GetAll()) do
+					if ent && ent:IsNpc() then
+						if ent.Relation == killer.Relation then
+							ent:AddEntityRelationship(victim, Like, 99)
+						end
+					end
+				end
 			end
 		end
 	end
@@ -78,6 +85,13 @@ if SERVER then
 			end
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
 			if dmginfo:GetDamage() > 0 && dmginfo:GetDamage() < 990 then
+				for _, ent in pairs(ents.GetAll()) do
+					if ent && ent:IsNpc() then
+						if ent.Relation == npc.Relation then
+							ent:AddEntityRelationship(plyAttacker, Hate, 99)
+						end
+					end
+				end
 				plyAttacker:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
 				npc:AddEntityRelationship(plyAttacker, Hate, 99)
 			elseif dmginfo:GetDamage() <= 0 then
