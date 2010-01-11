@@ -52,7 +52,7 @@ end
 
 function GM:DrawHealthBar()
 	local clrBarColor = clrGreen
-	if LocalPlayer():Health() <= (LocalPlayer():GetStat("stat_maxhealth") * 0.2) then clrBarColor = clrRed end
+	if LocalPlayer():Health() <= (LocalPlayer():GetMaxHealth( ) * 0.2) then clrBarColor = clrRed end
 	self.HealthBar = jdraw.NewProgressBar(self.PlayerBox, true)
 	self.HealthBar:SetDemensions(3, 3, self.PlayerBox.Size.Width - 6, 20)
 	self.HealthBar:SetStyle(4, clrBarColor)
