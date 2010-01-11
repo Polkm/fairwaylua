@@ -4,7 +4,8 @@ function Player:GiveExp(intAmount)
 	local intCurrentExp = self:GetNWInt("exp")
 	local intPreExpLevel = self:GetLevel()
 	if intCurrentExp + intAmount >= 0 then
-		self:SetNWInt("exp", intCurrentExp + intAmount)
+		local intTotal = intCurrentExp + intAmount
+		self:SetNWInt("exp", math.Clamp(intTotal, toExp(intPreExpLevel), intTotal))
 		local intPostExpLevel = self:GetLevel()
 		if intPreExpLevel < intPostExpLevel then
 			self:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos() + Vector(0, 0, 70), "purple")

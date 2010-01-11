@@ -28,13 +28,15 @@ function GM:HUDPaint()
 		local plylevel = LocalPlayer():GetLevel()
 		local posNPCpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 70)):ToScreen()
 		local clrBarColor = clrGreen
-		if trcEyeTrace.Entity:GetNWInt("Health") <= 20 then clrBarColor = clrRed end
+		local intHealth = trcEyeTrace.Entity:GetNWInt("Health")
+		local intMaxHealth = trcEyeTrace.Entity:GetNWInt("MaxHealth")
+		if intHealth <= (intMaxHealth * 0.2) then clrBarColor = clrRed end
 		self.NpcHealthBar = jdraw.NewProgressBar(self.NpcBox, true)
 		self.NpcHealthBar:SetDemensions(posNPCpos.x  - (80 / 2), posNPCpos.y - (15 / 2) + 5,  80, 11)
 		self.NpcHealthBar:SetStyle(4, clrBarColor)
 		self.NpcHealthBar:SetBoarder(1, clrDrakGray)
-		self.NpcHealthBar:SetText("UiBold", trcEyeTrace.Entity:GetNWInt("Health"), clrDrakGray)
-		self.NpcHealthBar:SetValue(trcEyeTrace.Entity:GetNWInt("Health"), trcEyeTrace.Entity:GetNWInt("MaxHealth"))
+		self.NpcHealthBar:SetText("UiBold", intHealth, clrDrakGray)
+		self.NpcHealthBar:SetValue(intHealth, intMaxHealth)
 		jdraw.DrawProgressBar(self.NpcHealthBar)
 		local clrLevelColor = clrWhite
 		if intLevel < plylevel then clrLevelColor = clrBlue end
@@ -50,7 +52,7 @@ end
 
 function GM:DrawHealthBar()
 	local clrBarColor = clrGreen
-	if LocalPlayer():Health() <= 20 then clrBarColor = clrRed end
+	if LocalPlayer():Health() <= (LocalPlayer():GetStat("stat_maxhealth") * 0.2) then clrBarColor = clrRed end
 	self.HealthBar = jdraw.NewProgressBar(self.PlayerBox, true)
 	self.HealthBar:SetDemensions(3, 3, self.PlayerBox.Size.Width - 6, 20)
 	self.HealthBar:SetStyle(4, clrBarColor)
