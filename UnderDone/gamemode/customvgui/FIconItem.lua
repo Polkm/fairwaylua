@@ -130,6 +130,7 @@ function PANEL:SetItem(tblItemTable, intAmount)
 	end
 	if tblItemTable.Giveable then
 		self.DoGiveItem = function(plyGivePlayer)
+			print("given")
 			if tblItemTable.Stackable and intAmount >= 5 then 
 				DisplayPromt("number", "How many to give", function(itemamount)
 					RunConsoleCommand("UD_GiveItem", tblItemTable.Name, itemamount, plyGivePlayer:EntIndex())
@@ -155,6 +156,7 @@ function PANEL:SetItem(tblItemTable, intAmount)
 	end
 	-------Right Click-------
 	local menuFunc = function()
+		GAMEMODE.MainMenu.ActiveMenu = nil
 		GAMEMODE.MainMenu.ActiveMenu = DermaMenu()
 		if tblItemTable.Use then GAMEMODE.MainMenu.ActiveMenu:AddOption("Use", self.DoUseItem) end
 		if tblItemTable.Dropable then GAMEMODE.MainMenu.ActiveMenu:AddOption("Drop", self.DoDropItem) end
@@ -162,8 +164,7 @@ function PANEL:SetItem(tblItemTable, intAmount)
 			local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...")
 			for _, player in pairs(player.GetAll()) do
 				if player:GetPos():Distance(LocalPlayer():GetPos()) < 250 && player != LocalPlayer() then
-					
-					GiveSubMenu:AddOption(player:Nick(), self.DoGiveItem(player))
+					GiveSubMenu:AddOption(player:Nick(), function() self.DoGiveItem(player) end)
 				end
 			end
 		end
