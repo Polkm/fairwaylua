@@ -47,7 +47,7 @@ if SERVER then
 			end
 		end
 	end
-	
+		
 	function GM:OnNPCKilled(npc, killer, weapon)
 		if npc:GetNWInt("level") > 0 && killer:IsPlayer() then
 			local intPlayerLevel = toLevel(killer:GetNWInt("exp"))
