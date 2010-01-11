@@ -24,8 +24,23 @@ function GM.MapEditor.OpenMapEditor()
 	
 	local btnPlaceZombie = vgui.Create("DButton")
 	btnPlaceZombie:SetText("Place Zombie")
-	btnPlaceZombie.DoClick = function(btnPlaceZombie) RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint") end
+	btnPlaceZombie.DoClick = function(btnPlaceZombie) RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint", "zombie") end
 	pnlControlsList:AddItem(btnPlaceZombie)
+
+	local btnPlaceAntlion = vgui.Create("DButton")
+	btnPlaceAntlion:SetText("Place Antlion")
+	btnPlaceAntlion.DoClick = function(btnPlaceAntlion) RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint", "antlion") end
+	pnlControlsList:AddItem(btnPlaceAntlion)
+
+	local btnPlaceAntlionGuard = vgui.Create("DButton")
+	btnPlaceAntlionGuard:SetText("Place Antlion Guard")
+	btnPlaceAntlionGuard.DoClick = function(btnPlaceAntlionGuard) RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint", "antlionguard") end
+	pnlControlsList:AddItem(btnPlaceAntlionGuard)
+
+	local btnPlaceCombine = vgui.Create("DButton")
+	btnPlaceCombine:SetText("Place Combine Guard")
+	btnPlaceCombine.DoClick = function(btnPlaceCombine) RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint", "combine") end
+	pnlControlsList:AddItem(btnPlaceCombine)
 	
 	local btnSaveButton = vgui.Create("DButton", frmMapEditorFrame)
 	btnSaveButton:SetText("Save Map")
