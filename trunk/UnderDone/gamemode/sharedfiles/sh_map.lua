@@ -78,7 +78,7 @@ if SERVER then
 			end
 		end
 		if tblNPCTable.Race == "combine" then
-			entNewMonster:Give("weapon_ar2")
+			entNewMonster:Give("weapon_crowbar")
 		end
 		if tblNPCTable.Race == tblNPCTable.Race then
 			entNewMonster:AddEntityRelationship(entNewMonster, Like, 99)	
