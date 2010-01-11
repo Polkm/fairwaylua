@@ -7,6 +7,13 @@ function Player:IsMelee()
 	return
 end
 
+function Player:GetSlot(strSlot)
+	if self.Data && self.Data.Paperdoll && self.Data.Paperdoll[strSlot] then
+		return self.Data.Paperdoll[strSlot]
+	end
+	return
+end
+
 function Player:GetLevel()
 	return toLevel(self:GetNWInt("exp"))
 end

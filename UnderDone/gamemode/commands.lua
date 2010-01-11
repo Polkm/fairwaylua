@@ -4,7 +4,7 @@ local Player = FindMetaTable("Player")
 --------------------------USER COMMANDS-------------------------
 ----------------------------------------------------------------
 function Player:UseItem(strItem)
-	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
+	local tblItemTable = ItemTable(strItem)
 	if tblItemTable && tblItemTable.Use && self:HasItem(strItem) then
 		tblItemTable:Use(self, tblItemTable)
 		return true
@@ -16,7 +16,7 @@ concommand.Add("UD_UseItem", function(ply, command, args)
 end)
 
 function Player:DropItem(strItem, intAmount)
-	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
+	local tblItemTable = ItemTable(strItem)
 	if self:HasItem(strItem, intAmount) && tblItemTable.Dropable then
 		local entDropEnt = GAMEMODE:BuildModel(tblItemTable.Model)
 		entDropEnt:SetPos(self:EyePos() + (self:GetAimVector() * 25))

@@ -1,45 +1,36 @@
 local Hate = 1
 local Fear = 2
 local Like = 3
-local Neutral = 4	
+local Neutral = 4
 
 if SERVER then
 	GM.MapEntities = {}
 	GM.MapEntities.NPCSpawnPoints = {}
-	GM.MapEntities.NPCSpawnPoints[1] = {}
+	--[[GM.MapEntities.NPCSpawnPoints[1] = {}
 	GM.MapEntities.NPCSpawnPoints[1].NPC = "zombie"
-	GM.MapEntities.NPCSpawnPoints[1].SpawnPoint = Vector(819, 61, 141)
+	GM.MapEntities.NPCSpawnPoints[1].Postion = Vector(819, 61, 141)
 	GM.MapEntities.NPCSpawnPoints[1].Level = 5
 	GM.MapEntities.NPCSpawnPoints[1].SpawnTime = 10
-	GM.MapEntities.NPCSpawnPoints[1].Feel = Like
 	GM.MapEntities.NPCSpawnPoints[2] = {}
 	GM.MapEntities.NPCSpawnPoints[2].NPC = "zombie"
-	GM.MapEntities.NPCSpawnPoints[2].SpawnPoint = Vector(919, 101, 141)
+	GM.MapEntities.NPCSpawnPoints[2].Postion = Vector(919, 101, 141)
 	GM.MapEntities.NPCSpawnPoints[2].Level = 5
 	GM.MapEntities.NPCSpawnPoints[2].SpawnTime = 10
-	GM.MapEntities.NPCSpawnPoints[2].Feel = Hate
 	GM.MapEntities.NPCSpawnPoints[3] = {}
 	GM.MapEntities.NPCSpawnPoints[3].NPC = "antlionguard"
-	GM.MapEntities.NPCSpawnPoints[3].SpawnPoint = Vector(1374, 3917, 110)
+	GM.MapEntities.NPCSpawnPoints[3].Postion = Vector(1374, 3917, 110)
 	GM.MapEntities.NPCSpawnPoints[3].Level = 5
-	GM.MapEntities.NPCSpawnPoints[3].SpawnTime = 10
-	GM.MapEntities.NPCSpawnPoints[3].Feel = Like
+	GM.MapEntities.NPCSpawnPoints[3].SpawnTime = 10]]
 	
 	function GM:LoadMapObjects()
 		local strFileName = "UnderDone/Maps/" .. game.GetMap() .. ".txt"
-		if file.Exists(strFileName) then
-			local tblDecodedTable = glon.decode(file.Read(strFileName))
-			for _, SpawnPoint in pairs(tblDecodedTable.NPCSpawnPoints or {}) do
-				local tblNewSpawnPoint = {}
-				tblNewSpawnPoint.NPC = SpawnPoint.NPC
-				tblNewSpawnPoint.SpawnPoint = SpawnPoint.SpawnPoint
-				tblNewSpawnPoint.Level = SpawnPoint.Level
-				tblNewSpawnPoint.SpawnTime = SpawnPoint.SpawnTime
-				table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, tblNewSpawnPoint)
-			end
+		if !file.Exists(strFileName) then return end
+		local tblDecodedTable = glon.decode(file.Read(strFileName))
+		for _, SpawnPoint in pairs(tblDecodedTable.NPCSpawnPoints or {}) do
+			GAMEMODE:CreateSpawnPoint(SpawnPoint.Postion, SpawnPoint.NPC, SpawnPoint.Level, SpawnPoint.SpawnTime)
 		end
 	end
-	--hook.Add("Initialize", "LoadMapObjects", function() GAMEMODE:LoadMapObjects() end)
+	hook.Add("Initialize", "LoadMapObjects", function() GAMEMODE:LoadMapObjects() end)
 	function GM:SaveMapObjects()
 		local strFileName = "UnderDone/Maps/" .. game.GetMap() .. ".txt"
 		local tblSaveTable = table.Copy(GAMEMODE.MapEntities)
@@ -64,25 +55,25 @@ if SERVER then
 	hook.Add("Tick", "SpawnMapEntities", function() GAMEMODE:SpawnMapEntities() end)
 
 	function GM:CreateNPC(strNPC, tblSpawnPoint)
-		local tblNPCTable = GAMEMODE.DataBase.NPCs[strNPC]
+		local tblNPCTable = NPCTable(strNPC)
 		local entNewMonster = ents.Create(tblNPCTable.SpawnName)
-		entNewMonster:SetPos(tblSpawnPoint.SpawnPoint)
+		entNewMonster:SetPos(tblSpawnPoint.Postion)
 		entNewMonster:Spawn()
 		for _, ply in pairs(player.GetAll()) do
-			entNewMonster:AddEntityRelationship(ply,tblSpawnPoint.Feel, 99 )
+			entNewMonster:AddEntityRelationship(ply, tblNPCTable.Relation, 99)
 		end
-		if tblSpawnPoint.Feel == Hate then
+		if tblNPCTable.Relation == Hate then
 			GAMEMODE.NPCEnemy = entNewMonster
 			if GAMEMODE.NPCAlly then
-				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster,Hate, 99 )
-				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly,Hate, 99 )
+				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster, Hate, 99)
+				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly, Hate, 99)
 			end
 		end
-		if tblSpawnPoint.Feel == Like then
+		if tblNPCTable.Relation == Like then
 			GAMEMODE.NPCAlly = entNewMonster
 			if GAMEMODE.NPCEnemy then
-				GAMEMODE.NPCEnemy:AddEntityRelationship(entNewMonster,Hate, 99 )
-				entNewMonster:AddEntityRelationship(GAMEMODE.NPCEnemy,Hate, 99 )
+				GAMEMODE.NPCEnemy:AddEntityRelationship(entNewMonster, Hate, 99)
+				entNewMonster:AddEntityRelationship(GAMEMODE.NPCEnemy, Hate, 99)
 			end
 		end
 		entNewMonster:SetNWInt("level", tblSpawnPoint.Level)
@@ -94,26 +85,21 @@ if SERVER then
 		return entNewMonster
 	end
 	
-	function GM:AdminPlaceNPCSpawPoint(plyAdmin, strNPCType, intLevel, intSpawnTime)
+	function GM:CreateSpawnPoint(vecPosition, strNPCType, intLevel, intSpawnTime)
 		local tblNewSpawnPoint = {}
 		tblNewSpawnPoint.NPC = strNPCType or "zombie"
-		tblNewSpawnPoint.SpawnPoint = plyAdmin:GetPos()
+		tblNewSpawnPoint.Postion = vecPosition or Vector(0, 0, 0)
 		tblNewSpawnPoint.Level = intLevel or 5
 		tblNewSpawnPoint.SpawnTime = intSpawnTime or 10
 		table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, tblNewSpawnPoint)
 	end
-	concommand.Add("UUD_Dev_EditMap_PlaceNPCSpawnPoint", function(ply, command, args)
+	
+	concommand.Add("UD_Dev_EditMap_CreateSpawnPoint", function(ply, command, args)
 		if !ply:IsAdmin() or !ply:IsPlayer() then return end
-		GAMEMODE:AdminPlaceNPCSpawPoint(ply)
+		GAMEMODE:CreateSpawnPoint(ply:GetEyeTraceNoCursor().HitPos)
 	end)
 	concommand.Add("UD_Dev_EditMap_SaveMap", function(ply, command, args)
 		if !ply:IsAdmin() or !ply:IsPlayer() then return end
 		GAMEMODE:SaveMapObjects()
 	end)
 end
-
-
-
-
-
-
