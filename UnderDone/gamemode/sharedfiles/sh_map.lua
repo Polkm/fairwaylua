@@ -67,6 +67,7 @@ if SERVER then
 			if GAMEMODE.NPCAlly then
 				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster, Hate, 99)
 				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly, Hate, 99)
+				entNewMonster:AddEntityRelationship(entNewMonster, Like, 99)	
 			end
 		end
 		if tblNPCTable.Relation == Like then
@@ -75,6 +76,13 @@ if SERVER then
 				GAMEMODE.NPCEnemy:AddEntityRelationship(entNewMonster, Hate, 99)
 				entNewMonster:AddEntityRelationship(GAMEMODE.NPCEnemy, Hate, 99)
 			end
+		end
+		if tblNPCTable.Race == "combine" then
+			entNewMonster:Give("weapon_ar2")
+			entNewMonster:GiveAmmo(9999,"AR2")
+		end
+		if tblNPCTable.Race == tblNPCTable.Race then
+			entNewMonster:AddEntityRelationship(entNewMonster, Like, 99)	
 		end
 		entNewMonster:SetNWInt("level", tblSpawnPoint.Level)
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
@@ -85,18 +93,45 @@ if SERVER then
 		return entNewMonster
 	end
 	
-	function GM:CreateSpawnPoint(vecPosition, strNPCType, intLevel, intSpawnTime)
-		local tblNewSpawnPoint = {}
-		tblNewSpawnPoint.NPC = strNPCType or "zombie"
-		tblNewSpawnPoint.Postion = vecPosition or Vector(0, 0, 0)
-		tblNewSpawnPoint.Level = intLevel or 5
-		tblNewSpawnPoint.SpawnTime = intSpawnTime or 10
-		table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, tblNewSpawnPoint)
+	function GM:CreateSpawnPoint(vecPosition, MonsterType)
+		if MonsterType == "zombie" then
+			local tblNewSpawnPoint = {}
+			tblNewSpawnPoint.NPC = "zombie"
+			tblNewSpawnPoint.Postion = vecPosition or Vector(0, 0, 0)
+			tblNewSpawnPoint.Level = 5
+			tblNewSpawnPoint.SpawnTime = 10
+			table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, tblNewSpawnPoint)
+		end
+		if MonsterType == "antlion" then
+			local tblNewSpawnPoint = {}
+			tblNewSpawnPoint.NPC = "antlion"
+			tblNewSpawnPoint.Postion = vecPosition or Vector(0, 0, 0)
+			tblNewSpawnPoint.Level = 7
+			tblNewSpawnPoint.SpawnTime = 15
+			table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, tblNewSpawnPoint)
+		end
+		if MonsterType == "antlionguard" then
+			local tblNewSpawnPoint = {}
+			tblNewSpawnPoint.NPC = "antlionguard"
+			tblNewSpawnPoint.Postion = vecPosition or Vector(0, 0, 0)
+			tblNewSpawnPoint.Level = 10
+			tblNewSpawnPoint.SpawnTime = 30
+			table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, tblNewSpawnPoint)
+		end
+		if MonsterType == "combine" then
+			local tblNewSpawnPoint = {}
+			tblNewSpawnPoint.NPC = "combine"
+			tblNewSpawnPoint.Postion = vecPosition or Vector(0, 0, 0)
+			tblNewSpawnPoint.Level = 300
+			tblNewSpawnPoint.SpawnTime = 20
+			table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, tblNewSpawnPoint)
+		end
 	end
 	
 	concommand.Add("UD_Dev_EditMap_CreateSpawnPoint", function(ply, command, args)
 		if !ply:IsAdmin() or !ply:IsPlayer() then return end
-		GAMEMODE:CreateSpawnPoint(ply:GetEyeTraceNoCursor().HitPos)
+		if !args then return end
+		GAMEMODE:CreateSpawnPoint(ply:GetEyeTraceNoCursor().HitPos, zombie or args[1])
 	end)
 	concommand.Add("UD_Dev_EditMap_SaveMap", function(ply, command, args)
 		if !ply:IsAdmin() or !ply:IsPlayer() then return end
