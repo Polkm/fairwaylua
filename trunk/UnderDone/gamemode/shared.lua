@@ -5,7 +5,7 @@ GM.Author 		= "Shell Shocked Gaming"
 GM.Email 		= "polkmpolkmpolkm@gmail.com"
 GM.Website 		= "http://shellshocked.net46.net/"
 -----Global Inv Vars-----
-MaxWeight = 20
+MaxWeight = 25
 --------DataBase---------
 GM.DataBase = {}
 GM.DataBase.Items = {}
@@ -23,31 +23,25 @@ end
 function Register.Slot(tblItem)
 	GM.DataBase.Slots[tblItem.Name] = tblItem
 end
+function SlotTable(strSlot)
+	return GAMEMODE.DataBase.Slots[strSlot]
+end
 local intStatIndex = 1
 function Register.Stat(tblItem)
 	GM.DataBase.Stats[tblItem.Name] = tblItem
 	GM.DataBase.Stats[tblItem.Name].Index = intStatIndex
 	intStatIndex = intStatIndex + 1
 end
+function StatTable(strStat)
+	return GAMEMODE.DataBase.Stats[strStat]
+end
 function Register.NPC(tblItem)
 	GM.DataBase.NPCs[tblItem.Name] = tblItem
 end
+function NPCTable(strNPC)
+	return GAMEMODE.DataBase.NPCs[strNPC]
+end
 -------------------------
-
---Polkm: Example NPCs
-local NPC = {}
-NPC.Name = "zombie"
-NPC.PrintName = "Zombie"
-NPC.SpawnName = "npc_zombie"
-NPC.HealthPerLevel = 10
-Register.NPC(NPC)
-
-local NPC = {}
-NPC.Name = "antlionguard"
-NPC.PrintName = "Antlion Boss"
-NPC.SpawnName = "npc_antlionguard"
-NPC.HealthPerLevel = 13
-Register.NPC(NPC)
 
 
 

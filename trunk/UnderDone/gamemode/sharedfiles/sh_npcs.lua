@@ -1,3 +1,24 @@
+local Hate = 1
+local Fear = 2
+local Like = 3
+local Neutral = 4
+
+local NPC = {}
+NPC.Name = "zombie"
+NPC.PrintName = "Zombie"
+NPC.SpawnName = "npc_zombie"
+NPC.HealthPerLevel = 10
+NPC.Relation = Hate
+Register.NPC(NPC)
+
+local NPC = {}
+NPC.Name = "antlionguard"
+NPC.PrintName = "Antlion Boss"
+NPC.SpawnName = "npc_antlionguard"
+NPC.HealthPerLevel = 13
+NPC.Relation = Hate
+Register.NPC(NPC)
+
 if SERVER then
 	function GM:OnNPCKilled(npc, killer, weapon)
 		if npc:GetNWInt("level") > 0 && killer:IsPlayer() then
