@@ -1,3 +1,8 @@
+local Hate = 1
+local Fear = 2
+local Like = 3
+local Neutral = 4	
+
 if SERVER then
 	GM.MapEntities = {}
 	GM.MapEntities.NPCSpawnPoints = {}
@@ -6,18 +11,19 @@ if SERVER then
 	GM.MapEntities.NPCSpawnPoints[1].SpawnPoint = Vector(819, 61, 141)
 	GM.MapEntities.NPCSpawnPoints[1].Level = 5
 	GM.MapEntities.NPCSpawnPoints[1].SpawnTime = 10
-	GM.MapEntities.NPCSpawnPoints[1].Feel = 3
+	GM.MapEntities.NPCSpawnPoints[1].Feel = Like
 	GM.MapEntities.NPCSpawnPoints[2] = {}
 	GM.MapEntities.NPCSpawnPoints[2].NPC = "zombie"
 	GM.MapEntities.NPCSpawnPoints[2].SpawnPoint = Vector(919, 101, 141)
 	GM.MapEntities.NPCSpawnPoints[2].Level = 5
 	GM.MapEntities.NPCSpawnPoints[2].SpawnTime = 10
-	GM.MapEntities.NPCSpawnPoints[2].Feel = 1
+	GM.MapEntities.NPCSpawnPoints[2].Feel = Hate
 	GM.MapEntities.NPCSpawnPoints[3] = {}
 	GM.MapEntities.NPCSpawnPoints[3].NPC = "antlionguard"
 	GM.MapEntities.NPCSpawnPoints[3].SpawnPoint = Vector(1374, 3917, 110)
 	GM.MapEntities.NPCSpawnPoints[3].Level = 5
 	GM.MapEntities.NPCSpawnPoints[3].SpawnTime = 10
+	GM.MapEntities.NPCSpawnPoints[3].Feel = Like
 	
 	function GM:LoadMapObjects()
 		local strFileName = "UnderDone/Maps/" .. game.GetMap() .. ".txt"
@@ -65,18 +71,18 @@ if SERVER then
 		for _, ply in pairs(player.GetAll()) do
 			entNewMonster:AddEntityRelationship(ply,tblSpawnPoint.Feel, 99 )
 		end
-		if tblSpawnPoint.Feel == 1 then
+		if tblSpawnPoint.Feel == Hate then
 			GAMEMODE.NPCEnemy = entNewMonster
 			if GAMEMODE.NPCAlly then
-				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster,1, 99 )
-				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly,1, 99 )
+				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster,Hate, 99 )
+				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly,Hate, 99 )
 			end
 		end
-		if tblSpawnPoint.Feel == 3 then
+		if tblSpawnPoint.Feel == Like then
 			GAMEMODE.NPCAlly = entNewMonster
 			if GAMEMODE.NPCEnemy then
-				GAMEMODE.NPCEnemy:AddEntityRelationship(entNewMonster,1, 99 )
-				entNewMonster:AddEntityRelationship(GAMEMODE.NPCEnemy,1, 99 )
+				GAMEMODE.NPCEnemy:AddEntityRelationship(entNewMonster,Hate, 99 )
+				entNewMonster:AddEntityRelationship(GAMEMODE.NPCEnemy,Hate, 99 )
 			end
 		end
 		entNewMonster:SetNWInt("level", tblSpawnPoint.Level)
