@@ -44,9 +44,11 @@ if SERVER then
 		if killer:IsNPC( ) && victim:IsPlayer() then
 			if killer.Relation == Like then
 				killer:AddEntityRelationship(victim, Like, 99)
+				killer:SetNPCState( NPC_STATE_IDLE )
 				for _, ent in pairs(ents.GetAll()) do
 					if ent && ent:IsNPC() then
 						if ent.Relation == killer.Relation then
+							ent:SetNPCState( NPC_STATE_IDLE )
 							ent:AddEntityRelationship(victim, Like, 99)
 						end
 					end
