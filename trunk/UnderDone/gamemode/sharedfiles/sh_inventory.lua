@@ -18,7 +18,6 @@ function Entity:AddItem(strItem, intAmount)
 			end
 		end
 	end
-	print(strItem, intAmount)
 	self.Data.Inventory[strItem] = self.Data.Inventory[strItem] + intAmount
 	self.Weight = self.Weight + (tblItemTable.Weight * intAmount)
 	if SERVER then
