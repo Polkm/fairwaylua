@@ -8,7 +8,7 @@ NPC.Name = "zombie"
 NPC.PrintName = "Zombie"
 NPC.SpawnName = "npc_zombie"
 NPC.HealthPerLevel = 10
-NPC.Relation = Hate
+NPC.Relation = Like
 NPC.Race = "zombie"
 Register.NPC(NPC)
 
@@ -40,6 +40,14 @@ NPC.Race = "combine"
 Register.NPC(NPC)
 
 if SERVER then
+	function GM:PlayerDeath( victim, weapon, killer )
+		if killer:IsNPC( ) && victim:IsPlayer() then
+			if killer.Relation == Like then
+				killer:AddEntityRelationship(victim, Like, 99)
+			end
+		end
+	end
+	
 	function GM:OnNPCKilled(npc, killer, weapon)
 		if npc:GetNWInt("level") > 0 && killer:IsPlayer() then
 			local intPlayerLevel = toLevel(killer:GetNWInt("exp"))

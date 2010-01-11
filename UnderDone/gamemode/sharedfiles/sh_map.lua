@@ -59,8 +59,9 @@ if SERVER then
 		local entNewMonster = ents.Create(tblNPCTable.SpawnName)
 		entNewMonster:SetPos(tblSpawnPoint.Postion)
 		entNewMonster:Spawn()
+		entNewMonster.Relation = tblNPCTable.Relation
 		for _, ply in pairs(player.GetAll()) do
-			entNewMonster:AddEntityRelationship(ply, tblNPCTable.Relation, 99)
+			entNewMonster:AddEntityRelationship(ply, tblSpawnPoint.Relation, 99)
 		end
 		if tblNPCTable.Relation == Hate then
 			GAMEMODE.NPCEnemy = entNewMonster
