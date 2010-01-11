@@ -33,7 +33,7 @@ Register.NPC(NPC)
 local NPC = {}
 NPC.Name = "combine"
 NPC.PrintName = "Combine Guard"
-NPC.SpawnName = "npc_combine"
+NPC.SpawnName = "npc_combine_s"
 NPC.HealthPerLevel = 1000
 NPC.Relation = Like
 NPC.Race = "combine"

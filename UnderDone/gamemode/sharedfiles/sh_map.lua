@@ -67,7 +67,7 @@ if SERVER then
 			if GAMEMODE.NPCAlly then
 				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster, Hate, 99)
 				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly, Hate, 99)
-				entNewMonster:AddEntityRelationship(entNewMonster, Like, 99)	
+
 			end
 		end
 		if tblNPCTable.Relation == Like then
@@ -79,7 +79,6 @@ if SERVER then
 		end
 		if tblNPCTable.Race == "combine" then
 			entNewMonster:Give("weapon_ar2")
-			entNewMonster:GiveAmmo(9999,"AR2")
 		end
 		if tblNPCTable.Race == tblNPCTable.Race then
 			entNewMonster:AddEntityRelationship(entNewMonster, Like, 99)	
