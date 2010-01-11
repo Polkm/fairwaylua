@@ -39,7 +39,7 @@ if SERVER then
 			end
 		end
 	end
-	hook.Add("Initialize", "LoadMapObjects", function() GAMEMODE:LoadMapObjects() end)
+	--hook.Add("Initialize", "LoadMapObjects", function() GAMEMODE:LoadMapObjects() end)
 	function GM:SaveMapObjects()
 		local strFileName = "UnderDone/Maps/" .. game.GetMap() .. ".txt"
 		local tblSaveTable = table.Copy(GAMEMODE.MapEntities)
