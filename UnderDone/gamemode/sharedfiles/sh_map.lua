@@ -101,10 +101,10 @@ if SERVER then
 	function GM:UpdateSpawnPoint(intKey, vecPosition, strNPC, intLevel, intSpawnTime)
 		local tblToUpdateSpawn = GAMEMODE.MapEntities.NPCSpawnPoints[intKey]
 		if tblToUpdateSpawn then
-			tblNewSpawnPoint.NPC = strNPC or tblNewSpawnPoint.NPC or "zombie"
-			tblNewSpawnPoint.Postion = vecPosition or tblNewSpawnPoint.Postion or Vector(0, 0, 0)
-			tblNewSpawnPoint.Level = intLevel or tblNewSpawnPoint.Level or 5
-			tblNewSpawnPoint.SpawnTime = intSpawnTime or tblNewSpawnPoint.SpawnTime or 10
+			tblToUpdateSpawn.NPC = strNPC or tblToUpdateSpawn.NPC or "zombie"
+			tblToUpdateSpawn.Postion = vecPosition or tblToUpdateSpawn.Postion or Vector(0, 0, 0)
+			tblToUpdateSpawn.Level = intLevel or tblToUpdateSpawn.Level or 5
+			tblToUpdateSpawn.SpawnTime = intSpawnTime or tblToUpdateSpawn.SpawnTime or 10
 		end
 	end
 	concommand.Add("UD_Dev_EditMap_CreateSpawnPoint", function(ply, command, args)
