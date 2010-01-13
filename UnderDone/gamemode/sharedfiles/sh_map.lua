@@ -59,7 +59,7 @@ if SERVER then
 		for _, ent in pairs(ents.GetAll()) do
 			if ent && ent:IsValid() && ent.Monster then
 				if ent.Relation then
-					if GAMEMODE.Player:GetPos():Distance(Spawn:GetPos()) > 120 then
+					if GAMEMODE.Player:GetPos():Distance(ent:GetPos()) > 120 then
 						ent:AddEntityRelationship(GAMEMODE.Player, ent.Relation, 99)
 						ent:SetNPCState( NPC_STATE_IDLE )
 					end
