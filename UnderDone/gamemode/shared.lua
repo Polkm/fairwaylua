@@ -66,7 +66,7 @@ end
 
 if SERVER then
 	function SendUsrMsg(strName, plyTarget, tblArgs)
-		if plyTarget && plyTarget:IsValid() then
+		
 			umsg.Start(strName, plyTarget)
 			for _, value in pairs(tblArgs or {}) do
 				if type(value) == "string" then umsg.String(value)
@@ -77,7 +77,7 @@ if SERVER then
 				elseif type(value) == "Angle" then umsg.Angle(value) end
 			end
 			umsg.End()
-		end
+		
 	end
 end
 

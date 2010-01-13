@@ -26,7 +26,7 @@ function Player:SetPaperDoll(strSlot, strItem)
 				end
 			end
 		end
-		SendUsrMsg("UD_UpdatePapperDoll", self, {self, strSlot, self.Data.Paperdoll[strSlot]})
+		SendUsrMsg("UD_UpdatePapperDoll", player.GetAll(), {self, strSlot, self.Data.Paperdoll[strSlot]})
 		self:SaveGame()
 	end
 end
