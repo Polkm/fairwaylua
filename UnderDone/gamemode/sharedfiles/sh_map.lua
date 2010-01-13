@@ -1,9 +1,5 @@
 GM.MapEntities = {}
 GM.MapEntities.NPCSpawnPoints = {}
-local Hate = 1
-local Fear = 2
-local Like = 3
-local Neutral = 4
 
 function GM:CreateSpawnPoint(vecPosition, strNPC, intLevel, intSpawnTime)
 	table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, {})
@@ -67,26 +63,25 @@ if SERVER then
 		for _, ply in pairs(player.GetAll()) do
 			entNewMonster:AddEntityRelationship(ply, tblSpawnPoint.Relation, 99)
 		end
-		if tblNPCTable.Relation == Hate then
+		if tblNPCTable.Relation == GAMEMODE.RelationHate then
 			GAMEMODE.NPCEnemy = entNewMonster
 			if GAMEMODE.NPCAlly then
-				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster, Hate, 99)
-				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly, Hate, 99)
-
+				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
+				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly, GAMEMODE.RelationHate, 99)
 			end
 		end
-		if tblNPCTable.Relation == Like then
+		if tblNPCTable.Relation == GAMEMODE.RelationLike then
 			GAMEMODE.NPCAlly = entNewMonster
 			if GAMEMODE.NPCEnemy then
-				GAMEMODE.NPCEnemy:AddEntityRelationship(entNewMonster, Hate, 99)
-				entNewMonster:AddEntityRelationship(GAMEMODE.NPCEnemy, Hate, 99)
+				GAMEMODE.NPCEnemy:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
+				entNewMonster:AddEntityRelationship(GAMEMODE.NPCEnemy, GAMEMODE.RelationHate, 99)
 			end
 		end
 		if tblNPCTable.Race == "combine" then
 			entNewMonster:Give("weapon_crowbar")
 		end
 		if tblNPCTable.Race == tblNPCTable.Race then
-			entNewMonster:AddEntityRelationship(entNewMonster, Like, 99)	
+			entNewMonster:AddEntityRelationship(entNewMonster, GAMEMODE.RelationLike, 99)	
 		end
 		entNewMonster:SetNWInt("level", tblSpawnPoint.Level)
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel

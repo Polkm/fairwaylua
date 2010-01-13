@@ -25,6 +25,13 @@ function GM:PlayerSpawn(ply)
 	--ply:ConCommand("UD_AddNotification You got an alowance of " .. tostring(alowence) .. " Dollars") 
 	hook.Call("PlayerLoadout", GAMEMODE, ply)
 	hook.Call("PlayerSetModel", GAMEMODE, ply)
+	for _, ent in pairs(ents.GetAll()) do
+		if ent && ent:IsValid() then
+			if ent.Relation then
+				ent:AddEntityRelationship(ply, ent.Relation, 99)
+			end
+		end
+	end
 end
 
 function GM:PlayerLoadout(ply)
