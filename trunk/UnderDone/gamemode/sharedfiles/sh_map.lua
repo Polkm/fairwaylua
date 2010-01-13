@@ -51,21 +51,6 @@ if SERVER then
 				end
 			end
 		end
-		for _, ply in pairs(player.GetAll()) do
-			if ply && ply:IsValid() then
-				GAMEMODE.Player = ply
-			end
-		end
-		for _, ent in pairs(ents.GetAll()) do
-			if ent && ent:IsValid() then
-				if ent.Relation then
-					if GAMEMODE.Player:GetPos():Distance(ent:GetPos()) > GAMEMODE.MonsterViewDistance then
-						ent:AddEntityRelationship(GAMEMODE.Player, ent.Relation, 99)
-						ent:SetNPCState( NPC_STATE_IDLE )
-					end
-				end
-			end
-		end
 	end
 	hook.Add("Tick", "SpawnMapEntities", function() GAMEMODE:SpawnMapEntities() end)
 
