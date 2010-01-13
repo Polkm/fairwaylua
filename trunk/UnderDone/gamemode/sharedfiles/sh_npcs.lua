@@ -3,7 +3,7 @@ NPC.Name = "zombie"
 NPC.PrintName = "Zombie"
 NPC.SpawnName = "npc_zombie"
 NPC.HealthPerLevel = 10
-NPC.Relation = GAMEMODE.RelationLike
+NPC.Relation = GM.RelationLike
 NPC.Race = "zombie"
 Register.NPC(NPC)
 
@@ -12,7 +12,7 @@ NPC.Name = "antlion"
 NPC.PrintName = "Antlion"
 NPC.SpawnName = "npc_antlion"
 NPC.HealthPerLevel = 11
-NPC.Relation = GAMEMODE.RelationHate
+NPC.Relation = GM.RelationHate
 NPC.Race = "antlion"
 Register.NPC(NPC)
 
@@ -21,7 +21,7 @@ NPC.Name = "antlionguard"
 NPC.PrintName = "Antlion Boss"
 NPC.SpawnName = "npc_antlionguard"
 NPC.HealthPerLevel = 13
-NPC.Relation = GAMEMODE.RelationHate
+NPC.Relation = GM.RelationHate
 NPC.Race = "antlion"
 Register.NPC(NPC)
 
@@ -30,7 +30,7 @@ NPC.Name = "combine"
 NPC.PrintName = "Combine Guard"
 NPC.SpawnName = "npc_combine_s"
 NPC.HealthPerLevel = 1000
-NPC.Relation = GAMEMODE.RelationLike
+NPC.Relation = GM.RelationLike
 NPC.Race = "combine"
 Register.NPC(NPC)
 
