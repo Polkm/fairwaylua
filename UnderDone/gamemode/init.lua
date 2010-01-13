@@ -29,6 +29,7 @@ function GM:PlayerSpawn(ply)
 		if ent && ent:IsValid() then
 			if ent.Relation then
 				ent:AddEntityRelationship(ply, ent.Relation, 99)
+				ent:SetNPCState( NPC_STATE_IDLE )
 			end
 		end
 	end

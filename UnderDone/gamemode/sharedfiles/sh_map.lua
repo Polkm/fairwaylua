@@ -51,6 +51,14 @@ if SERVER then
 				end
 			end
 		end
+		for _, ply in pairs(player.GetAll()) do
+			if ply && ply:IsValid() && Spawn then
+				if ply:GetPos():Distance(Spawn:GetPos()) > 120 then
+					Spawn:SetNPCState( NPC_STATE_IDLE )
+					Spawn:AddEntityRelationship(ply, Spawn.Relation, 99)
+				end
+			end
+		end
 	end
 	hook.Add("Tick", "SpawnMapEntities", function() GAMEMODE:SpawnMapEntities() end)
 
