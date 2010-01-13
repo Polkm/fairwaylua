@@ -13,7 +13,7 @@ function GM:UpdateSpawnPoint(intKey, vecPosition, strNPC, intLevel, intSpawnTime
 		tblToUpdateSpawn.NPC = strNPC or tblToUpdateSpawn.NPC or "zombie"
 		tblToUpdateSpawn.Level = intLevel or tblToUpdateSpawn.Level or 5
 		tblToUpdateSpawn.SpawnTime = intSpawnTime or tblToUpdateSpawn.SpawnTime or 10
-		if SERVER && SinglePlayer() then
+		if SERVER && SinglePlayer() && player.GetByID(1) && player.GetByID(1):IsValid() then
 			SendUsrMsg("UD_UpdateMapObjects", player.GetByID(1), {intKey, tblToUpdateSpawn.Postion,	tblToUpdateSpawn.NPC, tblToUpdateSpawn.Level, tblToUpdateSpawn.SpawnTime})
 		end
 	else
@@ -56,6 +56,7 @@ if SERVER then
 
 	function GM:CreateNPC(strNPC, tblSpawnPoint)
 		local tblNPCTable = NPCTable(strNPC)
+		print(strNPC)
 		local entNewMonster = ents.Create(tblNPCTable.SpawnName)
 		entNewMonster:SetPos(tblSpawnPoint.Postion)
 		entNewMonster:Spawn()

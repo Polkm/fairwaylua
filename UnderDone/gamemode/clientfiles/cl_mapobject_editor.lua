@@ -22,30 +22,53 @@ function GM.MapEditor.OpenMapEditor()
 	pnlControlsList:SetSpacing(5)
 	pnlControlsList:SetPadding(5)
 	
-	local btnPlaceZombie = vgui.Create("DButton")
-	btnPlaceZombie:SetText("Place Zombie")
-	btnPlaceZombie.DoClick = function(btnPlaceZombie) RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint", "zombie") end
-	pnlControlsList:AddItem(btnPlaceZombie)
-
-	local btnPlaceAntlion = vgui.Create("DButton")
-	btnPlaceAntlion:SetText("Place Antlion")
-	btnPlaceAntlion.DoClick = function(btnPlaceAntlion) RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint", "antlion") end
-	pnlControlsList:AddItem(btnPlaceAntlion)
-
-	local btnPlaceAntlionGuard = vgui.Create("DButton")
-	btnPlaceAntlionGuard:SetText("Place Antlion Guard")
-	btnPlaceAntlionGuard.DoClick = function(btnPlaceAntlionGuard) RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint", "antlionguard") end
-	pnlControlsList:AddItem(btnPlaceAntlionGuard)
-
-	local btnPlaceCombine = vgui.Create("DButton")
-	btnPlaceCombine:SetText("Place Combine Guard")
-	btnPlaceCombine.DoClick = function(btnPlaceCombine) RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint", "combine") end
-	pnlControlsList:AddItem(btnPlaceCombine)
+	local mchSpawnPoints = vgui.Create("DMultiChoice", frmMapEditorFrame)
+	mchSpawnPoints:SetPos(5, 30)
+	mchSpawnPoints:SetSize(frmMapEditorFrame:GetWide() - 10, 20)
+	for key, spawnpoints in pairs(GAMEMODE.MapEntities.NPCSpawnPoints) do
+		mchSpawnPoints:AddChoice(key)
+	end
+	mchSpawnPoints.OnSelect = function(index, value, data)
+		GAMEMODE.MapEditor.AddSpawPointControls(pnlControlsList, tonumber(value))
+	end
 	
 	local btnSaveButton = vgui.Create("DButton", frmMapEditorFrame)
 	btnSaveButton:SetText("Save Map")
 	btnSaveButton.DoClick = function(btnSaveButton) RunConsoleCommand("UD_Dev_EditMap_SaveMap") end
 	btnSaveButton:SetPos(5, frmMapEditorFrame:GetTall() - 25)
 	btnSaveButton:SetSize(frmMapEditorFrame:GetWide() - 10, 20)
+end
+
+function GM.MapEditor.AddSpawPointControls(pnlParent, intSpawnKey)
+	pnlParent:Clear()
+	local tblSpawnTable = GAMEMODE.MapEntities.NPCSpawnPoints[intSpawnKey]
+	local strNPCName = "zombie"
+	local mchNPCTypes = vgui.Create("DMultiChoice")
+	local intID = 1
+	for key, npctable in pairs(GAMEMODE.DataBase.NPCs) do
+		mchNPCTypes:AddChoice(key)
+		if key == tblSpawnTable.NPC then
+			mchNPCTypes:ChooseOptionID(intID)
+		end
+		intID = intID + 1
+	end
+	mchNPCTypes.OnSelect = function(index, value, data)
+		strNPCName = data
+	end
+	pnlParent:AddItem(mchNPCTypes)
+	
+	local btnPlaceZombie = vgui.Create("DButton")
+	btnPlaceZombie:SetText("Update Server")
+	btnPlaceZombie.DoClick = function(btnPlaceZombie)
+		RunConsoleCommand("UD_Dev_EditMap_UpdateSpawnPoint", intSpawnKey, strNPCName)
+	end
+	pnlParent:AddItem(btnPlaceZombie)
+	
+	local btnPlaceZombie = vgui.Create("DButton")
+	btnPlaceZombie:SetText("Place Zombie")
+	btnPlaceZombie.DoClick = function(btnPlaceZombie)
+		RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint", "zombie")
+	end
+	pnlParent:AddItem(btnPlaceZombie)
 end
 concommand.Add("UD_Dev_EditMap", function() GAMEMODE.MapEditor.OpenMapEditor() end)
