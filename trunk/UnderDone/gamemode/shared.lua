@@ -5,7 +5,7 @@ GM.Author 		= "Shell Shocked Gaming"
 GM.Email 		= "polkmpolkmpolkm@gmail.com"
 GM.Website 		= "http://shellshocked.net46.net/"
 -----Global Vars---------
-GM.MonsterViewDistance = 140
+GM.MonsterViewDistance = 200
 GM.RelationHate = 1
 GM.RelationFear = 2
 GM.RelationLike = 3
