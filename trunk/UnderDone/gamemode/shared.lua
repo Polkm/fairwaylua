@@ -4,6 +4,12 @@ GM.Name 		= "UnderDone"
 GM.Author 		= "Shell Shocked Gaming"
 GM.Email 		= "polkmpolkmpolkm@gmail.com"
 GM.Website 		= "http://shellshocked.net46.net/"
+-----Global Vars---------
+GAMEMODE.MonsterViewDistance = 140
+GAMEMODE.RelationHate = 1
+GAMEMODE.RelationFear = 2
+GAMEMODE.RelationLike = 3
+GAMEMODE.RelationNeutral = 4
 -----Global Inv Vars-----
 MaxWeight = 25
 --------DataBase---------
