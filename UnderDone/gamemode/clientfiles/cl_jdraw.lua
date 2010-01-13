@@ -54,7 +54,7 @@ function jdraw.NewProgressBar(tblParent, boolCopyStyle)
 	tblNewPanel.MaxValue = 0
 	function tblNewPanel:SetValue(intValue, intMaxValue)
 		tblNewPanel.Value = intValue
-		tblNewPanel.MaxValue = intMaxValue
+		tblNewPanel.MaxValue = intMaxValue or 0
 	end
 	tblNewPanel.Font = "Default"
 	tblNewPanel.Text = ""

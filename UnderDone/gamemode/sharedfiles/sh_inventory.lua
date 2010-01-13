@@ -20,13 +20,8 @@ function Entity:AddItem(strItem, intAmount)
 	end
 	self.Data.Inventory[strItem] = self.Data.Inventory[strItem] + intAmount
 	self.Weight = self.Weight + (tblItemTable.Weight * intAmount)
-	if SERVER then
-		if self:GetClass() == "player" then
-			umsg.Start("UD_UpdateItem", self)
-			umsg.String(strItem)
-			umsg.Long(intAmount)
-			umsg.End()
-		end
+	if SERVER && self:GetClass() == "player" then
+		SendUsrMsg("UD_UpdateItem", self, {strItem, intAmount})
 	end
 	if CLIENT then
 		if GAMEMODE.MainMenu then

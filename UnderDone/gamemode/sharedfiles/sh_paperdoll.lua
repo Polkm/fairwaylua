@@ -26,13 +26,7 @@ function Player:SetPaperDoll(strSlot, strItem)
 				end
 			end
 		end
-		umsg.Start("UD_UpdatePapperDoll")
-		umsg.Entity(self)
-		umsg.String(strSlot)
-		if self.Data.Paperdoll[strSlot] then
-			umsg.String(self.Data.Paperdoll[strSlot])
-		end
-		umsg.End()
+		SendUsrMsg("UD_UpdatePapperDoll", self, {self, strSlot, self.Data.Paperdoll[strSlot]})
 		self:SaveGame()
 	end
 end
