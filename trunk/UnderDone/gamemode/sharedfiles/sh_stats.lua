@@ -65,9 +65,10 @@ Stat.Name = "stat_luck"
 Stat.PrintName = "Luck"
 Stat.Desc = "You find your self to be more lucky, crit hits"
 Stat.Default = 1
-Register.Stat(Stat)
+Register.Stat(Stat) 
 
 function Player:AddStat(strStat, intAmount)
+	self.Stats = self.Stats or {}
 	if intAmount != 0 then
 		local intDirection = math.abs(intAmount) / intAmount
 		self:SetStat(strStat, self:GetStat(strStat) + (intDirection * math.ceil(math.abs(intAmount))))
@@ -83,14 +84,12 @@ function Player:SetStat(strStat, intAmount)
 		if tblStatTable.OnSet then
 			tblStatTable:OnSet(self, intAmount, intOldStat)
 		end
-		umsg.Start("UD_UpdateStats", self)
-		umsg.String(strStat)
-		umsg.Long(intAmount)
-		umsg.End()
+		SendUsrMsg("UD_UpdateStats", self, {strStat, intAmount})
 	end
 end
 
 function Player:GetStat(strStat)
+	self.Stats = self.Stats or {}
 	if self.Stats && self.Stats[strStat] then
 		return self.Stats[strStat]
 	end
@@ -111,8 +110,7 @@ if SERVER then
 end
 
 if CLIENT then
-	function UpdateStatUsrMsg(usrMsg)
+	usermessage.Hook("UD_UpdateStats", function(usrMsg)
 		LocalPlayer():SetStat(usrMsg:ReadString(), usrMsg:ReadLong())
-	end
-	usermessage.Hook("UD_UpdateStats", UpdateStatUsrMsg)
+	end)
 end

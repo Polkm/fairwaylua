@@ -1,27 +1,31 @@
+GM.MapEntities = {}
+GM.MapEntities.NPCSpawnPoints = {}
 local Hate = 1
 local Fear = 2
 local Like = 3
 local Neutral = 4
 
+function GM:CreateSpawnPoint(vecPosition, strNPC, intLevel, intSpawnTime)
+	table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, {})
+	local intNumSpawns = #GAMEMODE.MapEntities.NPCSpawnPoints
+	GAMEMODE:UpdateSpawnPoint(intNumSpawns, vecPosition, strNPC, intLevel, intSpawnTime)
+end
+function GM:UpdateSpawnPoint(intKey, vecPosition, strNPC, intLevel, intSpawnTime)
+	local tblToUpdateSpawn = GAMEMODE.MapEntities.NPCSpawnPoints[intKey]
+	if tblToUpdateSpawn then
+		tblToUpdateSpawn.Postion = vecPosition or tblToUpdateSpawn.Postion or Vector(0, 0, 0)
+		tblToUpdateSpawn.NPC = strNPC or tblToUpdateSpawn.NPC or "zombie"
+		tblToUpdateSpawn.Level = intLevel or tblToUpdateSpawn.Level or 5
+		tblToUpdateSpawn.SpawnTime = intSpawnTime or tblToUpdateSpawn.SpawnTime or 10
+		if SERVER && SinglePlayer() then
+			SendUsrMsg("UD_UpdateMapObjects", player.GetByID(1), {intKey, tblToUpdateSpawn.Postion,	tblToUpdateSpawn.NPC, tblToUpdateSpawn.Level, tblToUpdateSpawn.SpawnTime})
+		end
+	else
+		GAMEMODE:CreateSpawnPoint(vecPosition, strNPC, intLevel, intSpawnTime)
+	end
+end
+
 if SERVER then
-	GM.MapEntities = {}
-	GM.MapEntities.NPCSpawnPoints = {}
-	--[[GM.MapEntities.NPCSpawnPoints[1] = {}
-	GM.MapEntities.NPCSpawnPoints[1].NPC = "zombie"
-	GM.MapEntities.NPCSpawnPoints[1].Postion = Vector(819, 61, 141)
-	GM.MapEntities.NPCSpawnPoints[1].Level = 5
-	GM.MapEntities.NPCSpawnPoints[1].SpawnTime = 10
-	GM.MapEntities.NPCSpawnPoints[2] = {}
-	GM.MapEntities.NPCSpawnPoints[2].NPC = "zombie"
-	GM.MapEntities.NPCSpawnPoints[2].Postion = Vector(919, 101, 141)
-	GM.MapEntities.NPCSpawnPoints[2].Level = 5
-	GM.MapEntities.NPCSpawnPoints[2].SpawnTime = 10
-	GM.MapEntities.NPCSpawnPoints[3] = {}
-	GM.MapEntities.NPCSpawnPoints[3].NPC = "antlionguard"
-	GM.MapEntities.NPCSpawnPoints[3].Postion = Vector(1374, 3917, 110)
-	GM.MapEntities.NPCSpawnPoints[3].Level = 5
-	GM.MapEntities.NPCSpawnPoints[3].SpawnTime = 10]]
-	
 	function GM:LoadMapObjects()
 		local strFileName = "UnderDone/Maps/" .. game.GetMap() .. ".txt"
 		if !file.Exists(strFileName) then return end
@@ -93,32 +97,35 @@ if SERVER then
 		return entNewMonster
 	end
 	
-	function GM:CreateSpawnPoint(vecPosition, strNPC, intLevel, intSpawnTime)
-		table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, {})
-		local intNumSpawns = #GAMEMODE.MapEntities.NPCSpawnPoints
-		GAMEMODE:UpdateSpawnPoint(intNumSpawns, vecPosition, strNPC, intLevel, intSpawnTime)
-	end
-	function GM:UpdateSpawnPoint(intKey, vecPosition, strNPC, intLevel, intSpawnTime)
-		local tblToUpdateSpawn = GAMEMODE.MapEntities.NPCSpawnPoints[intKey]
-		if tblToUpdateSpawn then
-			tblToUpdateSpawn.NPC = strNPC or tblToUpdateSpawn.NPC or "zombie"
-			tblToUpdateSpawn.Postion = vecPosition or tblToUpdateSpawn.Postion or Vector(0, 0, 0)
-			tblToUpdateSpawn.Level = intLevel or tblToUpdateSpawn.Level or 5
-			tblToUpdateSpawn.SpawnTime = intSpawnTime or tblToUpdateSpawn.SpawnTime or 10
+	if SinglePlayer() then
+		function OnPlayerSpawnMapEditor(ply)
+			for key, spawnPoint in pairs(GAMEMODE.MapEntities.NPCSpawnPoints) do
+				GAMEMODE:UpdateSpawnPoint(key)
+			end
 		end
+		hook.Add("PlayerSpawn", "OnPlayerSpawnMapEditor", OnPlayerSpawnMapEditor)
+		
+		concommand.Add("UD_Dev_EditMap_CreateSpawnPoint", function(ply, command, args)
+			if !ply:IsAdmin() or !ply:IsPlayer() then return end
+			GAMEMODE:CreateSpawnPoint(ply:GetEyeTraceNoCursor().HitPos)
+		end)
+		concommand.Add("UD_Dev_EditMap_UpdateSpawnPoint", function(ply, command, args)
+			if !ply:IsAdmin() or !ply:IsPlayer() then return end
+			if args[1] && GAMEMODE.MapEntities.NPCSpawnPoints[tonumber(args[1])] then
+				GAMEMODE:UpdateSpawnPoint(tonumber(args[1]), nil, args[2], tonumber(args[3]), tonumber(args[4]))
+			end
+		end)
+		concommand.Add("UD_Dev_EditMap_SaveMap", function(ply, command, args)
+			if !ply:IsAdmin() or !ply:IsPlayer() then return end
+			GAMEMODE:SaveMapObjects()
+		end)
 	end
-	concommand.Add("UD_Dev_EditMap_CreateSpawnPoint", function(ply, command, args)
-		if !ply:IsAdmin() or !ply:IsPlayer() then return end
-		GAMEMODE:CreateSpawnPoint(ply:GetEyeTraceNoCursor().HitPos)
-	end)
-	concommand.Add("UD_Dev_EditMap_UpdateSpawnPoint", function(ply, command, args)
-		if !ply:IsAdmin() or !ply:IsPlayer() then return end
-		if args[1] && GAMEMODE.MapEntities.NPCSpawnPoints[tonumber(args[1])] then
-			GAMEMODE:UpdateSpawnPoint(tonumber(args[1]), nil, args[2], tonumber(args[3]), tonumber(args[4]))
-		end
-	end)
-	concommand.Add("UD_Dev_EditMap_SaveMap", function(ply, command, args)
-		if !ply:IsAdmin() or !ply:IsPlayer() then return end
-		GAMEMODE:SaveMapObjects()
-	end)
+end
+
+if CLIENT then
+	if SinglePlayer() then
+		usermessage.Hook("UD_UpdateMapObjects", function(usrMsg)
+			GAMEMODE:UpdateSpawnPoint(usrMsg:ReadLong(), usrMsg:ReadVector(), usrMsg:ReadString(), usrMsg:ReadLong(), usrMsg:ReadLong())
+		end)
+	end
 end
