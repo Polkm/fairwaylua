@@ -84,8 +84,10 @@ if SERVER then
 			if dmginfo:GetDamage() > 0 && dmginfo:GetDamage() < 990 then
 				for _, ent in pairs(ents.GetAll()) do
 					if ent && ent:IsNPC() then
-						if ent.Relation == npc.Relation then
-							ent:AddEntityRelationship(plyAttacker, GAMEMODE.RelationHate, 99)
+						if ent.Race == npc.Race then
+							if plyAttacker:GetPos():Distance(ent:GetPos()) < GAMEMODE.MonsterViewDistance then
+								ent:AddEntityRelationship(plyAttacker, GAMEMODE.RelationHate, 99)
+							end
 						end
 					end
 				end
