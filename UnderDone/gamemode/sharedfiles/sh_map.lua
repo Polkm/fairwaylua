@@ -52,17 +52,17 @@ if SERVER then
 			end
 		end
 		for _, ply in pairs(player.GetAll()) do
-			if ply && ply:IsValid() && Spawn then
-				if ply:GetPos():Distance(Spawn:GetPos()) > 120 then
-					GAMEMODE.DistantPlayer = ply
-				end
+			if ply && ply:IsValid() then
+				GAMEMODE.Player = ply
 			end
 		end
 		for _, ent in pairs(ents.GetAll()) do
 			if ent && ent:IsValid() && ent.Monster then
 				if ent.Relation then
-					ent:AddEntityRelationship(GAMEMODE.DistantPlayer, ent.Relation, 99)
-					ent:SetNPCState( NPC_STATE_IDLE )
+					if GAMEMODE.Player:GetPos():Distance(Spawn:GetPos()) > 120 then
+						ent:AddEntityRelationship(GAMEMODE.Player, ent.Relation, 99)
+						ent:SetNPCState( NPC_STATE_IDLE )
+					end
 				end
 			end
 		end
