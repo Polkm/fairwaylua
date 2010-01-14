@@ -9,7 +9,7 @@ function Entity:AddItem(strItem, intAmount)
 	self.Data.Inventory = self.Data.Inventory or {}
 	self.Data.Inventory[strItem] = self.Data.Inventory[strItem] or 0
 	self.Weight = self.Weight or 0
-	local intMaxItems = math.Clamp(math.floor((MaxWeight - self.Weight) / tblItemTable.Weight), 0, intAmount)
+	local intMaxItems = math.Clamp(math.floor((GAMEMODE.MaxWeight - self.Weight) / tblItemTable.Weight), 0, intAmount)
 	intAmount = math.Clamp(intAmount, -self.Data.Inventory[strItem], intMaxItems)
 	if SERVER then
 		if self.Data.Paperdoll then
