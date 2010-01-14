@@ -60,28 +60,13 @@ if SERVER then
 		entNewMonster:SetPos(tblSpawnPoint.Postion)
 		entNewMonster:Spawn()
 		entNewMonster.Relation = tblNPCTable.Relation
-		for _, ply in pairs(player.GetAll()) do
-			entNewMonster:AddEntityRelationship(ply, tblSpawnPoint.Relation, 99)
-		end
-		if tblNPCTable.Relation == GAMEMODE.RelationHate then
-			GAMEMODE.NPCEnemy = entNewMonster
-			if GAMEMODE.NPCAlly && entNewMonster && GAMEMODE.NPCAlly:IsValid() && entNewMonster:IsValid() then
-				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
-				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly, GAMEMODE.RelationHate, 99)
-			end
-		end
-		if tblNPCTable.Relation == GAMEMODE.RelationLike then
-			GAMEMODE.NPCAlly = entNewMonster
-			if GAMEMODE.NPCEnemy && entNewMonster && GAMEMODE.NPCEnemy:IsValid() && entNewMonster:IsValid()then
-				GAMEMODE.NPCEnemy:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
-				entNewMonster:AddEntityRelationship(GAMEMODE.NPCEnemy, GAMEMODE.RelationHate, 99)
-			end
-		end
 		if tblNPCTable.Race == "combine" then
 			entNewMonster:Give("weapon_crowbar")
 		end
 		if tblNPCTable.Race == tblNPCTable.Race then
 			entNewMonster:AddEntityRelationship(entNewMonster, GAMEMODE.RelationLike, 99)	
+		else
+			entNewMonster:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)	
 		end
 		local intLevel = math.Clamp(tblSpawnPoint.Level + math.random(-2, 2), 1, tblSpawnPoint.Level + 2)
 		entNewMonster:SetNWInt("level", intLevel)
