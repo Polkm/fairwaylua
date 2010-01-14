@@ -2,15 +2,18 @@ local NPC = {}
 NPC.Name = "zombie"
 NPC.PrintName = "Zombie"
 NPC.SpawnName = "npc_zombie"
-NPC.HealthPerLevel = 10
+NPC.HealthPerLevel = 14
 NPC.Race = "zombie"
+NPC.Drops = {}
+NPC.Drops["money"] = {Chance = 15, Min = 5, Max = 10}
+NPC.Drops["can"] = {Chance = 10, Min = 1}
 Register.NPC(NPC)
 
 local NPC = {}
 NPC.Name = "antlion"
 NPC.PrintName = "Antlion"
 NPC.SpawnName = "npc_antlion"
-NPC.HealthPerLevel = 11
+NPC.HealthPerLevel = 12
 NPC.Race = "antlion"
 Register.NPC(NPC)
 
@@ -18,7 +21,7 @@ local NPC = {}
 NPC.Name = "antlionguard"
 NPC.PrintName = "Antlion Boss"
 NPC.SpawnName = "npc_antlionguard"
-NPC.HealthPerLevel = 13
+NPC.HealthPerLevel = 25
 NPC.Race = "antlion"
 Register.NPC(NPC)
 
@@ -26,7 +29,7 @@ local NPC = {}
 NPC.Name = "combine"
 NPC.PrintName = "Combine Guard"
 NPC.SpawnName = "npc_combine_s"
-NPC.HealthPerLevel = 25
+NPC.HealthPerLevel = 20
 NPC.Race = "combine"
 Register.NPC(NPC)
 
@@ -41,11 +44,20 @@ if SERVER then
 		
 	function GM:OnNPCKilled(npc, killer, weapon)
 		if npc:GetNWInt("level") > 0 && killer:IsPlayer() then
-			local intPlayerLevel = toLevel(killer:GetNWInt("exp"))
+			local tblNPCTable = NPCTable(npc:GetNWString("npc"))
+			local intPlayerLevel = killer:GetLevel()
 			local intNPCLevel = npc:GetNWInt("level")
-			local intExptoGive =  math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 5)
+			local intExptoGive = math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 7)
 			killer:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
 			killer:GiveExp(intExptoGive)
+			for item, args in pairs(tblNPCTable.Drops or {}) do
+				if math.random(1, 100 / args.Chance) == 1 then
+					local tblItemTable = ItemTable(item)
+					local intAmount = math.random(args.Min or 1, args.Max or args.Min or 1)
+					killer:AddItem(item, intAmount)
+					killer:CreateNotification("Looted " .. intAmount .. " " .. tblItemTable.PrintName)
+				end
+			end
 		end
 	end
 
