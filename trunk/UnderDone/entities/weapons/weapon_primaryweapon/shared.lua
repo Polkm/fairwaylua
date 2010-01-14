@@ -92,7 +92,7 @@ function SWEP:WeaponAttack()
 		end
 		if CLIENT && !isMelee then
 			self.Owner:MuzzleFlash()
-			local strEffect = "ShellEject"
+			local strEffect = "EjectBrass_9mm"
 			if self.WeaponTable.HoldType == "shotgun" then strEffect = "ShotgunShellEject" end
 			local effectdata = EffectData()
 			effectdata:SetOrigin(self.Owner.PapperDollEnts["slot_primaryweapon"]:GetPos())
