@@ -21,6 +21,7 @@ end
 
 function Player:LoadGame()
 	self.Data = {}
+	self.Race = "rebel"
 	for name, stat in pairs(GAMEMODE.DataBase.Stats) do
 		self:SetStat(name, stat.Default)
 	end

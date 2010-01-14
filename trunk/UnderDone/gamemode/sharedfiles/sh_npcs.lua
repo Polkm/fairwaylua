@@ -3,7 +3,6 @@ NPC.Name = "zombie"
 NPC.PrintName = "Zombie"
 NPC.SpawnName = "npc_zombie"
 NPC.HealthPerLevel = 10
-NPC.Relation = GM.RelationLike
 NPC.Race = "zombie"
 Register.NPC(NPC)
 
@@ -12,7 +11,6 @@ NPC.Name = "antlion"
 NPC.PrintName = "Antlion"
 NPC.SpawnName = "npc_antlion"
 NPC.HealthPerLevel = 11
-NPC.Relation = GM.RelationHate
 NPC.Race = "antlion"
 Register.NPC(NPC)
 
@@ -21,7 +19,6 @@ NPC.Name = "antlionguard"
 NPC.PrintName = "Antlion Boss"
 NPC.SpawnName = "npc_antlionguard"
 NPC.HealthPerLevel = 13
-NPC.Relation = GM.RelationHate
 NPC.Race = "antlion"
 Register.NPC(NPC)
 
@@ -30,24 +27,14 @@ NPC.Name = "combine"
 NPC.PrintName = "Combine Guard"
 NPC.SpawnName = "npc_combine_s"
 NPC.HealthPerLevel = 25
-NPC.Relation = GM.RelationLike
 NPC.Race = "combine"
 Register.NPC(NPC)
 
 if SERVER then
 	function GM:PlayerDeath(victim, weapon, killer)
 		if killer:IsNPC() && victim:IsPlayer() then
-			if killer.Relation == GAMEMODE.RelationLike then
-				killer:AddEntityRelationship(victim, GAMEMODE.RelationLike, 99)
-				killer:SetNPCState( NPC_STATE_IDLE )
-				for _, ent in pairs(ents.GetAll()) do
-					if ent && ent:IsNPC() then
-						if ent.Relation == killer.Relation then
-							ent:SetNPCState( NPC_STATE_IDLE )
-							ent:AddEntityRelationship(victim, GAMEMODE.RelationLike, 99)
-						end
-					end
-				end
+			if killer.Race == victim.Race then
+				ent:AddEntityRelationship(victim, GAMEMODE.RelationLike, 99)
 			end
 		end
 	end
@@ -81,20 +68,13 @@ if SERVER then
 			end
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
 			if dmginfo:GetDamage() > 0 && dmginfo:GetDamage() < 990 then
-				for _, ent in pairs(ents.GetAll()) do
-					if ent && ent:IsNPC() && ent.Race == npc.Race then
-						if plyAttacker:GetPos():Distance(ent:GetPos()) < GAMEMODE.MonsterViewDistance then
-							ent:AddEntityRelationship(plyAttacker, GAMEMODE.RelationHate, 99)
-						end
-					end
-				end
 				plyAttacker:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
-				npc:AddEntityRelationship(plyAttacker, GAMEMODE.RelationHate, 99)
 			elseif dmginfo:GetDamage() <= 0 then
 				plyAttacker:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
 			end
 		end
 		dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage()), 0, 999))
+		npc:AddEntityRelationship(plyAttacker, GAMEMODE.RelationHate, 99)
 		npc:SetHealth(npc:Health() - dmginfo:GetDamage())
 		npc:SetNWInt("Health", npc:Health())
 		dmginfo:SetDamage(0)
