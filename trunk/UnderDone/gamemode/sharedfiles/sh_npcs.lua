@@ -34,7 +34,7 @@ if SERVER then
 	function GM:PlayerDeath(victim, weapon, killer)
 		if killer:IsNPC() && victim:IsPlayer() then
 			if killer.Race == victim.Race then
-				ent:AddEntityRelationship(victim, GAMEMODE.RelationLike, 99)
+				killer:AddEntityRelationship(victim, GAMEMODE.RelationLike, 99)
 			end
 		end
 	end
@@ -67,13 +67,13 @@ if SERVER then
 				end
 			end
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
-			if dmginfo:GetDamage() > 0 && dmginfo:GetDamage() < 990 then
+			if dmginfo:GetDamage() > 0 && dmginfo:GetDamage() < 9990 then
 				plyAttacker:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
 			elseif dmginfo:GetDamage() <= 0 then
 				plyAttacker:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
 			end
 		end
-		dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage()), 0, 999))
+		dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage()), 0, 9999))
 		npc:AddEntityRelationship(plyAttacker, GAMEMODE.RelationHate, 99)
 		npc:SetHealth(npc:Health() - dmginfo:GetDamage())
 		npc:SetNWInt("Health", npc:Health())
