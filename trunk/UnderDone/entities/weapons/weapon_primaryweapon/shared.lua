@@ -89,8 +89,6 @@ function SWEP:WeaponAttack()
 		end
 		if SERVER && !isMelee then
 			self:SetClip1(self:Clip1() - 1)
-		end
-		if CLIENT && !isMelee then
 			self.Owner:MuzzleFlash()
 			local strEffect = "ShellEject"
 			if self.WeaponTable.HoldType == "shotgun" then strEffect = "ShotgunShellEject" end
@@ -101,6 +99,9 @@ function SWEP:WeaponAttack()
 			effectdata:SetMagnitude( 1 )
 			effectdata:SetScale( 1 )
 			util.Effect(strEffect, effectdata)
+		end
+		if CLIENT && !isMelee then
+
 		end
 		self:EmitSound(self.WeaponTable.Sound)
 		self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate))
