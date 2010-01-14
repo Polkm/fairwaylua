@@ -59,9 +59,18 @@ if SERVER then
 		local entNewMonster = ents.Create(tblNPCTable.SpawnName)
 		entNewMonster:SetPos(tblSpawnPoint.Postion)
 		entNewMonster:Spawn()
-		entNewMonster.Relation = tblNPCTable.Relation
+		entNewMonster.Race = tblNPCTable.Race
 		if tblNPCTable.Race == "combine" then
 			entNewMonster:Give("weapon_crowbar")
+		end
+		for _, ent in pairs(ents.GetAll()) do
+			if ent && ent:IsValid() && ent.Race then
+				if ent.Race == tblNPCTable.Race then
+					entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationLike, 99)
+				else
+					entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationHate, 99)
+				end
+			end
 		end
 		local intLevel = math.Clamp(tblSpawnPoint.Level + math.random(-2, 2), 1, tblSpawnPoint.Level + 2)
 		entNewMonster:SetNWInt("level", intLevel)
