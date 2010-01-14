@@ -66,14 +66,14 @@ if SERVER then
 		end
 		if tblNPCTable.Relation == GAMEMODE.RelationHate then
 			GAMEMODE.NPCEnemy = entNewMonster
-			if GAMEMODE.NPCAlly then
+			if GAMEMODE.NPCAlly && entNewMonster then
 				GAMEMODE.NPCAlly:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
 				entNewMonster:AddEntityRelationship(GAMEMODE.NPCAlly, GAMEMODE.RelationHate, 99)
 			end
 		end
 		if tblNPCTable.Relation == GAMEMODE.RelationLike then
 			GAMEMODE.NPCAlly = entNewMonster
-			if GAMEMODE.NPCEnemy then
+			if GAMEMODE.NPCEnemy && entNewMonster then
 				GAMEMODE.NPCEnemy:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
 				entNewMonster:AddEntityRelationship(GAMEMODE.NPCEnemy, GAMEMODE.RelationHate, 99)
 			end
