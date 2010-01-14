@@ -79,7 +79,7 @@ function SWEP:WeaponAttack()
 		tblBullet.Tracer	= 2
 		if isMelee then tblBullet.Tracer = 0 end
 		tblBullet.AmmoType	= self.WeaponTable.AmmoType
-		if isMelee then tblBullet.AmmoType	= "pistol" end
+		if isMelee then tblBullet.AmmoType = "pistol" end
 		if !isMelee then
 			self.Owner:FireBullets(tblBullet)
 		else

@@ -6,7 +6,7 @@ include('sh_resource.lua')
 GM.MainMenu = nil
 ----------Colors---------
 clrGray = Color(97, 95, 90, 255)
-clrDrakGray = Color(54, 53, 42, 255)
+clrDrakGray = Color(43, 42, 39, 255)
 clrGreen = Color(194, 255, 72, 255)
 clrOrange = Color(255, 137, 44, 255)
 clrPurple = Color(87, 76, 135, 255)
@@ -14,6 +14,7 @@ clrBlue = Color(59, 142, 209, 255)
 clrRed = Color(191, 75, 37, 255)
 clrTan = Color(178, 161, 126, 255)
 clrCream = Color(245, 255, 154, 255)
+clrMooca = Color(107, 97, 78, 255)
 clrWhite = Color(242, 242, 242, 255)
 GM.TranslateColor = {}
 GM.TranslateColor["green"] = clrGreen

@@ -1,4 +1,6 @@
 jdraw = {}
+local matGradiantDown = surface.GetTextureID("gui/gradient_down")
+local matGradiantUp = surface.GetTextureID("gui/gradient_up")
 
 function jdraw.NewPanel(tblParent, boolCopyStyle)
 	local tblNewPanel = {}
@@ -79,8 +81,14 @@ function jdraw.DrawProgressBar(tblPanelTable)
 	if intRadius > intBarWidth then intRadius = 1 end
 	draw.RoundedBox(intRadius, intX, intY, intWidth, intHieght, tblPanelTable.BoarderColor)
 	draw.RoundedBox(intRadius, intX + intBoarder, intY + intBoarder, intWidth  - (intBoarder * 2), intHieght - (intBoarder * 2), clrGray)
+	surface.SetDrawColor(0, 0, 0, 70)
+	surface.SetTexture(matGradiantDown)
+	surface.DrawTexturedRect(intX, intY, intWidth, intHieght)
 	if intValue > 0 then
 		draw.RoundedBox(intRadius, intX + intBoarder, intY + intBoarder, intBarWidth, intHieght - (intBoarder * 2), tblPanelTable.Color)
+		surface.SetDrawColor(0, 0, 0, 100)
+		surface.SetTexture(matGradiantUp)
+		surface.DrawTexturedRect(intX + intBoarder, intY + intBoarder, intBarWidth, intHieght - (intBoarder * 2))
 	end
 	if strText && strText != "" then
 		draw.SimpleText(strText, tblPanelTable.Font, intX + (intWidth / 2), intY + (intHieght / 2), tblPanelTable.TextColor, 1, 1)
