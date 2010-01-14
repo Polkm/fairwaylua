@@ -20,6 +20,6 @@ Item.Model = "models/Items/357ammobox.mdl"
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
-Item.AmmoType = "smg1"
+Item.AmmoType = "Pistol"
 Item.AmmoAmount = 20
 Register.Item(Item)
