@@ -1,3 +1,5 @@
+local Entity = FindMetaTable("Entity")
+
 function toExp(intLevel)
 	if intLevel <= 1 then intLevel = 0 end
 	intLevel = math.pow(intLevel, 2)
@@ -11,6 +13,17 @@ function toLevel(intExp)
 	intExp = math.sqrt(intExp)
 	intExp = math.floor(intExp)
 	return intExp
+end
+
+function Entity:CreateGrip()
+	local entGrip = ents.Create("prop_physics")
+	entGrip:SetModel("models/props_junk/cardboard_box004a.mdl")
+	entGrip:SetPos(self:GetPos())
+	entGrip:SetAngles(self:GetAngles())
+	entGrip:SetCollisionGroup(COLLISION_GROUP_WORLD)
+	entGrip:SetColor(0, 0, 0, 0)
+	entGrip:Spawn()
+	self:SetParent(entGrip)
 end
 
 if SERVER then

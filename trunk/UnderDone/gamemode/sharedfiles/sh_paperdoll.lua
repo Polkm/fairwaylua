@@ -131,6 +131,10 @@ function GM:BuildModel(tblModelTable)
 	local entNewPart = nil
 	for key, modelinfo in pairs(tblLoopTable) do
 		entNewPart = ents.Create("prop_physics")
+		if SERVER && (!util.IsValidProp(modelinfo.Model) or entReturnEnt) then
+			entNewPart:Remove()
+			entNewPart = ents.Create("prop_dynamic")
+		end
 		entNewPart:SetModel(modelinfo.Model)
 		if entReturnEnt then entNewPart:SetAngles(entReturnEnt:GetAngles()) end
 		if entReturnEnt then entNewPart:SetAngles(entNewPart:LocalToWorldAngles(modelinfo.Angle)) end
