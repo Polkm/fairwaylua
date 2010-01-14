@@ -88,8 +88,8 @@ if SERVER then
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
 		entNewMonster:SetMaxHealth(intHealth)
 		entNewMonster:SetHealth(intHealth)
-		entNewMonster:SetNWInt("Health", intHealth)
 		entNewMonster:SetNWInt("MaxHealth", intHealth)
+		entNewMonster:SetNWInt("Health", intHealth)
 		return entNewMonster
 	end
 	

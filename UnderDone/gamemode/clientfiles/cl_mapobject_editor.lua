@@ -44,18 +44,18 @@ function GM.MapEditor.OpenMapEditor()
 	btnSaveButton:SetMaterial("vgui/spawnmenu/save")
 	btnSaveButton:SetToolTip("Save Map")
 	btnSaveButton.DoClick = function(btnSaveButton) RunConsoleCommand("UD_Dev_EditMap_SaveMap") end
-	btnSaveButton:SetPos(5, 30)
-	btnSaveButton:SetSize(20, 20)
+	btnSaveButton:SetPos(7, 32)
+	btnSaveButton:SetSize(16, 16)
 	
 	local btnNewSpawnButton = vgui.Create("DImageButton", frmMapEditorFrame)
-	btnNewSpawnButton:SetMaterial("gui/silkicons/add")
+	btnNewSpawnButton:SetMaterial("gui/silkicons/brick_add")
 	btnNewSpawnButton:SetToolTip("New Spawn Point")
 	btnNewSpawnButton.DoClick = function(btnNewSpawnButton)
 		GAMEMODE.MapEditor.CurrentSpawnPoint = #GAMEMODE.MapEntities.NPCSpawnPoints + 1
 		RunConsoleCommand("UD_Dev_EditMap_CreateSpawnPoint")
 	end
-	btnNewSpawnButton:SetPos(30, 30)
-	btnNewSpawnButton:SetSize(20, 20)
+	btnNewSpawnButton:SetPos(32, 32)
+	btnNewSpawnButton:SetSize(16, 16)
 	GAMEMODE.MapEditor.Open = true
 end
 
