@@ -11,6 +11,7 @@ Item.Giveable = true
 Item.Weight = 1
 Item.HoldType = "pistol"
 Item.AmmoType = "smg1"
+Item.NumOfBullets = 1
 Item.Power = 8
 Item.Accuracy = 0.01
 Item.FireRate = 2
