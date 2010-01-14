@@ -67,8 +67,10 @@ if SERVER then
 			if ent && ent:IsValid() && ent.Race then
 				if ent.Race == tblNPCTable.Race then
 					entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationLike, 99)
+					ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationLike, 99)
 				else
 					entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationHate, 99)
+					ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
 				end
 			end
 		end
