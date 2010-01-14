@@ -67,14 +67,19 @@ if SERVER then
 			if ent && ent:IsValid() && ent.Race then
 				if ent.Race == tblNPCTable.Race then
 					entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationLike, 99)
-					ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationLike, 99)
+					if ent:IsNPC() then
+						ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationLike, 99)
+					end
 				else
 					entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationHate, 99)
-					ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
+					if ent:IsNPC() then
+						ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
+					end
 				end
 			end
 		end
 		local intLevel = math.Clamp(tblSpawnPoint.Level + math.random(-2, 2), 1, tblSpawnPoint.Level + 2)
+		entNewMonster:SetNWString("npc", tblNPCTable.Name)
 		entNewMonster:SetNWInt("level", intLevel)
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
 		entNewMonster:SetMaxHealth(intHealth)

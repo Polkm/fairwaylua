@@ -44,7 +44,7 @@ function Player:GiveItem(strItem, intAmount, plyTarget)
 	local Target = player.GetByID(plyTarget)
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem]
 	Target:TransferItem(self, strItem, intAmount)
-	Target:ConCommand("UD_AddNotification " .. self:Nick() .. " Gave you " .. tostring(intAmount) .. " " .. tblItemTable.PrintName) 
+	Target:CreateNotification(self:Nick() .. " Gave you " .. tostring(intAmount) .. " " .. tblItemTable.PrintName)
 end
 concommand.Add("UD_GiveItem", function(ply, command, args) ply:GiveItem(args[1], args[2], tonumber(args[3])) end)
 

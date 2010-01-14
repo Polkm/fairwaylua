@@ -30,7 +30,7 @@ function BaseFood:Use(usr, itemtable)
 	end
 	timer.Simple(itemtable.AddTime / intHealthToAdd, AddHealth)
 	usr:AddItem(itemtable.Name, -1)
-	usr:ConCommand("UD_AddNotification Look at you you ate a food your weird") 
+	usr:CreateNotification("Look at you, you ate a food your weird")
 end
 
 BaseAmmo = DeriveTable(BaseItem)

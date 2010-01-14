@@ -26,6 +26,7 @@ if SERVER then
 				self:CreateIndacator("I_Wish_I_Was_As_Cool_As_You!", self:GetPos() + Vector(0, 0, 70), "purple")
 				self:CreateIndacator("I_Jizzed!", self:GetPos() + Vector(0, 0, 70), "blue")
 				self:CreateIndacator("Gratz!", self:GetPos() + Vector(0, 0, 70), "orange")
+				self:CreateIndacator("I_Just_Shat_My_Pants!", self:GetPos() + Vector(0, 0, 70), "blue")
 				self:CreateIndacator("Call_Me!", self:GetPos() + Vector(0, 0, 70), "purple")
 				self:CreateIndacator("You_Should_Model!", self:GetPos() + Vector(0, 0, 70), "orange")
 			end
@@ -39,5 +40,9 @@ if SERVER then
 		tblVector[2] = math.Round(vecPosition.y)
 		tblVector[3] = math.Round(vecPosition.z)
 		self:ConCommand("UD_AddDamageIndacator " .. strMessage .. " " .. table.concat(tblVector, "!") .. " " .. strSendColor)
+	end
+	
+	function Player:CreateNotification(strMessage)
+		self:ConCommand("UD_AddNotification " .. strMessage) 
 	end
 end
