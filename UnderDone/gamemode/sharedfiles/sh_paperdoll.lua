@@ -5,14 +5,14 @@ function Player:SetPaperDoll(strSlot, strItem)
 	local tblItemTable = GAMEMODE.DataBase.Items[strItem] or {}
 	self.Data = self.Data or {}
 	self.Data.Paperdoll = self.Data.Paperdoll or {}
-	if !strItem or self.Data.Paperdoll[strSlot] == strItem then
+	if !strItem or self:GetSlot(strSlot) == strItem then
 		self.Data.Paperdoll[strSlot] = nil
 	else
 		self.Data.Paperdoll[strSlot] = strItem
 	end
 	if SERVER then
 		for name, amount in pairs(tblItemTable.Buffs or {}) do
-			if self.Data.Paperdoll[strSlot] then
+			if self:GetSlot(strSlot) then
 				self:AddStat(name, amount)
 			else
 				self:AddStat(name, -amount)
@@ -26,9 +26,16 @@ function Player:SetPaperDoll(strSlot, strItem)
 				end
 			end
 		end
-		SendUsrMsg("UD_UpdatePapperDoll", player.GetAll(), {self, strSlot, self.Data.Paperdoll[strSlot]})
+		SendUsrMsg("UD_UpdatePapperDoll", player.GetAll(), {self, strSlot, self:GetSlot(strSlot)})
 		self:SaveGame()
 	end
+end
+
+function Player:GetSlot(strSlot)
+	if self.Data && self.Data.Paperdoll && self.Data.Paperdoll[strSlot] then
+		return self.Data.Paperdoll[strSlot]
+	end
+	return
 end
 
 if CLIENT then
@@ -83,29 +90,30 @@ if CLIENT then
 					end
 				end
 			end
-			return
 		end
-		local player = LocalPlayer()
-		for slot, ent in pairs(player.PapperDollEnts or {}) do
-			local tblItemTable = GAMEMODE.DataBase.Items[ent.Item]
-			local tblAttachment = player:GetAttachment(player:LookupAttachment(ent.Attachment))
-			local boolIsBeingEdited = player == LocalPlayer() && GAMEMODE.PapperDollEditor.CurrentSlot && GAMEMODE.PapperDollEditor.CurrentSlot == slot
-			local angAddAngle = tblItemTable.Model[1].Angle
-			if boolIsBeingEdited && GAMEMODE.PapperDollEditor.CurrentObject == 1 then angAddAngle = GAMEMODE.PapperDollEditor.CurrentAddedAngle end
-			ent:SetAngles(tblAttachment.Ang)
-			ent:SetAngles(ent:LocalToWorldAngles(angAddAngle))
-			local vecAddVector = tblItemTable.Model[1].Position
-			if boolIsBeingEdited && GAMEMODE.PapperDollEditor.CurrentObject == 1 then vecAddVector = GAMEMODE.PapperDollEditor.CurrentAddedVector end
-			ent:SetPos(tblAttachment.Pos)
-			ent:SetPos(ent:LocalToWorld(vecAddVector))
-			for k, kid in pairs(ent.Children or {}) do
-				if boolIsBeingEdited && GAMEMODE.PapperDollEditor.CurrentObject == k + 1 then
-					local vecAddVector = GAMEMODE.PapperDollEditor.CurrentAddedVector
-					local angAddAngle = GAMEMODE.PapperDollEditor.CurrentAddedAngle
-					kid:SetAngles(ent:GetAngles())
-					kid:SetAngles(kid:LocalToWorldAngles(angAddAngle))
-					kid:SetPos(ent:GetPos())
-					kid:SetPos(kid:LocalToWorld(vecAddVector))
+		if SinglePlayer() then
+			local player = LocalPlayer()
+			for slot, ent in pairs(player.PapperDollEnts or {}) do
+				local tblItemTable = GAMEMODE.DataBase.Items[ent.Item]
+				local tblAttachment = player:GetAttachment(player:LookupAttachment(ent.Attachment))
+				local boolIsBeingEdited = player == LocalPlayer() && GAMEMODE.PapperDollEditor.CurrentSlot && GAMEMODE.PapperDollEditor.CurrentSlot == slot
+				local angAddAngle = tblItemTable.Model[1].Angle
+				if boolIsBeingEdited && GAMEMODE.PapperDollEditor.CurrentObject == 1 then angAddAngle = GAMEMODE.PapperDollEditor.CurrentAddedAngle end
+				ent:SetAngles(tblAttachment.Ang)
+				ent:SetAngles(ent:LocalToWorldAngles(angAddAngle))
+				local vecAddVector = tblItemTable.Model[1].Position
+				if boolIsBeingEdited && GAMEMODE.PapperDollEditor.CurrentObject == 1 then vecAddVector = GAMEMODE.PapperDollEditor.CurrentAddedVector end
+				ent:SetPos(tblAttachment.Pos)
+				ent:SetPos(ent:LocalToWorld(vecAddVector))
+				for k, kid in pairs(ent.Children or {}) do
+					if boolIsBeingEdited && GAMEMODE.PapperDollEditor.CurrentObject == k + 1 then
+						local vecAddVector = GAMEMODE.PapperDollEditor.CurrentAddedVector
+						local angAddAngle = GAMEMODE.PapperDollEditor.CurrentAddedAngle
+						kid:SetAngles(ent:GetAngles())
+						kid:SetAngles(kid:LocalToWorldAngles(angAddAngle))
+						kid:SetPos(ent:GetPos())
+						kid:SetPos(kid:LocalToWorld(vecAddVector))
+					end
 				end
 			end
 		end

@@ -32,9 +32,9 @@ function PANEL:Init()
 	self.inventorylist.catagories = {}
 	
 	self.WeightBar = vgui.Create("FPercentBar", self)
-	self.WeightBar:SetMax(MaxWeight)
+	self.WeightBar:SetMax(GAMEMODE.MaxWeight)
 	self.WeightBar:SetValue(LocalPlayer().Weight)
-	self.WeightBar:SetText("Weight " .. LocalPlayer().Weight .. "/" ..  MaxWeight)
+	self.WeightBar:SetText("Weight " .. LocalPlayer().Weight .. "/" ..  GAMEMODE.MaxWeight)
 	
 	self.Paperdoll = vgui.Create("FPaperDoll", self)
 	self.Paperdoll.Paint = function()
@@ -68,7 +68,7 @@ function PANEL:PerformLayout()
 	self.WeightBar:SetPos(0, 0)
 	self.WeightBar:SetSize(self.inventorylist:GetWide(), 15)
 	self.WeightBar:SetValue(LocalPlayer().Weight)
-	self.WeightBar:SetText("Weight " .. LocalPlayer().Weight .. "/" ..  MaxWeight)
+	self.WeightBar:SetText("Weight " .. LocalPlayer().Weight .. "/" ..  GAMEMODE.MaxWeight)
 	
 	self.Paperdoll:SetPos(self.inventorylist:GetWide() + 5, 0)
 	self.Paperdoll:SetSize(self:GetWide() - (self.inventorylist:GetWide() + 5), self:GetTall() - 85)

@@ -12,7 +12,7 @@ function GM:UpdateSpawnPoint(intKey, vecPosition, strNPC, intLevel, intSpawnTime
 		tblToUpdateSpawn.Postion = vecPosition or tblToUpdateSpawn.Postion or Vector(0, 0, 0)
 		tblToUpdateSpawn.NPC = strNPC or tblToUpdateSpawn.NPC or "zombie"
 		tblToUpdateSpawn.Level = intLevel or tblToUpdateSpawn.Level or 5
-		tblToUpdateSpawn.SpawnTime = intSpawnTime or tblToUpdateSpawn.SpawnTime or 10
+		tblToUpdateSpawn.SpawnTime = intSpawnTime or tblToUpdateSpawn.SpawnTime or 0
 		if SERVER && SinglePlayer() && player.GetByID(1) && player.GetByID(1):IsValid() then
 			SendUsrMsg("UD_UpdateMapObjects", player.GetByID(1), {intKey, tblToUpdateSpawn.Postion,	tblToUpdateSpawn.NPC, tblToUpdateSpawn.Level, tblToUpdateSpawn.SpawnTime})
 		end
@@ -45,7 +45,7 @@ if SERVER then
 		for _, Spawn in pairs(GAMEMODE.MapEntities.NPCSpawnPoints) do
 			if !Spawn.Monster or !Spawn.Monster:IsValid() then
 				if !Spawn.NextSpawn then Spawn.NextSpawn = CurTime() + Spawn.SpawnTime end
-				if CurTime() >= Spawn.NextSpawn then
+				if Spawn.SpawnTime > 0 && CurTime() >= Spawn.NextSpawn then
 					Spawn.Monster = GAMEMODE:CreateNPC(Spawn.NPC, Spawn)
 					Spawn.NextSpawn = nil
 				end
@@ -84,7 +84,8 @@ if SERVER then
 		if tblNPCTable.Race == tblNPCTable.Race then
 			entNewMonster:AddEntityRelationship(entNewMonster, GAMEMODE.RelationLike, 99)	
 		end
-		entNewMonster:SetNWInt("level", tblSpawnPoint.Level)
+		local intLevel = math.Clamp(tblSpawnPoint.Level + math.random(-2, 2), 1, tblSpawnPoint.Level + 2)
+		entNewMonster:SetNWInt("level", intLevel)
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
 		entNewMonster:SetMaxHealth(intHealth)
 		entNewMonster:SetHealth(intHealth)
@@ -122,6 +123,7 @@ if CLIENT then
 	if SinglePlayer() then
 		usermessage.Hook("UD_UpdateMapObjects", function(usrMsg)
 			GAMEMODE:UpdateSpawnPoint(usrMsg:ReadLong(), usrMsg:ReadVector(), usrMsg:ReadString(), usrMsg:ReadLong(), usrMsg:ReadLong())
+			GAMEMODE.MapEditor.UpatePanel()
 		end)
 	end
 end
