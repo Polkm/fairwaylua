@@ -33,6 +33,15 @@ NPC.HealthPerLevel = 20
 NPC.Race = "combine"
 Register.NPC(NPC)
 
+local NPC = {}
+NPC.Name = "shop_general"
+NPC.PrintName = "Jay"
+NPC.SpawnName = "npc_eli"
+NPC.HealthPerLevel = 10
+NPC.Invincible = true
+NPC.Race = "human"
+Register.NPC(NPC)
+
 if SERVER then
 	function GM:PlayerDeath(victim, weapon, killer)
 		if killer:IsNPC() && victim:IsPlayer() then
@@ -62,8 +71,9 @@ if SERVER then
 	end
 
 	function GM:ScaleNPCDamage(npc, hitgroup, dmginfo)
+		local tblNPCTable = NPCTable(npc:GetNWString("npc"))
 		local plyAttacker = dmginfo:GetAttacker()
-		if plyAttacker:IsPlayer() then
+		if plyAttacker:IsPlayer() && (!tblNPCTable or !tblNPCTable.Invincible) then
 			local clrDisplayColor = "white"
 			local intNPCLevel = npc:GetNWInt("level")
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * (1 / intNPCLevel)))
@@ -85,6 +95,7 @@ if SERVER then
 				plyAttacker:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
 			end
 		end
+		if tblNPCTable && tblNPCTable.Invincible then dmginfo:SetDamage(0) end
 		dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage()), 0, 9999))
 		npc:AddEntityRelationship(plyAttacker, GAMEMODE.RelationHate, 99)
 		npc:SetHealth(npc:Health() - dmginfo:GetDamage())
