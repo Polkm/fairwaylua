@@ -56,7 +56,6 @@ if SERVER then
 
 	function GM:CreateNPC(strNPC, tblSpawnPoint)
 		local tblNPCTable = NPCTable(strNPC)
-		print(strNPC)
 		local entNewMonster = ents.Create(tblNPCTable.SpawnName)
 		entNewMonster:SetPos(tblSpawnPoint.Postion)
 		entNewMonster:Spawn()
