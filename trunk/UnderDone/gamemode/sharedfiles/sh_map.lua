@@ -63,11 +63,6 @@ if SERVER then
 		if tblNPCTable.Race == "combine" then
 			entNewMonster:Give("weapon_crowbar")
 		end
-		if tblNPCTable.Race == tblNPCTable.Race then
-			entNewMonster:AddEntityRelationship(entNewMonster, GAMEMODE.RelationLike, 99)	
-		else
-			entNewMonster:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)	
-		end
 		local intLevel = math.Clamp(tblSpawnPoint.Level + math.random(-2, 2), 1, tblSpawnPoint.Level + 2)
 		entNewMonster:SetNWInt("level", intLevel)
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
