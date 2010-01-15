@@ -8,3 +8,13 @@ Item.Stackable = true
 Item.Dropable = true
 Item.Giveable = true
 Register.Item(Item)
+
+local Item = DeriveTable(BaseItem)
+Item.Name = "wood"
+Item.PrintName = "Wood"
+Item.Desc = "Its wood?"
+Item.Icon = "icons/item_cash"
+Item.Model = "models/Gibs/wood_gib01d.mdl"
+Item.Dropable = true
+Item.Giveable = true
+Register.Item(Item)
