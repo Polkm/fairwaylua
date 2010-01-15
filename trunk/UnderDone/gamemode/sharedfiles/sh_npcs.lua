@@ -3,6 +3,7 @@ NPC.Name = "zombie"
 NPC.PrintName = "Zombie"
 NPC.SpawnName = "npc_zombie"
 NPC.HealthPerLevel = 14
+NPC.Damage = 10
 NPC.Race = "zombie"
 NPC.Drops = {}
 NPC.Drops["money"] = {Chance = 15, Min = 5, Max = 10}
@@ -108,13 +109,18 @@ if SERVER then
 	function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
 		local npcAttacker = dmginfo:GetAttacker()
 		local clrDisplayColor = "red"
+		local intplyLevel = LocalPlayer():GetLevel()
 		local tblNPCTable = NPCTable(npcAttacker:GetNWString("npc"))
 		local boolInvincible = tblNPCTable && (tblNPCTable.Invincible)
 		if npcAttacker:IsNPC() && (!tblNPCTable or !boolInvincible) then
+		dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * (1 / intplyLevel)))
 			if math.random(1, 20) == 1 then
 				dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * 2))
 				ply:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue")
 				clrDisplayColor = "blue"
+			end
+			if npcAttacker.Damage then
+				dmginfo:SetDamage(dmginfo:GetDamage() + npcAttacker.Damage)
 			end
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
 			if dmginfo:GetDamage() > 0 && dmginfo:GetDamage() < 9990 then
