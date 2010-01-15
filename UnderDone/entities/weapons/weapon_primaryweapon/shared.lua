@@ -89,7 +89,9 @@ function SWEP:WeaponAttack()
 					if self.Owner:GetEyeTrace().Entity.CutAble then
 						if math.random(1,10) > 7 then
 							self.Owner:AddItem("wood", 1)
-							self.Owner:CreateNotification("Gained 1 Wood")
+							if self.Owner:AddItem("wood", 1) then
+								self.Owner:CreateNotification("Gained 1 Wood")
+							end
 						end
 					end
 				end
