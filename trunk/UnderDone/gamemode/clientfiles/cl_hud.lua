@@ -26,6 +26,10 @@ function GM:HUDPaint()
 	if trcEyeTrace.Entity:GetNWInt("level") > 0 then
 		GAMEMODE:DrawNPCInfo(trcEyeTrace.Entity)
 	end
+	if trcEyeTrace.Entity:IsPlayer() then
+		local posplypos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 80)):ToScreen()
+		draw.SimpleTextOutlined(trcEyeTrace.Entity:Nick(), "UiBold", posNPCpos.x, posNPCpos.y - 10, clrWhite, 1, 1, 1, clrDrakGray)
+	end
 	local intX = ScrW() / 2.0
 	local intY = LocalPlayer():GetEyeTraceNoCursor().HitPos:ToScreen().y
 	surface.SetDrawColor(clrGreen)
