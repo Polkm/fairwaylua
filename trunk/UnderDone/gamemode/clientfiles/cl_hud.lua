@@ -24,24 +24,7 @@ function GM:HUDPaint()
 	self:DrawDamageIndacators()
 	local trcEyeTrace = LocalPlayer():GetEyeTraceNoCursor()
 	if trcEyeTrace.Entity:GetNWInt("level") > 0 then
-		local intLevel = trcEyeTrace.Entity:GetNWInt("level")
-		local plylevel = LocalPlayer():GetLevel()
-		local posNPCpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 70)):ToScreen()
-		local clrBarColor = clrGreen
-		local intHealth = trcEyeTrace.Entity:GetNWInt("Health")
-		local intMaxHealth = trcEyeTrace.Entity:GetNWInt("MaxHealth")
-		if intHealth <= (intMaxHealth * 0.2) then clrBarColor = clrRed end
-		self.NpcHealthBar = jdraw.NewProgressBar(self.NpcBox, true)
-		self.NpcHealthBar:SetDemensions(posNPCpos.x  - (80 / 2), posNPCpos.y - (15 / 2) + 5,  80, 11)
-		self.NpcHealthBar:SetStyle(4, clrBarColor)
-		self.NpcHealthBar:SetBoarder(1, clrDrakGray)
-		self.NpcHealthBar:SetText("UiBold", intHealth, clrDrakGray)
-		self.NpcHealthBar:SetValue(intHealth, intMaxHealth)
-		jdraw.DrawProgressBar(self.NpcHealthBar)
-		local clrLevelColor = clrWhite
-		if intLevel < plylevel then clrLevelColor = clrBlue end
-		if intLevel > plylevel then clrLevelColor = clrOrange end
-		draw.SimpleTextOutlined("Level " .. intLevel, "ScoreboardText", posNPCpos.x, posNPCpos.y - 10 , clrLevelColor, 1, 1, 1, clrDrakGray)
+		GAMEMODE:DrawNPCInfo(trcEyeTrace.Entity)
 	end
 	local intX = ScrW() / 2.0
 	local intY = LocalPlayer():GetEyeTraceNoCursor().HitPos:ToScreen().y
@@ -85,6 +68,36 @@ function GM:DrawAmmoThingy()
 	self.AmmoBar:SetValue(intCurrentClip, tblWeaponTable.ClipSize or 1)
 	self.AmmoBar:SetText("UiBold", "Ammo " .. intCurrentClip .. "  " .. LocalPlayer():GetAmmoCount(strAmmoType), clrDrakGray)
 	jdraw.DrawProgressBar(self.AmmoBar)
+end
+
+function GM:DrawNPCInfo(entNPC)
+	local tblNPCTable = NPCTable(entNPC:GetNWInt("npc"))
+	local intLevel = entNPC:GetNWInt("level")
+	local plylevel = LocalPlayer():GetLevel()
+	local posNPCpos = (entNPC:GetPos() + Vector(0, 0, 80)):ToScreen()
+	local clrBarColor = clrGreen
+	local intHealth = entNPC:GetNWInt("Health")
+	local intMaxHealth = entNPC:GetNWInt("MaxHealth")
+	if intHealth <= (intMaxHealth * 0.2) then clrBarColor = clrRed end
+	self.NpcHealthBar = jdraw.NewProgressBar(self.NpcBox, true)
+	self.NpcHealthBar:SetDemensions(posNPCpos.x  - (80 / 2), posNPCpos.y - (15 / 2) + 5,  80, 11)
+	self.NpcHealthBar:SetStyle(4, clrBarColor)
+	self.NpcHealthBar:SetBoarder(1, clrDrakGray)
+	self.NpcHealthBar:SetText("UiBold", intHealth, clrDrakGray)
+	self.NpcHealthBar:SetValue(intHealth, intMaxHealth)
+	jdraw.DrawProgressBar(self.NpcHealthBar)
+	local clrLevelColor = clrWhite
+	if intLevel < plylevel then clrLevelColor = clrBlue end
+	if intLevel > plylevel then clrLevelColor = clrOrange end
+	if tblNPCTable.Race == "human" then clrLevelColor = clrWhite end
+	draw.SimpleTextOutlined(tblNPCTable.PrintName .. " lv. " .. intLevel, "UiBold", posNPCpos.x, posNPCpos.y - 10, clrLevelColor, 1, 1, 1, clrDrakGray)
+	local strIcon = nil
+	if tblNPCTable.Race == "human" then strIcon = "gui/silkicons/emoticon_smile" end
+	if strIcon then
+		surface.SetDrawColor(255, 255, 255, 255)
+		surface.SetTexture(surface.GetTextureID(strIcon))
+		surface.DrawTexturedRect(posNPCpos.x + 30, posNPCpos.y + 2, 16, 16)
+	end
 end
 
 function GM:Notifications()
