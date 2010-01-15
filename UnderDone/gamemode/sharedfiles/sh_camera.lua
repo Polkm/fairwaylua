@@ -68,7 +68,7 @@ else
 		client:SetCycle(client.AntiStutterAnimate)
 		if client.AntiStutterAnimate > 1 then client.AntiStutterAnimate = 0 end
 	end
-	function CalcViewHook(plyClient, vecOrigin, angAngles, fovFieldOfView)
+	function GM:CalcView(plyClient, vecOrigin, angAngles, fovFieldOfView)
 		if !plyClient or !plyClient:IsValid() then return end
 		local client = plyClient
 		--This is for fixing laggy animations in multiplayer for the local player (thanks CapsAdmin :D)
@@ -85,7 +85,6 @@ else
 		tblView.angles = GAMEMODE.CammeraAngle
 		return tblView
 	end
-	hook.Add("CalcView", "CalcViewHook", CalcViewHook)
 end
 
  

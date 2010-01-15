@@ -62,20 +62,19 @@ if SERVER then
 		entNewMonster:Spawn()
 		entNewMonster.Race = tblNPCTable.Race
 		entNewMonster.Invincible = tblNPCTable.Invincible
-		if tblNPCTable.Idle then entNewMonster:SetNPCState(NPC_STATE_IDLE) end
+		if tblNPCTable.Idle then
+			entNewMonster:SetNPCState(NPC_STATE_IDLE)
+			entNewMonster:SetKeyValue("spawnflags", 16)
+		end
 		if tblNPCTable.Race == "combine" then entNewMonster:Give("weapon_crowbar") end
 		for _, ent in pairs(ents.GetAll()) do
-			if ent && ent:IsValid() && ent.Race then
-				if ent.Race == tblNPCTable.Race && !ent.Invincible  then
+			if ent && ent:IsValid() && (ent:IsNPC() or ent:IsPlayer()) && ent.Race then
+				if ent.Race == tblNPCTable.Race then
 					entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationLike, 99)
-					if ent:IsNPC() && !entNewMonster.Invincible then
-						ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationLike, 99)
-					end
+					if ent:IsNPC() then ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationLike, 99) end
 				else
-					entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationHate, 99)
-					if ent:IsNPC() && !entNewMonster.Invincible then
-						ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
-					end
+					if !ent.Invincible then entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationHate, 99) end
+					if !entNewMonster.Invincible && ent:IsNPC() then ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99) end
 				end
 			end
 		end
