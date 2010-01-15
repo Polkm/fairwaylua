@@ -58,28 +58,29 @@ if SERVER then
 		local tblNPCTable = NPCTable(strNPC)
 		local entNewMonster = ents.Create(tblNPCTable.SpawnName)
 		entNewMonster:SetPos(tblSpawnPoint.Postion)
+		entNewMonster:SetAngles(tblSpawnPoint.Angle or Angle(0, 90, 0))
 		entNewMonster:Spawn()
 		entNewMonster.Race = tblNPCTable.Race
-		if tblNPCTable.Race == "combine" then
-			entNewMonster:Give("weapon_crowbar")
-		end
+		entNewMonster.Invincible = tblNPCTable.Invincible
+		if tblNPCTable.Idle then entNewMonster:SetNPCState(NPC_STATE_IDLE) end
+		if tblNPCTable.Race == "combine" then entNewMonster:Give("weapon_crowbar") end
 		for _, ent in pairs(ents.GetAll()) do
 			if ent && ent:IsValid() && ent.Race then
-				if ent.Race == tblNPCTable.Race then
+				if ent.Race == tblNPCTable.Race && !ent.Invincible  then
 					entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationLike, 99)
-					if ent:IsNPC() then
+					if ent:IsNPC() && !entNewMonster.Invincible then
 						ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationLike, 99)
 					end
 				else
 					entNewMonster:AddEntityRelationship(ent, GAMEMODE.RelationHate, 99)
-					if ent:IsNPC() then
+					if ent:IsNPC() && !entNewMonster.Invincible then
 						ent:AddEntityRelationship(entNewMonster, GAMEMODE.RelationHate, 99)
 					end
 				end
 			end
 		end
-		local intLevel = math.Clamp(tblSpawnPoint.Level + math.random(-2, 2), 1, tblSpawnPoint.Level + 2)
 		entNewMonster:SetNWString("npc", tblNPCTable.Name)
+		local intLevel = math.Clamp(tblSpawnPoint.Level + math.random(-2, 2), 1, tblSpawnPoint.Level + 2)
 		entNewMonster:SetNWInt("level", intLevel)
 		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
 		entNewMonster:SetMaxHealth(intHealth)

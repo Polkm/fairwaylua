@@ -49,6 +49,9 @@ if SERVER then
 	end
 	hook.Add("PlayerSpawn", "PlayerSpawnHook", PlayerSpawnHook)
 else
+	hook.Add("Initialize", "InitAnimFix", function()
+		RunConsoleCommand("cl_predict", 0)
+	end)
 	function GM:StutteryFix()
 		local client = LocalPlayer()
 		local frameTime = (FrameTime() * 100)
