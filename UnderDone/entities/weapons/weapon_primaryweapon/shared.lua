@@ -68,6 +68,7 @@ function SWEP:WeaponAttack()
 	end
 	if self.WeaponTable then
 		local isMelee = self.WeaponTable.HoldType == "melee"
+		local isWoodCutting = self.WeaponTable.CanCutWood 
 		local intRange = self.Owner:GetEyeTrace().HitPos:Distance(self.Owner:GetEyeTrace().StartPos)
 		local tblBullet = {}
 		tblBullet.Src 		= self.Owner:GetShootPos()
@@ -84,6 +85,14 @@ function SWEP:WeaponAttack()
 			self.Owner:FireBullets(tblBullet)
 		else
 			if intRange <= 70 then
+				if isWoodCutting then
+					if self.Owner:GetEyeTrace().Entity.CutAble then
+						if math.random(1,10) > 7 then
+							self.Owner:AddItem("wood", 1)
+							self.Owner:CreateNotification("Gained 1 Wood")
+						end
+					end
+				end
 				self.Owner:FireBullets(tblBullet)
 			end
 		end
