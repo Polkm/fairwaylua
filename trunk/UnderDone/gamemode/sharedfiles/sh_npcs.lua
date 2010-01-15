@@ -104,4 +104,28 @@ if SERVER then
 		npc:SetNWInt("Health", npc:Health())
 		dmginfo:SetDamage(0)
 	end
+	
+	function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
+		local npcAttacker = dmginfo:GetAttacker()
+		local clrDisplayColor = "red"
+		local tblNPCTable = NPCTable(npcAttacker:GetNWString("npc"))
+		local boolInvincible = tblNPCTable && (tblNPCTable.Invincible)
+		if npcAttacker:IsNPC() && (!tblNPCTable or !boolInvincible) then
+			if math.random(1, 20) == 1 then
+				dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * 2))
+				ply:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue")
+				clrDisplayColor = "blue"
+			end
+			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
+			if dmginfo:GetDamage() > 0 && dmginfo:GetDamage() < 9990 then
+				ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+			elseif dmginfo:GetDamage() <= 0 then
+				ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+			end
+		end
+		if tblNPCTable && boolInvincible then dmginfo:SetDamage(0) end
+		dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage()), 0, 9999))
+		ply:SetHealth(ply:Health() - dmginfo:GetDamage())
+		dmginfo:SetDamage(0)
+	end
 end
