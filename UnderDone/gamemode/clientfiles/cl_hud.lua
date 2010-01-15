@@ -29,9 +29,16 @@ function GM:HUDPaint()
 	if trcEyeTrace.Entity:IsPlayer() then
 		local posPLYpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 80)):ToScreen()
 		draw.SimpleTextOutlined(trcEyeTrace.Entity:Nick(), "UiBold", posPLYpos.x, posPLYpos.y - 10, clrWhite, 1, 1, 1, clrDrakGray)
-		surface.SetDrawColor(255, 255, 255, 255)
-		surface.SetTexture(surface.GetTextureID("gui/player"))
-		surface.DrawTexturedRect(posPLYpos.x + 30, posPLYpos.y + 2, 16, 16)
+		if trcEyeTrace.Entity:IsAdmin() || trcEyeTrace.Entity:IsSuperAdmin() then
+			strIcon = "gui/admin"
+		else
+			strIcon = "gui/player"
+		end
+		if strIcon then
+			surface.SetDrawColor(255, 255, 255, 255)
+			surface.SetTexture(surface.GetTextureID(strIcon))
+			surface.DrawTexturedRect(posPLYpos.x + 30, posPLYpos.y + 2, 16, 16)
+		end
 	end
 	local intX = ScrW() / 2.0
 	local intY = LocalPlayer():GetEyeTraceNoCursor().HitPos:ToScreen().y
