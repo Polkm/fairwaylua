@@ -3,7 +3,7 @@ NPC.Name = "zombie"
 NPC.PrintName = "Zombie"
 NPC.SpawnName = "npc_zombie"
 NPC.HealthPerLevel = 14
-NPC.Damage = 10
+NPC.Damage = 100
 NPC.Race = "zombie"
 NPC.Drops = {}
 NPC.Drops["money"] = {Chance = 15, Min = 5, Max = 10}
