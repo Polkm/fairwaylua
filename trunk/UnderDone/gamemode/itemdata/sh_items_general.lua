@@ -13,8 +13,9 @@ local Item = DeriveTable(BaseItem)
 Item.Name = "wood"
 Item.PrintName = "Wood"
 Item.Desc = "Its wood?"
-Item.Icon = "icons/item_cash"
+Item.Icon = "icons/item_wood"
 Item.Model = "models/Gibs/wood_gib01d.mdl"
 Item.Dropable = true
 Item.Giveable = true
+Item.Weight = 1
 Register.Item(Item)
