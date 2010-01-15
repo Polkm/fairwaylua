@@ -31,6 +31,10 @@ function Entity:AddItem(strItem, intAmount)
 	return true
 end
 
+function Entity:RemoveItem(strItem, intAmount)
+	self:AddItem(strItem, -intAmount)
+end
+
 function Entity:TransferItem(objTarget, strItem1, intAmount1, strItem2, intAmount2)
 	intAmount1 = tonumber(intAmount1) or 1
 	intAmount2 = tonumber(intAmount2) or 0
