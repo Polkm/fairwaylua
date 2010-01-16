@@ -30,9 +30,9 @@ function GM:HUDPaint()
 		GAMEMODE:DrawPlayerInfo(trcEyeTrace.Entity)
 	end
 	
-	if trcEyeTrace.Entity.PrintName then
+	if trcEyeTrace.Entity:GetNWString("PrintName") then
 		local posENTpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 30)):ToScreen()
-		draw.SimpleTextOutlined(trcEyeTrace.Entity.PrintName , "UiBold", posENTpos.x, posENTpos.y, clrWhite, 1, 1, 1, clrDrakGray)
+		draw.SimpleTextOutlined(trcEyeTrace.Entity:GetNWString("PrintName"), "UiBold", posENTpos.x, posENTpos.y, clrWhite, 1, 1, 1, clrDrakGray)
 	end
 	
 	local intX = ScrW() / 2.0
