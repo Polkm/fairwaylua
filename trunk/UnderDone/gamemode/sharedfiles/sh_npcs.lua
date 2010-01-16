@@ -59,7 +59,9 @@ if SERVER then
 			local intPlayerLevel = killer:GetLevel()
 			local intNPCLevel = npc:GetNWInt("level")
 			local intExptoGive = math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 7)
-			killer:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
+			for _,ply in pairs(player.GetAll()) do
+				ply:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
+			end
 			killer:GiveExp(intExptoGive)
 			for item, args in pairs(tblNPCTable.Drops or {}) do
 				if math.random(1, 100 / args.Chance) == 1 then
