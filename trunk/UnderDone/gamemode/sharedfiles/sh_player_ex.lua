@@ -72,8 +72,6 @@ if SERVER then
 			local tblNPCTable = NPCTable(entAttacker:GetNWString("npc"))
 			if tblNPCTable then
 				dmginfo:SetDamage(tblNPCTable.Damage or 0)
-				print(entVictim:GetArmorRating())
-				print(1 / (((entVictim:GetArmorRating() - 1) / 25) + 1))
 				dmginfo:SetDamage(dmginfo:GetDamage() * (1 / (((entVictim:GetArmorRating() - 1) / 25) + 1)))
 				dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage() + math.random(-1, 1)), 0, 9999))
 				if dmginfo:GetDamage() > 0 then

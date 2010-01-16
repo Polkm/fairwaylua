@@ -6,6 +6,8 @@ GM.MapEditor.ObjectSets = {}
 GM.MapEditor.ObjectSets["NPC_Spawnpoints"] = GM.MapEntities.NPCSpawnPoints
 GM.MapEditor.ObjectSets["World_Props"] = GM.MapEntities.WorldProps
 GM.MapEditor.CurrentObjectNum = nil
+GM.MapEditor.Models = {}
+GM.MapEditor.Models["Big Tree"] = "models/props_foliage/oak_tree01.mdl"
 
 if !SinglePlayer() then return end
 
@@ -49,7 +51,11 @@ function GM.MapEditor.OpenMapEditor()
 	mchObjects:SetSize(50, 20)
 	mchObjects.OnSelect = function(index, value, data)
 		GAMEMODE.MapEditor.CurrentObjectNum = tonumber(value)
-		GAMEMODE.MapEditor.AddSpawnPointControls(pnlControlsList)
+		if GAMEMODE.MapEditor.CurrentObjectSet == GAMEMODE.MapEntities.NPCSpawnPoints then
+			GAMEMODE.MapEditor.AddSpawnPointControls(pnlControlsList)
+		elseif GAMEMODE.MapEditor.CurrentObjectSet == GAMEMODE.MapEntities.WorldProps then
+			GAMEMODE.MapEditor.AddWorldPropControls(pnlControlsList)
+		end
 		LocalPlayer():SetEyeAngles((GAMEMODE.MapEditor.CurrentObjectSet[tonumber(value)].Postion - LocalPlayer():GetShootPos()):Angle())
 	end
 
@@ -75,6 +81,7 @@ function GM.MapEditor.OpenMapEditor()
 	btnNewSpawnButton:SetSize(16, 16)
 	GAMEMODE.MapEditor.Open = true
 end
+concommand.Add("UD_Dev_EditMap", function() GAMEMODE.MapEditor.OpenMapEditor() end)
 
 function GM.MapEditor.UpatePanel()
 	if GAMEMODE.MapEditor.Open then
@@ -141,7 +148,32 @@ function GM.MapEditor.AddSpawnPointControls(pnlAddList)
 	end
 	pnlAddList:AddItem(btnUpdateServer)
 end
-concommand.Add("UD_Dev_EditMap", function() GAMEMODE.MapEditor.OpenMapEditor() end)
+
+function GM.MapEditor.AddWorldPropControls(pnlAddList)
+	pnlAddList:Clear()
+	local intSpawnKey = GAMEMODE.MapEditor.CurrentObjectNum
+	local tblSpawnTable = GAMEMODE.MapEditor.CurrentObjectSet[intSpawnKey]
+	local strModel = tblSpawnTable.Entity:GetModel() or "models/props_junk/garbage_metalcan001a.mdl"
+	
+	local mchModels = vgui.Create("DMultiChoice")
+	local intID = 1
+	for key, npctable in pairs(GAMEMODE.DataBase.NPCs) do
+		mchModels:AddChoice(key)
+		if key == tblSpawnTable.NPC then mchModels:ChooseOptionID(intID) end
+		intID = intID + 1
+	end
+	mchModels.OnSelect = function(index, value, data)
+		strModel = data
+	end
+	pnlAddList:AddItem(mchModels)
+	
+	local btnUpdateServer = vgui.Create("DButton")
+	btnUpdateServer:SetText("Update Server")
+	btnUpdateServer.DoClick = function(btnUpdateServer)
+		RunConsoleCommand("UD_Dev_EditMap_UpdateWorldProp", intSpawnKey, strModel)
+	end
+	pnlAddList:AddItem(btnUpdateServer)
+end
 
 hook.Add("HUDPaint", "DrawMapObjects", function()
 	if GAMEMODE.MapEditor.Open then

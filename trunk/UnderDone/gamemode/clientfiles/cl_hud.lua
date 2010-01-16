@@ -48,13 +48,15 @@ end
 
 function GM:DrawHealthBar()
 	local clrBarColor = clrGreen
-	if LocalPlayer():Health() <= (LocalPlayer():GetStat("stat_maxhealth") * 0.2) then clrBarColor = clrRed end
-	self.HealthBar = jdraw.NewProgressBar(self.PlayerBox, true)
-	self.HealthBar:SetDemensions(3, 3, self.PlayerBox.Size.Width - 6, 20)
-	self.HealthBar:SetStyle(4, clrBarColor)
-	self.HealthBar:SetValue(LocalPlayer():Health(), LocalPlayer():GetStat("stat_maxhealth"))
-	self.HealthBar:SetText("UiBold", "Health " .. LocalPlayer():Health(), clrDrakGray)
-	jdraw.DrawProgressBar(self.HealthBar)
+	if LocalPlayer():GetStat("stat_maxhealth") then
+		if LocalPlayer():Health() <= (LocalPlayer():GetStat("stat_maxhealth") * 0.2) then clrBarColor = clrRed end
+		self.HealthBar = jdraw.NewProgressBar(self.PlayerBox, true)
+		self.HealthBar:SetDemensions(3, 3, self.PlayerBox.Size.Width - 6, 20)
+		self.HealthBar:SetStyle(4, clrBarColor)
+		self.HealthBar:SetValue(LocalPlayer():Health(), LocalPlayer():GetStat("stat_maxhealth"))
+		self.HealthBar:SetText("UiBold", "Health " .. LocalPlayer():Health(), clrDrakGray)
+		jdraw.DrawProgressBar(self.HealthBar)
+	end
 end
 
 function GM:DrawLevelBar()
