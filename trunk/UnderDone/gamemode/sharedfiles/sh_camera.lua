@@ -35,7 +35,7 @@ function Player:GetIdealCamAngle()
 end
 
 if SERVER then
-	function PlayerSpawnHook(plySpawned)
+	local function PlayerSpawnHook(plySpawned)
 		local entViewEntity = ents.Create("prop_dynamic")
 		entViewEntity:SetModel("models/error.mdl")
 		entViewEntity:Spawn()
