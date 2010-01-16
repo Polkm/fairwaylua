@@ -33,8 +33,8 @@ function GM:HUDPaint()
 	for _, ent in pairs(ents.GetAll()) do 
 		if ent && ent:IsValid() && ent:GetNWString("PrintName") then
 			if ent:GetPos():Distance(LocalPlayer():GetPos()) < 200 then
-				local posENTpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 20)):ToScreen()
-				draw.SimpleTextOutlined(trcEyeTrace.Entity:GetNWString("PrintName"), "UiBold", posENTpos.x, posENTpos.y, clrWhite, 1, 1, 1, clrDrakGray)
+				local posENTpos = (ent:GetPos() + Vector(0, 0, 20)):ToScreen()
+				draw.SimpleTextOutlined(ent:GetNWString("PrintName"), "UiBold", posENTpos.x, posENTpos.y, clrWhite, 1, 1, 1, clrDrakGray)
 			end
 		end
 	end
