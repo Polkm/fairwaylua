@@ -49,4 +49,29 @@ if SERVER then
 	function Player:CreateNotification(strMessage)
 		self:ConCommand("UD_AddNotification " .. strMessage) 
 	end
+	
+	local function PlayerAdjustDamage(entVictim, entInflictor, entAttacker, intAmount, dmginfo)
+		if entVictim:IsPlayer() then
+			local clrDisplayColor = "red"
+			local tblNPCTable = NPCTable(entAttacker:GetNWString("npc"))
+			if tblNPCTable then
+				dmginfo:SetDamage(tblNPCTable.Damage or 0)
+				dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage() + math.random(-1, 1)), 0, 9999))
+				if dmginfo:GetDamage() > 0 then
+					for _,ply in pairs(player.GetAll()) do
+						if ply:GetPos():Distance(entVictim) < 200 then
+							ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+						end
+					end
+				else
+					for _,ply in pairs(player.GetAll()) do
+						if ply:GetPos():Distance(entVictim) < 200 then
+							ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+						end
+					end
+				end
+			end
+		end
+	end
+	hook.Add("EntityTakeDamage", "PlayerAdjustDamage", PlayerAdjustDamage)
 end
