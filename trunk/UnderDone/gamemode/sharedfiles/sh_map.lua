@@ -25,6 +25,10 @@ end
 function GM:CreateWorldProp(strModel, vecPostion, angAngle, entEntity)
 	if SERVER then
 		local entNewProp = ents.Create("prop_physics")
+		if !util.IsValidProp(strModel) then
+			entNewProp:Remove()
+			entNewProp = ents.Create("prop_dynamic")
+		end
 		table.insert(GAMEMODE.MapEntities.WorldProps, {Entity = entNewProp})
 		GAMEMODE:UpdateWorldProp(#GAMEMODE.MapEntities.WorldProps, strModel, vecPostion, angAngle, entNewProp)
 		entNewProp:Spawn()
@@ -44,7 +48,7 @@ function GM:UpdateWorldProp(intKey, strModel, vecPosition, angAngle, entEntity)
 			entProp:PhysicsInit(SOLID_VPHYSICS)
 			entProp:SetMoveType(MOVETYPE_NONE)
 			entProp:SetKeyValue("spawnflags", 8)
-			entProp:GetPhysicsObject():Sleep()
+			if entProp:GetPhysicsObject():IsValid() then entProp:GetPhysicsObject():Sleep() end
 			if SinglePlayer() && player.GetByID(1) && player.GetByID(1):IsValid() then
 				SendUsrMsg("UD_UpdateWorldProp", player.GetByID(1), {intKey, entProp:GetModel(), entProp:GetPos(), entProp:GetAngles(), entProp})
 			end
