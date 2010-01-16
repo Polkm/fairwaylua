@@ -26,8 +26,8 @@ function Player:DropItem(strItem, intAmount)
 		end
 		entDropEnt.Item = strItem
 		entDropEnt.Amount = intAmount
-		entDropEnt.PrintName = tblItemTable.PrintName
 		entDropEnt:Spawn()
+		entDropEnt:SetNWString("PrintName",   tblItemTable.PrintName)
 		if !util.IsValidProp(entDropEnt:GetModel()) then
 			entDropEnt:CreateGrip()
 		end
