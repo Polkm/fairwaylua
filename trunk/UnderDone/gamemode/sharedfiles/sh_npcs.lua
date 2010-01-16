@@ -59,11 +59,7 @@ if SERVER then
 			local intPlayerLevel = killer:GetLevel()
 			local intNPCLevel = npc:GetNWInt("level")
 			local intExptoGive = math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 7)
-			for _,ply in pairs(player.GetAll()) do
-				if ply:GetPos():Distance(killer:GetPos()) < 200 then
-					ply:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
-				end
-			end
+			ply:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
 			killer:GiveExp(intExptoGive)
 			for item, args in pairs(tblNPCTable.Drops or {}) do
 				if math.random(1, 100 / args.Chance) == 1 then
@@ -88,11 +84,7 @@ if SERVER then
 			if npc:GetClass() == "npc_headcrab" then dmginfo:SetDamage(999) boolDisplayDmg = false end --I fuckin hate headcrabs	
 			if math.random(1, 20) == 1 then
 				dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * 2))
-				for _,ply in pairs(player.GetAll()) do
-					if ply:GetPos():Distance(plyAttacker) < 200 then
-						ply:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue")
-					end
-				end
+				ply:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue", true)
 				clrDisplayColor = "blue"
 			end
 			for name, stat in pairs(GAMEMODE.DataBase.Stats) do
@@ -103,17 +95,9 @@ if SERVER then
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
 			if boolDisplayDmg then
 				if dmginfo:GetDamage() > 0 then
-					for _,ply in pairs(player.GetAll()) do
-						if ply:GetPos():Distance(plyAttacker) < 200 then
-							ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
-						end
-					end
+					ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor, true)
 				else
-					for _,ply in pairs(player.GetAll()) do
-						if ply:GetPos():Distance(plyAttacker) < 200 then
-							ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
-						end
-					end
+					ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange", true)
 				end
 			end
 		end
