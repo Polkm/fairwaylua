@@ -56,6 +56,9 @@ function UseKeyPressed(ply, key)
 end
 hook.Add("KeyPress", "UseKeyPressed", function(ply, key) if key == IN_USE then UseKeyPressed(ply, key) end end)
 
+function GM:PlayerUse(plyPlayer, entEntity)
+end
+
 function GM:ScalePlayerDamage(ply,hitgroup,dmginfo)
 	local inrange = ents.FindInBox( Vector(558.787659, 289.451447, -72.497879), Vector(949.335632, -1113.920288, 98.019356))
 	if (table.HasValue( inrange, ply )) then
