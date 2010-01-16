@@ -94,7 +94,7 @@ draw.SimpleTextOutlined(entPLY:Nick(), "UiBold", posPLYpos.x, posPLYpos.y - 10, 
 	if strIcon then
 		surface.SetDrawColor(255, 255, 255, 255)
 		surface.SetTexture(surface.GetTextureID(strIcon))
-		surface.DrawTexturedRect(posPLYpos.x - 40, posPLYpos.y - 30, 16, 16)
+		surface.DrawTexturedRect(posPLYpos.x - (#entPLY:Nick() + 16), posPLYpos.y - 30, 16, 16)
 	end
 end
 
