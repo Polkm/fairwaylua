@@ -9,7 +9,6 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.Slot = "slot_helm"
-Item.Buffs = {}
 Register.Item(Item)
 
 local Item = DeriveTable(BaseEquiptment)
@@ -23,7 +22,6 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.Slot = "slot_helm"
-Item.Buffs = {}
 Item.Buffs["stat_strength"] = 5
 Register.Item(Item)
 
@@ -40,7 +38,6 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.Slot = "slot_chest"
-Item.Buffs = {}
 Item.Buffs["stat_maxhealth"] = 5
 Register.Item(Item)
 
@@ -55,7 +52,6 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.Slot = "slot_offhand"
-Item.Buffs = {}
 Register.Item(Item)
 
 
@@ -70,5 +66,4 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.Slot = "slot_offhand"
-Item.Buffs = {}
 Register.Item(Item)

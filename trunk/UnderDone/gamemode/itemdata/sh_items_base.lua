@@ -1,6 +1,12 @@
 function DeriveTable(tblWantedTable)
 	local tblNewTable = {}
-	for k, v in pairs(tblWantedTable) do tblNewTable[k] = v end
+	for k, v in pairs(tblWantedTable) do
+		if type(v) != "table" then
+			tblNewTable[k] = v
+		else
+			tblNewTable[k] = table.Copy(v)
+		end
+	end
 	return tblNewTable
 end
 
