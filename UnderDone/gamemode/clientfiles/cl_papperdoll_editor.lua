@@ -61,7 +61,7 @@ function GM.PapperDollEditor.OpenPapperDollEditor()
 	mlcObjectSellector.OnSelect = function(index, value, data)
 		data = tonumber(data)
 		GAMEMODE.PapperDollEditor.CurrentObject = data
-		local strItem = GAMEMODE.Paperdoll[GAMEMODE.PapperDollEditor.CurrentSlot]
+		local strItem = LocalPlayer().Data.Paperdoll[GAMEMODE.PapperDollEditor.CurrentSlot]
 		local tblItemTable = GAMEMODE.DataBase.Items[strItem]
 		if tblItemTable && tblItemTable.Model[data] then
 			GAMEMODE.PapperDollEditor.CurrentAddedVector = tblItemTable.Model[data].Position
