@@ -123,7 +123,7 @@ function GM:DrawNPCInfo(entNPC)
 	if strIcon then
 		surface.SetDrawColor(255, 255, 255, 255)
 		surface.SetTexture(surface.GetTextureID(strIcon))
-		surface.DrawTexturedRect(posNPCpos.x + 30, posNPCpos.y + 2, 16, 16)
+		surface.DrawTexturedRect(posNPCpos.x - 40, posNPCpos.y - 20, 16, 16)
 	end
 end
 
