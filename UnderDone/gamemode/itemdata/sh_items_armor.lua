@@ -1,7 +1,7 @@
-local Item = DeriveTable(BaseEquiptment)
-Item.Name = "helm"
-Item.PrintName = "Helmet"
-Item.Desc = "Protects"
+local Item = DeriveTable(BaseArmor)
+Item.Name = "armor_junk_helm"
+Item.PrintName = "Junk Helmet"
+Item.Desc = "Theres still soup in it"
 Item.Icon = "icons/junk_pan1"
 Item.Model = {}
 Item.Model[1] = {Model = "models/props_interiors/pot02a.mdl", Position = Vector(-0.7, -8.1, -3.5), Angle = Angle(180, -100, -20)}
@@ -11,7 +11,7 @@ Item.Weight = 1
 Item.Slot = "slot_helm"
 Register.Item(Item)
 
-local Item = DeriveTable(BaseEquiptment)
+local Item = DeriveTable(BaseArmor)
 Item.Name = "goggles_scanner"
 Item.PrintName = "Scanner Goggles"
 Item.Desc = "Scan like a scanner"
@@ -25,7 +25,7 @@ Item.Slot = "slot_helm"
 Item.Buffs["stat_strength"] = 5
 Register.Item(Item)
 
-local Item = DeriveTable(BaseEquiptment)
+local Item = DeriveTable(BaseArmor)
 Item.Name = "armor_junk_chest"
 Item.PrintName = "Junky Armor"
 Item.Desc = "Protects your heart and lungs from gettin pwnd"
@@ -41,7 +41,7 @@ Item.Slot = "slot_chest"
 Item.Buffs["stat_maxhealth"] = 5
 Register.Item(Item)
 
-local Item = DeriveTable(BaseEquiptment)
+local Item = DeriveTable(BaseArmor)
 Item.Name = "sheild"
 Item.PrintName = "Sheild"
 Item.Desc = "Protects"
@@ -54,8 +54,7 @@ Item.Weight = 1
 Item.Slot = "slot_offhand"
 Register.Item(Item)
 
-
-local Item = DeriveTable(BaseEquiptment)
+local Item = DeriveTable(BaseArmor)
 Item.Name = "saw_sheild"
 Item.PrintName = "Saw Sheild"
 Item.Desc = "Protects"

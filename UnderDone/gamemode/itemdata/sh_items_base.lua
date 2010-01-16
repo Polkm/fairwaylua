@@ -57,6 +57,9 @@ function BaseEquiptment:Use(usr, tblItemTable)
 	return true
 end
 
+BaseArmor = DeriveTable(BaseEquiptment)
+BaseArmor.Armor = 0
+
 BaseWeapon = DeriveTable(BaseEquiptment)
 BaseWeapon.HoldType = "pistol"
 BaseWeapon.AmmoType = "none"

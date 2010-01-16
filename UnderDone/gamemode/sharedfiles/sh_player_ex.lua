@@ -11,6 +11,18 @@ function Player:GetLevel()
 	return toLevel(self:GetNWInt("exp"))
 end
 
+function Player:GetArmorRating()
+	local intTotalArmor = 0
+	if !self.Data.PaperDoll then return intTotalArmor end
+	for slot, item in pairs(self.Data.Paperdoll or {}) do
+		local tblItemTable = ItemTable(item)
+		if tblItemTable && tblItemTable.Armor then
+			intTotalArmor = intTotalArmor + tblItemTable.Armor
+		end
+	end
+	return intTotalArmor
+end
+
 if SERVER then
 	function Player:GiveExp(intAmount)
 		local intCurrentExp = self:GetNWInt("exp")
@@ -20,30 +32,34 @@ if SERVER then
 			self:SetNWInt("exp", math.Clamp(intTotal, toExp(intPreExpLevel), intTotal))
 			local intPostExpLevel = self:GetLevel()
 			if intPreExpLevel < intPostExpLevel then
-				for _,ply in pairs(player.GetAll()) do
-					if ply:GetPos():Distance(self:GetPos()) < 200 then
-						ply:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos() + Vector(0, 0, 70), "purple")
-						ply:CreateIndacator("Nice_Man!", self:GetPos() + Vector(0, 0, 70), "blue")
-						ply:CreateIndacator("You_Are_Epic!", self:GetPos() + Vector(0, 0, 70), "orange")
-						ply:CreateIndacator("I_Wish_I_Was_As_Cool_As_You!", self:GetPos() + Vector(0, 0, 70), "purple")
-						ply:CreateIndacator("I_Jizzed!", self:GetPos() + Vector(0, 0, 70), "blue")
-						ply:CreateIndacator("Gratz!", self:GetPos() + Vector(0, 0, 70), "orange")
-						ply:CreateIndacator("I_Just_Shat_My_Pants!", self:GetPos() + Vector(0, 0, 70), "blue")
-						ply:CreateIndacator("Call_Me!", self:GetPos() + Vector(0, 0, 70), "purple")
-						ply:CreateIndacator("You_Should_Model!", self:GetPos() + Vector(0, 0, 70), "orange")
-					end
-				end
+				ply:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos() + Vector(0, 0, 70), "purple", true)
+				ply:CreateIndacator("Nice_Man!", self:GetPos() + Vector(0, 0, 70), "blue", true)
+				ply:CreateIndacator("You_Are_Epic!", self:GetPos() + Vector(0, 0, 70), "orange", true)
+				ply:CreateIndacator("I_Wish_I_Was_As_Cool_As_You!", self:GetPos() + Vector(0, 0, 70), "purple", true)
+				ply:CreateIndacator("I_Jizzed!", self:GetPos() + Vector(0, 0, 70), "blue", true)
+				ply:CreateIndacator("Gratz!", self:GetPos() + Vector(0, 0, 70), "orange", true)
+				ply:CreateIndacator("I_Just_Shat_My_Pants!", self:GetPos() + Vector(0, 0, 70), "blue", true)
+				ply:CreateIndacator("Call_Me!", self:GetPos() + Vector(0, 0, 70), "purple", true)
+				ply:CreateIndacator("You_Should_Model!", self:GetPos() + Vector(0, 0, 70), "orange", true)
 			end
 		end
 	end
 
-	function Player:CreateIndacator(strMessage, vecPosition, strColor)
+	function Player:CreateIndacator(strMessage, vecPosition, strColor, boolAll)
 		local strSendColor = strColor or "white"
 		local tblVector = {}
 		tblVector[1] = math.Round(vecPosition.x)
 		tblVector[2] = math.Round(vecPosition.y)
 		tblVector[3] = math.Round(vecPosition.z)
-		self:ConCommand("UD_AddDamageIndacator " .. strMessage .. " " .. table.concat(tblVector, "!") .. " " .. strSendColor)
+		local strCommand = "UD_AddDamageIndacator " .. strMessage .. " " .. table.concat(tblVector, "!") .. " " .. strSendColor
+		self:ConCommand(strCommand)
+		if boolAll then
+			for _, ply in pairs(player.GetAll()) do
+				if ply:GetPos():Distance(self:GetDistance) do
+					ply:ConCommand(strCommand)
+				end
+			end
+		end
 	end
 	
 	function Player:CreateNotification(strMessage)
@@ -56,19 +72,12 @@ if SERVER then
 			local tblNPCTable = NPCTable(entAttacker:GetNWString("npc"))
 			if tblNPCTable then
 				dmginfo:SetDamage(tblNPCTable.Damage or 0)
+				dmginfo:SetDamage(dmginfo:GetDamage())
 				dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage() + math.random(-1, 1)), 0, 9999))
 				if dmginfo:GetDamage() > 0 then
-					for _,ply in pairs(player.GetAll()) do
-						if ply:GetPos():Distance(entVictim) < 200 then
-							ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
-						end
-					end
+					ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
 				else
-					for _,ply in pairs(player.GetAll()) do
-						if ply:GetPos():Distance(entVictim) < 200 then
-							ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
-						end
-					end
+					ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
 				end
 			end
 		end
