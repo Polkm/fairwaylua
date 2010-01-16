@@ -13,7 +13,7 @@ end
 
 function Player:GetArmorRating()
 	local intTotalArmor = 1
-	if !self.Data.PaperDoll then return intTotalArmor end
+	if !self.Data.Paperdoll then return intTotalArmor end
 	for slot, item in pairs(self.Data.Paperdoll or {}) do
 		local tblItemTable = ItemTable(item)
 		if tblItemTable && tblItemTable.Armor then
@@ -32,15 +32,15 @@ if SERVER then
 			self:SetNWInt("exp", math.Clamp(intTotal, toExp(intPreExpLevel), intTotal))
 			local intPostExpLevel = self:GetLevel()
 			if intPreExpLevel < intPostExpLevel then
-				ply:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos() + Vector(0, 0, 70), "purple", true)
-				ply:CreateIndacator("Nice_Man!", self:GetPos() + Vector(0, 0, 70), "blue", true)
-				ply:CreateIndacator("You_Are_Epic!", self:GetPos() + Vector(0, 0, 70), "orange", true)
-				ply:CreateIndacator("I_Wish_I_Was_As_Cool_As_You!", self:GetPos() + Vector(0, 0, 70), "purple", true)
-				ply:CreateIndacator("I_Jizzed!", self:GetPos() + Vector(0, 0, 70), "blue", true)
-				ply:CreateIndacator("Gratz!", self:GetPos() + Vector(0, 0, 70), "orange", true)
-				ply:CreateIndacator("I_Just_Shat_My_Pants!", self:GetPos() + Vector(0, 0, 70), "blue", true)
-				ply:CreateIndacator("Call_Me!", self:GetPos() + Vector(0, 0, 70), "purple", true)
-				ply:CreateIndacator("You_Should_Model!", self:GetPos() + Vector(0, 0, 70), "orange", true)
+				self:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos() + Vector(0, 0, 70), "purple", true)
+				self:CreateIndacator("Nice_Man!", self:GetPos() + Vector(0, 0, 70), "blue", true)
+				self:CreateIndacator("You_Are_Epic!", self:GetPos() + Vector(0, 0, 70), "orange", true)
+				self:CreateIndacator("I_Wish_I_Was_As_Cool_As_You!", self:GetPos() + Vector(0, 0, 70), "purple", true)
+				self:CreateIndacator("I_Jizzed!", self:GetPos() + Vector(0, 0, 70), "blue", true)
+				self:CreateIndacator("Gratz!", self:GetPos() + Vector(0, 0, 70), "orange", true)
+				self:CreateIndacator("I_Just_Shat_My_Pants!", self:GetPos() + Vector(0, 0, 70), "blue", true)
+				self:CreateIndacator("Call_Me!", self:GetPos() + Vector(0, 0, 70), "purple", true)
+				self:CreateIndacator("You_Should_Model!", self:GetPos() + Vector(0, 0, 70), "orange", true)
 			end
 		end
 	end
@@ -72,7 +72,9 @@ if SERVER then
 			local tblNPCTable = NPCTable(entAttacker:GetNWString("npc"))
 			if tblNPCTable then
 				dmginfo:SetDamage(tblNPCTable.Damage or 0)
-				dmginfo:SetDamage(dmginfo:GetDamage() * (20 / (entVictim:GetArmorRating() / 10)))
+				print(entVictim:GetArmorRating())
+				print(1 / (((entVictim:GetArmorRating() - 1) / 25) + 1))
+				dmginfo:SetDamage(dmginfo:GetDamage() * (1 / (((entVictim:GetArmorRating() - 1) / 25) + 1)))
 				dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage() + math.random(-1, 1)), 0, 9999))
 				if dmginfo:GetDamage() > 0 then
 					entVictim:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
