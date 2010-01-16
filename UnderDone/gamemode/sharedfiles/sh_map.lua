@@ -106,6 +106,10 @@ if SERVER then
 			if !ply:IsAdmin() or !ply:IsPlayer() then return end
 			GAMEMODE:CreateSpawnPoint(ply:GetEyeTraceNoCursor().HitPos)
 		end)
+		concommand.Add("UD_Dev_EditMap_CreateWorldProp", function(ply, command, args)
+			if !ply:IsAdmin() or !ply:IsPlayer() then return end
+			GAMEMODE:CreateWorldProp(nil, ply:GetEyeTraceNoCursor().HitPos)
+		end)
 		concommand.Add("UD_Dev_EditMap_UpdateSpawnPoint", function(ply, command, args)
 			if !ply:IsAdmin() or !ply:IsPlayer() then return end
 			if args[1] && GAMEMODE.MapEntities.NPCSpawnPoints[tonumber(args[1])] then

@@ -40,3 +40,10 @@ if SERVER then
 		umsg.End()
 	end
 end
+
+if CLIENT then
+	function SendCompactCommand(strCommand, tblArgs)
+		
+		
+	end
+end

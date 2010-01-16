@@ -1,4 +1,5 @@
 --------Includes---------
+require("glon")
 include('shared.lua')
 include('itemdata/sh_items_base.lua')
 include('sh_resource.lua')
