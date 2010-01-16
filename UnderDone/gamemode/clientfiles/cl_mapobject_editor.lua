@@ -8,6 +8,11 @@ GM.MapEditor.ObjectSets["World_Props"] = GM.MapEntities.WorldProps
 GM.MapEditor.CurrentObjectNum = nil
 GM.MapEditor.Models = {}
 GM.MapEditor.Models["Big Tree"] = "models/props_foliage/oak_tree01.mdl"
+GM.MapEditor.Models["Tree"] = "models/props_foliage/tree_deciduous_01a.mdl"
+GM.MapEditor.Models["Cattail"] = "models/props_foliage/cattails.mdl"
+GM.MapEditor.Models["Shrub"] = "models/props_foliage/shrub_01a.mdl"
+GM.MapEditor.Models["Oil Drum"] = "models/props_c17/oildrum001.mdl"
+GM.MapEditor.Models["Big Crate"] = "models/props_junk/wood_crate002a.mdl"
 
 if !SinglePlayer() then return end
 
@@ -157,13 +162,15 @@ function GM.MapEditor.AddWorldPropControls(pnlAddList)
 	
 	local mchModels = vgui.Create("DMultiChoice")
 	local intID = 1
-	for key, npctable in pairs(GAMEMODE.DataBase.NPCs) do
+	for key, model in pairs(GAMEMODE.MapEditor.Models) do
 		mchModels:AddChoice(key)
-		if key == tblSpawnTable.NPC then mchModels:ChooseOptionID(intID) end
+		if model == strModel then
+			mchModels:ChooseOptionID(intID)
+		end
 		intID = intID + 1
 	end
 	mchModels.OnSelect = function(index, value, data)
-		strModel = data
+		strModel = GAMEMODE.MapEditor.Models[data]
 	end
 	pnlAddList:AddItem(mchModels)
 	

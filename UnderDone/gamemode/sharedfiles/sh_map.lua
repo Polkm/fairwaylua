@@ -22,25 +22,38 @@ function GM:UpdateSpawnPoint(intKey, vecPosition, strNPC, intLevel, intSpawnTime
 	end
 end
 
-function GM:CreateWorldProp(strModel, vecPostion, angAngle)
-	local entNewProp = ents.Create("prop_physics")
-	table.insert(GAMEMODE.MapEntities.WorldProps, {Entity = entNewProp})
-	GAMEMODE:UpdateWorldProp(#GAMEMODE.MapEntities.WorldProps, strModel, vecPostion, angAngle)
-	entNewProp:Spawn()
+function GM:CreateWorldProp(strModel, vecPostion, angAngle, entEntity)
+	if SERVER then
+		local entNewProp = ents.Create("prop_physics")
+		table.insert(GAMEMODE.MapEntities.WorldProps, {Entity = entNewProp})
+		GAMEMODE:UpdateWorldProp(#GAMEMODE.MapEntities.WorldProps, strModel, vecPostion, angAngle, entNewProp)
+		entNewProp:Spawn()
+	elseif CLIENT then
+		table.insert(GAMEMODE.MapEntities.WorldProps, {Entity = entEntity})
+		GAMEMODE:UpdateWorldProp(#GAMEMODE.MapEntities.WorldProps, strModel, vecPostion, angAngle, entEntity)
+	end
 end
-function GM:UpdateWorldProp(intKey, strModel, vecPosition, angAngle)
+function GM:UpdateWorldProp(intKey, strModel, vecPosition, angAngle, entEntity)
 	local tblToUpdateProp = GAMEMODE.MapEntities.WorldProps[intKey]
 	if tblToUpdateProp && tblToUpdateProp.Entity then
 		local entProp = tblToUpdateProp.Entity
-		entProp:SetModel(strModel or entProp:GetModel() or "models/props_junk/garbage_metalcan001a.mdl")
-		entProp:SetPos(vecPosition or entProp:GetPos())
-		tblToUpdateProp.Postion = entProp:GetPos()
-		entProp:SetAngles(angAngle or entProp:GetAngles())
-		if SERVER && SinglePlayer() && player.GetByID(1) && player.GetByID(1):IsValid() then
-			SendUsrMsg("UD_UpdateWorldProp", player.GetByID(1), {intKey, entProp:GetModel(), entProp:GetPos(), entProp:GetAngles()})
+		if SERVER then
+			entProp:SetModel(strModel or entProp:GetModel() or "models/props_junk/garbage_metalcan001a.mdl")
+			entProp:SetPos(vecPosition or entProp:GetPos())
+			entProp:SetAngles(angAngle or entProp:GetAngles())
+			entProp:PhysicsInit(SOLID_VPHYSICS)
+			entProp:SetMoveType(MOVETYPE_NONE)
+			entProp:SetKeyValue("spawnflags", 8)
+			entProp:GetPhysicsObject():Sleep()
+			if SinglePlayer() && player.GetByID(1) && player.GetByID(1):IsValid() then
+				SendUsrMsg("UD_UpdateWorldProp", player.GetByID(1), {intKey, entProp:GetModel(), entProp:GetPos(), entProp:GetAngles(), entProp})
+			end
 		end
+		tblToUpdateProp.Model = entProp:GetModel()
+		tblToUpdateProp.Postion = entProp:GetPos()
+		tblToUpdateProp.Angle = entProp:GetAngles()
 	else
-		GAMEMODE:CreateWorldProp(strModel, vecPosition, angAngle)
+		GAMEMODE:CreateWorldProp(strModel, vecPosition, angAngle, entEntity)
 	end
 end
 
@@ -52,6 +65,9 @@ if SERVER then
 		for _, SpawnPoint in pairs(tblDecodedTable.NPCSpawnPoints or {}) do
 			GAMEMODE:CreateSpawnPoint(SpawnPoint.Postion, SpawnPoint.NPC, SpawnPoint.Level, SpawnPoint.SpawnTime)
 		end
+		for k, WorldProp in pairs(tblDecodedTable.WorldProps or {}) do
+			timer.Simple(0.1 * k, function() GAMEMODE:CreateWorldProp(WorldProp.Model, WorldProp.Postion, WorldProp.Angle) end)
+		end
 	end
 	hook.Add("Initialize", "LoadMapObjects", function() GAMEMODE:LoadMapObjects() end)
 	function GM:SaveMapObjects()
@@ -60,6 +76,9 @@ if SERVER then
 		for _, SpawnPoint in pairs(tblSaveTable.NPCSpawnPoints or {}) do
 			SpawnPoint.Monster = nil
 			SpawnPoint.NextSpawn = nil
+		end
+		for _, WorldProp in pairs(tblSaveTable.WorldProps or {}) do
+			WorldProp.Entity = nil
 		end
 		file.Write(strFileName, glon.encode(tblSaveTable))
 	end
@@ -117,6 +136,9 @@ if SERVER then
 			for key, spawnPoint in pairs(GAMEMODE.MapEntities.NPCSpawnPoints) do
 				GAMEMODE:UpdateSpawnPoint(key)
 			end
+			for key, worldprop in pairs(GAMEMODE.MapEntities.WorldProps) do
+				GAMEMODE:UpdateWorldProp(key)
+			end
 		end
 		hook.Add("PlayerSpawn", "OnPlayerSpawnMapEditor", OnPlayerSpawnMapEditor)
 		
@@ -137,7 +159,7 @@ if SERVER then
 		concommand.Add("UD_Dev_EditMap_UpdateWorldProp", function(ply, command, args)
 			if !ply:IsAdmin() or !ply:IsPlayer() then return end
 			if args[1] && GAMEMODE.MapEntities.WorldProps[tonumber(args[1])] then
-				GAMEMODE:UpdateSpawnPoint(tonumber(args[1]), args[2])
+				GAMEMODE:UpdateWorldProp(tonumber(args[1]), args[2])
 			end
 		end)
 		concommand.Add("UD_Dev_EditMap_SaveMap", function(ply, command, args)
@@ -154,7 +176,7 @@ if CLIENT then
 			GAMEMODE.MapEditor.UpatePanel()
 		end)
 		usermessage.Hook("UD_UpdateWorldProp", function(usrMsg)
-			GAMEMODE:UpdateWorldProp(usrMsg:ReadLong(), usrMsg:ReadString(), usrMsg:ReadVector(), usrMsg:ReadAngle())
+			GAMEMODE:UpdateWorldProp(usrMsg:ReadLong(), usrMsg:ReadString(), usrMsg:ReadVector(), usrMsg:ReadAngle(), usrMsg:ReadEntity())
 			GAMEMODE.MapEditor.UpatePanel()
 		end)
 	end

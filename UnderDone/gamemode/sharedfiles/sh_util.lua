@@ -33,7 +33,7 @@ if SERVER then
 			if type(value) == "string" then umsg.String(value)
 			elseif type(value) == "number" then umsg.Long(value)
 			elseif type(value) == "boolean" then umsg.Bool(value)
-			elseif type(value) == "entity" or type(value) == "Player" then umsg.Entity(value)
+			elseif type(value) == "Entity" or type(value) == "Player" then umsg.Entity(value)
 			elseif type(value) == "Vector" then umsg.Vector(value)
 			elseif type(value) == "Angle" then umsg.Angle(value) end
 		end
