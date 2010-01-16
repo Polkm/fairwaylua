@@ -60,7 +60,9 @@ if SERVER then
 			local intNPCLevel = npc:GetNWInt("level")
 			local intExptoGive = math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 7)
 			for _,ply in pairs(player.GetAll()) do
-				ply:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
+				if ply:GetPos():Distance(killer:GetPos()) < 200 then
+					ply:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
+				end
 			end
 			killer:GiveExp(intExptoGive)
 			for item, args in pairs(tblNPCTable.Drops or {}) do
@@ -87,7 +89,9 @@ if SERVER then
 			if math.random(1, 20) == 1 then
 				dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * 2))
 				for _,ply in pairs(player.GetAll()) do
-					ply:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue")
+					if ply:GetPos():Distance(plyAttacker) < 200 then
+						ply:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue")
+					end
 				end
 				clrDisplayColor = "blue"
 			end
@@ -100,11 +104,15 @@ if SERVER then
 			if boolDisplayDmg then
 				if dmginfo:GetDamage() > 0 then
 					for _,ply in pairs(player.GetAll()) do
-						ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+						if ply:GetPos():Distance(plyAttacker) < 200 then
+							ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+						end
 					end
 				else
 					for _,ply in pairs(player.GetAll()) do
-						ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+						if ply:GetPos():Distance(plyAttacker) < 200 then
+							ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+						end
 					end
 				end
 			end
@@ -126,11 +134,15 @@ if SERVER then
 				dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage() + math.random(-1, 1)), 0, 9999))
 				if dmginfo:GetDamage() > 0 then
 					for _,ply in pairs(player.GetAll()) do
-						ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+						if ply:GetPos():Distance(entVictim) < 200 then
+							ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+						end
 					end
 				else
 					for _,ply in pairs(player.GetAll()) do
-						ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+						if ply:GetPos():Distance(entVictim) < 200 then
+							ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+						end
 					end
 				end
 			end

@@ -21,15 +21,17 @@ if SERVER then
 			local intPostExpLevel = self:GetLevel()
 			if intPreExpLevel < intPostExpLevel then
 				for _,ply in pairs(player.GetAll()) do
-					ply:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos() + Vector(0, 0, 70), "purple")
-					ply:CreateIndacator("Nice_Man!", self:GetPos() + Vector(0, 0, 70), "blue")
-					ply:CreateIndacator("You_Are_Epic!", self:GetPos() + Vector(0, 0, 70), "orange")
-					ply:CreateIndacator("I_Wish_I_Was_As_Cool_As_You!", self:GetPos() + Vector(0, 0, 70), "purple")
-					ply:CreateIndacator("I_Jizzed!", self:GetPos() + Vector(0, 0, 70), "blue")
-					ply:CreateIndacator("Gratz!", self:GetPos() + Vector(0, 0, 70), "orange")
-					ply:CreateIndacator("I_Just_Shat_My_Pants!", self:GetPos() + Vector(0, 0, 70), "blue")
-					ply:CreateIndacator("Call_Me!", self:GetPos() + Vector(0, 0, 70), "purple")
-					ply:CreateIndacator("You_Should_Model!", self:GetPos() + Vector(0, 0, 70), "orange")
+					if ply:GetPos():Distance(self:GetPos()) < 200 then
+						ply:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos() + Vector(0, 0, 70), "purple")
+						ply:CreateIndacator("Nice_Man!", self:GetPos() + Vector(0, 0, 70), "blue")
+						ply:CreateIndacator("You_Are_Epic!", self:GetPos() + Vector(0, 0, 70), "orange")
+						ply:CreateIndacator("I_Wish_I_Was_As_Cool_As_You!", self:GetPos() + Vector(0, 0, 70), "purple")
+						ply:CreateIndacator("I_Jizzed!", self:GetPos() + Vector(0, 0, 70), "blue")
+						ply:CreateIndacator("Gratz!", self:GetPos() + Vector(0, 0, 70), "orange")
+						ply:CreateIndacator("I_Just_Shat_My_Pants!", self:GetPos() + Vector(0, 0, 70), "blue")
+						ply:CreateIndacator("Call_Me!", self:GetPos() + Vector(0, 0, 70), "purple")
+						ply:CreateIndacator("You_Should_Model!", self:GetPos() + Vector(0, 0, 70), "orange")
+					end
 				end
 			end
 		end
