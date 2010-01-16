@@ -12,7 +12,7 @@ function Player:GetLevel()
 end
 
 function Player:GetArmorRating()
-	local intTotalArmor = 0
+	local intTotalArmor = 1
 	if !self.Data.PaperDoll then return intTotalArmor end
 	for slot, item in pairs(self.Data.Paperdoll or {}) do
 		local tblItemTable = ItemTable(item)
@@ -52,7 +52,6 @@ if SERVER then
 		tblVector[2] = math.Round(vecPosition.y)
 		tblVector[3] = math.Round(vecPosition.z)
 		local strCommand = "UD_AddDamageIndacator " .. strMessage .. " " .. table.concat(tblVector, "!") .. " " .. strSendColor
-		self:ConCommand(strCommand)
 		if boolAll then
 			for _, ply in pairs(player.GetAll()) do
 				if ply:GetPos():Distance(self:GetPos()) < 200 then
