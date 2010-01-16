@@ -25,7 +25,7 @@ end
 function GM:CreateWorldProp(strModel, vecPostion, angAngle, entEntity)
 	if SERVER then
 		local entNewProp = ents.Create("prop_physics")
-		if !util.IsValidProp(strModel) then
+		if strModel && !util.IsValidProp(strModel) then
 			entNewProp:Remove()
 			entNewProp = ents.Create("prop_dynamic")
 		end
