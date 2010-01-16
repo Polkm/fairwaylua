@@ -94,9 +94,10 @@ draw.SimpleTextOutlined(entPLY:Nick(), "UiBold", posPLYpos.x, posPLYpos.y - 10, 
 	if strIcon then
 		surface.SetDrawColor(255, 255, 255, 255)
 		surface.SetTexture(surface.GetTextureID(strIcon))
-		surface.DrawTexturedRect(posPLYpos.x - 20, posPLYpos.y - 30, 16, 16)
+		surface.DrawTexturedRect(posPLYpos.x - 40, posPLYpos.y - 30, 16, 16)
 	end
 end
+
 function GM:DrawNPCInfo(entNPC)
 	local tblNPCTable = NPCTable(entNPC:GetNWInt("npc"))
 	local intLevel = entNPC:GetNWInt("level")
@@ -123,7 +124,7 @@ function GM:DrawNPCInfo(entNPC)
 	if strIcon then
 		surface.SetDrawColor(255, 255, 255, 255)
 		surface.SetTexture(surface.GetTextureID(strIcon))
-		surface.DrawTexturedRect(posNPCpos.x - 40, posNPCpos.y - 20, 16, 16)
+		surface.DrawTexturedRect(posNPCpos.x - 40, posNPCpos.y - 30, 16, 16)
 	end
 end
 
