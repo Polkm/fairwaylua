@@ -24,7 +24,7 @@ end
 
 function GM:CreateWorldProp(strModel, vecPostion, angAngle)
 
-
+end
 
 if SERVER then
 	function GM:LoadMapObjects()
