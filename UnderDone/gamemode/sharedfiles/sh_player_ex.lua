@@ -52,9 +52,10 @@ if SERVER then
 		tblVector[2] = math.Round(vecPosition.y)
 		tblVector[3] = math.Round(vecPosition.z)
 		local strCommand = "UD_AddDamageIndacator " .. strMessage .. " " .. table.concat(tblVector, "!") .. " " .. strSendColor
+		self:ConCommand(strCommand)
 		if boolAll then
 			for _, ply in pairs(player.GetAll()) do
-				if ply:GetPos():Distance(self:GetPos()) < 200 then
+				if self != ply && ply:GetPos():Distance(self:GetPos()) < 200 then
 					ply:ConCommand(strCommand)
 				end
 			end
@@ -71,12 +72,12 @@ if SERVER then
 			local tblNPCTable = NPCTable(entAttacker:GetNWString("npc"))
 			if tblNPCTable then
 				dmginfo:SetDamage(tblNPCTable.Damage or 0)
-				dmginfo:SetDamage(dmginfo:GetDamage())
+				dmginfo:SetDamage(dmginfo:GetDamage() * (20 / (entVictim:GetArmorRating() / 10)))
 				dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage() + math.random(-1, 1)), 0, 9999))
 				if dmginfo:GetDamage() > 0 then
-					ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+					entVictim:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
 				else
-					ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+					entVictim:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
 				end
 			end
 		end
