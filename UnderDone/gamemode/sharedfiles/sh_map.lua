@@ -1,5 +1,6 @@
 GM.MapEntities = {}
 GM.MapEntities.NPCSpawnPoints = {}
+GM.MapEntities.WorldProps = {}
 
 function GM:CreateSpawnPoint(vecPosition, strNPC, intLevel, intSpawnTime)
 	table.insert(GAMEMODE.MapEntities.NPCSpawnPoints, {})
@@ -20,6 +21,10 @@ function GM:UpdateSpawnPoint(intKey, vecPosition, strNPC, intLevel, intSpawnTime
 		GAMEMODE:CreateSpawnPoint(vecPosition, strNPC, intLevel, intSpawnTime)
 	end
 end
+
+function GM:CreateWorldProp(strModel, vecPostion, angAngle)
+
+
 
 if SERVER then
 	function GM:LoadMapObjects()
