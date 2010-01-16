@@ -59,7 +59,7 @@ if SERVER then
 			local intPlayerLevel = killer:GetLevel()
 			local intNPCLevel = npc:GetNWInt("level")
 			local intExptoGive = math.Round((npc:GetMaxHealth() * (intNPCLevel / intPlayerLevel)) / 7)
-			ply:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
+			killer:CreateIndacator("+_" .. intExptoGive .. "_Exp", killer:GetPos() + Vector(0, 0, 70), "green")
 			killer:GiveExp(intExptoGive)
 			for item, args in pairs(tblNPCTable.Drops or {}) do
 				if math.random(1, 100 / args.Chance) == 1 then
@@ -84,7 +84,7 @@ if SERVER then
 			if npc:GetClass() == "npc_headcrab" then dmginfo:SetDamage(999) boolDisplayDmg = false end --I fuckin hate headcrabs	
 			if math.random(1, 20) == 1 then
 				dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * 2))
-				ply:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue", true)
+				plyAttacker:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue", true)
 				clrDisplayColor = "blue"
 			end
 			for name, stat in pairs(GAMEMODE.DataBase.Stats) do
@@ -95,9 +95,9 @@ if SERVER then
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
 			if boolDisplayDmg then
 				if dmginfo:GetDamage() > 0 then
-					ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor, true)
+					plyAttacker:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor, true)
 				else
-					ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange", true)
+					plyAttacker:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange", true)
 				end
 			end
 		end
