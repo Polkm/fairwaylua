@@ -30,9 +30,13 @@ function GM:HUDPaint()
 		GAMEMODE:DrawPlayerInfo(trcEyeTrace.Entity)
 	end
 	
-	if trcEyeTrace.Entity:GetNWString("PrintName") then
-		local posENTpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 30)):ToScreen()
-		draw.SimpleTextOutlined(trcEyeTrace.Entity:GetNWString("PrintName"), "UiBold", posENTpos.x, posENTpos.y, clrWhite, 1, 1, 1, clrDrakGray)
+	for _, ent in pairs(ents.GetAll()) do 
+		if ent && ent:IsValid() && ent:GetNWString("PrintName") then
+			if ent:GetPos():Distance(LocalPlayer():GetPos()) < 200 then
+				local posENTpos = (trcEyeTrace.Entity:GetPos() + Vector(0, 0, 30)):ToScreen()
+				draw.SimpleTextOutlined(trcEyeTrace.Entity:GetNWString("PrintName"), "UiBold", posENTpos.x, posENTpos.y, clrWhite, 1, 1, 1, clrDrakGray)
+			end
+		end
 	end
 	
 	local intX = ScrW() / 2.0
