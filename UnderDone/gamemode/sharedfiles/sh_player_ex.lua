@@ -55,7 +55,7 @@ if SERVER then
 		self:ConCommand(strCommand)
 		if boolAll then
 			for _, ply in pairs(player.GetAll()) do
-				if ply:GetPos():Distance(self:GetDistance) < 200 do
+				if ply:GetPos():Distance(self:GetPos()) < 200 then
 					ply:ConCommand(strCommand)
 				end
 			end
