@@ -84,7 +84,9 @@ if SERVER then
 			if npc:GetClass() == "npc_headcrab" then dmginfo:SetDamage(999) boolDisplayDmg = false end --I fuckin hate headcrabs	
 			if math.random(1, 20) == 1 then
 				dmginfo:SetDamage(math.Round(dmginfo:GetDamage() * 2))
-				plyAttacker:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue")
+				for _,ply in pairs(player.GetAll()) do
+					ply:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue")
+				end
 				clrDisplayColor = "blue"
 			end
 			for name, stat in pairs(GAMEMODE.DataBase.Stats) do
@@ -95,9 +97,13 @@ if SERVER then
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
 			if boolDisplayDmg then
 				if dmginfo:GetDamage() > 0 then
-					plyAttacker:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+					for _,ply in pairs(player.GetAll()) do
+						ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+					end
 				else
-					plyAttacker:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+					for _,ply in pairs(player.GetAll()) do
+						ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+					end
 				end
 			end
 		end
@@ -117,9 +123,13 @@ if SERVER then
 				dmginfo:SetDamage(tblNPCTable.Damage or 0)
 				dmginfo:SetDamage(math.Clamp(math.Round(dmginfo:GetDamage() + math.random(-1, 1)), 0, 9999))
 				if dmginfo:GetDamage() > 0 then
-					entVictim:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+					for _,ply in pairs(player.GetAll()) do
+						ply:CreateIndacator(dmginfo:GetDamage(), dmginfo:GetDamagePosition(), clrDisplayColor)
+					end
 				else
-					entVictim:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+					for _,ply in pairs(player.GetAll()) do
+						ply:CreateIndacator("Miss!", dmginfo:GetDamagePosition(), "orange")
+					end
 				end
 			end
 		end
