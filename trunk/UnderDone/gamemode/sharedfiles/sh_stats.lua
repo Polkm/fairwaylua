@@ -53,10 +53,10 @@ local Stat = {}
 Stat.Name = "stat_agility"
 Stat.PrintName = "Agility"
 Stat.Desc = "The higher this is teh faster you run and reload and attack"
-Stat.Default = 1
+Stat.Default = 20
 function Stat:OnSet(ply, intAgility, intOldAgility)
-	ply:SetWalkSpeed(250 + (intAgility * 10))
-	ply:SetRunSpeed(400 + (intAgility * 10))
+	ply:SetWalkSpeed(150 + (intAgility * 10))
+	ply:SetRunSpeed(150 + (intAgility * 10))
 end
 Register.Stat(Stat)
 
@@ -65,7 +65,7 @@ Stat.Name = "stat_luck"
 Stat.PrintName = "Luck"
 Stat.Desc = "You find your self to be more lucky, crit hits"
 Stat.Default = 1
-Register.Stat(Stat) 
+Register.Stat(Stat)
 
 function Player:AddStat(strStat, intAmount)
 	self.Stats = self.Stats or {}
@@ -101,6 +101,9 @@ if SERVER then
 		for name, stat in pairs(GAMEMODE.DataBase.Stats) do
 			if ply.Stats then
 				ply:SetStat(name, ply:GetStat(name))
+				if name == "stat_agility" then
+					ply:AddStat("stat_agility", ply.OwedAgility or 0)
+				end
 				if stat.OnSpawn then
 					stat:OnSpawn(ply, ply:GetStat(name))
 				end
