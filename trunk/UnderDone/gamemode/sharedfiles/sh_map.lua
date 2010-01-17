@@ -108,6 +108,7 @@ if SERVER then
 		if tblNPCTable.Model then
 			entNewMonster:SetModel(tblNPCTable.Model)
 		end
+		
 		entNewMonster:SetPos(tblSpawnPoint.Postion)
 		entNewMonster:SetAngles(tblSpawnPoint.Angle or Angle(0, 90, 0))
 		entNewMonster:Spawn()
@@ -118,7 +119,12 @@ if SERVER then
 			entNewMonster:SetNPCState(NPC_STATE_IDLE)
 			entNewMonster:SetKeyValue("spawnflags", 16)
 		end
-		if tblNPCTable.Race == "combine" then entNewMonster:Give("weapon_crowbar") end
+		if tblNPCTable.Weapon then
+			entNewMonster:Give(tblNPCTable.Weapon)
+			if tblNPCTable.AmmoType then
+				entNewMonster:GiveAmmo(tblNPCTable.AmmoAmmount,tblNPCTable.AmmoType)
+			end
+		end
 		for _, ent in pairs(ents.GetAll()) do
 			if ent && ent:IsValid() && (ent:IsNPC() or ent:IsPlayer()) && ent.Race then
 				if ent.Race == tblNPCTable.Race then
