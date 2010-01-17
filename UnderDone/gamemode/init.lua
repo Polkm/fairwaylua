@@ -34,10 +34,9 @@ end
 
 function UseKeyPressed(ply, key)
 	local vecHitPos = ply:GetEyeTrace().HitPos
-	local tblUseEnts = ents.FindInSphere(vecHitPos, 20)
 	local entLookEnt = nil
-	for _, ent in pairs(tblUseEnts or {}) do
-		if (ent.Item or ent.Shop) && ent:GetPos():Distance(ply:GetPos()) < 70 then
+	for _, ent in pairs(ents.FindInSphere(vecHitPos, 20) or {}) do
+		if (ent.Item or ent.Shop) && ent:GetClass() == "prop_physics" && ent:GetPos():Distance(ply:GetPos()) < 70 then
 			if !entLookEnt or ent:GetPos():Distance(vecHitPos) < entLookEnt:GetPos():Distance(vecHitPos) then
 				entLookEnt = ent
 			end
@@ -53,12 +52,13 @@ function UseKeyPressed(ply, key)
 			end
 			entLookEnt:Remove()
 		end
-	elseif entLookEnt.Shop then
+	end
+	if entLookEnt.Shop then
 		
 	end
 	if entLookEnt.Pile then
 		local intAmount = 1
-		for _,Item in pairs(GAMEMODE.Pile) do
+		for _, Item in pairs(GAMEMODE.Pile) do
 			if v.Amount then intAmount = v.Amount end
 			if ply:AddItem(v, intAmount) then
 				entLookEnt:Remove()
@@ -69,12 +69,21 @@ end
 hook.Add("KeyPress", "UseKeyPressed", function(ply, key) if key == IN_USE then UseKeyPressed(ply, key) end end)
 
 function GM:PlayerUse(plyPlayer, entEntity)
+	return true
 end
 
-function GM:ScalePlayerDamage(ply,hitgroup,dmginfo)
+function OnPropBreak(entBreaker, entProp)
+	if entBreaker:IsValid() and entBreaker:IsPlayer() and entProp:IsValid() then
+		local entLoot = CreateWorldItem("wood")
+		entLoot:SetPos(entProp:GetPos())
+	end
+end
+hook.Add("PropBreak", "OnPropBreak", OnPropBreak)
+
+--[[function GM:ScalePlayerDamage(ply,hitgroup,dmginfo)
 	local inrange = ents.FindInBox( Vector(558.787659, 289.451447, -72.497879), Vector(949.335632, -1113.920288, 98.019356))
 	if (table.HasValue( inrange, ply )) then
 		dmginfo:SetDamage(0)
 	end
-end
+end]]
  
