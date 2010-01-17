@@ -42,6 +42,9 @@ NPC.HealthPerLevel = 10
 NPC.Invincible = true
 NPC.Idle = true
 NPC.Race = "human"
+NPC.Shop = {}
+NPC.Shop["can"] = {Price = 15}
+NPC.Shop["small_ammo"] = {Price = 5}
 Register.NPC(NPC)
 
 if SERVER then
