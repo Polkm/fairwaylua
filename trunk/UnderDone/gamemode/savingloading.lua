@@ -17,6 +17,7 @@ function Player:NewGame()
 	self:AddItem("saw_sheild", 1)
 	self:AddItem("weapon_melee_leadpipe", 1)
 	self:AddItem("weapon_melee_circularsaw", 1)
+	self:AddItem("tool_wrench", 1)
 	self:SaveGame()
 	print("New Game")
 end
