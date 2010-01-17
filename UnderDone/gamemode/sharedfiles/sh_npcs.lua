@@ -27,7 +27,18 @@ NPC.Race = "antlion"
 Register.NPC(NPC)
 
 local NPC = {}
-NPC.Name = "combine"
+NPC.Name = "Rebel"
+NPC.PrintName = "Rebel"
+NPC.SpawnName = "npc_citizen"
+NPC.HealthPerLevel = 20
+NPC.Weapon =	"weapon_smg"
+NPC.AmmoType = "smg1"
+NPC.AmmoAmmount =  100
+NPC.Race = "Rebel"
+Register.NPC(NPC)
+
+local NPC = {}
+NPC.Name = "Combine"
 NPC.PrintName = "Combine Guard"
 NPC.SpawnName = "npc_combine_s"
 NPC.HealthPerLevel = 20
