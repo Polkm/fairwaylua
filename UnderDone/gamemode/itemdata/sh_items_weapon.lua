@@ -105,6 +105,23 @@ Item.Sound = "weapons/iceaxe/iceaxe_swing1.wav"
 Register.Item(Item)
 
 local Item = DeriveTable(BaseWeapon)
+Item.Name = "tool_wrench"
+Item.PrintName = "Tool Wrench"
+Item.Desc = "Fixing things? I don't think so! More like smashing things!"
+Item.Icon = "icons/weapon_pipe"
+Item.Model = {}
+Item.Model[1] = {Model = "models/props_c17/tools_wrench01a.mdl", Position = Vector(3.2, -7.7, -8.1), Angle = Angle(27.4, 123.8, -11.4)}
+Item.Dropable = true
+Item.Giveable = true
+Item.Weight = 1
+Item.HoldType = "melee"
+Item.CanCutWood = true
+Item.Power = 8
+Item.FireRate = 3
+Item.Sound = "weapons/iceaxe/iceaxe_swing1.wav"
+Register.Item(Item)
+
+local Item = DeriveTable(BaseWeapon)
 Item.Name = "weapon_melee_circularsaw"
 Item.PrintName = "Circular Saw"
 Item.Desc = "Zing Zing Ziiiingng!"
