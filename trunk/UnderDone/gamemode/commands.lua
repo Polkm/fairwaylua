@@ -18,18 +18,11 @@ end)
 function Player:DropItem(strItem, intAmount)
 	local tblItemTable = ItemTable(strItem)
 	if self:HasItem(strItem, intAmount) && tblItemTable.Dropable then
-		local entDropEnt = GAMEMODE:BuildModel(tblItemTable.Model)
-		entDropEnt:SetPos(self:EyePos() + (self:GetAimVector() * 25))
+		entDropedItem = CreateWorldItem(strItem, intAmount)
+		entDropedItem:SetPos(self:EyePos() + (self:GetAimVector() * 25))
 		local trace = self:GetEyeTrace()
 		if trace.HitPos:Distance(self:GetPos()) < 80 then 
-			entDropEnt:SetPos(trace.HitPos)
-		end
-		entDropEnt.Item = strItem
-		entDropEnt.Amount = intAmount
-		entDropEnt:Spawn()
-		entDropEnt:SetNWString("PrintName",   tblItemTable.PrintName)
-		if !util.IsValidProp(entDropEnt:GetModel()) then
-			entDropEnt:CreateGrip()
+			entDropedItem:SetPos(trace.HitPos)
 		end
 		self:AddItem(strItem, -intAmount)
 		return true

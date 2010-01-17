@@ -39,6 +39,21 @@ if SERVER then
 		end
 		umsg.End()
 	end
+
+	function CreateWorldItem(strItem, intAmount)
+		local tblItemTable = ItemTable(strItem)
+		if tblItemTable then
+			local entWorldProp = GAMEMODE:BuildModel(tblItemTable.Model)
+			entWorldProp.Item = strItem
+			entWorldProp.Amount = intAmount or 1
+			entWorldProp:Spawn()
+			entWorldProp:SetNWString("PrintName", tblItemTable.PrintName)
+			if !util.IsValidProp(entWorldProp:GetModel()) then
+				entWorldProp:CreateGrip()
+			end
+			return entWorldProp
+		end
+	end
 end
 
 if CLIENT then
