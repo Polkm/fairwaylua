@@ -43,15 +43,6 @@ function UseKeyPressed(ply, key)
 			end
 		end
 	end
-	if entLookEnt.Pile then
-		local intAmount = 1
-		for _,Item in pairs(GAMEMODE.Pile) do
-			if v.Amount then intAmount = v.Amount end
-			if ply:AddItem(v, intAmount) then
-				entLookEnt:Remove()
-			end
-		end
-	end
 	if !entLookEnt or !entLookEnt:IsValid() then return end
 	if entLookEnt.Item then
 		local intAmount = 1
@@ -64,6 +55,15 @@ function UseKeyPressed(ply, key)
 		end
 	elseif entLookEnt.Shop then
 		
+	end
+	if entLookEnt.Pile then
+		local intAmount = 1
+		for _,Item in pairs(GAMEMODE.Pile) do
+			if v.Amount then intAmount = v.Amount end
+			if ply:AddItem(v, intAmount) then
+				entLookEnt:Remove()
+			end
+		end
 	end
 end
 hook.Add("KeyPress", "UseKeyPressed", function(ply, key) if key == IN_USE then UseKeyPressed(ply, key) end end)
