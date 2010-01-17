@@ -115,7 +115,6 @@ Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
 Item.HoldType = "melee"
-Item.CanCutWood = true
 Item.Power = 8
 Item.FireRate = 3
 Item.Sound = "weapons/iceaxe/iceaxe_swing1.wav"
