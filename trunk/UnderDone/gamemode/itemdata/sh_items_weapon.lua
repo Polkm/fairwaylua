@@ -13,7 +13,7 @@ Item.HoldType = "pistol"
 Item.AmmoType = "smg1"
 Item.Power = 9
 Item.Accuracy = 0.01
-Item.FireRate = 0.7
+Item.FireRate = 1.5
 Item.ClipSize = 9
 Item.Sound = "weapons/pistol/pistol_fire2.wav"
 Register.Item(Item)
