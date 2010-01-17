@@ -22,6 +22,7 @@ local NPC = {}
 NPC.Name = "antlionguard"
 NPC.PrintName = "Antlion Boss"
 NPC.SpawnName = "npc_antlionguard"
+NPC.Drops = {}
 NPC.Drops["money"] = {Chance = 15, Min = 100, Max = 200}
 NPC.Drops["weapon_melee_leadpipe"] = {Chance = 5, Min = 1}
 NPC.HealthPerLevel = 25

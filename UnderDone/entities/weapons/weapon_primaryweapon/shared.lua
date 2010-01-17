@@ -68,7 +68,6 @@ function SWEP:WeaponAttack()
 	end
 	if self.WeaponTable then
 		local isMelee = self.WeaponTable.HoldType == "melee"
-		local isWoodCutting = self.WeaponTable.CanCutWood 
 		local intRange = self.Owner:GetEyeTrace().HitPos:Distance(self.Owner:GetEyeTrace().StartPos)
 		local tblBullet = {}
 		tblBullet.Src 		= self.Owner:GetShootPos()
@@ -84,17 +83,7 @@ function SWEP:WeaponAttack()
 		if !isMelee then
 			self.Owner:FireBullets(tblBullet)
 		else
-			if intRange <= 70 then
-				if isWoodCutting then
-					if self.Owner:GetEyeTrace().Entity.CutAble then
-						if math.random(1,10) > 7 then
-							self.Owner:AddItem("wood", 1)
-							if self.Owner:AddItem("wood", 1) then
-								self.Owner:CreateNotification("Gained 1 Wood")
-							end
-						end
-					end
-				end
+			if intRange <= 60 then
 				self.Owner:FireBullets(tblBullet)
 			end
 		end
@@ -104,15 +93,23 @@ function SWEP:WeaponAttack()
 		if CLIENT && !isMelee then
 			self.Owner:MuzzleFlash()
 			local strEffect = "ShellEject"
-			if self.WeaponTable.HoldType == "shotgun" then strEffect = "ShotgunShellEject" end
+			if self.WeaponTable.AmmoType == "buckshot" then strEffect = "ShotgunShellEject" end
 			local effectdata = EffectData()
 			effectdata:SetOrigin(self.Owner.PapperDollEnts["slot_primaryweapon"]:GetPos())
 			effectdata:SetAngle(self.Owner.PapperDollEnts["slot_primaryweapon"]:GetAngles():Right())
 			effectdata:SetEntity(self)
-			effectdata:SetMagnitude( 1 )
-			effectdata:SetScale( 1 )
+			effectdata:SetMagnitude(1)
+			effectdata:SetScale(1)
 			util.Effect(strEffect, effectdata)
 		end
+		self.Owner:AddStat("stat_agility", -40)
+		self.Owner.OwedAgility = 40
+		timer.Simple((1 / self.WeaponTable.FireRate), function()
+			if self.Owner && self.Owner:IsValid() then
+				self.Owner:AddStat("stat_agility", 40)
+				self.Owner.OwedAgility = 0
+			end
+		end)
 		self:EmitSound(self.WeaponTable.Sound)
 		self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate))
 	end
