@@ -110,7 +110,7 @@ Item.PrintName = "Tool Wrench"
 Item.Desc = "Fixing things? I don't think so! More like smashing things!"
 Item.Icon = "icons/weapon_pipe"
 Item.Model = {}
-Item.Model[1] = {Model = "models/props_c17/tools_wrench01a.mdl", Position = Vector(3.2, -7.7, -8.1), Angle = Angle(27.4, 123.8, -11.4)}
+Item.Model[1] = {Model = "models/props_c17/tools_wrench01a.mdl", Position = Vector(0.3, 2.8, 0.3), Angle = Angle(14.1, -14.1, 78.3)}
 Item.Dropable = true
 Item.Giveable = true
 Item.Weight = 1
