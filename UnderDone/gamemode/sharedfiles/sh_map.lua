@@ -110,6 +110,7 @@ if SERVER then
 		entNewMonster:Spawn()
 		entNewMonster.Race = tblNPCTable.Race
 		entNewMonster.Invincible = tblNPCTable.Invincible
+		entNewMonster.Shop = type(tblNPCTable.Shop) == "table"
 		if tblNPCTable.Idle then
 			entNewMonster:SetNPCState(NPC_STATE_IDLE)
 			entNewMonster:SetKeyValue("spawnflags", 16)
