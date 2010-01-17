@@ -5,6 +5,7 @@ include('itemdata/sh_items_base.lua')
 include('sh_resource.lua')
 ----------Menus----------
 GM.MainMenu = nil
+GM.ShopMenu = nil
 ----------Colors---------
 clrGray = Color(97, 95, 90, 255)
 clrDrakGray = Color(43, 42, 39, 255)
@@ -47,4 +48,5 @@ function GM:OnSpawnMenuClose()
 	if GAMEMODE.DraggingGhost then
 		GAMEMODE.DraggingPanel = nil
 	end
+	if GAMEMODE.ActiveMenu then GAMEMODE.ActiveMenu:Remove() GAMEMODE.ActiveMenu = nil end
 end

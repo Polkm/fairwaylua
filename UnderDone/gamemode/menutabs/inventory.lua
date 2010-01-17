@@ -81,7 +81,6 @@ function PANEL:LoadInventory(boolTemp)
 	local TempInv = boolTemp or false
 	local WorkInv = LocalPlayer().Data.Inventory or {}
 	self.inventorylist:Clear()
-	self.inventorylist.catagories = {}
 	if WorkInv["money"] && WorkInv["money"] > 0 then self:AddItem("money", WorkInv["money"]) end
 	for item, amount in pairs(WorkInv) do
 		if amount > 0 && item != "money" then

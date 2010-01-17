@@ -16,6 +16,7 @@ PANEL.LastClick = 0
 PANEL.Draggable = false
 PANEL.Item = nil
 PANEL.Slot = nil
+PANEL.UseCommand = nil
 PANEL.LeftMouseDown = false
 PANEL.DoClick = function() end
 PANEL.DoRightClick = function() end
@@ -112,14 +113,17 @@ function PANEL:SetDropedOn(fncDropedOn)
 	self.DoDropedOn = fncDropedOn
 end
 
-function PANEL:SetItem(tblItemTable, intAmount)
+function PANEL:SetItem(tblItemTable, intAmount, strUseCommand, intCost)
+	intCost = intCost or 0
+	strUseCommand = strUseCommand or "use"
+	self.UseCommand = strUseCommand
 	intAmount = intAmount or 1
 	self:SetDragable(true)
 	if tblItemTable.Icon then self:SetIcon(tblItemTable.Icon) end
 	if tblItemTable.Stackable && intAmount > 1 then self:SetAmount(intAmount) end
 	if tblItemTable.Name then self.Item = tblItemTable.Name end
 	if tblItemTable.Slot then self.Slot = tblItemTable.Slot end
-	if tblItemTable.Dropable then
+	if strUseCommand == "use" && tblItemTable.Dropable then
 		self.DoDropItem = function()
 			if tblItemTable.Stackable and intAmount >= 5 then
 				DisplayPromt("number", "How many to drop", function(itemamount) RunConsoleCommand("UD_DropItem", tblItemTable.Name, itemamount) end, tblItemTable.Name)
@@ -128,9 +132,8 @@ function PANEL:SetItem(tblItemTable, intAmount)
 			end
 		end
 	end
-	if tblItemTable.Giveable then
+	if strUseCommand == "use" && tblItemTable.Giveable then
 		self.DoGiveItem = function(plyGivePlayer)
-			print("given")
 			if tblItemTable.Stackable and intAmount >= 5 then 
 				DisplayPromt("number", "How many to give", function(itemamount)
 					RunConsoleCommand("UD_GiveItem", tblItemTable.Name, itemamount, plyGivePlayer:EntIndex())
@@ -140,35 +143,41 @@ function PANEL:SetItem(tblItemTable, intAmount)
 			end
 		end
 	end
-	if tblItemTable.Use then
-		self.DoUseItem = function()
-			RunConsoleCommand("UD_UseItem", tblItemTable.Name)
-		end
+	if strUseCommand == "use" && tblItemTable.Use then
+		self.DoUseItem = function() RunConsoleCommand("UD_UseItem", tblItemTable.Name) end
+	end
+	if strUseCommand == "buy" then
+		self.DoUseItem = function() RunConsoleCommand("UD_BuyItem", tblItemTable.Name) end
+	end
+	if strUseCommand == "sell" then
+		self.DoUseItem = function() RunConsoleCommand("UD_SellItem", tblItemTable.Name) end
 	end
 	---------ToolTip---------
 	local strTooltip = Format("%s", tblItemTable.PrintName)
 	if tblItemTable.Desc then strTooltip = Format("%s\n%s", strTooltip, tblItemTable.Desc) end
 	if tblItemTable.Weight && tblItemTable.Weight > 0 then strTooltip = Format("%s\n%s Kgs", strTooltip, tblItemTable.Weight) end
+	if strUseCommand == "buy" && intCost > 0 then strTooltip = Format("%s\nBuy For $%s", strTooltip, intCost) end
+	if strUseCommand == "sell" && intCost > 0 then strTooltip = Format("%s\nSell For $%s", strTooltip, intCost) end
 	self:SetTooltip(strTooltip)
 	------Double Click------
-	if tblItemTable.Use then
-		self:SetDoubleClick(self.DoUseItem)
-	end
+	if self.DoUseItem then self:SetDoubleClick(self.DoUseItem) end
 	-------Right Click-------
 	local menuFunc = function()
-		GAMEMODE.MainMenu.ActiveMenu = nil
-		GAMEMODE.MainMenu.ActiveMenu = DermaMenu()
-		if tblItemTable.Use then GAMEMODE.MainMenu.ActiveMenu:AddOption("Use", self.DoUseItem) end
-		if tblItemTable.Dropable then GAMEMODE.MainMenu.ActiveMenu:AddOption("Drop", self.DoDropItem) end
-		if tblItemTable.Giveable then
-			local GiveSubMenu = GAMEMODE.MainMenu.ActiveMenu:AddSubMenu("Give ...")
+		GAMEMODE.ActiveMenu = nil
+		GAMEMODE.ActiveMenu = DermaMenu()
+		if strUseCommand == "use" && tblItemTable.Use && self.DoUseItem then GAMEMODE.ActiveMenu:AddOption("Use", self.DoUseItem) end
+		if strUseCommand == "buy" && self.DoUseItem then GAMEMODE.ActiveMenu:AddOption("Buy", self.DoUseItem) end
+		if strUseCommand == "sell" && intCost > 0 && self.DoUseItem then GAMEMODE.ActiveMenu:AddOption("Sell", self.DoUseItem) end
+		if strUseCommand == "use" && tblItemTable.Dropable then GAMEMODE.ActiveMenu:AddOption("Drop", self.DoDropItem) end
+		if strUseCommand == "use" && tblItemTable.Giveable then
+			local GiveSubMenu = GAMEMODE.ActiveMenu:AddSubMenu("Give ...")
 			for _, player in pairs(player.GetAll()) do
 				if player:GetPos():Distance(LocalPlayer():GetPos()) < 250 && player != LocalPlayer() then
 					GiveSubMenu:AddOption(player:Nick(), function() self.DoGiveItem(player) end)
 				end
 			end
 		end
-		GAMEMODE.MainMenu.ActiveMenu:Open()
+		GAMEMODE.ActiveMenu:Open()
 	end
 	self:SetRightClick(menuFunc)
 end

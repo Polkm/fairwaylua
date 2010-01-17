@@ -4,7 +4,6 @@ PANEL.TabSheet = nil
 PANEL.TabPanels = {}
 PANEL.InventoryTab = nil
 PANEL.PlayersTab = nil
-PANEL.ActiveMenu = nil
 
 PANEL.TargetAlpha = 0
 PANEL.CurrentAlpha = 0
@@ -59,9 +58,6 @@ function PANEL:Paint()
 	self.CurrentAlpha = intNewAlpha
 	if self.CurrentAlpha <= 0 then
 		GAMEMODE.MainMenu.Frame:SetVisible(false)
-		if GAMEMODE.MainMenu.ActiveMenu then
-			GAMEMODE.MainMenu.ActiveMenu:Remove()
-		end
 		RememberCursorPosition()
 		gui.EnableScreenClicker(false)
 	end

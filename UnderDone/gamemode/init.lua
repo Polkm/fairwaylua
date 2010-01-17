@@ -36,7 +36,7 @@ function UseKeyPressed(ply, key)
 	local vecHitPos = ply:GetEyeTrace().HitPos
 	local entLookEnt = nil
 	for _, ent in pairs(ents.FindInSphere(vecHitPos, 20) or {}) do
-		if (ent.Item or ent.Shop) && ent:GetClass() == "prop_physics" && ent:GetPos():Distance(ply:GetPos()) < 70 then
+		if (ent.Item or ent.Shop) && ent:GetClass() != "weapon_primaryweapon" && ent:GetPos():Distance(ply:GetPos()) < 70 then
 			if !entLookEnt or ent:GetPos():Distance(vecHitPos) < entLookEnt:GetPos():Distance(vecHitPos) then
 				entLookEnt = ent
 			end
@@ -54,7 +54,8 @@ function UseKeyPressed(ply, key)
 		end
 	end
 	if entLookEnt.Shop then
-		
+		ply.UseTarget = entLookEnt
+		ply:ConCommand("UD_OpenShopMenu " .. entLookEnt:GetNWString("npc"))
 	end
 	if entLookEnt.Pile then
 		local intAmount = 1
