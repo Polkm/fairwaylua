@@ -105,6 +105,9 @@ if SERVER then
 	function GM:CreateNPC(strNPC, tblSpawnPoint)
 		local tblNPCTable = NPCTable(strNPC)
 		local entNewMonster = ents.Create(tblNPCTable.SpawnName)
+		if tblNPCTable.Model then
+			entNewMonster:SetModel(tblNPCTable.Model)
+		end
 		entNewMonster:SetPos(tblSpawnPoint.Postion)
 		entNewMonster:SetAngles(tblSpawnPoint.Angle or Angle(0, 90, 0))
 		entNewMonster:Spawn()
