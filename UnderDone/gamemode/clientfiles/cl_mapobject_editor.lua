@@ -159,6 +159,7 @@ function GM.MapEditor.AddWorldPropControls(pnlAddList)
 	local intSpawnKey = GAMEMODE.MapEditor.CurrentObjectNum
 	local tblSpawnTable = GAMEMODE.MapEditor.CurrentObjectSet[intSpawnKey]
 	local strModel = tblSpawnTable.Entity:GetModel() or "models/props_junk/garbage_metalcan001a.mdl"
+	local intOffset = tblSpawnTable.Entity.Offset or 1
 	
 	local mchModels = vgui.Create("DMultiChoice")
 	local intID = 1
@@ -174,10 +175,24 @@ function GM.MapEditor.AddWorldPropControls(pnlAddList)
 	end
 	pnlAddList:AddItem(mchModels)
 	
+
+	local wppOffset = vgui.Create("DNumSlider")
+	wppOffset:SetText("Offset")
+	wppOffset:SetMin(-100)
+	wppOffset:SetMax(100)
+	wppOffset:SetDecimals(0)
+	wppOffset.ValueChanged = function(self, value) intOffset = value end
+	wppOffset.UpdateSlider = function(intNewValue)
+		wppOffset:SetValue(intNewValue)
+		wppOffset.Slider:SetSlideX(wppOffset.Wang:GetFraction())
+	end
+	wppOffset.UpdateSlider(intOffset)
+	pnlAddList:AddItem(wppOffset)
+	
 	local btnUpdateServer = vgui.Create("DButton")
 	btnUpdateServer:SetText("Update Server")
 	btnUpdateServer.DoClick = function(btnUpdateServer)
-		RunConsoleCommand("UD_Dev_EditMap_UpdateWorldProp", intSpawnKey, strModel)
+		RunConsoleCommand("UD_Dev_EditMap_UpdateWorldProp", intSpawnKey, strModel, intOffset )
 	end
 	pnlAddList:AddItem(btnUpdateServer)
 end
