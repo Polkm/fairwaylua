@@ -83,7 +83,7 @@ function SWEP:WeaponAttack()
 		if !isMelee then
 			self.Owner:FireBullets(tblBullet)
 		else
-			if intRange <= 60 then
+			if intRange <= 65 then
 				self.Owner:FireBullets(tblBullet)
 			end
 		end
@@ -104,7 +104,7 @@ function SWEP:WeaponAttack()
 		end
 		self.Owner:AddStat("stat_agility", -40)
 		self.Owner.OwedAgility = 40
-		timer.Simple(math.Clamp((1 / self.WeaponTable.FireRate), 0, 1), function()
+		timer.Simple((1 / self.WeaponTable.FireRate), function()
 			if self.Owner && self.Owner:IsValid() then
 				self.Owner:AddStat("stat_agility", 40)
 				self.Owner.OwedAgility = 0
