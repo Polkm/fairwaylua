@@ -31,8 +31,6 @@ NPC.Name = "Rebel"
 NPC.PrintName = "Rebel"
 NPC.SpawnName = "npc_citizen"
 NPC.HealthPerLevel = 20
-NPC.AmmoType = "smg1"
-NPC.AmmoAmmount = 100
 NPC.Weapon = "weapon_smg1"
 NPC.Race = "Rebel"
 Register.NPC(NPC)
