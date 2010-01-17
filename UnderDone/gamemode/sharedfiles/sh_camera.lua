@@ -16,6 +16,12 @@ function Player:GetIdealCamPos()
 		vecPosition.y = vecPosition.y + (math.sin(math.rad(intEditorRadiants or 0)) * intDistance)
 		vecPosition.z = vecPosition.z + intAddedHeight
 	else
+		local tracedata = {}
+		tracedata.start = vecPosition + Vector(0, 0, 85)
+		tracedata.endpos = vecPosition + (self:EyeAngles():Forward() * -intDistance) + Vector(0, 0, 85)
+		tracedata.filter = self.Owner
+		local trace = util.TraceLine(tracedata)
+		intDistance = trace.HitPos:Distance(tracedata.start) - 10
 		vecPosition = vecPosition + (self:EyeAngles():Forward() * -intDistance) + Vector(0, 0, 85)
 	end
 	return vecPosition
