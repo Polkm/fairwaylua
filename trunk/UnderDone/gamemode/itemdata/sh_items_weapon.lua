@@ -86,3 +86,38 @@ Item.Power = 8
 Item.FireRate = 3
 Item.Sound = "weapons/iceaxe/iceaxe_swing1.wav"
 Register.Item(Item)
+
+local Item = DeriveTable(BaseWeapon)
+Item.Name = "weapon_melee_leadpipe"
+Item.PrintName = "Lead Pipe"
+Item.Desc = "And now you even get lead poisoning!"
+Item.Icon = "icons/weapon_pipe"
+Item.Model = {}
+Item.Model[1] = {Model = "models/props_canal/mattpipe.mdl", Position = Vector(-0.6, 0.8, -5.9), Angle = Angle(4.7, 56.9, -176)}
+Item.Dropable = true
+Item.Giveable = true
+Item.Weight = 1
+Item.HoldType = "melee"
+Item.CanCutWood = true
+Item.Power = 8
+Item.FireRate = 3
+Item.Sound = "weapons/iceaxe/iceaxe_swing1.wav"
+Register.Item(Item)
+
+local Item = DeriveTable(BaseWeapon)
+Item.Name = "weapon_melee_circularsaw"
+Item.PrintName = "Circular Saw"
+Item.Desc = "Zing Zing Ziiiingng!"
+Item.Icon = "icons/junk_saw"
+Item.Model = {}
+Item.Model[1] = {Model = "models/props_forest/circularsaw01.mdl", Position = Vector(3.2, -7.7, -8.1), Angle = Angle(27.4, 123.8, -11.4)}
+Item.Dropable = true
+Item.Giveable = true
+Item.Weight = 1
+Item.HoldType = "melee"
+Item.CanCutWood = true
+Item.Power = 8
+Item.FireRate = 3
+Item.Sound = "weapons/iceaxe/iceaxe_swing1.wav"
+Register.Item(Item)
+
