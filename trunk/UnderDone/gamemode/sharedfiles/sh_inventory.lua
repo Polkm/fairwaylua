@@ -25,15 +25,14 @@ function Entity:AddItem(strItem, intAmount)
 		SendUsrMsg("UD_UpdateItem", self, {strItem, intAmount})
 	end
 	if CLIENT then
-		if GAMEMODE.MainMenu then
-			GAMEMODE.MainMenu.InventoryTab:LoadInventory()
-		end
+		if GAMEMODE.MainMenu then GAMEMODE.MainMenu.InventoryTab:LoadInventory() end
+		if GAMEMODE.ShopMenu then GAMEMODE.ShopMenu:LoadPlayer() end
 	end
 	return true
 end
 
 function Entity:RemoveItem(strItem, intAmount)
-	self:AddItem(strItem, -intAmount)
+	return self:AddItem(strItem, -intAmount)
 end
 
 function Entity:TransferItem(objTarget, strItem1, intAmount1, strItem2, intAmount2)

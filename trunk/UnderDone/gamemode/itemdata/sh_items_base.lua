@@ -19,6 +19,7 @@ BaseItem.Model = "models/props_junk/garbage_metalcan001a.mdl"
 BaseItem.Stackable = false
 BaseItem.Dropable = false
 BaseItem.Giveable = false
+BaseItem.SellPrice = 0
 BaseItem.Weight = 0
 
 BaseFood = DeriveTable(BaseItem)

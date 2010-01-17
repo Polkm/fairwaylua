@@ -53,7 +53,7 @@ NPC.Idle = true
 NPC.Race = "human"
 NPC.Shop = {}
 NPC.Shop["can"] = {Price = 15}
-NPC.Shop["small_ammo"] = {Price = 5}
+NPC.Shop["small_ammo"] = {Price = 10}
 Register.NPC(NPC)
 
 if SERVER then

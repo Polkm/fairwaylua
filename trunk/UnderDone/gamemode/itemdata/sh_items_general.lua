@@ -17,5 +17,6 @@ Item.Icon = "icons/item_wood"
 Item.Model = "models/Gibs/wood_gib01d.mdl"
 Item.Dropable = true
 Item.Giveable = true
+Item.SellPrice = 5
 Item.Weight = 1
 Register.Item(Item)
