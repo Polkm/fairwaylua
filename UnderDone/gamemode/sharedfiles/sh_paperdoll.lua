@@ -2,22 +2,33 @@ local Player = FindMetaTable("Player")
 
 function Player:SetPaperDoll(strSlot, strItem)
 	if !self or !self:IsValid() then return false end
-	local tblItemTable = GAMEMODE.DataBase.Items[strItem] or {}
+	local tblItemTable = ItemTable(strItem) or {}
 	self.Data = self.Data or {}
 	self.Data.Paperdoll = self.Data.Paperdoll or {}
 	if !strItem or self:GetSlot(strSlot) == strItem then
 		self.Data.Paperdoll[strSlot] = nil
-	else
-		self.Data.Paperdoll[strSlot] = strItem
-	end
-	if SERVER then
-		for name, amount in pairs(tblItemTable.Buffs or {}) do
-			if self:GetSlot(strSlot) then
-				self:AddStat(name, amount)
-			else
+		if SERVER then
+			for name, amount in pairs(tblItemTable.Buffs or {}) do
 				self:AddStat(name, -amount)
 			end
 		end
+	else
+		if self:GetSlot(strSlot) then
+			local tblOldItemTable = ItemTable(self:GetSlot(strSlot))
+			if SERVER then
+				for name, amount in pairs(tblOldItemTable.Buffs or {}) do
+					self:AddStat(name, -amount)
+				end
+			end
+		end
+		self.Data.Paperdoll[strSlot] = strItem
+		if SERVER then
+			for name, amount in pairs(tblItemTable.Buffs or {}) do
+				self:AddStat(name, amount)
+			end
+		end
+	end
+	if SERVER then
 		for slot, item in pairs(self.Data.Paperdoll) do
 			if slot != strSlot then
 				local tblSlotTable = GAMEMODE.DataBase.Slots[slot]
