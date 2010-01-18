@@ -59,12 +59,14 @@ NPC.Race = "human"
 NPC.Shop = {}
 NPC.Shop["can"] = {Price = 15}
 NPC.Shop["small_ammo"] = {Price = 10}
+NPC.Shop["health_kit"] = {Price = 80}
 Register.NPC(NPC)
 
 local NPC = {}
 NPC.Name = "quest_npc"
-NPC.PrintName = "Jay"
-NPC.SpawnName = "npc_eli"
+NPC.PrintName = "Grigori"
+NPC.SpawnName = "npc_monk"
+NPC.Icon = "icons/npc_quest"
 NPC.HealthPerLevel = 10
 NPC.Invincible = true
 NPC.Idle = true
