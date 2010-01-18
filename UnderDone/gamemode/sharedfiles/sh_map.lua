@@ -112,6 +112,7 @@ if SERVER then
 		end
 		for _, WorldProp in pairs(tblSaveTable.WorldProps or {}) do
 			WorldProp.Entity = nil
+			WorldProp.SpawnProp = nil
 		end
 		file.Write(strFileName, glon.encode(tblSaveTable))
 	end
