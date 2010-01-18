@@ -122,6 +122,7 @@ function GM.MapEditor.AddSpawnPointControls(pnlAddList)
 	local strNPCName = tblSpawnTable.NPC or "zombie"
 	local intLevel = tblSpawnTable.Level or 5
 	local intSpawnTime = tblSpawnTable.SpawnTime or 0
+	local intAngle = tblSpawnTable.Angle or 1
 	
 	local mchNPCTypes = vgui.Create("DMultiChoice")
 	local intID = 1
@@ -151,7 +152,7 @@ function GM.MapEditor.AddSpawnPointControls(pnlAddList)
 	local nmsSpawnTime = vgui.Create("DNumSlider")
 	nmsSpawnTime:SetText("Spawn Time")
 	nmsSpawnTime:SetMin(0)
-	nmsSpawnTime:SetMax(120)
+	nmsSpawnTime:SetMax(45)
 	nmsSpawnTime:SetDecimals(0)
 	nmsSpawnTime.ValueChanged = function(self, value) intSpawnTime = value end
 	nmsSpawnTime.UpdateSlider = function(intNewValue)
