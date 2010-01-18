@@ -122,12 +122,8 @@ if SERVER then
 			if !Spawn.Monster or !Spawn.Monster:IsValid() then
 				if !Spawn.NextSpawn then Spawn.NextSpawn = CurTime() + Spawn.SpawnTime end
 				if Spawn.SpawnTime > 0 && CurTime() >= Spawn.NextSpawn then
-					for _, ply in pairs(player.GetAll()) do
-						if ply:GetPos():Distance(Spawn.Postion) < 1500 then
-							Spawn.Monster = GAMEMODE:CreateNPC(Spawn.NPC, Spawn)
-							Spawn.NextSpawn = nil
-						end
-					end
+					Spawn.Monster = GAMEMODE:CreateNPC(Spawn.NPC, Spawn)
+					Spawn.NextSpawn = nil
 				end
 			end
 		end
