@@ -54,10 +54,24 @@ NPC.SpawnName = "npc_eli"
 NPC.HealthPerLevel = 10
 NPC.Invincible = true
 NPC.Idle = true
+NPC.NPCType = "Shop General"
 NPC.Race = "human"
 NPC.Shop = {}
 NPC.Shop["can"] = {Price = 15}
 NPC.Shop["small_ammo"] = {Price = 10}
+Register.NPC(NPC)
+
+local NPC = {}
+NPC.Name = "quest_npc"
+NPC.PrintName = "Jay"
+NPC.SpawnName = "npc_eli"
+NPC.HealthPerLevel = 10
+NPC.Invincible = true
+NPC.Idle = true
+NPC.NPCType = "Quest NPC"
+NPC.Race = "human"
+NPC.Quest = {}
+NPC.Quest["Kill Zombies"] = {Level = 5,Kill = 5, Name = "zombie"}
 Register.NPC(NPC)
 
 if SERVER then
