@@ -37,6 +37,21 @@ function GM:HUDPaint()
 				draw.SimpleTextOutlined(ent:GetNWString("PrintName"), "UiBold", posENTpos.x, posENTpos.y, clrWhite, 1, 1, 1, clrDrakGray)
 			end
 		end
+		if ent && ent:IsValid() && ent:IsNPC() then
+			local tblNPCTable = NPCTable(ent:GetNWInt("npc"))
+			local posNPCpos = (ent:GetPos() + Vector(0, 0, 80)):ToScreen()
+			if tblNPCTable && tblNPCTable.Icon && ent:GetPos():Distance(LocalPlayer():GetPos()) < 200 then
+				surface.SetDrawColor(255, 255, 255, 255)
+				surface.SetTexture(surface.GetTextureID(tblNPCTable.Icon))
+				surface.DrawTexturedRect(posNPCpos.x - 20, posNPCpos.y - 60, 40, 40)
+				surface.SetDrawColor(255, 255, 255, 50)
+				surface.SetTexture(surface.GetTextureID("icons/icon_gloss"))
+				surface.DrawTexturedRect(posNPCpos.x - 20, posNPCpos.y - 60, 40, 40)
+				surface.SetDrawColor(255, 255, 255, 255)
+				surface.SetTexture(surface.GetTextureID("icons/icon_boarder2"))
+				surface.DrawTexturedRect(posNPCpos.x - 20, posNPCpos.y - 60, 40, 40)
+			end
+		end
 	end
 	
 	local intX = ScrW() / 2.0

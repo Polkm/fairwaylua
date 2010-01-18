@@ -12,6 +12,20 @@ Item.AddedHealth = 10
 Item.AddTime = 12
 Register.Item(Item)
 
+local Item = DeriveTable(BaseFood)
+Item.Name = "health_kit"
+Item.PrintName = "Health Kit"
+Item.Desc = "Restores health by 40"
+Item.Icon = "icons/item_healthkit"
+Item.Model = "models/Items/Health_Kit.mdl"
+Item.Dropable = true
+Item.Giveable = true
+Item.SellPrice = 40
+Item.Weight = 1
+Item.AddedHealth = 40
+Item.AddTime = 6
+Register.Item(Item)
+
 local Item = DeriveTable(BaseAmmo)
 Item.Name = "small_ammo"
 Item.PrintName = "9mm Rounds"
