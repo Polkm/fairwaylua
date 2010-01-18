@@ -115,12 +115,19 @@ function GM:DrawNPCInfo(entNPC)
 	self.NpcHealthBar:SetBoarder(1, clrDrakGray)
 	self.NpcHealthBar:SetText("UiBold", intHealth, clrDrakGray)
 	self.NpcHealthBar:SetValue(intHealth, intMaxHealth)
-	jdraw.DrawProgressBar(self.NpcHealthBar)
+	if !tblNPCTable.NPCType then 
+		jdraw.DrawProgressBar(self.NpcHealthBar)
+	end
 	local clrLevelColor = clrWhite
 	if intLevel < plylevel then clrLevelColor = clrBlue end
 	if intLevel > plylevel then clrLevelColor = clrOrange end
 	if tblNPCTable.Race == "human" then clrLevelColor = clrWhite end
-	draw.SimpleTextOutlined(tblNPCTable.PrintName .. " lv. " .. intLevel, "UiBold", posNPCpos.x, posNPCpos.y - 10, clrLevelColor, 1, 1, 1, clrDrakGray)
+	if tblNPCTable.NPCType then 
+		draw.SimpleTextOutlined(tblNPCTable.NPCType, "UiBold", posNPCpos.x, posNPCpos.y - 10, clrLevelColor, 1, 1, 1, clrDrakGray)
+		draw.SimpleTextOutlined(tblNPCTable.PrintName, "UiBold", posNPCpos.x, posNPCpos.y + 2 , clrLevelColor, 1, 1, 1, clrDrakGray)
+	else
+		draw.SimpleTextOutlined(tblNPCTable.PrintName .. " lv. " .. intLevel, "UiBold", posNPCpos.x, posNPCpos.y - 10, clrLevelColor, 1, 1, 1, clrDrakGray)
+	end
 	local strIcon = nil
 	if tblNPCTable.Race == "human" then strIcon = "gui/silkicons/emoticon_smile" end
 	if strIcon then
