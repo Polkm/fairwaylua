@@ -42,8 +42,8 @@ function GM.MapEditor.OpenMapEditor()
 	local mchObjects = vgui.Create("DMultiChoice", frmMapEditorFrame)
 	GAMEMODE.MapEditor.ObjectsList = mchObjects
 	
-	mchObjectSetList:SetPos(55, 30)
-	mchObjectSetList:SetSize(frmMapEditorFrame:GetWide() - 115, 20)
+	mchObjectSetList:SetPos(75, 30)
+	mchObjectSetList:SetSize(frmMapEditorFrame:GetWide() - 135, 20)
 	for key, sets in pairs(GAMEMODE.MapEditor.ObjectSets) do mchObjectSetList:AddChoice(key) end
 	mchObjectSetList.OnSelect = function(index, value, data)
 		GAMEMODE.MapEditor.CurrentObjectSet = GAMEMODE.MapEditor.ObjectSets[data]
@@ -84,6 +84,21 @@ function GM.MapEditor.OpenMapEditor()
 	end
 	btnNewSpawnButton:SetPos(32, 32)
 	btnNewSpawnButton:SetSize(16, 16)
+	
+	local btnRemoveButton = vgui.Create("DImageButton", frmMapEditorFrame)
+	btnRemoveButton:SetMaterial("gui/silkicons/check_off")
+	btnRemoveButton:SetToolTip("Remove Object")
+	btnRemoveButton.DoClick = function(btnRemoveButton)
+		pnlControlsList:Clear()
+		if GAMEMODE.MapEditor.CurrentObjectSet == GAMEMODE.MapEntities.NPCSpawnPoints then
+			RunConsoleCommand("UD_Dev_EditMap_RemoveSpawnPoint", GAMEMODE.MapEditor.CurrentObjectNum)
+		elseif GAMEMODE.MapEditor.CurrentObjectSet == GAMEMODE.MapEntities.WorldProps then
+			RunConsoleCommand("UD_Dev_EditMap_RemoveWorldProp", GAMEMODE.MapEditor.CurrentObjectNum)
+		end
+	end
+	btnRemoveButton:SetPos(57, 32)
+	btnRemoveButton:SetSize(16, 16)
+	
 	GAMEMODE.MapEditor.Open = true
 end
 concommand.Add("UD_Dev_EditMap", function() GAMEMODE.MapEditor.OpenMapEditor() end)
@@ -94,7 +109,7 @@ function GM.MapEditor.UpatePanel()
 		for key, spawnpoints in pairs(GAMEMODE.MapEditor.CurrentObjectSet) do
 			GAMEMODE.MapEditor.ObjectsList:AddChoice(key)
 		end
-		if GAMEMODE.MapEditor.CurrentObjectNum > 0 then
+		if GAMEMODE.MapEditor.CurrentObjectNum > 0 && GAMEMODE.MapEditor.CurrentObjectSet[GAMEMODE.MapEditor.CurrentObjectNum] then
 			GAMEMODE.MapEditor.ObjectsList:ChooseOptionID(GAMEMODE.MapEditor.CurrentObjectNum)
 		end
 	end
