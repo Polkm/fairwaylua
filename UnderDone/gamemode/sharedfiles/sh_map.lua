@@ -18,6 +18,7 @@ function GM:RemoveSpawnPoint(intKey)
 	end
 end
 function GM:UpdateSpawnPoint(intKey, vecPosition, strNPC, intLevel, intSpawnTime)
+	local tblNPCTable = NPCTable(strNPC)
 	local tblToUpdateSpawn = GAMEMODE.MapEntities.NPCSpawnPoints[intKey]
 	if tblToUpdateSpawn then
 		tblToUpdateSpawn.Postion = vecPosition or tblToUpdateSpawn.Postion or Vector(0, 0, 0)
@@ -193,7 +194,7 @@ if SERVER then
 		concommand.Add("UD_Dev_EditMap_UpdateSpawnPoint", function(ply, command, args)
 			if !ply:IsAdmin() or !ply:IsPlayer() then return end
 			if args[1] && GAMEMODE.MapEntities.NPCSpawnPoints[tonumber(args[1])] then
-				GAMEMODE:UpdateSpawnPoint(tonumber(args[1]), nil, args[2], tonumber(args[3]), tonumber(args[4]))
+				GAMEMODE:UpdateSpawnPoint(tonumber(args[1]), nil, args[2], tonumber(args[3]), tonumber(args[4])))
 			end
 		end)
 		
