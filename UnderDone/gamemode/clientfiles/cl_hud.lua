@@ -44,12 +44,6 @@ function GM:HUDPaint()
 				surface.SetDrawColor(255, 255, 255, 255)
 				surface.SetTexture(surface.GetTextureID(tblNPCTable.Icon))
 				surface.DrawTexturedRect(posNPCpos.x - 20, posNPCpos.y - 60, 40, 40)
-				surface.SetDrawColor(255, 255, 255, 50)
-				surface.SetTexture(surface.GetTextureID("icons/icon_gloss"))
-				surface.DrawTexturedRect(posNPCpos.x - 20, posNPCpos.y - 60, 40, 40)
-				surface.SetDrawColor(255, 255, 255, 255)
-				surface.SetTexture(surface.GetTextureID("icons/icon_boarder2"))
-				surface.DrawTexturedRect(posNPCpos.x - 20, posNPCpos.y - 60, 40, 40)
 			end
 		end
 	end
