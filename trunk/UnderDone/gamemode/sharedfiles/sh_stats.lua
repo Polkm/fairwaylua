@@ -55,8 +55,8 @@ Stat.PrintName = "Agility"
 Stat.Desc = "The higher this is teh faster you run and reload and attack"
 Stat.Default = 20
 function Stat:OnSet(ply, intAgility, intOldAgility)
-	ply:SetWalkSpeed(150 + (intAgility * 10))
-	ply:SetRunSpeed(150 + (intAgility * 10))
+	ply:SetWalkSpeed(math.Clamp(150 + (intAgility * 10), 0, 1000))
+	ply:SetRunSpeed(math.Clamp(150 + (intAgility * 10), 0, 1000))
 end
 Register.Stat(Stat)
 
@@ -93,7 +93,7 @@ function Player:GetStat(strStat)
 	if self.Stats && self.Stats[strStat] then
 		return self.Stats[strStat]
 	end
-	return
+	return StatTable(strStat).Default
 end
 
 if SERVER then
@@ -102,7 +102,7 @@ if SERVER then
 			if ply.Stats then
 				ply:SetStat(name, ply:GetStat(name))
 				if name == "stat_agility" then
-					ply:AddStat("stat_agility", ply.OwedAgility or 0)
+					ply:AddStat("stat_agility", ply.ToMakeUpAgility or 0)
 				end
 				if stat.OnSpawn then
 					stat:OnSpawn(ply, ply:GetStat(name))
