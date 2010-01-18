@@ -2,12 +2,13 @@ local NPC = {}
 NPC.Name = "zombie"
 NPC.PrintName = "Zombie"
 NPC.SpawnName = "npc_zombie"
-NPC.HealthPerLevel = 14
-NPC.Damage = 15
+NPC.HealthPerLevel = 12
+NPC.DamagePerLevel = 5
 NPC.Race = "zombie"
 NPC.Drops = {}
-NPC.Drops["money"] = {Chance = 15, Min = 5, Max = 10}
-NPC.Drops["can"] = {Chance = 10, Min = 1}
+NPC.Drops["money"] = {Chance = 30, Min = 5, Max = 10}
+NPC.Drops["can"] = {Chance = 25, Min = 1}
+NPC.Drops["small_ammo"] = {Chance = 25}
 Register.NPC(NPC)
 
 local NPC = {}
@@ -78,10 +79,10 @@ if SERVER then
 			killer:GiveExp(intExptoGive)
 			for item, args in pairs(tblNPCTable.Drops or {}) do
 				if math.random(1, 100 / args.Chance) == 1 then
-					local tblItemTable = ItemTable(item)
 					local intAmount = math.random(args.Min or 1, args.Max or args.Min or 1)
-					killer:AddItem(item, intAmount)
-					killer:CreateNotification("Looted " .. intAmount .. " " .. tblItemTable.PrintName)
+					local entLoot = CreateWorldItem(item, intAmount)
+					entLoot:SetPos(npc:GetPos())
+					entLoot:GetPhysicsObject():ApplyForceCenter(Vector(math.random(-100, 100), math.random(-100, 100), math.random(350, 400)))
 				end
 			end
 		end

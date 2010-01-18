@@ -75,8 +75,17 @@ end
 
 function OnPropBreak(entBreaker, entProp)
 	if entBreaker:IsValid() and entBreaker:IsPlayer() and entProp:IsValid() then
-		local entLoot = CreateWorldItem("wood")
-		entLoot:SetPos(entProp:GetPos())
+		for i = 1, math.random(1, 3) do
+			local entLoot = CreateWorldItem("wood")
+			entLoot:SetPos(entProp:GetPos())
+			entLoot:GetPhysicsObject():ApplyForceCenter(Vector(math.random(-100, 100), math.random(-100, 100), math.random(350, 400)))
+		end
+		if entProp.ObjectKey && GAMEMODE.MapEntities.WorldProps[entProp.ObjectKey] then
+			local tblWorldObject = GAMEMODE.MapEntities.WorldProps[entProp.ObjectKey]
+			timer.Simple(math.random(45, 75), function()
+				tblWorldObject.SpawnProp()
+			end)
+		end
 	end
 end
 hook.Add("PropBreak", "OnPropBreak", OnPropBreak)

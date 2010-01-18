@@ -34,14 +34,20 @@ end
 
 function GM:CreateWorldProp(strModel, vecPostion, angAngle, entEntity, Offset)
 	if SERVER then
-		local entNewProp = ents.Create("prop_physics")
-		if strModel && !util.IsValidProp(strModel) then
-			entNewProp:Remove()
-			entNewProp = ents.Create("prop_dynamic")
+		local tblNewObject = {}
+		tblNewObject.SpawnProp = function()
+			local entNewProp = ents.Create("prop_physics")
+			if strModel && !util.IsValidProp(strModel) then
+				entNewProp:Remove()
+				entNewProp = ents.Create("prop_dynamic")
+			end
+			tblNewObject.Entity = entNewProp
+			table.insert(GAMEMODE.MapEntities.WorldProps, tblNewObject)
+			GAMEMODE:UpdateWorldProp(#GAMEMODE.MapEntities.WorldProps, strModel, Offset, vecPostion, angAngle, entNewProp)
+			entNewProp:SetSkin(math.random(0, entNewProp:SkinCount()))
+			entNewProp:Spawn()
 		end
-		table.insert(GAMEMODE.MapEntities.WorldProps, {Entity = entNewProp})
-		GAMEMODE:UpdateWorldProp(#GAMEMODE.MapEntities.WorldProps, strModel, Offset, vecPostion, angAngle, entNewProp)
-		entNewProp:Spawn()
+		tblNewObject.SpawnProp()
 	elseif CLIENT then
 		table.insert(GAMEMODE.MapEntities.WorldProps, {Entity = entEntity})
 		GAMEMODE:UpdateWorldProp(#GAMEMODE.MapEntities.WorldProps, strModel, Offset, vecPostion, angAngle, entEntity)
@@ -69,6 +75,7 @@ function GM:UpdateWorldProp(intKey, strModel, Offset, vecPosition, angAngle, ent
 			entProp:SetMoveType(MOVETYPE_NONE)
 			entProp:SetKeyValue("spawnflags", 8)
 			entProp.Offset = Offset
+			entProp.ObjectKey = intKey
 			if entProp:GetPhysicsObject():IsValid() then entProp:GetPhysicsObject():Sleep() end
 			if SinglePlayer() && player.GetByID(1) && player.GetByID(1):IsValid() then
 				SendUsrMsg("UD_UpdateWorldProp", player.GetByID(1), {intKey, Offset, entProp:GetModel(), entProp:GetPos(), entProp:GetAngles(), entProp})
@@ -133,10 +140,12 @@ if SERVER then
 		entNewMonster.Race = tblNPCTable.Race
 		entNewMonster.Invincible = tblNPCTable.Invincible
 		entNewMonster.Shop = type(tblNPCTable.Shop) == "table"
+		local intTotalFlags = 1 + 8192
 		if tblNPCTable.Idle then
 			entNewMonster:SetNPCState(NPC_STATE_IDLE)
-			entNewMonster:SetKeyValue("spawnflags", 16)
+			intTotalFlags = intTotalFlags + 16
 		end
+		entNewMonster:SetKeyValue("spawnflags", intTotalFlags)
 		if tblNPCTable.Weapon then
 			entNewMonster:Give(tblNPCTable.Weapon)
 		end
