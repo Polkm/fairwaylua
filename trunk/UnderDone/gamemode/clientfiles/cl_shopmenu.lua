@@ -25,6 +25,8 @@ function PANEL:Init()
 		tblPaintPanel:SetBoarder(1, clrDrakGray)
 		jdraw.DrawPanel(tblPaintPanel)
 	end
+	self.Frame.lblTitle:SetFont("UiBold")
+	self.Frame.lblTitle:SetColor(clrDrakGray)
 	self.Frame.btnClose.DoClick = function(btn)
 		GAMEMODE.ShopMenu.Frame:Close()
 		GAMEMODE.ShopMenu = nil
