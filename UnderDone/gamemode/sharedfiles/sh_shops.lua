@@ -21,14 +21,15 @@ if SERVER then
 	end
 	concommand.Add("UD_BuyItem", function(ply, command, args) ply:BuyItem(args[1]) end)
 
-	function Player:SellItem(strItem)
+	function Player:SellItem(strItem, intAmount)
+		intAmount = intAmount or 1
 		local tblNPCTable = NPCTable(self.UseTarget:GetNWString("npc"))
-		if tblNPCTable && tblNPCTable.Shop && self:HasItem(strItem, 1) then
+		if tblNPCTable && tblNPCTable.Shop && self:HasItem(strItem, intAmount) then
 			local tblItemTable = ItemTable(strItem)
-			if tblItemTable.SellPrice > 0 && self:RemoveItem(strItem, 1) then
-				self:AddItem("money", tblItemTable.SellPrice)
+			if tblItemTable.SellPrice > 0 && self:RemoveItem(strItem, intAmount) then
+				self:AddItem("money", tblItemTable.SellPrice * intAmount)
 			end
 		end
 	end
-	concommand.Add("UD_SellItem", function(ply, command, args) ply:SellItem(args[1]) end)
+	concommand.Add("UD_SellItem", function(ply, command, args) ply:SellItem(args[1], tonumber(args[2])) end)
 end

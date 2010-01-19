@@ -150,7 +150,7 @@ function PANEL:SetItem(tblItemTable, intAmount, strUseCommand, intCost)
 		self.DoUseItem = function() RunConsoleCommand("UD_BuyItem", tblItemTable.Name) end
 	end
 	if strUseCommand == "sell" then
-		self.DoUseItem = function() RunConsoleCommand("UD_SellItem", tblItemTable.Name) end
+		self.DoUseItem = function(intAmountToSell) RunConsoleCommand("UD_SellItem", tblItemTable.Name, intAmountToSell) end
 	end
 	---------ToolTip---------
 	local strTooltip = Format("%s", tblItemTable.PrintName)
@@ -168,11 +168,13 @@ function PANEL:SetItem(tblItemTable, intAmount, strUseCommand, intCost)
 		if strUseCommand == "use" && tblItemTable.Use && self.DoUseItem then GAMEMODE.ActiveMenu:AddOption("Use", self.DoUseItem) end
 		if strUseCommand == "buy" && self.DoUseItem then GAMEMODE.ActiveMenu:AddOption("Buy", self.DoUseItem) end
 		if strUseCommand == "sell" && intCost > 0 && self.DoUseItem then GAMEMODE.ActiveMenu:AddOption("Sell", self.DoUseItem) end
+		if strUseCommand == "sell" && intCost > 0 && intAmount > 1 then GAMEMODE.ActiveMenu:AddOption("Sell All", function() self.DoUseItem(intAmount) end) end
 		if strUseCommand == "use" && tblItemTable.Dropable then GAMEMODE.ActiveMenu:AddOption("Drop", self.DoDropItem) end
-		if strUseCommand == "use" && tblItemTable.Giveable then
-			local GiveSubMenu = GAMEMODE.ActiveMenu:AddSubMenu("Give ...")
+		if strUseCommand == "use" && tblItemTable.Giveable && #player.GetAll() > 1 then
+			local GiveSubMenu = nil
 			for _, player in pairs(player.GetAll()) do
 				if player:GetPos():Distance(LocalPlayer():GetPos()) < 250 && player != LocalPlayer() then
+					GiveSubMenu = GiveSubMenu or GAMEMODE.ActiveMenu:AddSubMenu("Give ...")
 					GiveSubMenu:AddOption(player:Nick(), function() self.DoGiveItem(player) end)
 				end
 			end
