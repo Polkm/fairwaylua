@@ -45,12 +45,6 @@ function GM:DrawPartyMembers()
 				if LocalPlayer():GetNWString("Party") != "" ||  ply:GetNWString("Party") != "" then
 					if LocalPlayer():GetNWString("Party") == ply:GetNWString("Party") then
 						draw.SimpleTextOutlined(ply:Nick(), "UiBold", w * 0.1 , h * (0.1 + (1/ 20)), clrWhite, 1, 1, 1, clrDrakGray)
-						self.PartyHealthBar = jdraw.NewProgressBar(self.PlayerBox, true)
-						self.PartyHealthBar:SetDemensions(3, 3, self.PlayerBox.Size.Width * 0.5, 20)
-						self.PartyHealthBar:SetStyle(4, clrWhite)
-						self.PartyHealthBar:SetValue(ply:Health(), ply:GetStat("stat_maxhealth"))
-						self.PartyHealthBar:SetText("UiBold", "Health " .. ply:Health(), clrDrakGray)
-						jdraw.DrawProgressBar(self.PartyHealthBar)
 					end
 				end
 			end
