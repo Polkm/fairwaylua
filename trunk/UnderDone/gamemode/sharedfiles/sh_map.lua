@@ -141,7 +141,7 @@ if SERVER then
 		entNewMonster:Spawn()
 		entNewMonster.Race = tblNPCTable.Race
 		entNewMonster.Invincible = tblNPCTable.Invincible
-		entNewMonster.Shop = type(tblNPCTable.Shop) == "table"
+		entNewMonster.Shop = tblNPCTable.Shop
 		local intTotalFlags = 1 + 8192
 		if tblNPCTable.Idle then
 			entNewMonster:SetNPCState(NPC_STATE_IDLE)
@@ -165,7 +165,7 @@ if SERVER then
 		entNewMonster:SetNWString("npc", tblNPCTable.Name)
 		local intLevel = math.Clamp(tblSpawnPoint.Level + math.random(-2, 2), 1, tblSpawnPoint.Level + 2)
 		entNewMonster:SetNWInt("level", intLevel)
-		local intHealth = tblSpawnPoint.Level * tblNPCTable.HealthPerLevel
+		local intHealth = tblSpawnPoint.Level * (tblNPCTable.HealthPerLevel or 10)
 		entNewMonster:SetMaxHealth(intHealth)
 		entNewMonster:SetHealth(intHealth)
 		entNewMonster:SetNWInt("MaxHealth", intHealth)

@@ -101,14 +101,13 @@ if SERVER then
 		for name, stat in pairs(GAMEMODE.DataBase.Stats) do
 			if ply.Stats then
 				ply:SetStat(name, ply:GetStat(name))
-				if name == "stat_agility" then
-					ply:AddStat("stat_agility", ply.ToMakeUpAgility or 0)
-				end
 				if stat.OnSpawn then
 					stat:OnSpawn(ply, ply:GetStat(name))
 				end
 			end
 		end
+		ply:AddStat("stat_agility", ply.ToMakeUpAgility or 0)
+		ply.ToMakeUpAgility = 0
 	end)
 end
 

@@ -55,7 +55,7 @@ function UseKeyPressed(ply, key)
 	end
 	if entLookEnt.Shop then
 		ply.UseTarget = entLookEnt
-		ply:ConCommand("UD_OpenShopMenu " .. entLookEnt:GetNWString("npc"))
+		ply:ConCommand("UD_OpenShopMenu " .. entLookEnt.Shop)
 	end
 	if entLookEnt.Pile then
 		local intAmount = 1

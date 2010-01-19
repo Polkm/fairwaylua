@@ -13,14 +13,16 @@ local function DrawNameText(entNPC, posNPCPos, boolFriendly)
 	if intLevel < plylevel then clrDrawColor = clrGreen end
 	if intLevel > plylevel then clrDrawColor = clrRed end
 	if boolFriendly then clrDrawColor = clrWhite end
-	draw.SimpleTextOutlined(tblNPCTable.NPCType or "", "UiBold", posNPCPos.x, posNPCPos.y - 20, clrDrawColor, 1, 1, 1, clrDrakGray)
+	local strTitle = ShopTable(tblNPCTable.Shop).PrintName or tblNPCTable.Title or ""
+	draw.SimpleTextOutlined(strTitle, "UiBold", posNPCPos.x, posNPCPos.y - 20, clrDrawColor, 1, 1, 1, clrDrakGray)
 	local strDrawText = tblNPCTable.PrintName
 	if !boolFriendly then strDrawText = strDrawText .. " lv. " .. intLevel end
 	draw.SimpleTextOutlined(strDrawText, "UiBold", posNPCPos.x, posNPCPos.y - 10, clrDrawColor, 1, 1, 1, clrDrakGray)
 	if boolFriendly then
 		surface.SetFont("UiBold")
-		local wide, high = surface.GetTextSize(strDrawText)
-		posNPCPos.x = posNPCPos.x + wide + 20
+		local wide1, high1 = surface.GetTextSize(strTitle)
+		local wide2, high2 = surface.GetTextSize(strDrawText)
+		posNPCPos.x = posNPCPos.x + (math.Max(wide1, wide2) / 2) + 5
 		DrawNPCIcon(entNPC, posNPCPos)
 	end
 end

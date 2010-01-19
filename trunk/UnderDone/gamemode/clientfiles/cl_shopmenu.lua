@@ -79,10 +79,11 @@ function PANEL:Init()
 	self:PerformLayout()
 end
 
-function PANEL:LoadShop(strNPC)
-	local tblNPCTable = NPCTable(strNPC)
+function PANEL:LoadShop(strShop)
+	local tblShopTable = ShopTable(strShop)
+	self.Frame:SetTitle(tblShopTable.PrintName)
 	self.ShopInventoryPanel:Clear()
-	for strItem, tblInfo in pairs(tblNPCTable.Shop or {}) do
+	for strItem, tblInfo in pairs(tblShopTable.Inventory or {}) do
 		self:AddItem(self.ShopInventoryPanel, strItem, 1, "buy", tblInfo.Price)
 	end
 end

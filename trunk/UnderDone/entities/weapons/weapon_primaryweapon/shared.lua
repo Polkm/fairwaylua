@@ -102,11 +102,11 @@ function SWEP:WeaponAttack()
 			effectdata:SetScale(1)
 			util.Effect(strEffect, effectdata)
 		end
-		self.Owner:AddStat("stat_agility", -32)
-		self.Owner.ToMakeUpAgility = 32
-		timer.Simple(1 / self.WeaponTable.FireRate, function()
-			if self.Owner && self.Owner:IsValid() then
-				self.Owner:AddStat("stat_agility", 32)
+		self.Owner.ToMakeUpAgility = 33
+		self.Owner:AddStat("stat_agility", -33)
+		timer.Simple((1 / self.WeaponTable.FireRate) + 0.05, function()
+			if self.Owner && self.Owner:IsValid() && self.Owner:Health() > 0 then
+				self.Owner:AddStat("stat_agility", 33)
 				self.Owner.ToMakeUpAgility = 0
 			end
 		end)
