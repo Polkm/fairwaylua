@@ -42,28 +42,6 @@ function Player:GiveItem(strItem, intAmount, plyTarget)
 end
 concommand.Add("UD_GiveItem", function(ply, command, args) ply:GiveItem(args[1], args[2], tonumber(args[3])) end)
 
-function Player:BuyItem(strItem)
-	local tblNPCTable = NPCTable(self.UseTarget:GetNWString("npc"))
-	if tblNPCTable && tblNPCTable.Shop && tblNPCTable.Shop[strItem] then
-		local tblItemInfo = tblNPCTable.Shop[strItem]
-		if self:HasItem("money", tblItemInfo.Price) && self:AddItem(strItem, 1) then
-			self:RemoveItem("money", tblItemInfo.Price)
-		end
-	end
-end
-concommand.Add("UD_BuyItem", function(ply, command, args) ply:BuyItem(args[1]) end)
-
-function Player:SellItem(strItem)
-	local tblNPCTable = NPCTable(self.UseTarget:GetNWString("npc"))
-	if tblNPCTable && tblNPCTable.Shop && self:HasItem(strItem, 1) then
-		local tblItemTable = ItemTable(strItem)
-		if tblItemTable.SellPrice > 0 && self:RemoveItem(strItem, 1) then
-			self:AddItem("money", tblItemTable.SellPrice)
-		end
-	end
-end
-concommand.Add("UD_SellItem", function(ply, command, args) ply:SellItem(args[1]) end)
-
 ----------------------------------------------------------------
 -------------------------ADMIN COMMANDS-------------------------
 ----------------------------------------------------------------

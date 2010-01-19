@@ -51,15 +51,10 @@ local NPC = {}
 NPC.Name = "shop_general"
 NPC.PrintName = "Jay"
 NPC.SpawnName = "npc_eli"
-NPC.HealthPerLevel = 10
 NPC.Invincible = true
 NPC.Idle = true
-NPC.NPCType = "Shop General"
 NPC.Race = "human"
-NPC.Shop = {}
-NPC.Shop["can"] = {Price = 15}
-NPC.Shop["small_ammo"] = {Price = 10}
-NPC.Shop["health_kit"] = {Price = 80}
+NPC.Shop = "shop_general"
 Register.NPC(NPC)
 
 local NPC = {}
@@ -70,7 +65,6 @@ NPC.Icon = "icons/npc_quest"
 NPC.HealthPerLevel = 10
 NPC.Invincible = true
 NPC.Idle = true
-NPC.NPCType = "Quest NPC"
 NPC.Race = "human"
 NPC.Quest = {}
 NPC.Quest["Kill Zombies"] = {Level = 5,Kill = 5, Name = "zombie"}
