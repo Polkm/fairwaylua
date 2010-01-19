@@ -48,11 +48,23 @@ function GM:HUDPaint()
 		end
 	end
 	
+	self:DrawPartyMembers()
+	
 	local intX = ScrW() / 2.0
 	local intY = LocalPlayer():GetEyeTraceNoCursor().HitPos:ToScreen().y
 	surface.SetDrawColor(clrGreen)
 	surface.DrawLine(intX - 2, intY, intX + 2, intY)
 	surface.DrawLine(intX, intY + 2, intX, intY - 2)
+end
+
+function GM:DrawPartyMembers()
+	for number, ply in pairs(player.GetAll()) do
+		if LocalPlayer().Party && ply.Party then
+			if LocalPlayer() != ply && LocalPlayer():GetNWString("Party") == ply:GetNWString("Party") then
+				
+			end
+		end
+	end
 end
 
 function GM:DrawHealthBar()
