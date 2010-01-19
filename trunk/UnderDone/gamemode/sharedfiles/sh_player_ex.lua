@@ -44,27 +44,6 @@ if SERVER then
 			end
 		end
 	end
-
-	function Player:CreateIndacator(strMessage, vecPosition, strColor, boolAll)
-		local strSendColor = strColor or "white"
-		local tblVector = {}
-		tblVector[1] = math.Round(vecPosition.x)
-		tblVector[2] = math.Round(vecPosition.y)
-		tblVector[3] = math.Round(vecPosition.z)
-		local strCommand = "UD_AddDamageIndacator " .. strMessage .. " " .. table.concat(tblVector, "!") .. " " .. strSendColor
-		self:ConCommand(strCommand)
-		if boolAll then
-			for _, ply in pairs(player.GetAll()) do
-				if self != ply && ply:GetPos():Distance(self:GetPos()) < 200 then
-					ply:ConCommand(strCommand)
-				end
-			end
-		end
-	end
-	
-	function Player:CreateNotification(strMessage)
-		self:ConCommand("UD_AddNotification " .. strMessage) 
-	end
 	
 	local function PlayerAdjustDamage(entVictim, entInflictor, entAttacker, intAmount, dmginfo)
 		if entVictim:IsPlayer() then
