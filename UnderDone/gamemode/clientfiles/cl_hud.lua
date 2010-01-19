@@ -1,3 +1,6 @@
+local w = ScrW()
+local h = ScrH()
+
 function GM:HUDPaint()
 	local boolShouldDrawAmmo = true
 	if !LocalPlayer():GetActiveWeapon() or !LocalPlayer():GetActiveWeapon():IsValid() then boolShouldDrawAmmo = false end
@@ -37,9 +40,19 @@ end
 
 function GM:DrawPartyMembers()
 	for number, ply in pairs(player.GetAll()) do
-		if LocalPlayer().Party && ply.Party then
-			if LocalPlayer() != ply && LocalPlayer():GetNWString("Party") == ply:GetNWString("Party") then
-				
+		if LocalPlayer() != ply then
+			if ply:IsValid() && LocalPlayer():IsValid() then
+				if LocalPlayer():GetNWString("Party") != "" ||  ply:GetNWString("Party") != "" then
+					if LocalPlayer():GetNWString("Party") == ply:GetNWString("Party") then
+						draw.SimpleTextOutlined(ply:Nick(), "UiBold", w * 0.1 , h * (0.1 + (1/ 20)), clrWhite, 1, 1, 1, clrDrakGray)
+						self.PartyHealthBar = jdraw.NewProgressBar(self.PlayerBox, true)
+						self.PartyHealthBar:SetDemensions(3, 3, self.PlayerBox.Size.Width * 0.5, 20)
+						self.PartyHealthBar:SetStyle(4, clrWhite)
+						self.PartyHealthBar:SetValue(ply:Health(), ply:GetStat("stat_maxhealth"))
+						self.PartyHealthBar:SetText("UiBold", "Health " .. ply:Health(), clrDrakGray)
+						jdraw.DrawProgressBar(self.PartyHealthBar)
+					end
+				end
 			end
 		end
 	end
@@ -63,7 +76,7 @@ function GM:DrawLevelBar()
 	local intNextLevelExp = toExp(LocalPlayer():GetLevel() + 1)
 	local clrBarColor = clrOrange
 	self.LevelBar = jdraw.NewProgressBar(self.PlayerBox, true)
-	self.LevelBar:SetDemensions(3, self.HealthBar.Size.Hieght + 6, self.PlayerBox.Size.Width - 6, 15)
+	self.LevelBar:SetDemensions(3, self.HealthBar.Size.Height + 6, self.PlayerBox.Size.Width - 6, 15)
 	self.LevelBar:SetStyle(4, clrBarColor)
 	self.LevelBar:SetValue(LocalPlayer():GetNWInt("exp") - intCurrentLevelExp, intNextLevelExp - intCurrentLevelExp)
 	self.LevelBar:SetText("UiBold", "Level " .. LocalPlayer():GetLevel(), clrDrakGray)
@@ -77,7 +90,7 @@ function GM:DrawAmmoBar()
 	local strAmmoType = tblWeaponTable.AmmoType or "none"
 	local clrBarColor = clrBlue
 	self.AmmoBar = jdraw.NewProgressBar(self.PlayerBox, true)
-	self.AmmoBar:SetDemensions(3, self.HealthBar.Size.Hieght + self.LevelBar.Size.Hieght + 9, self.PlayerBox.Size.Width - 6, 15)
+	self.AmmoBar:SetDemensions(3, self.HealthBar.Size.Height + self.LevelBar.Size.Height + 9, self.PlayerBox.Size.Width - 6, 15)
 	self.AmmoBar:SetStyle(4, clrBarColor)
 	self.AmmoBar:SetValue(intCurrentClip, tblWeaponTable.ClipSize or 1)
 	self.AmmoBar:SetText("UiBold", "Ammo " .. intCurrentClip .. "  " .. LocalPlayer():GetAmmoCount(strAmmoType), clrDrakGray)
