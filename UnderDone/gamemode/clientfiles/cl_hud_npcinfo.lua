@@ -13,7 +13,8 @@ local function DrawNameText(entNPC, posNPCPos, boolFriendly)
 	if intLevel < plylevel then clrDrawColor = clrGreen end
 	if intLevel > plylevel then clrDrawColor = clrRed end
 	if boolFriendly then clrDrawColor = clrWhite end
-	local strTitle = ShopTable(tblNPCTable.Shop).PrintName or tblNPCTable.Title or ""
+	local strTitle = tblNPCTable.Title or ""
+	if tblNPCTable.Shop then strTitle = ShopTable(tblNPCTable.Shop).PrintName end
 	draw.SimpleTextOutlined(strTitle, "UiBold", posNPCPos.x, posNPCPos.y - 20, clrDrawColor, 1, 1, 1, clrDrakGray)
 	local strDrawText = tblNPCTable.PrintName
 	if !boolFriendly then strDrawText = strDrawText .. " lv. " .. intLevel end
