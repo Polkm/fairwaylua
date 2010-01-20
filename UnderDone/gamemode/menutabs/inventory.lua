@@ -6,6 +6,11 @@ PANEL.ItemIconPadding = 1
 PANEL.ItemIconSize = 39
 PANEL.ItemRow = 7
 
+PANEL.AmmoDisplayTable = {}
+PANEL.AmmoDisplayTable[1] = {Type = "smg1", PrintName = "Pistol"}
+PANEL.AmmoDisplayTable[2] = {Type = "ar2", PrintName = "Rifle"}
+PANEL.AmmoDisplayTable[3] = {Type = "buckshot", PrintName = "Buckshot"}
+
 function PANEL:Init()
 	self.inventorylist = vgui.Create("DPanelList", self)
 	self.inventorylist:SetSpacing(self.ItemIconPadding)
@@ -58,6 +63,19 @@ function PANEL:Init()
 		jdraw.DrawPanel(tblPaintPanle)
 	end
 	
+	self.AmmoDisplay = vgui.Create("DPanelList", self)
+	self.AmmoDisplay:SetSpacing(0)
+	self.AmmoDisplay:SetPadding(3)
+	self.AmmoDisplay:EnableHorizontal(false)
+	self.AmmoDisplay:EnableVerticalScrollbar(false)
+	self.AmmoDisplay.Paint = function()
+		local tblPaintPanle = jdraw.NewPanel()
+		tblPaintPanle:SetDemensions(0, 0, self.AmmoDisplay:GetWide(), self.AmmoDisplay:GetTall())
+		tblPaintPanle:SetStyle(4, clrGray)
+		tblPaintPanle:SetBoarder(1, clrDrakGray)
+		jdraw.DrawPanel(tblPaintPanle)
+	end
+	
 	self:LoadInventory()
 end
 
@@ -74,7 +92,10 @@ function PANEL:PerformLayout()
 	self.Paperdoll:SetSize(self:GetWide() - (self.inventorylist:GetWide() + 5), self:GetTall() - 85)
 	
 	self.StatsDisplay:SetPos(self.inventorylist:GetWide() + 5, self.Paperdoll:GetTall() + 5)
-	self.StatsDisplay:SetSize(self.Paperdoll:GetWide(), self:GetTall() - self.Paperdoll:GetTall() - 5)
+	self.StatsDisplay:SetSize((self.Paperdoll:GetWide() * 0.60) - 5, self:GetTall() - self.Paperdoll:GetTall() - 5)
+	
+	self.AmmoDisplay:SetPos((self.inventorylist:GetWide() + 5) + self.StatsDisplay:GetWide() + 5, self.Paperdoll:GetTall() + 5)
+	self.AmmoDisplay:SetSize((self.Paperdoll:GetWide() - self.StatsDisplay:GetWide()) - 5, self:GetTall() - self.Paperdoll:GetTall() - 5)
 end
 
 function PANEL:LoadInventory(boolTemp)
@@ -113,7 +134,20 @@ function PANEL:LoadInventory(boolTemp)
 		end
 	end
 	
+	self:ReloadAmmoDisplay()
 	self:PerformLayout()
+end
+
+function PANEL:ReloadAmmoDisplay()
+	self.AmmoDisplay:Clear()
+	for _, tblInfo in pairs(self.AmmoDisplayTable) do
+		local lblNewAmmoType = vgui.Create("DLabel")
+		lblNewAmmoType:SetFont("UiBold")
+		lblNewAmmoType:SetColor(clrDrakGray)
+		lblNewAmmoType:SetText(tblInfo.PrintName .. " " .. LocalPlayer():GetAmmoCount(tblInfo.Type))
+		lblNewAmmoType:SizeToContents()
+		self.AmmoDisplay:AddItem(lblNewAmmoType)
+	end
 end
 
 function PANEL:AddItem(item, amount)

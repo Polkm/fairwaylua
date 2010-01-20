@@ -1,5 +1,10 @@
+--Dont mess with this stuff its just for compatability
 SWEP.WorldModel	= "models/weapons/w_pistol.mdl"
 SWEP.Primary.Automatic = true
+SWEP.Primary.Ammo = "none"
+SWEP.Secondary.Automatic = false
+SWEP.Secondary.Ammo = "none"
+------------------------------------------------------
 
 function SWEP:Initialize()
 end

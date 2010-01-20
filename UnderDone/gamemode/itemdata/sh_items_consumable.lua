@@ -20,10 +20,10 @@ Item.Icon = "icons/item_healthkit"
 Item.Model = "models/Items/Health_Kit.mdl"
 Item.Dropable = true
 Item.Giveable = true
-Item.SellPrice = 40
+Item.SellPrice = 20
 Item.Weight = 1
 Item.AddedHealth = 40
-Item.AddTime = 6
+Item.AddTime = 1
 Register.Item(Item)
 
 local Item = DeriveTable(BaseAmmo)

@@ -75,7 +75,7 @@ end
 
 function OnPropBreak(entBreaker, entProp)
 	if entBreaker:IsValid() and entBreaker:IsPlayer() and entProp:IsValid() then
-		for i = 1, math.random(1, 3) do
+		for i = 1, math.random(0, 3) do
 			local entLoot = CreateWorldItem("wood")
 			entLoot:SetPos(entProp:GetPos())
 			entLoot:GetPhysicsObject():ApplyForceCenter(Vector(math.random(-100, 100), math.random(-100, 100), math.random(350, 400)))
