@@ -9,11 +9,11 @@ Register.Shop(Shop)
 
 local Shop = {}
 Shop.Name = "shop_weapons"
-Shop.PrintName = "Shop General"
+Shop.PrintName = "Arms Dealer"
 Shop.Inventory = {}
-Shop.Inventory["can"] = {Price = 15}
-Shop.Inventory["small_ammo"] = {Price = 10}
-Shop.Inventory["health_kit"] = {Price = 50}
+Shop.Inventory["meat_cleaver"] = {Price = 196}
+Shop.Inventory["weapon_melee_leadpipe"] = {Price = 292}
+Shop.Inventory["knife"] = {Price = 375}
 Register.Shop(Shop)
 
 if SERVER then

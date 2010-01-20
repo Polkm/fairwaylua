@@ -133,19 +133,19 @@ if SERVER then
 	function GM:CreateNPC(strNPC, tblSpawnPoint)
 		local tblNPCTable = NPCTable(strNPC)
 		local entNewMonster = ents.Create(tblNPCTable.SpawnName)
-		if tblNPCTable.Model then
-			entNewMonster:SetModel(tblNPCTable.Model)
-		end
 		entNewMonster:SetPos(tblSpawnPoint.Postion)
 		entNewMonster:SetAngles(tblSpawnPoint.Angle or Angle(0, 90, 0))
 		entNewMonster:Spawn()
+		if tblNPCTable.Model then
+			entNewMonster:SetModel(tblNPCTable.Model)
+		end
 		entNewMonster.Race = tblNPCTable.Race
 		entNewMonster.Invincible = tblNPCTable.Invincible
 		entNewMonster.Shop = tblNPCTable.Shop
 		local intTotalFlags = 1 + 8192
 		if tblNPCTable.Idle then
 			entNewMonster:SetNPCState(NPC_STATE_IDLE)
-			intTotalFlags = intTotalFlags + 16
+			intTotalFlags = intTotalFlags + 16 + 128
 		end
 		entNewMonster:SetKeyValue("spawnflags", intTotalFlags)
 		if tblNPCTable.Weapon then
