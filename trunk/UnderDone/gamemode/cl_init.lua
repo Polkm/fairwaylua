@@ -41,6 +41,7 @@ function GM:OnSpawnMenuOpen()
 	gui.EnableScreenClicker(true)
 	RestoreCursorPosition()
 	GAMEMODE.MainMenu.PlayersTab:LoadPlayers()
+	GAMEMODE.MainMenu.InventoryTab:ReloadAmmoDisplay()
 end
 
 function GM:OnSpawnMenuClose()

@@ -7,6 +7,7 @@ Item.Model = {}
 Item.Model[1] = {Model = "models/props_interiors/pot02a.mdl", Position = Vector(-0.7, -8.1, -3.5), Angle = Angle(180, -100, -20)}
 Item.Dropable = true
 Item.Giveable = true
+Item.SellPrice = 70
 Item.Weight = 1
 Item.Slot = "slot_helm"
 Item.Armor = 5
@@ -21,6 +22,7 @@ Item.Model = {}
 Item.Model[1] = {Model = "models/Gibs/Shield_Scanner_Gib1.mdl", Position = Vector(-0.3, -0.3, 0.1), Angle = Angle(121.1, -83.6, -95.7)}
 Item.Dropable = true
 Item.Giveable = true
+Item.SellPrice = 100
 Item.Weight = 1
 Item.Slot = "slot_helm"
 Item.Buffs["stat_strength"] = 5
@@ -38,6 +40,7 @@ Item.Model[2] = {Model = "models/Gibs/Scanner_gib02.mdl", Position = Vector(-4.4
 Item.Model[3] = {Model = "models/Gibs/Scanner_gib02.mdl", Position = Vector(7, 5, 4.6), Angle = Angle(-23.4, -4.7, 56.9)}
 Item.Dropable = true
 Item.Giveable = true
+Item.SellPrice = 75
 Item.Weight = 1
 Item.Slot = "slot_chest"
 Item.Buffs["stat_maxhealth"] = 5
@@ -53,6 +56,7 @@ Item.Model = {}
 Item.Model[1] = {Model = "models/props_mining/elevator_winch_cog.mdl", Position = Vector(0, 5.7, 5), Angle = Angle(-83.6, -7.4, 0)}
 Item.Dropable = true
 Item.Giveable = true
+Item.SellPrice = 120
 Item.Weight = 1
 Item.Slot = "slot_offhand"
 Item.Armor = 20
@@ -67,6 +71,7 @@ Item.Model = {}
 Item.Model[1] = {Model = "models/props_junk/sawblade001a.mdl", Position = Vector(0.3, 1, -2.1), Angle = Angle(-89, 68.9, 4.7)}
 Item.Dropable = true
 Item.Giveable = true
+Item.SellPrice = 120
 Item.Weight = 1
 Item.Slot = "slot_offhand"
 Item.Armor = 20

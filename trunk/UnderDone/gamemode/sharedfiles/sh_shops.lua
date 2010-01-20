@@ -4,7 +4,16 @@ Shop.PrintName = "Shop General"
 Shop.Inventory = {}
 Shop.Inventory["can"] = {Price = 15}
 Shop.Inventory["small_ammo"] = {Price = 10}
-Shop.Inventory["health_kit"] = {Price = 80}
+Shop.Inventory["health_kit"] = {Price = 50}
+Register.Shop(Shop)
+
+local Shop = {}
+Shop.Name = "shop_weapons"
+Shop.PrintName = "Shop General"
+Shop.Inventory = {}
+Shop.Inventory["can"] = {Price = 15}
+Shop.Inventory["small_ammo"] = {Price = 10}
+Shop.Inventory["health_kit"] = {Price = 50}
 Register.Shop(Shop)
 
 if SERVER then
