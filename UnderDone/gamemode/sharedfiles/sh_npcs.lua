@@ -58,6 +58,17 @@ NPC.Shop = "shop_general"
 Register.NPC(NPC)
 
 local NPC = {}
+NPC.Name = "shop_weapons"
+NPC.PrintName = "Clare"
+NPC.SpawnName = "npc_citizen"
+NPC.Model = "models/Humans/Group03/Female_06.mdl"
+NPC.Invincible = true
+NPC.Idle = true
+NPC.Race = "human"
+NPC.Shop = "shop_weapons"
+Register.NPC(NPC)
+
+local NPC = {}
 NPC.Name = "quest_npc"
 NPC.PrintName = "Grigori"
 NPC.SpawnName = "npc_monk"

@@ -94,7 +94,7 @@ Item.Model = {}
 Item.Model[1] = {Model = "models/weapons/w_knife_ct.mdl", Position = Vector(-3.7, -0.3, 1.7), Angle = Angle(-8.7, 75.6, 31.4)}
 Item.Dropable = true
 Item.Giveable = true
-Item.SellPrice = 170
+Item.SellPrice = 300
 Item.Weight = 1
 Item.HoldType = "melee"
 Item.Power = 6
