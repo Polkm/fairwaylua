@@ -5,9 +5,11 @@ function Player:NewGame()
 	self:AddItem("money", 200)
 	self:AddItem("health_kit", 2)
 	self:AddItem("pistol", 1)
+	self:AddItem("weapon_ranged_heavymacgun", 1)
 	self:AddItem("small_ammo", 3)
 	self:AddItem("axe", 1)
 	self:AddItem("armor_junk_chest", 1)
+	
 	/*
 	self:AddItem("can", 1)
 	self:AddItem("frying_pan", 1)
