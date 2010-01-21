@@ -3,6 +3,7 @@ PANEL.Frame = nil
 PANEL.TabSheet = nil
 PANEL.TabPanels = {}
 PANEL.InventoryTab = nil
+PANEL.CharacterTab = nil
 PANEL.PlayersTab = nil
 
 PANEL.TargetAlpha = 0
@@ -19,6 +20,7 @@ function PANEL:Init()
 	self.Frame:MakePopup()
 		self.TabSheet = vgui.Create("DPropertySheet", self.Frame)
 			self.InventoryTab = self:NewTab("Inventory", "inventorytab", "gui/silkicons/user", "Minipulate your Items")
+			self.CharacterTab = self:NewTab("Character", "charactertab", "gui/silkicons/user", "Customize you character")
 			self.PlayersTab = self:NewTab("Players", "playerstab", "gui/silkicons/group", "List of players")
 		for _, sheet in pairs(self.TabSheet.Items) do
 			sheet.Tab.Paint = function(panel)

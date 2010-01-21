@@ -36,6 +36,7 @@ function Player:LoadGame()
 	end
 	local strSteamID = string.Replace(self:SteamID(), ":", "!")
 	if strSteamID != "STEAM_ID_PENDING" then
+		hook.Call("UD_Hook_PlayerLoad", GAMEMODE, self)
 		local strFileName = "UnderDone/" .. strSteamID .. ".txt"
 		if file.Exists(strFileName) then
 			local tblDecodedTable = glon.decode(file.Read(strFileName))
