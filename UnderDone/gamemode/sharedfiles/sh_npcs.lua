@@ -124,11 +124,6 @@ if SERVER then
 				plyAttacker:CreateIndacator("Crit!", dmginfo:GetDamagePosition(), "blue", true)
 				clrDisplayColor = "blue"
 			end
-			for name, stat in pairs(GAMEMODE.DataBase.Stats) do
-				if plyAttacker:GetStat(name) && stat.DamageMod then
-					dmginfo:SetDamage(stat:DamageMod(plyAttacker, plyAttacker:GetStat(name), dmginfo:GetDamage()))
-				end
-			end
 			dmginfo:SetDamage(math.Round(dmginfo:GetDamage() + math.random(-1, 1)))
 			if boolDisplayDmg then
 				if dmginfo:GetDamage() > 0 then
