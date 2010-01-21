@@ -41,6 +41,9 @@ GM.DataBase.Shops = {}
 function Register.Shop(tblShop) GM.DataBase.Shops[tblShop.Name] = tblShop end
 function ShopTable(strShop) return GAMEMODE.DataBase.Shops[strShop] end
 
+GM.DataBase.Skills = {}
+function Register.Skill(tblSkill) GM.DataBase.Skills[tblSkill.Name] = tblSkill end
+function SkillTable(strSkill) return GAMEMODE.DataBase.Skills[strSkill] end
 
 
 

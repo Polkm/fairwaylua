@@ -80,7 +80,7 @@ function SWEP:WeaponAttack()
 		tblBullet.Force		= self.WeaponTable.Power / 2
 		tblBullet.Spread 	= Vector(self.WeaponTable.Accuracy, self.WeaponTable.Accuracy, 0)
 		tblBullet.Num 		= self.WeaponTable.NumOfBullets
-		tblBullet.Damage	= self.WeaponTable.Power
+		tblBullet.Damage	= self:GetDamage(self.WeaponTable.Power)
 		tblBullet.Tracer	= 2
 		if isMelee then tblBullet.Tracer = 0 end
 		tblBullet.AmmoType	= self.WeaponTable.AmmoType
@@ -118,4 +118,19 @@ function SWEP:WeaponAttack()
 		self:EmitSound(self.WeaponTable.Sound)
 		self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate))
 	end
+end
+
+function SWEP:GetDamage(intDamage)
+	for name, stat in pairs(GAMEMODE.DataBase.Stats) do
+		if self.Owner:GetStat(name) && stat.DamageMod then
+			intDamage = stat:DamageMod(self.Owner, self.Owner:GetStat(name), intDamage)
+		end
+	end
+	for strSkill, intSkillLevel in pairs(self.Owner.Data.Skills or {}) do
+		local tblSkillTable = SkillTable(strSkill)
+		if self.Owner:GetSkill(strSkill) > 0 && tblSkillTable.DamageMod then
+			intDamage = tblSkillTable:DamageMod(self.Owner, self.Owner:GetSkill(strSkill), intDamage)
+		end
+	end
+	return intDamage
 end
