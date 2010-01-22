@@ -4,12 +4,14 @@ local intSkillPointsPerLevel = 1
 local Skill = {}
 Skill.Name = "skill_basictraining"
 Skill.PrintName = "Basic Training"
-Skill.Tier = 1
-Skill.Levels = 3
+Skill.Icon = "icons/weapon_pistol"
 Skill.Desc = {}
+Skill.Desc["story"] = "Its time for basic soldier!"
 Skill.Desc[1] = "Increase Dexterity by 2"
 Skill.Desc[2] = "Increase Dexterity by 3"
 Skill.Desc[3] = "Increase Dexterity by 4"
+Skill.Tier = 1
+Skill.Levels = 3
 function Skill:OnSet(ply, intSkillLevel, intOldSkillLevel)
 	local tblStatTable = {}
 	tblStatTable[0] = 0
@@ -18,18 +20,19 @@ function Skill:OnSet(ply, intSkillLevel, intOldSkillLevel)
 	tblStatTable[3] = 4
 	ply:AddStat("stat_dexterity", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
 end
-Skill.Icon = "icons/weapon_pistol"
 Register.Skill(Skill)
 
 local Skill = {}
 Skill.Name = "skill_closecombat"
 Skill.PrintName = "Close Quarters Combat"
-Skill.Tier = 1
-Skill.Levels = 3
+Skill.Icon = "icons/junk_gnome"
 Skill.Desc = {}
+Skill.Desc["story"] = "Be trained by the pros"
 Skill.Desc[1] = "Increase Strength by 1"
 Skill.Desc[2] = "Increase Strength by 3"
 Skill.Desc[3] = "Increase Strength by 5"
+Skill.Tier = 1
+Skill.Levels = 3
 function Skill:OnSet(ply, intSkillLevel, intOldSkillLevel)
 	local tblStatTable = {}
 	tblStatTable[0] = 0
@@ -38,7 +41,6 @@ function Skill:OnSet(ply, intSkillLevel, intOldSkillLevel)
 	tblStatTable[3] = 5
 	ply:AddStat("stat_strength", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
 end
-Skill.Icon = "icons/junk_gnome"
 Register.Skill(Skill)
 
 function Player:SetSkill(strSkill, intAmount)
