@@ -32,6 +32,7 @@ if SERVER then
 			self:SetNWInt("exp", math.Clamp(intTotal, toExp(intPreExpLevel), intTotal))
 			local intPostExpLevel = self:GetLevel()
 			if intPreExpLevel < intPostExpLevel then
+				hook.Call("UD_Hook_PlayerLevelUp", GAMEMODE, self)
 				self:CreateIndacator("Holy_Shit_Your_Cool!", self:GetPos() + Vector(0, 0, 70), "purple", true)
 				self:CreateIndacator("Nice_Man!", self:GetPos() + Vector(0, 0, 70), "blue", true)
 				self:CreateIndacator("You_Are_Epic!", self:GetPos() + Vector(0, 0, 70), "orange", true)

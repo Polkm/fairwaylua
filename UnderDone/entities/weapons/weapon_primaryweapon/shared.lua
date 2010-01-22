@@ -50,7 +50,7 @@ function SWEP:Reload()
 		timer.Simple(1.5, function()
 			if !self or !self.Owner or !self.Owner:Alive() then return end
 			self.Owner:RemoveAmmo(self.WeaponTable.ClipSize - self:Clip1(), self.WeaponTable.AmmoType)
-			self:SetClip1(math.Clamp(self.WeaponTable.ClipSize, 0, intCurrentAmmo))
+			self:SetClip1(math.Clamp(self.WeaponTable.ClipSize, 0, self:Clip1() + intCurrentAmmo))
 			self:SetNWBool("reloading", false)
 		end)
 	end
@@ -121,9 +121,9 @@ function SWEP:WeaponAttack()
 end
 
 function SWEP:GetDamage(intDamage)
-	for name, stat in pairs(GAMEMODE.DataBase.Stats) do
-		if self.Owner:GetStat(name) && stat.DamageMod then
-			intDamage = stat:DamageMod(self.Owner, self.Owner:GetStat(name), intDamage)
+	for strStat, tblStatTable in pairs(GAMEMODE.DataBase.Stats) do
+		if self.Owner:GetStat(strStat) && tblStatTable.DamageMod then
+			intDamage = tblStatTable:DamageMod(self.Owner, self.Owner:GetStat(strStat), intDamage)
 		end
 	end
 	for strSkill, intSkillLevel in pairs(self.Owner.Data.Skills or {}) do
