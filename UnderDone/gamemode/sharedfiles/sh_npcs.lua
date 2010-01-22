@@ -77,8 +77,7 @@ NPC.HealthPerLevel = 10
 NPC.Invincible = true
 NPC.Idle = true
 NPC.Race = "human"
-NPC.Quest = {}
-NPC.Quest["Kill Zombies"] = {Level = 5,Kill = 5, Name = "zombie"}
+NPC.Quest = {"quest_killzombies", "quest_obtainzombieblood", "quest_killantlionboss" }
 Register.NPC(NPC)
 
 if SERVER then
