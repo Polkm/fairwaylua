@@ -11,15 +11,12 @@ Skill.Desc[1] = "Increase dexterity by 1"
 Skill.Desc[2] = "Increase dexterity by 2"
 Skill.Desc[3] = "Increase dexterity by 4"
 function Skill:OnSet(ply, intSkillLevel, intOldSkillLevel)
-	local intDirection = math.abs(intSkillLevel - intOldSkillLevel) / (intSkillLevel - intOldSkillLevel)
-	local intAddValue = 0
-	local intRemoveValue = 0
-	if intSkillLevel == 1 then intAddValue = 2 end
-	if intOldSkillLevel == 1 then intRemoveValue = 2 end
-	if intSkillLevel == 2 then intAddValue = 5 end
-	if intOldSkillLevel == 2 then intRemoveValue = 5 end
-	ply:AddStat("stat_dexterity", intDirection * intAddValue)
-	ply:AddStat("stat_dexterity", -intDirection * intRemoveValue)
+	local tblStatTable = {}
+	tblStatTable[0] = 0
+	tblStatTable[1] = 1
+	tblStatTable[2] = 2
+	tblStatTable[3] = 4
+	ply:AddStat("stat_dexterity", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
 end
 Skill.Icon = "icons/weapon_pistol"
 Register.Skill(Skill)
@@ -50,7 +47,7 @@ function Player:GetSkill(strSkill)
 end
 
 function Player:GetSkillPoints()
-	local intSkillPoints = self:GetLevel() * intSkillPointsPerLeve
+	local intSkillPoints = self:GetLevel() * 3
 	for strSkill, intAmount in pairs(self.Data.Skills or {}) do
 		intSkillPoints = math.Clamp(intSkillPoints - intAmount, 0, self:GetLevel())
 	end
