@@ -36,7 +36,7 @@ Stat.Desc = "The more you have more damage ranged attack will do"
 Stat.Default = 1
 function Stat:DamageMod(ply, intDexterity, intDamage)
 	if !ply:IsMelee() then
-		intDamage = intDamage * math.Clamp(intDexterity / 3, 1, intStrength)
+		intDamage = intDamage * math.Clamp(intDexterity / 3, 1, intDexterity)
 	end
 	return intDamage
 end

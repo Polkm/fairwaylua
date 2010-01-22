@@ -205,4 +205,18 @@ function PANEL:SetSlot(tblSlotTable)
 	self:SetRightClick(function() end)
 end
 
+function PANEL:SetSkill(tblSkillTable, intSkillLevel)
+	if !tblSkillTable then return false end
+	local strToolTip = ""
+	if tblSkillTable.PrintName then strToolTip = Format("%s", tblSkillTable.PrintName) end
+	if tblSkillTable.Desc[intSkillLevel] then strToolTip = Format("%s\n%s", strToolTip, tblSkillTable.Desc[intSkillLevel]) end
+	if tblSkillTable.Desc[intSkillLevel + 1] && tblSkillTable.Desc[intSkillLevel] then strToolTip = Format("%s\n\n%s", strToolTip, "Next Level") end
+	if tblSkillTable.Desc[intSkillLevel + 1] then strToolTip = Format("%s\n%s", strToolTip, tblSkillTable.Desc[intSkillLevel + 1]) end
+	self:SetTooltip(strToolTip)
+	self:SetIcon(tblSkillTable.Icon or nil)
+	self:SetAmount(intSkillLevel or 0)
+	self:SetDragable(false)
+	
+	self:SetDoubleClick(function() RunConsoleCommand("UD_BuySkill", tblSkillTable.Name) end)
+end
 vgui.Register("FIconItem", PANEL, "Panel")
