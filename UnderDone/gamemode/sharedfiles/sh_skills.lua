@@ -1,24 +1,44 @@
 local Player = FindMetaTable("Player")
-local intSkillPointsPerLeve = 1
+local intSkillPointsPerLevel = 1
 
 local Skill = {}
 Skill.Name = "skill_basictraining"
 Skill.PrintName = "Basic Training"
 Skill.Tier = 1
-Skill.Levels = 2
+Skill.Levels = 3
 Skill.Desc = {}
-Skill.Desc[1] = "Increase dexterity by 1"
-Skill.Desc[2] = "Increase dexterity by 2"
-Skill.Desc[3] = "Increase dexterity by 4"
+Skill.Desc[1] = "Increase Dexterity by 2"
+Skill.Desc[2] = "Increase Dexterity by 3"
+Skill.Desc[3] = "Increase Dexterity by 4"
 function Skill:OnSet(ply, intSkillLevel, intOldSkillLevel)
 	local tblStatTable = {}
 	tblStatTable[0] = 0
-	tblStatTable[1] = 1
-	tblStatTable[2] = 2
+	tblStatTable[1] = 2
+	tblStatTable[2] = 3
 	tblStatTable[3] = 4
 	ply:AddStat("stat_dexterity", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
 end
 Skill.Icon = "icons/weapon_pistol"
+Register.Skill(Skill)
+
+local Skill = {}
+Skill.Name = "skill_closecombat"
+Skill.PrintName = "Close Quarters Combat"
+Skill.Tier = 1
+Skill.Levels = 3
+Skill.Desc = {}
+Skill.Desc[1] = "Increase Strength by 1"
+Skill.Desc[2] = "Increase Strength by 3"
+Skill.Desc[3] = "Increase Strength by 5"
+function Skill:OnSet(ply, intSkillLevel, intOldSkillLevel)
+	local tblStatTable = {}
+	tblStatTable[0] = 0
+	tblStatTable[1] = 1
+	tblStatTable[2] = 3
+	tblStatTable[3] = 5
+	ply:AddStat("stat_strength", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
+end
+Skill.Icon = "icons/junk_gnome"
 Register.Skill(Skill)
 
 function Player:SetSkill(strSkill, intAmount)
@@ -47,7 +67,7 @@ function Player:GetSkill(strSkill)
 end
 
 function Player:GetSkillPoints()
-	local intSkillPoints = self:GetLevel() * 3
+	local intSkillPoints = self:GetLevel() * intSkillPointsPerLevel
 	for strSkill, intAmount in pairs(self.Data.Skills or {}) do
 		intSkillPoints = math.Clamp(intSkillPoints - intAmount, 0, self:GetLevel())
 	end
@@ -60,7 +80,7 @@ if SERVER then
 	end)
 	
 	hook.Add("UD_Hook_PlayerLevelUp", "PlayerLevelUp_SkillPoints", function(plyNewPlayer)
-		plyNewPlayer:SetNWInt("SkillPoints", plyNewPlayer:GetNWInt("SkillPoints") + intSkillPointsPerLeve)
+		plyNewPlayer:SetNWInt("SkillPoints", plyNewPlayer:GetNWInt("SkillPoints") + intSkillPointsPerLevel)
 	end)
 	
 	function Player:BuySkill(strSkill)

@@ -23,7 +23,7 @@ function Stat:OnSet(ply, intStrength, intOldStrength)
 end
 function Stat:DamageMod(ply, intStrength, intDamage)
 	if ply:IsMelee() then
-		intDamage = intDamage * math.Clamp(intStrength / 3, 1, intStrength)
+		intDamage = intDamage * math.Clamp(intStrength / 5, 1, intStrength)
 	end
 	return intDamage
 end
@@ -36,7 +36,7 @@ Stat.Desc = "The more you have more damage ranged attack will do"
 Stat.Default = 1
 function Stat:DamageMod(ply, intDexterity, intDamage)
 	if !ply:IsMelee() then
-		intDamage = intDamage * math.Clamp(intDexterity / 3, 1, intDexterity)
+		intDamage = intDamage * math.Clamp(intDexterity / 5, 1, intDexterity)
 	end
 	return intDamage
 end
@@ -53,10 +53,9 @@ local Stat = {}
 Stat.Name = "stat_agility"
 Stat.PrintName = "Agility"
 Stat.Desc = "The higher this is teh faster you run and reload and attack"
-Stat.Default = 20
+Stat.Default = 1
 function Stat:OnSet(ply, intAgility, intOldAgility)
-	ply:SetWalkSpeed(math.Clamp(150 + (intAgility * 10), 0, 1000))
-	ply:SetRunSpeed(math.Clamp(150 + (intAgility * 10), 0, 1000))
+	ply:AddMoveSpeed((intAgility - intOldAgility) * 10)
 end
 Register.Stat(Stat)
 
@@ -78,7 +77,7 @@ end
 function Player:SetStat(strStat, intAmount)
 	local tblStatTable = GAMEMODE.DataBase.Stats[strStat]
 	self.Stats = self.Stats or {}
-	local intOldStat = self.Stats[strStat] or tblStatTable.Default
+	local intOldStat = self.Stats[strStat] or 0
 	self.Stats[strStat] = intAmount
 	if SERVER then
 		if tblStatTable.OnSet then
