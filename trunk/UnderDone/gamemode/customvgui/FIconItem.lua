@@ -209,6 +209,7 @@ function PANEL:SetSkill(tblSkillTable, intSkillLevel)
 	if !tblSkillTable then return false end
 	local strToolTip = ""
 	if tblSkillTable.PrintName then strToolTip = Format("%s", tblSkillTable.PrintName) end
+	if tblSkillTable.Desc["story"] then strToolTip = Format("%s\n%s", strToolTip, tblSkillTable.Desc["story"]) end
 	if tblSkillTable.Desc[intSkillLevel] then strToolTip = Format("%s\n%s", strToolTip, tblSkillTable.Desc[intSkillLevel]) end
 	if tblSkillTable.Desc[intSkillLevel + 1] && tblSkillTable.Desc[intSkillLevel] then strToolTip = Format("%s\n\n%s", strToolTip, "Next Level") end
 	if tblSkillTable.Desc[intSkillLevel + 1] then strToolTip = Format("%s\n%s", strToolTip, tblSkillTable.Desc[intSkillLevel + 1]) end

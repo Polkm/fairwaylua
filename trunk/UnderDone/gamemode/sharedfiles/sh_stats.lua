@@ -77,7 +77,7 @@ end
 function Player:SetStat(strStat, intAmount)
 	local tblStatTable = GAMEMODE.DataBase.Stats[strStat]
 	self.Stats = self.Stats or {}
-	local intOldStat = self.Stats[strStat] or 0
+	local intOldStat = self.Stats[strStat] or 1
 	self.Stats[strStat] = intAmount
 	if SERVER then
 		if tblStatTable.OnSet then
