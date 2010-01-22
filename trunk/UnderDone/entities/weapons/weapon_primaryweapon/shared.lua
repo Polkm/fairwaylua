@@ -47,6 +47,7 @@ function SWEP:Reload()
 		self:SetNWBool("reloading", true)
 		self:SetNextPrimaryFire(CurTime() + 1.5)
 		if SERVER then GAMEMODE:SetPlayerAnimation(self.Owner, PLAYER_RELOAD) end
+		if SERVER then if self.WeaponTable.ReloadSound then self:EmitSound(self.WeaponTable.ReloadSound) end end
 		timer.Simple(1.5, function()
 			if !self or !self.Owner or !self.Owner:Alive() then return end
 			self.Owner:RemoveAmmo(self.WeaponTable.ClipSize - self:Clip1(), self.WeaponTable.AmmoType)

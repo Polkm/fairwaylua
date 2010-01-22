@@ -20,6 +20,7 @@ Item.Accuracy = 0.01
 Item.FireRate = 1.5
 Item.ClipSize = 9
 Item.Sound = "weapons/pistol/pistol_fire2.wav"
+Item.ReloadSound = "weapons/pistol/pistol_reload1.wav"
 Register.Item(Item)
 
 local Item = DeriveTable(BaseWeapon)
@@ -62,4 +63,5 @@ Item.Accuracy = 0.06
 Item.FireRate = 8
 Item.ClipSize = 50
 Item.Sound = "weapons/ar2/fire1.wav"
+Item.ReloadSound = "weapons/ar2/npc_ar2_reload.wav"
 Register.Item(Item)

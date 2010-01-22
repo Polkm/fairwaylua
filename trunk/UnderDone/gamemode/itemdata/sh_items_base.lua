@@ -69,6 +69,7 @@ BaseWeapon.Accuracy = 0.01
 BaseWeapon.FireRate = 3
 BaseWeapon.ClipSize = 5
 BaseWeapon.Sound = "weapons/pistol/pistol_fire2.wav"
+BaseWeapon.ReloadSound = nil
 function BaseWeapon:Use(usr, itemtable)
 	if !BaseEquiptment:Use(usr, itemtable) then return end
 	usr:StripWeapons()
