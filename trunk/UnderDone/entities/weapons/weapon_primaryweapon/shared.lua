@@ -47,7 +47,7 @@ function SWEP:Reload()
 		self:SetNWBool("reloading", true)
 		self:SetNextPrimaryFire(CurTime() + 1.5)
 		if SERVER then GAMEMODE:SetPlayerAnimation(self.Owner, PLAYER_RELOAD) end
-		if SERVER then if self.WeaponTable.ReloadSound then self:EmitSound(self.WeaponTable.ReloadSound) end end
+		if self.WeaponTable.ReloadSound then self:EmitSound(self.WeaponTable.ReloadSound) end
 		timer.Simple(1.5, function()
 			if !self or !self.Owner or !self.Owner:Alive() then return end
 			self.Owner:RemoveAmmo(self.WeaponTable.ClipSize - self:Clip1(), self.WeaponTable.AmmoType)
@@ -102,20 +102,22 @@ function SWEP:WeaponAttack()
 			if self.WeaponTable.AmmoType == "buckshot" then strEffect = "ShotgunShellEject" end
 			local effectdata = EffectData()
 			effectdata:SetOrigin(self.Owner.PapperDollEnts["slot_primaryweapon"]:GetPos())
-			effectdata:SetAngle(self.Owner.PapperDollEnts["slot_primaryweapon"]:GetAngles():Right())
+			effectdata:SetAngle(self.Owner.PapperDollEnts["slot_primaryweapon"]:GetAngles() + Angle(0, 90, 0))
 			effectdata:SetEntity(self)
 			effectdata:SetMagnitude(1)
 			effectdata:SetScale(1)
 			util.Effect(strEffect, effectdata)
 		end
-		self.Owner.ToMakeUpAgility = 33
-		self.Owner:AddStat("stat_agility", -33)
-		timer.Simple((1 / self.WeaponTable.FireRate) + 0.05, function()
-			if self.Owner && self.Owner:IsValid() && self.Owner:Health() > 0 then
-				self.Owner:AddStat("stat_agility", 33)
-				self.Owner.ToMakeUpAgility = 0
-			end
-		end)
+		if SERVER then
+			self.Owner:AddMoveSpeed(-330)
+			self.Owner.MoveSpeedDebt = 330
+			timer.Simple((1 / self.WeaponTable.FireRate), function()
+				if self.Owner && self.Owner:IsValid() && self.Owner:Health() > 0 then
+					self.Owner:AddMoveSpeed(330)
+					self.Owner.MoveSpeedDebt = 0
+				end
+			end)
+		end
 		self:EmitSound(self.WeaponTable.Sound)
 		self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate))
 	end
