@@ -11,7 +11,6 @@ if SERVER then
 		self.MoveSpeed = math.Clamp(intAmount or self.MoveSpeed, 0, 1000)
 		self:SetWalkSpeed(math.Clamp(self.MoveSpeed, 0, 1000))
 		self:SetRunSpeed(math.Clamp(self.MoveSpeed, 0, 1000))
-		print(self.MoveSpeed)
 	end
 	function Player:GetMoveSpeed()
 		self.MoveSpeed = self.MoveSpeed or intDefaultPlayerSpeed

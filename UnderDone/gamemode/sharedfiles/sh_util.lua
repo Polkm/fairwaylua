@@ -62,4 +62,20 @@ if CLIENT then
 		
 		
 	end
+	
+	function CreateGenericList(pnlParent, intSpacing, boolHorz, boolScrollz)
+		local pnlNewList = vgui.Create("DPanelList", pnlParent)
+		pnlNewList:SetSpacing(intSpacing)
+		pnlNewList:SetPadding(intSpacing)
+		pnlNewList:EnableHorizontal(boolHorz)
+		pnlNewList:EnableVerticalScrollbar(boolScrollz)
+		pnlNewList.Paint = function()
+			local tblPaintPanel = jdraw.NewPanel()
+			tblPaintPanel:SetDemensions(0, 0, pnlNewList:GetWide(), pnlNewList:GetTall())
+			tblPaintPanel:SetStyle(4, clrGray)
+			tblPaintPanel:SetBoarder(1, clrDrakGray)
+			jdraw.DrawPanel(tblPaintPanel)
+		end
+		return pnlNewList
+	end
 end
