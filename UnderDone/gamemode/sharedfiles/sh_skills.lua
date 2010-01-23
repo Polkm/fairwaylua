@@ -1,5 +1,5 @@
 local Player = FindMetaTable("Player")
-local intSkillPointsPerLevel = 13
+local intSkillPointsPerLevel = 1
 
 local Skill = {}
 Skill.Name = "skill_basictraining"
@@ -27,7 +27,7 @@ Skill.Name = "skill_closecombat"
 Skill.PrintName = "Close Quarters Combat"
 Skill.Icon = "icons/junk_gnome"
 Skill.Desc = {}
-Skill.Desc["story"] = "Be trained by the pros"
+Skill.Desc["story"] = "Be trained by the pros."
 Skill.Desc[1] = "Increase Strength by 1"
 Skill.Desc[2] = "Increase Strength by 3"
 Skill.Desc[3] = "Increase Strength by 5"
@@ -40,6 +40,25 @@ function Skill:OnSet(ply, intSkillLevel, intOldSkillLevel)
 	tblStatTable[2] = 3
 	tblStatTable[3] = 5
 	ply:AddStat("stat_strength", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
+end
+Register.Skill(Skill)
+
+local Skill = {}
+Skill.Name = "skill_hexbones"
+Skill.PrintName = "Hexagonal Leg Bones"
+Skill.Icon = "icons/junk_shoe"
+Skill.Desc = {}
+Skill.Desc["story"] = "Your regular leg bone structure is bio-moded to a hexagonal, lighter one."
+Skill.Desc[1] = "Increase Agility by 1"
+Skill.Desc[2] = "Increase Agility by 2"
+Skill.Tier = 1
+Skill.Levels = 2
+function Skill:OnSet(ply, intSkillLevel, intOldSkillLevel)
+	local tblStatTable = {}
+	tblStatTable[0] = 0
+	tblStatTable[1] = 1
+	tblStatTable[2] = 2
+	ply:AddStat("stat_agility", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
 end
 Register.Skill(Skill)
 
