@@ -1,5 +1,5 @@
 local Player = FindMetaTable("Player")
-local intDefaultPlayerSpeed = 340
+local intDefaultPlayerSpeed = 350
 
 if SERVER then
 	function Player:AddMoveSpeed(intAmount)
@@ -11,10 +11,33 @@ if SERVER then
 		self.MoveSpeed = math.Clamp(intAmount or self.MoveSpeed, 0, 1000)
 		self:SetWalkSpeed(math.Clamp(self.MoveSpeed, 0, 1000))
 		self:SetRunSpeed(math.Clamp(self.MoveSpeed, 0, 1000))
+		print(self.MoveSpeed)
 	end
 	function Player:GetMoveSpeed()
 		self.MoveSpeed = self.MoveSpeed or intDefaultPlayerSpeed
 		return self.MoveSpeed
+	end
+	
+	local function CreateSlowTimer(ply, intTime, intAmount)
+		timer.Simple(intTime, function()
+			table.remove(ply.SlowDownTimes, 1)
+			if ply.SlowDownTimes[1] then
+				CreateSlowTimer(ply, ply.SlowDownTimes[1], intAmount)
+			else
+				ply.IsSlowingDown = false
+				ply:AddMoveSpeed(intAmount)
+			end
+		end)
+	end
+	function Player:SlowDown(intTime)
+		self.SlowDownTimes = self.SlowDownTimes or {}
+		table.insert(self.SlowDownTimes, intTime)
+		if !self.IsSlowingDown then
+			self.IsSlowingDown = true
+			local intAmount = math.Round(self:GetMoveSpeed() * 0.90)
+			self:AddMoveSpeed(-intAmount)
+			CreateSlowTimer(self, intTime, intAmount)
+		end
 	end
 	
 	hook.Add("PlayerSpawn", "PlayerSpawn_Movement", function(ply)
