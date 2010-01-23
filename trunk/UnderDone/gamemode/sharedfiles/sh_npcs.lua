@@ -96,7 +96,7 @@ if SERVER then
 		for _, ent in pairs(ents.GetAll()) do
 			if ent && ent:IsValid() && ent:IsNPC() then
 				local tblNPCTable = NPCTable(ent:GetNWString("npc"))
-				if tblNPCTable.Name == "medic" then
+				if tblNPCTable && tblNPCTable.Name == "medic" then
 					for _, ply in pairs(ents.FindInSphere( ent:GetPos(), 128 )) do
 						if ply && ply:IsPlayer() then
 							ply:SetHealth(math.Clamp( ply:Health() + 50,0, ply:GetMaxHealth()))
