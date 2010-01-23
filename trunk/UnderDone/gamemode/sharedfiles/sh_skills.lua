@@ -1,5 +1,5 @@
 local Player = FindMetaTable("Player")
-local intSkillPointsPerLevel = 1
+local intSkillPointsPerLevel = 13
 
 local Skill = {}
 Skill.Name = "skill_basictraining"
@@ -68,7 +68,7 @@ function Player:GetSkill(strSkill)
 	return self.Data.Skills[strSkill] or 0
 end
 
-function Player:GetSkillPoints()
+function Player:GetDeservedSkillPoints()
 	local intSkillPoints = self:GetLevel() * intSkillPointsPerLevel
 	for strSkill, intAmount in pairs(self.Data.Skills or {}) do
 		intSkillPoints = math.Clamp(intSkillPoints - intAmount, 0, self:GetLevel())
@@ -78,7 +78,7 @@ end
 
 if SERVER then
 	hook.Add("UD_Hook_PlayerLoad", "PlayerLoad_SkillPoints", function(plyNewPlayer)
-		plyNewPlayer:SetNWInt("SkillPoints", plyNewPlayer:GetSkillPoints())
+		plyNewPlayer:SetNWInt("SkillPoints", plyNewPlayer:GetDeservedSkillPoints())
 	end)
 	
 	hook.Add("UD_Hook_PlayerLevelUp", "PlayerLevelUp_SkillPoints", function(plyNewPlayer)
@@ -90,8 +90,8 @@ if SERVER then
 		local tblSkillTable = SkillTable(strSkill)
 		if !tblSkillTable then return false end
 		if self:GetSkill(strSkill) < tblSkillTable.Levels then
-			self:SetSkill(strSkill, self:GetSkill(strSkill) + 1)
 			self:SetNWInt("SkillPoints", self:GetNWInt("SkillPoints") - 1)
+			self:SetSkill(strSkill, self:GetSkill(strSkill) + 1)
 			return true
 		end
 	end

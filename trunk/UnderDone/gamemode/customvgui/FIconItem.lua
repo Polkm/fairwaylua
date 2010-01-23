@@ -11,7 +11,7 @@ local PANEL = {}
 local matGlossIcon = surface.GetTextureID("icons/icon_gloss")
 local matBoarderIcon = surface.GetTextureID("icons/icon_boarder2")
 PANEL.Icon = nil
-PANEL.Amount = nil
+PANEL.Text = nil
 PANEL.LastClick = 0
 PANEL.Draggable = false
 PANEL.Item = nil
@@ -76,12 +76,12 @@ function PANEL:Paint()
 	surface.SetTexture(matBoarderIcon)
 	surface.DrawTexturedRect(0, 0, self:GetWide(), self:GetTall())
 	
-	if self.Amount then
+	if self.Text then
 		surface.SetFont("DefaultFixedOutline")
-		local width, tall = surface.GetTextSize(tostring(self.Amount)) 
+		local width, tall = surface.GetTextSize(tostring(self.Text)) 
 		surface.SetTextColor(255, 255, 255, 255)
 		surface.SetTextPos(self:GetWide() - width - 2, self:GetTall() - tall - 1) 
-		surface.DrawText(tostring(self.Amount))
+		surface.DrawText(tostring(self.Text))
 	end
 	return true
 end
@@ -93,8 +93,8 @@ function PANEL:SetIcon(strIconText)
 	end
 end
 
-function PANEL:SetAmount(itnAmount)
-	self.Amount = itnAmount
+function PANEL:SetText(strText)
+	self.Text = strText
 end
 
 function PANEL:SetDragable(boolDraggable)
@@ -120,7 +120,7 @@ function PANEL:SetItem(tblItemTable, intAmount, strUseCommand, intCost)
 	intAmount = intAmount or 1
 	self:SetDragable(true)
 	if tblItemTable.Icon then self:SetIcon(tblItemTable.Icon) end
-	if tblItemTable.Stackable && intAmount > 1 then self:SetAmount(intAmount) end
+	if tblItemTable.Stackable && intAmount > 1 then self:SetText(intAmount) end
 	if tblItemTable.Name then self.Item = tblItemTable.Name end
 	if tblItemTable.Slot then self.Slot = tblItemTable.Slot end
 	if strUseCommand == "use" && tblItemTable.Dropable then
@@ -215,7 +215,7 @@ function PANEL:SetSkill(tblSkillTable, intSkillLevel)
 	if tblSkillTable.Desc[intSkillLevel + 1] then strToolTip = Format("%s\n%s", strToolTip, tblSkillTable.Desc[intSkillLevel + 1]) end
 	self:SetTooltip(strToolTip)
 	self:SetIcon(tblSkillTable.Icon or nil)
-	self:SetAmount(intSkillLevel or 0)
+	self:SetText((intSkillLevel or 0) .. "/" .. tblSkillTable.Levels)
 	self:SetDragable(false)
 	
 	self:SetDoubleClick(function() RunConsoleCommand("UD_BuySkill", tblSkillTable.Name) end)
