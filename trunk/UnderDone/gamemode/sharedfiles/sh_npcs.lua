@@ -69,6 +69,16 @@ NPC.Shop = "shop_weapons"
 Register.NPC(NPC)
 
 local NPC = {}
+NPC.Name = "medic"
+NPC.PrintName = "Crystal"
+NPC.SpawnName = "npc_citizen"
+NPC.Model = "models/Humans/Group03/Female_04.mdl"
+NPC.Invincible = true
+NPC.Idle = true
+NPC.Race = "human"
+Register.NPC(NPC)
+
+local NPC = {}
 NPC.Name = "quest_npc"
 NPC.PrintName = "Grigori"
 NPC.SpawnName = "npc_monk"
@@ -81,6 +91,23 @@ NPC.Quest = {"quest_killzombies", "quest_obtainzombieblood", "quest_killantlionb
 Register.NPC(NPC)
 
 if SERVER then
+
+	function GM:MedicHealer()
+		for _, ent in pairs(ents.GetAll()) do
+			if ent && ent:IsValid() && ent:IsNPC() then
+				local tblNPCTable = NPCTable(ent:GetNWString("npc"))
+				if tblNPCTable.Name == "medic" then
+					for _, ply in pairs(ents.FindInSphere( ent:GetPos(), 128 )) do
+						if ply && ply:IsPlayer() then
+							ply:SetHealth(math.Clamp( ply:Health() + 50,0, ply:GetMaxHealth()))
+						end
+					end
+				end
+			end
+		end
+	end
+	hook.Add("Tick", "MedicHealer", function() GAMEMODE:MedicHealer() end)
+	
 	function GM:PlayerDeath(victim, weapon, killer)
 		if killer:IsNPC() && victim:IsPlayer() then
 			if killer.Race == victim.Race then
