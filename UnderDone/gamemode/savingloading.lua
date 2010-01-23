@@ -8,7 +8,8 @@ function Player:NewGame()
 	self:AddItem("weapon_ranged_heavymacgun", 1)
 	self:AddItem("small_ammo", 3)
 	self:AddItem("axe", 1)
-	self:AddItem("armor_junk_chest", 1)
+	self:AddItem("armor_junkchest", 1)
+	self:AddItem("armor_hat_cheifshat", 1)
 	
 	/*
 	self:AddItem("can", 1)

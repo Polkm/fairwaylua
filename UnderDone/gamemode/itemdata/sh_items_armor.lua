@@ -30,7 +30,22 @@ Item.Armor = 2
 Register.Item(Item)
 
 local Item = DeriveTable(BaseArmor)
-Item.Name = "armor_junk_chest"
+Item.Name = "armor_hat_cheifshat"
+Item.PrintName = "Cheifs Hat"
+Item.Desc = "It means you cool like that"
+Item.Icon = "icons/hat_cheifshat"
+Item.Model = {}
+Item.Model[1] = {Model = "models/chefHat.mdl", Position = Vector(4.6, 0.1, 3.7), Angle = Angle(-0.7, -180, -0.7)}
+Item.Dropable = true
+Item.Giveable = true
+Item.SellPrice = 50
+Item.Weight = 1
+Item.Slot = "slot_helm"
+Item.Armor = 1
+Register.Item(Item)
+
+local Item = DeriveTable(BaseArmor)
+Item.Name = "armor_junkchest"
 Item.PrintName = "Junky Armor"
 Item.Desc = "Protects your heart and lungs from gettin pwnd"
 Item.Icon = "icons/junk_box1"
