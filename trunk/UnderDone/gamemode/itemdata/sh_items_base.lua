@@ -9,6 +9,16 @@ function DeriveTable(tblWantedTable)
 	end
 	return tblNewTable
 end
+function QuickCreateItemTable(tblDeriveTable, strName, strPrintName, strDesc, strIcon)
+	local tblNewItem = DeriveTable(tblDeriveTable)
+	tblNewItem.Name = strName
+	tblNewItem.PrintName = strPrintName
+	tblNewItem.Desc = strDesc
+	tblNewItem.Icon = strIcon
+	tblNewItem.Dropable = true
+	tblNewItem.Giveable = true
+	return tblNewItem
+end
 
 BaseItem = {}
 BaseItem.Name = "default"
