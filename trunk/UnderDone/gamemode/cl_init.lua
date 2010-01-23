@@ -34,6 +34,7 @@ function GM:GetColor(strColorName)
 end
 
 function GM:OnSpawnMenuOpen()
+	if !LocalPlayer().Data then return end
 	GAMEMODE.MainMenu = (GAMEMODE.MainMenu or vgui.Create("mainmenu"))
 	GAMEMODE.MainMenu:Center()
 	GAMEMODE.MainMenu:SetTargetAlpha(255)
@@ -45,6 +46,7 @@ function GM:OnSpawnMenuOpen()
 end
 
 function GM:OnSpawnMenuClose()
+	if !LocalPlayer().Data or !GAMEMODE.MainMenu then return end
 	GAMEMODE.MainMenu:SetTargetAlpha(0)
 	if GAMEMODE.DraggingGhost then
 		GAMEMODE.DraggingPanel = nil

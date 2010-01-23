@@ -33,7 +33,7 @@ if SERVER then
 		table.insert(self.SlowDownTimes, intTime)
 		if !self.IsSlowingDown then
 			self.IsSlowingDown = true
-			local intAmount = math.Round(self:GetMoveSpeed() * 0.90)
+			local intAmount = math.Round(self:GetMoveSpeed() * 0.97)
 			self:AddMoveSpeed(-intAmount)
 			CreateSlowTimer(self, intTime, intAmount)
 		end
