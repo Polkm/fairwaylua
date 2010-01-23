@@ -47,7 +47,9 @@ function SWEP:Reload()
 		self:SetNWBool("reloading", true)
 		self:SetNextPrimaryFire(CurTime() + 1.5)
 		if SERVER then GAMEMODE:SetPlayerAnimation(self.Owner, PLAYER_RELOAD) end
-		if self.WeaponTable.ReloadSound then self:EmitSound(self.WeaponTable.ReloadSound) end
+		if (SinglePlayer() && SERVER) or (!SinglePlayer() && CLIENT) then
+			if self.WeaponTable.ReloadSound then self:EmitSound(self.WeaponTable.ReloadSound) end
+		end
 		timer.Simple(1.5, function()
 			if !self or !self.Owner or !self.Owner:Alive() then return end
 			self.Owner:RemoveAmmo(self.WeaponTable.ClipSize - self:Clip1(), self.WeaponTable.AmmoType)
@@ -109,16 +111,11 @@ function SWEP:WeaponAttack()
 			util.Effect(strEffect, effectdata)
 		end
 		if SERVER then
-			self.Owner:AddMoveSpeed(-330)
-			self.Owner.MoveSpeedDebt = 330
-			timer.Simple((1 / self.WeaponTable.FireRate), function()
-				if self.Owner && self.Owner:IsValid() && self.Owner:Health() > 0 then
-					self.Owner:AddMoveSpeed(330)
-					self.Owner.MoveSpeedDebt = 0
-				end
-			end)
+			self.Owner:SlowDown((1 / self.WeaponTable.FireRate))
 		end
-		self:EmitSound(self.WeaponTable.Sound)
+		if (SinglePlayer() && SERVER) or (!SinglePlayer() && CLIENT) then
+			self:EmitSound(self.WeaponTable.Sound)
+		end
 		self:SetNextPrimaryFire(CurTime() + (1 / self.WeaponTable.FireRate))
 	end
 end

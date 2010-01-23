@@ -1,4 +1,5 @@
 local Entity = FindMetaTable("Entity")
+local Player = FindMetaTable("Player")
 
 function toExp(intLevel)
 	if intLevel <= 1 then intLevel = 0 end
