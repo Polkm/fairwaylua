@@ -54,6 +54,10 @@ function Player:SetPaperDoll(strSlot, strItem)
 	if SERVER then
 		SendUsrMsg("UD_UpdatePapperDoll", player.GetAll(), {self, strSlot, self:GetSlot(strSlot)})
 	end
+	if CLIENT && GAMEMODE.ItemEditor && GAMEMODE.ItemEditorSettings.CurrentEditingSlot then
+		GAMEMODE.ItemEditor.SlotSwitch.OnSelect(nil, nil, GAMEMODE.ItemEditorSettings.CurrentEditingSlot)
+		print("TESTEST")
+	end
 end
 
 function Player:GetSlot(strSlot)
@@ -123,6 +127,9 @@ if CLIENT then
 						if boolIsBeingEdited && GAMEMODE.ItemEditorSettings.CurrentEditingItemModel == 1 then vecAddVector = GAMEMODE.ItemEditorSettings.CurrentEditingVector end
 						entTarget:SetPos(tblAttachment.Pos)
 						entTarget:SetPos(entTarget:LocalToWorld(vecAddVector))
+						if boolIsBeingEdited && GAMEMODE.ItemEditorSettings.CurrentEditingMat && GAMEMODE.ItemEditorSettings.CurrentEditingItemModel == 1 then
+							entTarget:SetMaterial(GAMEMODE.ItemEditorSettings.CurrentEditingMat)
+						end
 					end
 					for k, kid in pairs(entTarget.Children or {}) do
 						if boolIsBeingEdited && GAMEMODE.ItemEditorSettings.CurrentEditingItemModel == k + 1 then
@@ -132,6 +139,9 @@ if CLIENT then
 							kid:SetAngles(kid:LocalToWorldAngles(angAddAngle))
 							kid:SetPos(entTarget:GetPos())
 							kid:SetPos(kid:LocalToWorld(vecAddVector))
+							if GAMEMODE.ItemEditorSettings.CurrentEditingMat then
+								kid:SetMaterial(GAMEMODE.ItemEditorSettings.CurrentEditingMat)
+							end
 						end
 					end
 				end
