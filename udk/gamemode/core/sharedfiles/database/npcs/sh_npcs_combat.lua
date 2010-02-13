@@ -108,8 +108,6 @@ AddDrop(NPC,"item_smallammo_small", 17)
 AddDrop(NPC,"item_rifleammo_small", 17)
 AddDrop(NPC,"item_buckshotammo_small", 15)
 AddDrop(NPC,"quest_zombieblood", 75)
-AddDrop(NPC,"armor_chest_skele", 8, nil, nil, 10)
-AddDrop(NPC,"armor_chest_tyrant", 8, nil, nil, 10)
 AddMultiplier(NPC, 40, 4)
 NPC.DeathDistance = 14
 Register.NPC(NPC)
