@@ -4,10 +4,15 @@ GM.ItemEditorSettings.CurrentEditingSlot = nil
 GM.ItemEditorSettings.CurrentEditingItemModel = 1
 GM.ItemEditorSettings.CurrentEditingVector = Vector(0, 0, 0)
 GM.ItemEditorSettings.CurrentEditingAngle = Angle(0, 0, 0)
+GM.ItemEditorSettings.CurrentEditingMat = nil
 GM.ItemEditorSettings.CurrentCamRotation = nil
 GM.ItemEditorSettings.CurrentCamDistance = nil
 local intGlobalPadding = 5
 local intToolBarIconSize = 16
+local tblUsableMats = {}
+tblUsableMats[1] = "Models/props_c17/FurnitureMetal002a.vtf"
+tblUsableMats[2] = "Models/Gibs/metalgibs/metal_gibs.vtf"
+tblUsableMats[3] = "Models/props_building_details/courtyard_template001c_bars.vtf"
 
 PANEL = {}
 function PANEL:Init()
@@ -23,6 +28,11 @@ function PANEL:Init()
 	self:AddToolButton("gui/silkicons/folder_go", "Load Item", function()
 		local function fncGivePlayerItem(strItem)
 			RunConsoleCommand("udk_edit_items_giveitem", strItem)
+			self.SlotSwitch:Clear()
+			for strSlot, _ in pairs(LocalPlayer().Data.Paperdoll or {}) do
+				self.SlotSwitch:AddChoice(strSlot)
+			end
+			self.SlotSwitch.OnSelect(nil, nil, GAMEMODE.ItemEditorSettings.CurrentEditingSlot)
 		end
 		local mnuLoadItems = DermaMenu()
 		local smnWeapons = mnuLoadItems:AddSubMenu("Weapons")
@@ -63,11 +73,12 @@ function PANEL:Init()
 		RunConsoleCommand("udk_edit_items_clearpaperdoll")
 	end)
 	self:AddToolButton("gui/silkicons/page", "Copy Dementions to clip board", function() self:PrintNewDementions() end)
-	local mlcObjectSellector = self:AddSlotControls()
+	self.SlotSwitch, self.ObjectSwitch = self:AddSlotControls()
 	
 	self.ControlsList = CreateGenericList(self.Frame, intGlobalPadding, false, true)
 	self.VectorControls = self:AddControl(self:AddVectorControls())
 	self.AngleControls = self:AddControl(self:AddAngleControls())
+	self.MatControls = self:AddControl(self:AddMatControls())
 	self.CammeraControls = self:AddControl(self:AddCammeraControls())
 	
 	
@@ -104,8 +115,8 @@ function PANEL:AddSlotControls()
 	mlcObjectSellector:SetSize(50, intToolBarIconSize)
 	self.ToolBar:AddItem(mlcObjectSellector)
 	
-	for name, slot in pairs(GAMEMODE.DataBase.Slots) do
-		mlcSlotSellector:AddChoice(name)
+	for strSlot, _ in pairs(LocalPlayer().Data.Paperdoll or {}) do
+		mlcSlotSellector:AddChoice(strSlot)
 	end
 	mlcSlotSellector.OnSelect = function(index, value, data)
 		if !LocalPlayer().Data.Paperdoll[data] then return false end
@@ -119,19 +130,22 @@ function PANEL:AddSlotControls()
 			end
 		end
 	end
-	mlcObjectSellector.OnSelect = function(index, value, data)
-		data = tonumber(data)
+	mlcObjectSellector.ResetControlSettings = function(data)
 		GAMEMODE.ItemEditorSettings.CurrentEditingItemModel = data
 		local strItem = LocalPlayer().Data.Paperdoll[GAMEMODE.ItemEditorSettings.CurrentEditingSlot]
 		local tblItemTable = GAMEMODE.DataBase.Items[strItem]
 		if tblItemTable && tblItemTable.Model[data] then
 			GAMEMODE.ItemEditorSettings.CurrentEditingVector = tblItemTable.Model[data].Position
 			GAMEMODE.ItemEditorSettings.CurrentEditingAngle = tblItemTable.Model[data].Angle
+			GAMEMODE.ItemEditorSettings.CurrentEditingMat = tblItemTable.Model[data].Material
 			self.VectorControls.UpdateNewValues(tblItemTable.Model[data].Position)
 			self.AngleControls.UpdateNewValues(tblItemTable.Model[data].Angle)
 		end
 	end
-	return mlcObjectSellector
+	mlcObjectSellector.OnSelect = function(index, value, data)
+		mlcObjectSellector.ResetControlSettings(tonumber(data))
+	end
+	return mlcSlotSellector, mlcObjectSellector
 end
 
 function PANEL:AddVectorControls()
@@ -168,6 +182,23 @@ function PANEL:AddAngleControls()
 		nmsNewXSlider.UpdateSlider(vecNewOffset.p)
 		nmsNewYSlider.UpdateSlider(vecNewOffset.y)
 		nmsNewZSlider.UpdateSlider(vecNewOffset.r)
+	end
+	return cpcNewCollapseCat
+end
+
+function PANEL:AddMatControls()
+	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Material Controls", 5, true)
+	local ibnNewMatButton = CreateGenericImageButton(nil, "null", "", function()
+		GAMEMODE.ItemEditorSettings.CurrentEditingMat = ""
+	end)
+	ibnNewMatButton:SetSize(45, 45)
+	cpcNewCollapseCat.List:AddItem(ibnNewMatButton)
+	for _, strTexture in pairs(tblUsableMats or {}) do
+		local ibnNewMatButton = CreateGenericImageButton(nil, strTexture, strTexture, function()
+			GAMEMODE.ItemEditorSettings.CurrentEditingMat = strTexture
+		end)
+		ibnNewMatButton:SetSize(45, 45)
+		cpcNewCollapseCat.List:AddItem(ibnNewMatButton)
 	end
 	return cpcNewCollapseCat
 end

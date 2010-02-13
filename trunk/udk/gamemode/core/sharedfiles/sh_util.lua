@@ -298,9 +298,7 @@ if CLIENT then
 	function CreateGenericMultiChoice(pnlParent, strText, boolEditable)
 		local mlcNewMultiChoice = vgui.Create("DMultiChoice", pnlParent)
 		mlcNewMultiChoice:SetText(strText or "")
-		if boolEditable != nil then
-			mlcNewMultiChoice:SetEditable(boolEditable)
-		end
+		mlcNewMultiChoice:SetEditable(boolEditable or false)
 		return mlcNewMultiChoice
 	end
 end
