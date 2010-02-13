@@ -109,7 +109,7 @@ Item.AmmoType = "ar2"
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_combine_cannon", "Combine Cannon", "Stolen cannon from the combine with extremely high fire rate.", "icons/weapon_heavymacgun")
-Item = AddModel(Item, "models/Combine_turrets/combine_cannon_gun.mdl", Vector(2.8, -1.2, -12.8), Angle(-10, 2, -26.1))
+Item = AddModel(Item, "models/Combine_turrets/combine_cannon_gun.mdl", Vector(12.2, -0.9, -10.4), Angle(-14.1, -2, 0))
 Item = AddStats(Item, 8, 0.06, 12, 50)
 Item = AddSound(Item, "weapons/ar2/fire1.wav", "weapons/ar2/npc_ar2_reload.wav")
 Item.Weight = 5
