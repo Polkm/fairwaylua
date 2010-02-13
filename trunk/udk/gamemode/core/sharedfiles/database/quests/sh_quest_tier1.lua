@@ -24,6 +24,18 @@ Quest.GainedItems["money"] = 80
 Register.Quest(Quest)
 
 local Quest = {}
+Quest.Name = "quest_killheadcrab"
+Quest.PrintName = "Freakin' head humpers!"
+Quest.Story = "Always in my hair every single day! I'm so sick of it, please destroy at least 15 of them."
+Quest.Level = 3
+Quest.Kill = {}
+Quest.Kill["headcrab"] = 15
+Quest.GainedExp = 70
+Quest.GainedItems = {}
+Quest.GainedItems["money"] = 130
+Register.Quest(Quest)
+
+local Quest = {}
 Quest.Name = "quest_beer"
 Quest.PrintName = "Obtain Beer"
 Quest.Story = "I need something to quench my first, go find me some beer steal one from a beer crate if you have to."

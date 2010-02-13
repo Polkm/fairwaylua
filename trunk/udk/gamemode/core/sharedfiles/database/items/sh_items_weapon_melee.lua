@@ -227,8 +227,19 @@ Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(3.9, 0.6, 1.7), An
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(3.9, 0.6, -1.9), Angle(4.7, 2, -90.3))
 Item = AddStats(Item, 80, 3)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
-Item.Level = 60
+Item.Level = 45
 Item.Weight = 1
 Item.SellPrice = 3631
+Item.CanCutWood = false
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_tyrant", "Mace of Defence", "Forged by an unstoppable force.", "icons/weapon_axe")
+Item = AddModel(Item, "models/weapons/W_stunbaton.mdl", Vector(-7.4, -0.3, 0.3), Angle(103.7, 6, 90.3))
+Item = AddModel(Item, "models/Items/combine_rifle_ammo01.mdl", Vector(-0.3, -0.3, 9.2), Angle(98.4, 63.6, -114.4))
+Item = AddStats(Item, 25, 3.5)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item = AddBuff(Item, "stat_maxhealth", 50)
+Item.Level = 50
+Item.Weight = 1
 Item.CanCutWood = false
 Register.Item(Item)

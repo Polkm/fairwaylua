@@ -62,3 +62,15 @@ Item.Level = 45
 Item.Weight = 4
 Item.SellPrice = 9786
 Register.Item(Item) 
+
+local Item = QuickCreateItemTable(BaseArmor, "armor_shoulder_tyrant", "Pauldrons of the Tyrant", "Made from the finest materials, for protection.", "icons/hat_cheifshat")
+--left
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-0.1, 1.4, -3.7), Angle(-90.3, -6, -139.9))
+--right
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(1.2, 0.8, -0.3), Angle(-180, -0.7, 180))
+Item = AddStats(Item, "slot_shoulder", 50)
+Item = AddBuff(Item, "stat_maxhealth", 35)
+Item.Level = 50
+Item.Weight = 2
+Item.SellPrice = 10960
+Register.Item(Item)
