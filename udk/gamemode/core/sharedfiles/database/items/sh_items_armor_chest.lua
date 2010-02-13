@@ -81,3 +81,18 @@ Item.Level = 45
 Item.Weight = 7
 Item.SellPrice = 24156
 Register.Item(Item) 
+
+
+ local Item = QuickCreateItemTable(BaseArmor, "armor_chest_tyrant", "Chest Armor of the Tyrant", "Made from the finest materials, for protection.", "icons/junk_box1")
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-4.6, -1.9, 1), Angle(50.2, 0.7, 7.4))--front
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(0.1, 4.3, 0.6), Angle(180, -178.7, 169.3))
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-5.9, -1.9, 7.2), Angle(-82.3, 75.6, 105.1))
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-1.4, -3.5, 0.1), Angle(93, -161.3, 27.4))
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-1.7, 0.3, -0.6), Angle(77, -125.1, 54.2))--back
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-6.8, 2.1, 4.8), Angle(-163.9, -0.7, 7.4))
+Item = AddStats(Item, "slot_chest", 150)
+Item = AddBuff(Item, "stat_maxhealth", 70)
+Item.Level = 50
+Item.Weight = 8
+Item.SellPrice = 26112
+Register.Item(Item)

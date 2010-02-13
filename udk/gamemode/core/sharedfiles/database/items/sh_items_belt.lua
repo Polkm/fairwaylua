@@ -37,6 +37,7 @@ Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(1, -3.9, -2.1), An
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(0.6, -3, 1.7), Angle(-74.3, 168, 19.4))
 Item = AddStats(Item, "slot_waist", 0)
 Item = AddBuff(Item, "stat_strength", 8)
+Item.Level = 45
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_belt_cyborg", "Biomechanical Spine", "Resistance is Futile.", "icons/item_cash")
@@ -50,4 +51,12 @@ local Item = QuickCreateItemTable(BaseArmor, "armor_belt_antlion", "Antlion Shel
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(15.5, 0.6, 2.8), Angle(85, 0.7, 2))--left
 Item = AddStats(Item, "slot_waist", 10)
 Item = AddBuff(Item, "stat_maxhealth", 5)
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseArmor, "armor_belt_tyrant", "Gutguard of the Tyrant", "Made from the finest materials, for protection.", "icons/item_cash")
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-15.9, 0.1, 9.3), Angle(-122.5, 180, 2))
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(1, 0.1, 0.1), Angle(109.1, -178.7, 0.7))
+Item = AddStats(Item, "slot_waist", 20)
+Item = AddBuff(Item, "stat_maxhealth", 15)
+Item.Level = 50
 Register.Item(Item)

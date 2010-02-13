@@ -83,7 +83,17 @@ Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(3.9, 0.6, 1.7), An
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(3.9, 0.6, -1.9), Angle(4.7, 2, -90.3))
 Item = AddStats(Item, "slot_offhand", 30)
 Item = AddBuff(Item, "stat_strength", 20)
-Item.Level = 48
+Item.Level = 50
 Item.Weight = 1
 Item.SellPrice = 24053
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseArmor, "armor_shield_tyrant", "Shield of the Tyrant", "Forged from an unmoveable object.", "icons/junk_cog")
+Item = AddModel(Item, "models/combine_apc_destroyed_gib04.mdl", Vector(12.2, -71.1, -65.1), Angle(166.6, 75.6, 34.1))
+//Item = AddModel(Item, "models/props_combine/breentp_rings.mdl", Vector(47.9, 70.5, -46.7), Angle(-22.1, 158.6, -180))
+Item = AddStats(Item, "slot_offhand", 120)
+Item = AddBuff(Item, "stat_maxhealth", 55)
+Item.Level = 50
+Item.Weight = 1
+Item.SellPrice = 631
 Register.Item(Item)

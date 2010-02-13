@@ -139,3 +139,13 @@ Item.Weight = 1
 Item.SellPrice = 15030
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_tyrant", "Platehelm of the Tyrant", "Ribcage of the Wraith", "Made from those who are dead, forged for reaping.", "icons/hat_cheifshat")
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-1.4, 0.3, -2.8), Angle(78.3, -0.7, 0.7))
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-7.2, 0.1, 2.3), Angle(177.3, -0.7, 0))
+Item = AddModel(Item, "models/BarneyHelmet_faceplate.mdl",Vector(0.1, 0.1, 0.1), Angle(-32.8, 2, -0.7), nil, "debug/env_cubemap_model.vtf")
+Item = AddStats(Item, "slot_helm", 66)
+Item = AddBuff(Item, "stat_maxhealth", 50)
+Item.Level = 50
+Item.Weight = 1
+Item.SellPrice = 15050
+Register.Item(Item)
