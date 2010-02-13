@@ -88,7 +88,7 @@ local NPC = QuickNPC("headcrabfast", "Fast HeadCrab", "npc_headcrab_fast", "zomb
 AddDrop(NPC,"money", 60, 15, 25)
 AddDrop(NPC,"item_smallammo_small", 17)
 AddDrop(NPC,"quest_zombieblood", 75)
-AddMultiplier(NPC, 5, 3)
+AddMultiplier(NPC, 1, 3)
 NPC.DeathDistance = 14
 Register.NPC(NPC)
 
