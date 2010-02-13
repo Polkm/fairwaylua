@@ -35,19 +35,6 @@ function Player:GetArmorRating()
 end
 
 if SERVER then
-	function Player:SkillReset()
-		if self:HasItem("money", 500) then
-			for skill,lvl in pairs(self.Data.Skills or {}) do
-				if lvl > 0 then
-					self:SetSkill(skill, 0)
-				end
-			end
-			self:RemoveItem("money", 500)
-			self:SetNWInt("SkillPoints", self:GetDeservedSkillPoints())
-			self:SaveGame()
-		end
-	end
-	concommand.Add("UD_ResetSkills", function(ply, command, args) ply:SkillReset() end)
 
 	function Player:SearchQuestProp(Ent, strModel, strItem, strAmount)
 		if Ent:GetModel() == strModel then
