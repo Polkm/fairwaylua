@@ -12,7 +12,7 @@ function GM:PlayerInitialSpawn(ply)
 end
 
 function GM:PlayerAuthed(ply, SteamID, UniqueID)
-	ply:LoadGame()
+
 end
 
 function GM:PlayerSpawn(ply)
