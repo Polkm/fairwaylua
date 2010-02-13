@@ -13,6 +13,12 @@ local tblUsableMats = {}
 tblUsableMats[1] = "Models/props_c17/FurnitureMetal002a.vtf"
 tblUsableMats[2] = "Models/Gibs/metalgibs/metal_gibs.vtf"
 tblUsableMats[3] = "Models/props_building_details/courtyard_template001c_bars.vtf"
+tblUsableMats[4] = "Models/props_building_details/courtyard_template001c_bars_dark.vtf"
+tblUsableMats[5] = "Models/props_c17/Metalladder001.vtf"
+tblUsableMats[6] = "Models/props_c17/Metalladder002.vtf"
+tblUsableMats[7] = "Models/props_c17/Metalladder003.vtf"
+tblUsableMats[8] = "Models/props_junk/rock_junk001a.vtf"
+tblUsableMats[9] = "Models/props_lab/door_klab01.vtf"
 
 PANEL = {}
 function PANEL:Init()
@@ -28,11 +34,6 @@ function PANEL:Init()
 	self:AddToolButton("gui/silkicons/folder_go", "Load Item", function()
 		local function fncGivePlayerItem(strItem)
 			RunConsoleCommand("udk_edit_items_giveitem", strItem)
-			self.SlotSwitch:Clear()
-			for strSlot, _ in pairs(LocalPlayer().Data.Paperdoll or {}) do
-				self.SlotSwitch:AddChoice(strSlot)
-			end
-			self.SlotSwitch.OnSelect(nil, nil, GAMEMODE.ItemEditorSettings.CurrentEditingSlot)
 		end
 		local mnuLoadItems = DermaMenu()
 		local smnWeapons = mnuLoadItems:AddSubMenu("Weapons")
@@ -93,6 +94,17 @@ function PANEL:PerformLayout()
 	self.ToolBar:SetSize(self:GetWide() - (intGlobalPadding * 2), intToolBarIconSize + (intGlobalPadding * 2))
 	self.ControlsList:SetPos(intGlobalPadding, 25 + self.ToolBar:GetTall() + intGlobalPadding)
 	self.ControlsList:SetSize(self:GetWide() - (intGlobalPadding * 2), self:GetTall() - (25 + self.ToolBar:GetTall() + (intGlobalPadding * 2)))
+	for _, pnlIcon in pairs(self.MatControls.Icons or {}) do
+		pnlIcon:SetSize(38, 38)
+	end
+end
+
+function PANEL:UpdateSellectors(strSlot)
+	self.SlotSwitch:Clear()
+	for strInSlot, _ in pairs(LocalPlayer().Data.Paperdoll or {}) do
+		self.SlotSwitch:AddChoice(strInSlot)
+	end
+	timer.Simple(0.1, function() self.SlotSwitch:ChooseOption(strSlot) end)
 end
 
 function PANEL:AddToolButton(strImage, strToolTip, fncFunction)
@@ -107,30 +119,28 @@ function PANEL:AddControl(pnlControl)
 end
 
 function PANEL:AddSlotControls()
-	local mlcSlotSellector = CreateGenericMultiChoice(nil, "Slot")
+	local mlcSlotSellector = CreateGenericMultiChoice()
 	mlcSlotSellector:SetSize(120, intToolBarIconSize)
 	self.ToolBar:AddItem(mlcSlotSellector)
 	
-	local mlcObjectSellector = CreateGenericMultiChoice(pnlSlotControlPanel)
+	local mlcObjectSellector = CreateGenericMultiChoice()
 	mlcObjectSellector:SetSize(50, intToolBarIconSize)
 	self.ToolBar:AddItem(mlcObjectSellector)
 	
-	for strSlot, _ in pairs(LocalPlayer().Data.Paperdoll or {}) do
-		mlcSlotSellector:AddChoice(strSlot)
-	end
 	mlcSlotSellector.OnSelect = function(index, value, data)
 		if !LocalPlayer().Data.Paperdoll[data] then return false end
 		GAMEMODE.ItemEditorSettings.CurrentEditingSlot = data
 		mlcObjectSellector:Clear()
 		mlcObjectSellector:AddChoice(1)
 		mlcObjectSellector:ChooseOptionID(1)
-		if GAMEMODE.PapperDollEnts[LocalPlayer():EntIndex()] then
+		if GAMEMODE.PapperDollEnts[LocalPlayer():EntIndex()] && GAMEMODE.PapperDollEnts[LocalPlayer():EntIndex()][data] then
 			for k, v in pairs(GAMEMODE.PapperDollEnts[LocalPlayer():EntIndex()][data].Children or {}) do
 				mlcObjectSellector:AddChoice(k + 1)
 			end
 		end
 	end
-	mlcObjectSellector.ResetControlSettings = function(data)
+	mlcObjectSellector.OnSelect = function(index, value, data)
+		data = tonumber(data)
 		GAMEMODE.ItemEditorSettings.CurrentEditingItemModel = data
 		local strItem = LocalPlayer().Data.Paperdoll[GAMEMODE.ItemEditorSettings.CurrentEditingSlot]
 		local tblItemTable = GAMEMODE.DataBase.Items[strItem]
@@ -142,14 +152,11 @@ function PANEL:AddSlotControls()
 			self.AngleControls.UpdateNewValues(tblItemTable.Model[data].Angle)
 		end
 	end
-	mlcObjectSellector.OnSelect = function(index, value, data)
-		mlcObjectSellector.ResetControlSettings(tonumber(data))
-	end
 	return mlcSlotSellector, mlcObjectSellector
 end
 
 function PANEL:AddVectorControls()
-	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Offset Controls", 5, false)
+	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Offset Controls", intGlobalPadding, false)
 	local nmsNewXSlider = CreateGenericSlider(nil, "X Axis", -40, 40, 2)
 	nmsNewXSlider.ValueChanged = function(self, value) GAMEMODE.ItemEditorSettings.CurrentEditingVector.x = value end
 	cpcNewCollapseCat.List:AddItem(nmsNewXSlider)
@@ -168,7 +175,7 @@ function PANEL:AddVectorControls()
 end
 
 function PANEL:AddAngleControls()
-	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Angle Controls", 5, false)
+	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Angle Controls", intGlobalPadding, false)
 	local nmsNewXSlider = CreateGenericSlider(nil, "Pitch", -180, 180, 2)
 	nmsNewXSlider.ValueChanged = function(self, value) GAMEMODE.ItemEditorSettings.CurrentEditingAngle.p = value end
 	cpcNewCollapseCat.List:AddItem(nmsNewXSlider)
@@ -187,24 +194,21 @@ function PANEL:AddAngleControls()
 end
 
 function PANEL:AddMatControls()
-	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Material Controls", 5, true)
-	local ibnNewMatButton = CreateGenericImageButton(nil, "null", "", function()
-		GAMEMODE.ItemEditorSettings.CurrentEditingMat = ""
-	end)
-	ibnNewMatButton:SetSize(45, 45)
+	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Material Controls", intGlobalPadding, true)
+	cpcNewCollapseCat.Icons = {}
+	local ibnNewMatButton = CreateGenericImageButton(nil, "null", "", function() GAMEMODE.ItemEditorSettings.CurrentEditingMat = "" end)
 	cpcNewCollapseCat.List:AddItem(ibnNewMatButton)
+	table.insert(cpcNewCollapseCat.Icons, ibnNewMatButton)
 	for _, strTexture in pairs(tblUsableMats or {}) do
-		local ibnNewMatButton = CreateGenericImageButton(nil, strTexture, strTexture, function()
-			GAMEMODE.ItemEditorSettings.CurrentEditingMat = strTexture
-		end)
-		ibnNewMatButton:SetSize(45, 45)
+		local ibnNewMatButton = CreateGenericImageButton(nil, strTexture, strTexture, function() GAMEMODE.ItemEditorSettings.CurrentEditingMat = strTexture end)
 		cpcNewCollapseCat.List:AddItem(ibnNewMatButton)
+		table.insert(cpcNewCollapseCat.Icons, ibnNewMatButton)
 	end
 	return cpcNewCollapseCat
 end
 
 function PANEL:AddCammeraControls()
-	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Cammera Controls", 5, false)
+	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Cammera Controls", intGlobalPadding, false)
 	local nmsNewRotationSlider = CreateGenericSlider(nil, "Rotation", -180, 180, 3)
 	nmsNewRotationSlider.ValueChanged = function(self, value) GAMEMODE.ItemEditorSettings.CurrentCamRotation = value end
 	cpcNewCollapseCat.List:AddItem(nmsNewRotationSlider)
@@ -221,8 +225,11 @@ function PANEL:PrintNewDementions()
 	local angAngle = GAMEMODE.ItemEditorSettings.CurrentEditingAngle
 	local intPitch, intYaw, intRoll = math.Round(angAngle.p * 10) / 10, math.Round(angAngle.y * 10) / 10, math.Round(angAngle.r * 10) / 10
 	local strAngle = tostring(intPitch .. ", " .. intYaw .. ", " .. intRoll)
-	print("Vector(" .. strVector .. "), Angle(" .. strAngle .. ")")
-	SetClipboardText("Vector(" .. strVector .. "), Angle(" .. strAngle .. ")")
+	local strMat = GAMEMODE.ItemEditorSettings.CurrentEditingMat
+	if strMat then strMat = '"' .. tostring(strMat) .. '"' end
+	if !strMat then strMat = "nil" end
+	print("Vector(" .. strVector .. "), Angle(" .. strAngle .. "), nil, " .. strMat)
+	SetClipboardText("Vector(" .. strVector .. "), Angle(" .. strAngle .. "), nil, " .. strMat)
 end
 vgui.Register("editor_items", PANEL, "Panel")
 

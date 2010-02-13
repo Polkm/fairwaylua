@@ -54,8 +54,8 @@ function Player:SetPaperDoll(strSlot, strItem)
 	if SERVER then
 		SendUsrMsg("UD_UpdatePapperDoll", player.GetAll(), {self, strSlot, self:GetSlot(strSlot)})
 	end
-	if CLIENT && GAMEMODE.ItemEditor && GAMEMODE.ItemEditorSettings.CurrentEditingSlot then
-		GAMEMODE.ItemEditor.SlotSwitch.OnSelect(nil, nil, GAMEMODE.ItemEditorSettings.CurrentEditingSlot)
+	if CLIENT && GAMEMODE.ItemEditor then
+		GAMEMODE.ItemEditor:UpdateSellectors(strSlot)
 		print("TESTEST")
 	end
 end
