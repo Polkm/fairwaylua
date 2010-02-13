@@ -10,6 +10,10 @@ local function AddStats(tblAddTable, intPower, intFireRate)
 	tblAddTable.HoldType = "melee"
 	return tblAddTable
 end
+local function AddBuff(tblAddTable, strBuff, intAmount)
+	tblAddTable.Buffs[strBuff] = intAmount
+	return tblAddTable
+end
 local function AddSound(tblAddTable, strShootSound)
 	tblAddTable.Sound = strShootSound
 	return tblAddTable
