@@ -19,6 +19,14 @@ tblUsableMats[6] = "Models/props_c17/Metalladder002.vtf"
 tblUsableMats[7] = "Models/props_c17/Metalladder003.vtf"
 tblUsableMats[8] = "Models/props_junk/rock_junk001a.vtf"
 tblUsableMats[9] = "Models/props_lab/door_klab01.vtf"
+tblUsableMats[10] = "Models/props_pipes/GutterMetal01a.vtf"
+tblUsableMats[11] = "Models/props_pipes/pipeset_metal.vtf"
+tblUsableMats[12] = "Models/props_pipes/pipeset_metal02.vtf"
+tblUsableMats[13] = "Models/props_pipes/Pipesystem01a_skin3.vtf"
+tblUsableMats[14] = "Models/props_lab/cornerunit_cloud.vtf"
+tblUsableMats[15] = "Models/props_lab/glass_tint001.vtf"
+tblUsableMats[16] = "Models/props_wasteland/rockgranite02a.vtf"
+tblUsableMats[17] = "debug/env_cubemap_model.vtf"
 
 PANEL = {}
 function PANEL:Init()
