@@ -14,42 +14,44 @@ local function AddBuff(tblAddTable, strBuff, intAmount)
 	return tblAddTable
 end
 
+--Chef Hat Madness--
 local Item = QuickCreateItemTable(BaseArmor, "armor_helm_chefshat", "Chefs Hat", "It means you cool like that", "icons/hat_cheifshat")
-Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7))
+Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7), nil, nil, Vector(1, 1, 1))
 Item = AddStats(Item, "slot_helm", 1)
 Item.Weight = 1
 Item.SellPrice = 25
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "red_chefs_hat", "Red Chefs Hat", "A rare item of coolness!", "icons/hat_cheifshat")
-Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  Color(191, 75, 37, 255))
+Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  clrRed)
 Item = AddStats(Item, "slot_helm", 1)
 Item.Weight = 1
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "blue_chefs_hat", "Blue Chefs Hat", "A rare item of coolness!", "icons/hat_cheifshat")
-Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  Color(59, 142, 209, 255))
+Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  clrBlue)
 Item = AddStats(Item, "slot_helm", 1)
 Item.Weight = 1
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "purple_chefs_hat", "Purple Chefs Hat", "A rare item of coolness!", "icons/hat_cheifshat")
-Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  Color(87, 76, 135, 255))
+Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  clrPurple)
 Item = AddStats(Item, "slot_helm", 1)
 Item.Weight = 1
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "orange_chefs_hat", "Orange Chefs Hat", "A rare item of coolness!", "icons/hat_cheifshat")
-Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  Color(255, 137, 44, 255))
+Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  clrOrange)
 Item = AddStats(Item, "slot_helm", 1)
 Item.Weight = 1
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "green_chefs_hat", "Green Chefs Hat", "A rare item of coolness!", "icons/hat_cheifshat")
-Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  Color(194, 255, 72, 255))
+Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  clrGreen)
 Item = AddStats(Item, "slot_helm", 1)
 Item.Weight = 1
 Register.Item(Item)
+---------------------
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_helm_junkhelmet", "Junk Helmet", "Theres still soup in it", "icons/junk_pan1")
 Item = AddModel(Item, "models/props_interiors/pot02a.mdl", Vector(-0.7, -8.1, -3.5), Angle(180, -100, -20))
