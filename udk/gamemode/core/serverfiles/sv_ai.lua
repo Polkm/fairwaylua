@@ -50,8 +50,7 @@ function GM:OnNPCKilled(npcTarget, entKiller, weapon)
 			local tblItemTable = ItemTable(strItem)
 			--Check Level of player and of npc
 			if (entKiller:GetLevel() + 5) >= (tblItemTable.Level or 1) && npcTarget:GetLevel() >= (tblInfo.MinLevel or 0) then
-				if !tblItemTable.QuestItem or (entKiller:GetQuest(tblItemTable.QuestItem) && !entKiller:HasCompletedQuest(tblItemTable.QuestItem)) then
-					strItem, tblInfo = entKiller:CallSkillHook("drop_mod", strItem, tblInfo)
+				if !tblItemTable.QuestItem then
 					if tblInfo.Chance && math.random(1, (100 / (tblInfo.Chance or 1))) == 1 then
 						local intAmount = math.random(tblInfo.Min or 1, tblInfo.Max or tblInfo.Min or 1)
 						local entLoot = CreateWorldItem(strItem, intAmount, npcTarget:GetPos() + Vector(0, 0, 30))
@@ -76,7 +75,6 @@ local function NPCAdjustDamage(entVictim, entInflictor, entAttacker, intAmount, 
 		tblDamageInfo:SetDamage(math.Round(tblDamageInfo:GetDamage() * (1 / entVictim:GetNWInt("level"))))		
 		if math.random(1, 20) == 1 then
 			tblDamageInfo:SetDamage(math.Round(tblDamageInfo:GetDamage() * 2))
-			entAttacker:CreateIndacator("Crit!", tblDamageInfo:GetDamagePosition(), "blue", true)
 			clrDisplayColor = "blue"
 		end
 		if entVictim:Health() < 2 && entVictim:IsBuilding() then
@@ -89,7 +87,6 @@ local function NPCAdjustDamage(entVictim, entInflictor, entAttacker, intAmount, 
 		end
 		tblDamageInfo:SetDamage(math.Round(tblDamageInfo:GetDamage() + math.random(-1, 1)))
 		tblDamageInfo:SetDamage(math.Clamp(tblDamageInfo:GetDamage(), 0, tblDamageInfo:GetDamage()))
-		entAttacker:CreateIndacator(tblDamageInfo:GetDamage(), tblDamageInfo:GetDamagePosition(), clrDisplayColor, true)
 		entVictim.FirstPlayerAttacker = entVictim.FirstPlayerAttacker || entAttacker
 		entVictim.LastPlayerAttacker = entAttacker
 		entVictim:SetHealth(entVictim:Health() - tblDamageInfo:GetDamage())

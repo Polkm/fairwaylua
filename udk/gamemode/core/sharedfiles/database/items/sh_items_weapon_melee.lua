@@ -181,7 +181,7 @@ Register.Item(Item)
 // Zcom ------------------
 --Not sure abotu this one looks too big
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_woodboard", "Wooden Board", "2x4 FTW", "icons/junk_saw")
-Item = AddModel(Item, "models/props_debris/wood_board02a.mdl", Vector(-0.1, -1.7, 18), Angle(-10, 170.6, -3.3))
+Item = AddModel(Item, "models/props_debris/wood_board02a.mdl", Vector(-0.1, 0.49, 11.95), Angle(-10, 170.6, -2.2), nil, "", Vector(0.5, 0.5, 0.7))
 Item = AddStats(Item, 8, 2.3)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
@@ -190,7 +190,7 @@ Item.CanCutWood = false
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_pickaxe", "Pickaxe", "Goldrush!", "icons/weapon_axe")
-Item = AddModel(Item, "models/props_mining/pickaxe01.mdl", Vector(-0.1, -0.6, -10.6), Angle(4.7, 72.9, 3.3))
+Item = AddModel(Item, "models/props_mining/pickaxe01.mdl", Vector(-0.1, -0.6, -5.61), Angle(4.7, 72.9, 3.3), nil, nil, Vector(0.7, 0.7, 0.7))
 Item = AddStats(Item, 14, 2.0)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
@@ -199,7 +199,7 @@ Register.Item(Item)
 
 --Not sure abotu this one looks too big
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_metalpole", "Metal Pole", "This belongs to some poor streetsign somewhere.", "icons/weapon_axe")
-Item = AddModel(Item, "models/props_c17/signpole001.mdl", Vector(-0.6, 0.1, -40), Angle(92.2, 155.9, 19.8))
+Item = AddModel(Item, "models/props_c17/signpole001.mdl", Vector(-0.6, 0.49, -12.2), Angle(-5.49, 150.37, 3.29), nil, nil, Vector(0.7, 0.7, 0.4))
 Item = AddStats(Item, 20, 2.0)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1

@@ -124,17 +124,10 @@ if SERVER then
 		if intCurrentExp + intAmount >= 0 then
 			local intTotal = math.Clamp(intCurrentExp + intAmount, toExp(intPreExpLevel), intCurrentExp + intAmount)
 			self:SetNWInt("exp", intTotal)
-			if boolShowExp then
-				self:CreateIndacator("+_" .. intAmount .. "_Exp", self:GetPos() + Vector(0, 0, 70), "green")
-			end
 			local intPostExpLevel = self:GetLevel()
 			if intPreExpLevel < intPostExpLevel then
 				hook.Call("UD_Hook_PlayerLevelUp", GAMEMODE, self, intPostExpLevel - intPreExpLevel)
 				self:SetHealth(self:GetMaximumHealth())
-				self:CreateIndacator("+1_Level", self:GetPos() + Vector(0, 0, 70), "green", true)
-				for i = 1, self:GetLevel() do
-					self:CreateIndacator(tblComplements[math.random(1, #tblComplements)], self:GetPos() + Vector(0, 0, 70), tblColors[math.random(1, #tblColors)], true)
-				end
 			end
 		end
 	end
@@ -167,11 +160,6 @@ if SERVER then
 			tblDamageInfo:SetDamage(tblDamageInfo:GetDamage() * (1 / (((entVictim:GetArmorRating() - 1) / 10) + 1)))
 			tblDamageInfo:SetDamage(math.Clamp(math.Round(tblDamageInfo:GetDamage() + math.random(-1, 1)), 0, 9999))
 			if tblNPCTable.Race == "human" then tblDamageInfo:SetDamage(0) end
-			if tblDamageInfo:GetDamage() > 0 then
-				entVictim:CreateIndacator(tblDamageInfo:GetDamage(), tblDamageInfo:GetDamagePosition(), clrDisplayColor)
-			else
-				entVictim:CreateIndacator("Miss!", tblDamageInfo:GetDamagePosition(), "orange")
-			end
 		end		
 	end
 	hook.Add("EntityTakeDamage", "PlayerAdjustDamage", PlayerAdjustDamage)
