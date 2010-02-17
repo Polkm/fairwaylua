@@ -139,21 +139,10 @@ function SWEP:WeaponAttack()
 end
 
 function SWEP:BulletCallBack(plyShooter, trcTrace, tblDamageInfo)
-	for strSkill, intSkillLevel in pairs(plyShooter.Data.Skills or {}) do
-		local tblSkillTable = SkillTable(strSkill)
-		if plyShooter:GetSkill(strSkill) > 0 && tblSkillTable.BulletCallBack then
-			tblSkillTable:BulletCallBack(plyShooter, plyShooter:GetSkill(strSkill), trcTrace, tblDamageInfo)
-		end
-	end
+
 end
 
 function SWEP:GetDamage(intDamage)
-	for strStat, tblStatTable in pairs(GAMEMODE.DataBase.Stats) do
-		if self.Owner:GetStat(strStat) && tblStatTable.DamageMod then
-			intDamage = tblStatTable:DamageMod(self.Owner, self.Owner:GetStat(strStat), intDamage)
-		end
-	end
-	intDamage = self.Owner:CallSkillHook("damage_mod", intDamage)
 	return intDamage
 end
 
@@ -163,6 +152,5 @@ function SWEP:GetFireRate(intFireRate)
 			intFireRate = tblStatTable:FireRateMod(self.Owner, self.Owner:GetStat(strStat), intFireRate)
 		end
 	end
-	intFireRate = self.Owner:CallSkillHook("firerate_mod", intFireRate)
 	return intFireRate
 end
