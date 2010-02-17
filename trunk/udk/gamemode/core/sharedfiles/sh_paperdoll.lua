@@ -130,6 +130,9 @@ if CLIENT then
 						if boolIsBeingEdited && GAMEMODE.ItemEditorSettings.CurrentEditingMat && GAMEMODE.ItemEditorSettings.CurrentEditingItemModel == 1 then
 							entTarget:SetMaterial(GAMEMODE.ItemEditorSettings.CurrentEditingMat)
 						end
+						if boolIsBeingEdited && GAMEMODE.ItemEditorSettings.CurrentEditingScale && GAMEMODE.ItemEditorSettings.CurrentEditingItemModel == 1 then
+							entTarget:SetModelScale(GAMEMODE.ItemEditorSettings.CurrentEditingScale)
+						end
 					end
 					for k, kid in pairs(entTarget.Children or {}) do
 						if boolIsBeingEdited && GAMEMODE.ItemEditorSettings.CurrentEditingItemModel == k + 1 then
@@ -141,6 +144,9 @@ if CLIENT then
 							kid:SetPos(kid:LocalToWorld(vecAddVector))
 							if GAMEMODE.ItemEditorSettings.CurrentEditingMat then
 								kid:SetMaterial(GAMEMODE.ItemEditorSettings.CurrentEditingMat)
+							end
+							if GAMEMODE.ItemEditorSettings.CurrentEditingScale then
+								kid:SetModelScale(GAMEMODE.ItemEditorSettings.CurrentEditingScale)
 							end
 						end
 					end
@@ -176,6 +182,13 @@ function GM:BuildModel(tblModelTable)
 		if SERVER then entNewPart:SetCollisionGroup(COLLISION_GROUP_WORLD) end
 		if tblModelInfo.Material then entNewPart:SetMaterial(tblModelInfo.Material) end
 		if tblModelInfo.Color then entNewPart:SetColor(tblModelInfo.Color.r, tblModelInfo.Color.g, tblModelInfo.Color.b, tblModelInfo.Color.a) end
+		if tblModelInfo.Scale then
+			if CLIENT then
+				entNewPart:SetModelScale(tblModelInfo.Scale)
+			else
+				entNewPart:SetServerScale(tblModelInfo.Scale)
+			end
+		end
 		entNewPart:Spawn()
 		if entReturnEnt then
 			entReturnEnt.Children = entReturnEnt.Children or {}
