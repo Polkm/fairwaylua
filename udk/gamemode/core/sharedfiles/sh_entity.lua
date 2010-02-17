@@ -71,3 +71,20 @@ function ENT:IsBlocked()
 	end
 	return false
 end
+
+if SERVER then
+	function ENT:SetServerScale(vecScale)
+		for _, ply in pairs(player.GetAll()) do
+			ply:ConCommand("UD_SetEtityScale " .. self:EntIndex() .. " " .. StringatizeVector(vecScale))
+		end
+	end
+end
+if CLIENT then
+	concommand.Add("UD_SetEtityScale", function(ply, command, args)
+		local entEtity = ents.GetByIndex(args[1])
+		local vecScale = VectortizeString(args[2])
+		if ValidEntity(entEtity) && vecScale then
+			entEtity:SetModelScale(vecScale)
+		end
+	end)
+end

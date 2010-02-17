@@ -1,7 +1,7 @@
-local function AddModel(tblAddTable, strModel, vecPostion, angAngle, clrColor, strMaterial)
+local function AddModel(tblAddTable, strModel, vecPostion, angAngle, clrColor, strMaterial, vecScale)
 	tblAddTable.Model = tblAddTable.Model or {}
 	if type(tblAddTable.Model) != "table" then tblAddTable.Model = {} end
-	table.insert(tblAddTable.Model, {Model = strModel, Position = vecPostion, Angle = angAngle, Color = clrColor, Material = strMaterial})
+	table.insert(tblAddTable.Model, {Model = strModel, Position = vecPostion, Angle = angAngle, Color = clrColor, Material = strMaterial, Scale = vecScale})
 	return tblAddTable
 end
 local function AddStats(tblAddTable, intPower, intFireRate)
@@ -36,7 +36,7 @@ Item.CanCutWood = true
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_cleaver", "Cleaver", "For chopping meat", "icons/weapon_cleaver")
-Item = AddModel(Item, "models/props_lab/Cleaver.mdl", Vector(-1.3, 0.7, 0.2), Angle(98.5, 0, 98.5))
+Item = AddModel(Item, "models/props_lab/Cleaver.mdl", Vector(-1.3, 0.7, 0.2), Angle(98.5, 0, 98.5), nil, nil, Vector(0.8, 0.8, 0.8))
 Item = AddStats(Item, 15, 1.3)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1

@@ -5,6 +5,7 @@ GM.ItemEditorSettings.CurrentEditingItemModel = 1
 GM.ItemEditorSettings.CurrentEditingVector = Vector(0, 0, 0)
 GM.ItemEditorSettings.CurrentEditingAngle = Angle(0, 0, 0)
 GM.ItemEditorSettings.CurrentEditingMat = nil
+GM.ItemEditorSettings.CurrentEditingScale = Vector(1, 1, 1)
 GM.ItemEditorSettings.CurrentCamRotation = nil
 GM.ItemEditorSettings.CurrentCamDistance = nil
 local intGlobalPadding = 5
@@ -88,6 +89,7 @@ function PANEL:Init()
 	self.VectorControls = self:AddControl(self:AddVectorControls())
 	self.AngleControls = self:AddControl(self:AddAngleControls())
 	self.MatControls = self:AddControl(self:AddMatControls())
+	self.ScaleControls = self:AddControl(self:AddScaleControls())
 	self.CammeraControls = self:AddControl(self:AddCammeraControls())
 	
 	
@@ -156,8 +158,10 @@ function PANEL:AddSlotControls()
 			GAMEMODE.ItemEditorSettings.CurrentEditingVector = tblItemTable.Model[data].Position
 			GAMEMODE.ItemEditorSettings.CurrentEditingAngle = tblItemTable.Model[data].Angle
 			GAMEMODE.ItemEditorSettings.CurrentEditingMat = tblItemTable.Model[data].Material
+			GAMEMODE.ItemEditorSettings.CurrentEditingScale = tblItemTable.Model[data].Scale or Vector(1, 1, 1)
 			self.VectorControls.UpdateNewValues(tblItemTable.Model[data].Position)
 			self.AngleControls.UpdateNewValues(tblItemTable.Model[data].Angle)
+			self.ScaleControls.UpdateNewValues(tblItemTable.Model[data].Scale or Vector(1, 1, 1))
 		end
 	end
 	return mlcSlotSellector, mlcObjectSellector
@@ -193,10 +197,10 @@ function PANEL:AddAngleControls()
 	local nmsNewZSlider = CreateGenericSlider(nil, "Roll", -180, 180, 2)
 	nmsNewZSlider.ValueChanged = function(self, value) GAMEMODE.ItemEditorSettings.CurrentEditingAngle.r = value end
 	cpcNewCollapseCat.List:AddItem(nmsNewZSlider)
-	cpcNewCollapseCat.UpdateNewValues = function(vecNewOffset)
-		nmsNewXSlider.UpdateSlider(vecNewOffset.p)
-		nmsNewYSlider.UpdateSlider(vecNewOffset.y)
-		nmsNewZSlider.UpdateSlider(vecNewOffset.r)
+	cpcNewCollapseCat.UpdateNewValues = function(angNewAngle)
+		nmsNewXSlider.UpdateSlider(angNewAngle.p)
+		nmsNewYSlider.UpdateSlider(angNewAngle.y)
+		nmsNewZSlider.UpdateSlider(angNewAngle.r)
 	end
 	return cpcNewCollapseCat
 end
@@ -215,6 +219,27 @@ function PANEL:AddMatControls()
 	return cpcNewCollapseCat
 end
 
+function PANEL:AddScaleControls()
+	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Scale Controls", intGlobalPadding, false)
+	local nmsNewXSlider = CreateGenericSlider(nil, "Wide", 0, 10, 1)
+	nmsNewXSlider.ValueChanged = function(self, value) GAMEMODE.ItemEditorSettings.CurrentEditingScale.x = value end
+	cpcNewCollapseCat.List:AddItem(nmsNewXSlider)
+	local nmsNewYSlider = CreateGenericSlider(nil, "Long", 0, 10, 1)
+	nmsNewYSlider.ValueChanged = function(self, value) GAMEMODE.ItemEditorSettings.CurrentEditingScale.y = value end
+	cpcNewCollapseCat.List:AddItem(nmsNewYSlider)
+	local nmsNewZSlider = CreateGenericSlider(nil, "Tall", 0, 10, 1)
+	nmsNewZSlider.ValueChanged = function(self, value) GAMEMODE.ItemEditorSettings.CurrentEditingScale.z = value end
+	cpcNewCollapseCat.List:AddItem(nmsNewZSlider)
+	cpcNewCollapseCat.UpdateNewValues = function(vecNewScale)
+		if vecNewScale then
+			nmsNewXSlider.UpdateSlider(vecNewScale.x)
+			nmsNewYSlider.UpdateSlider(vecNewScale.y)
+			nmsNewZSlider.UpdateSlider(vecNewScale.z)
+		end
+	end
+	return cpcNewCollapseCat
+end
+
 function PANEL:AddCammeraControls()
 	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Cammera Controls", intGlobalPadding, false)
 	local nmsNewRotationSlider = CreateGenericSlider(nil, "Rotation", -180, 180, 3)
@@ -228,16 +253,19 @@ end
 
 function PANEL:PrintNewDementions()
 	local vecVector = GAMEMODE.ItemEditorSettings.CurrentEditingVector
-	local intX, intY, intZ = math.Round(vecVector.x * 10) / 10, math.Round(vecVector.y * 10) / 10, math.Round(vecVector.z * 10) / 10
+	local intX, intY, intZ = math.Round(vecVector.x * 100) / 100, math.Round(vecVector.y * 100) / 100, math.Round(vecVector.z * 100) / 100
 	local strVector = tostring(intX .. ", " .. intY .. ", " .. intZ)
 	local angAngle = GAMEMODE.ItemEditorSettings.CurrentEditingAngle
-	local intPitch, intYaw, intRoll = math.Round(angAngle.p * 10) / 10, math.Round(angAngle.y * 10) / 10, math.Round(angAngle.r * 10) / 10
+	local intPitch, intYaw, intRoll = math.Round(angAngle.p * 100) / 100, math.Round(angAngle.y * 100) / 100, math.Round(angAngle.r * 100) / 100
 	local strAngle = tostring(intPitch .. ", " .. intYaw .. ", " .. intRoll)
 	local strMat = GAMEMODE.ItemEditorSettings.CurrentEditingMat
 	if strMat then strMat = '"' .. tostring(strMat) .. '"' end
 	if !strMat then strMat = "nil" end
-	print("Vector(" .. strVector .. "), Angle(" .. strAngle .. "), nil, " .. strMat)
-	SetClipboardText("Vector(" .. strVector .. "), Angle(" .. strAngle .. "), nil, " .. strMat)
+	local vecScale = GAMEMODE.ItemEditorSettings.CurrentEditingScale
+	local intX, intY, intZ = math.Round(vecScale.x * 10) / 10, math.Round(vecScale.y * 10) / 10, math.Round(vecScale.z * 10) / 10
+	local strScale = tostring(intX .. ", " .. intY .. ", " .. intZ)
+	print("Vector(" .. strVector .. "), Angle(" .. strAngle .. "), nil, " .. strMat .. ", Vector(" .. strScale .. ")")
+	SetClipboardText("Vector(" .. strVector .. "), Angle(" .. strAngle .. "), nil, " .. strMat .. ", Vector(" .. strScale .. ")")
 end
 vgui.Register("editor_items", PANEL, "Panel")
 
