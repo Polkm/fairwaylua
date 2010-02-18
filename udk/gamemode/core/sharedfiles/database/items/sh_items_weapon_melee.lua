@@ -223,17 +223,17 @@ Item.SellPrice = 400
 Item.CanCutWood = false
 Register.Item(Item)
 
-local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_skele", "The Soul Devourer", "This doesn't seem sanitary...", "icons/weapon_axe")
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_skele", "The Soul Devourer", "Ja'vek the Soul Devourer.", "icons/weapon_axe")
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(-0.8, 0.1, 4.1), Angle(8.7, 6, 90.3))--skull
 Item = AddModel(Item, "models/Gibs/HGIBS_spine.mdl", Vector(-0.3, 5, -10.1), Angle(-7.4, -83.6, -123.8))--spine
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(5.7, -14.6, 3.5), Angle(-83.6, -0.7, -72.9))--scorp spike
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(3.9, 0.6, 1.7), Angle(4.7, 2, -90.3))--blade
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(3.9, 0.6, -1.9), Angle(4.7, 2, -90.3))
-Item = AddStats(Item, 80, 3)
+Item = AddStats(Item, 200, 1.8)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
-Item.Level = 45
+Item.Level = 50
 Item.Weight = 1
-Item.SellPrice = 3631
+Item.SellPrice = 36310
 Item.CanCutWood = false
 Register.Item(Item)
 
@@ -245,5 +245,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item = AddBuff(Item, "stat_maxhealth", 50)
 Item.Level = 50
 Item.Weight = 1
+Item.SellPrice = 36310
 Item.CanCutWood = false
 Register.Item(Item)

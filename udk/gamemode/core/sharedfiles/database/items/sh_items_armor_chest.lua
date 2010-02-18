@@ -96,3 +96,17 @@ Item.Level = 50
 Item.Weight = 8
 Item.SellPrice = 26112
 Register.Item(Item)
+
+ local Item = QuickCreateItemTable(BaseArmor, "armor_chest_bio", "Chest Enhancers of the Overseer", "Created from light and durable metal, increases ranged combat", "icons/junk_box1")
+Item = AddModel(Item, "models/props_combine/tprotato2_chunk05.mdl", Vector(-3.3, 11.6, 16.4), Angle(19.4, -2, 147.9))--front
+Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(-3.9, 14, -8), Angle(-138.5, 135.8, 114.4))
+Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(-2.1, 21.1, 14), Angle(-142.5, 138.5, 34.1))
+Item = AddModel(Item, "models/props_combine/tprotato2_chunk05.mdl", Vector(-12.8, 27.7, 24.1), Angle(-47.5, -159.9, -81))--back
+Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(12.2, 19.3, 6.8), Angle(62.2, 131.8, -70.3))
+Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(6.8, -5.1, -12.8), Angle(40.8, 145.2, 52.9))
+Item = AddStats(Item, "slot_chest", 73)
+Item = AddBuff(Item, "stat_dexterity", 35)
+Item.Level = 50
+Item.Weight = 1
+Item.SellPrice = 26112
+Register.Item(Item)

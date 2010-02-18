@@ -71,18 +71,18 @@ Item = AddModel(Item, "models/Gibs/Antlion_gib_Large_1.mdl", Vector(-2.8, -10.4,
 Item = AddStats(Item, "slot_offhand", 60)
 Item = AddBuff(Item, "stat_maxhealth", 15)
 Item.Weight = 1
-Item.Level = 27
+Item.Level = 25
 Item.SellPrice = 6310
 Register.Item(Item) 
 
-local Item = QuickCreateItemTable(BaseArmor, "armor_shield_skele", "The Soul Drinker", "Offensive Shield", "icons/junk_sawblade")
+local Item = QuickCreateItemTable(BaseArmor, "armor_shield_skele", "The Soul Drinker", "Ba'jak the Soul Drinker.", "icons/junk_sawblade")
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(0.1, -0.1, 4.1), Angle(-6, 6, -90.3))--skull
 Item = AddModel(Item, "models/Gibs/HGIBS_spine.mdl", Vector(-0.3, 5, -10.1), Angle(-7.4, -83.6, -123.8))--spine
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(5.7, -14.6, 3.5), Angle(-83.6, -0.7, -72.9))--scorp spike
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(3.9, 0.6, 1.7), Angle(4.7, 2, -90.3))--blade
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(3.9, 0.6, -1.9), Angle(4.7, 2, -90.3))
-Item = AddStats(Item, "slot_offhand", 30)
-Item = AddBuff(Item, "stat_strength", 20)
+Item = AddStats(Item, "slot_offhand", 0)
+Item = AddBuff(Item, "stat_strength", 30)
 Item.Level = 50
 Item.Weight = 1
 Item.SellPrice = 24053
@@ -95,5 +95,5 @@ Item = AddStats(Item, "slot_offhand", 120)
 Item = AddBuff(Item, "stat_maxhealth", 55)
 Item.Level = 50
 Item.Weight = 1
-Item.SellPrice = 631
+Item.SellPrice = 26000
 Register.Item(Item)
