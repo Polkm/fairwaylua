@@ -30,14 +30,22 @@ Item.Weight = 2
 Item.SellPrice = 300
 Register.Item(Item)
 
-local Item = QuickCreateItemTable(BaseArmor, "armor_belt_skele", "Bone Gutguard", "Bone Daddy.", "icons/item_cash")
+local Item = QuickCreateItemTable(BaseArmor, "armor_belt_skele", "Gutguard of the Wraith", "Made from those who are dead, forged for reaping.", "icons/item_cash")
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(5.5, 0.3, -6.8), Angle(16.7, 3.3, 2))
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(1.7, -0.3, -5.2), Angle(3.3, -2, 2))
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(1, -3.9, -2.1), Angle(-110.4, 7.4, -14.1))
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(0.6, -3, 1.7), Angle(-74.3, 168, 19.4))
-Item = AddStats(Item, "slot_waist", 0)
-Item = AddBuff(Item, "stat_strength", 8)
-Item.Level = 45
+Item.Level = 50
+Item = AddStats(Item, "slot_waist", 5)
+Item = AddBuff(Item, "stat_strength", 15)
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseArmor, "armor_belt_bio", "Gutguard of the Overseer", "Created from light and durable metal, increases ranged combat.", "icons/item_cash")
+Item = AddModel(Item, "models/Gibs/manhack_gib02.mdl", Vector(10.6, -5.5, -1.9), Angle(90.3, -54.2, 2))--left
+Item = AddStats(Item, "slot_waist", 10)
+Item = AddBuff(Item, "stat_dexterity", 5)
+Item = AddBuff(Item, "stat_maxhealth", 10)
+Item.Level = 50
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_belt_cyborg", "Biomechanical Spine", "Resistance is Futile.", "icons/item_cash")

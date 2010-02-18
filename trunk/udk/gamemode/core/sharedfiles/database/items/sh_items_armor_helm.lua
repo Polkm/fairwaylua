@@ -151,3 +151,17 @@ Item.Level = 50
 Item.Weight = 1
 Item.SellPrice = 15050
 Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_bio", "Cyber Optics of the Overseer", "Created from light and durable metal, increases ranged combat", "icons/hat_cheifshat")
+Item = AddModel(Item, "models/manhack.mdl", Vector(3.3, -0.3, -2.7), Angle(-62.2, -180, -4.7))
+Item = AddModel(Item, "models/manhack.mdl", Vector(2.7, 2.1, 0.9), Angle(161.3, -91.7, 161.3))
+Item = AddModel(Item, "models/manhack.mdl", Vector(1.5, -2.1, 0.3), Angle(30.1, -83.6, 19.4))
+Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl",Vector(2.7, 0.3, 3.9), Angle(38.1, -180, 2))
+Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(6.8, 0.3, 4.5), Angle(32.8, -180, -0.7))
+Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(7.4, 2.1, 2.1), Angle(16.7, -180, 90.3))
+Item = AddStats(Item, "slot_helm", 38)
+Item = AddBuff(Item, "stat_dexterity", 30)
+Item.Level = 50
+Item.Weight = 1
+Item.SellPrice = 15050
+Register.Item(Item)
