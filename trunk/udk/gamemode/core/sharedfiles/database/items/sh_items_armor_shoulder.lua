@@ -27,9 +27,9 @@ Register.Item(Item)
 local Item = QuickCreateItemTable(BaseArmor, "armor_shoulder_cyborg", "Biomechanical Shoulders", "Alittle creeky... needs oil.", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/Gibs/manhack_gib03.mdl", Vector(5.5, -1.2, -0.6), Angle(-82.3, -42.2, -11.4)) --left
 Item = AddModel(Item, "models/Gibs/manhack_gib02.mdl", Vector(4.1, -0.3, 2.1), Angle(99.7, 180, 173.3))
-Item = AddStats(Item, "slot_shoulder", 5)
+Item = AddStats(Item, "slot_shoulder", 23)
 Item = AddBuff(Item, "stat_dexterity", 6)
-Item.Level = 27
+Item.Level = 20
 Item.Weight = 2
 Item.SellPrice = 5800
 Register.Item(Item)
@@ -58,21 +58,19 @@ Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(1.7, -0.6, -0.6), 
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(14.8, 6.4, -1.4), Angle(-147.9, 7.4, 87.7))
 Item = AddStats(Item, "slot_shoulder", 38)
 Item = AddBuff(Item, "stat_strength", 10)
-Item.Level = 45
+Item.Level = 33
 Item.Weight = 4
 Item.SellPrice = 9786
 Register.Item(Item) 
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_shoulder_tyrant", "Pauldrons of the Tyrant", "Made from the finest materials, for protection.", "icons/hat_cheifshat")
---left
 Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-0.1, 1.4, -3.7), Angle(-90.3, -6, -139.9))
---right
 Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(1.2, 0.8, -0.3), Angle(-180, -0.7, 180))
-Item = AddStats(Item, "slot_shoulder", 50)
+Item = AddStats(Item, "slot_shoulder", 43)
 Item = AddBuff(Item, "stat_maxhealth", 35)
-Item.Level = 50
+Item.Level = 42
 Item.Weight = 2
-Item.SellPrice = 10960
+Item.SellPrice = 9960
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_shoulder_bio", "Pauldrons of the Overseer", "Created from light and durable metal, increases ranged combat", "icons/hat_cheifshat")
@@ -80,9 +78,9 @@ Item = AddModel(Item, "models/Gibs/manhack_gib03.mdl", Vector(2.1, 0.3, -4.5), A
 Item = AddModel(Item, "models/Gibs/manhack_gib02.mdl", Vector(3.3, -0.3, 2.1), Angle(99.7, 180, 173.3))
 Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(-11, 2.1, -1.5), Angle(125.1, 149.2, -50.2))
 Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(11.6, -0.3, 2.1), Angle(-123.8, -47.5, -170.6))
-Item = AddStats(Item, "slot_shoulder", 30)
+Item = AddStats(Item, "slot_shoulder", 42)
 Item = AddBuff(Item, "stat_dexterity", 20)
-Item.Level = 50
+Item.Level = 45
 Item.Weight = 2
-Item.SellPrice = 9960
+Item.SellPrice = 10960
 Register.Item(Item)

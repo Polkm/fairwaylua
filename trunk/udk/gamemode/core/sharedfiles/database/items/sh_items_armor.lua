@@ -17,7 +17,6 @@ end
 --Models/props_c17/FurnitureMetal002a.vtf
 --Models/Gibs/metalgibs/metal_gibs.vtf
 --Models/props_building_details/courtyard_template001c_bars.vtf
-
 --Models/props_building_details/courtyard_template001c_bars_dark.vtf
 --Models/props_c17/gate_door01a.vtf
 --Models/props_c17/gate_door02a.vtf

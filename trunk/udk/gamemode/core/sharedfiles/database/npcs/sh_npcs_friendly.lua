@@ -25,7 +25,7 @@ local function AddDrop(Table, strName, strChance, strMin, strMax,strDefaultChanc
 	return Table
 end
 
-local NPC = QuickNPC("rebel_smg", "Rebel Guard", "npc_citizen", "human")
+local NPC = QuickNPC("rebel_smg", "Rebel Guard", "npc_combine_s", "human", 50, "models/Humans/Group03/Male_02.mdl")
 NPC = AddBool(NPC, false, true, false)
 NPC = AddMultiplier(NPC, 100, 7)
 NPC.Weapon = "weapon_smg1"
@@ -63,16 +63,22 @@ NPC.Bank = true
 NPC.DeathDistance = 14
 Register.NPC(NPC)
 
+local NPC = QuickNPC("quest_Odessa", "Odessa", "npc_breen", "human", nil, "models/odessa.mdl")
+NPC = AddBool(NPC, false, true, true)
+NPC.Quest = {"quest_killantlionboss"}
+NPC.DeathDistance = 14
+Register.NPC(NPC)
+
 local NPC = QuickNPC("quest_Adam", "Adam", "npc_breen", "human", nil, "models/Humans/Group03/Male_02.mdl")
 NPC = AddBool(NPC, false, true, true)
-NPC.Quest = {"quest_killzombies", "quest_fortification", "quest_killantlionboss", "quest_monkeybusiness", 
-"quest_killantlion", "quest_zombieblood", "quest_arsenalupgrade", "quest_beer"}
+NPC.Quest = {"quest_killzombies", "quest_monkeybusiness", "quest_killantlion", 
+"quest_zombieblood", "quest_beer"}
 NPC.DeathDistance = 14
 Register.NPC(NPC)
 
 local NPC = QuickNPC("quest_kleiner", "Dr. Kleiner", "npc_kleiner", "human")
 NPC = AddBool(NPC, false, true, true)
-NPC.Quest = {"quest_killcombinethumper", "quest_killcombine", "quest_toolwrench", "quest_revolver", "quest_armorupgrade",
-"quest_missionthors"}
+NPC.Quest = {"quest_killcombinethumper", "quest_arsenalupgrade", "quest_killcombine", 
+"quest_toolwrench", "quest_revolver", "quest_armorupgrade","quest_missionthors", "quest_fortification","quest_oil"}
 NPC.DeathDistance = 14
 Register.NPC(NPC)

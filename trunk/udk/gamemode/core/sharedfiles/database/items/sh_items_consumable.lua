@@ -13,7 +13,7 @@ local Item = QuickCreateItemTable(BaseFood, "item_canspoilingmeat", "Can of Spoi
 Item = AddHealth(Item, 10, 12)
 Item.Model = "models/props_junk/garbage_metalcan001a.mdl"
 Item.Message = "You ate a Spoiled piece of Meat"
-Item.SellPrice = 10
+Item.SellPrice = 4
 Item.Weight = 1
 Register.Item(Item)
 
@@ -21,7 +21,7 @@ local Item = QuickCreateItemTable(BaseFood, "item_orange", "Orange", "Restores y
 Item = AddHealth(Item, 25, 8)
 Item.Model = "models/props/cs_italy/orange.mdl"
 Item.Message = "You ate a Orange"
-Item.SellPrice = 26
+Item.SellPrice = 8
 Item.Weight = 1
 Register.Item(Item)
 local Item = DeriveTable(BaseItem)
@@ -31,7 +31,7 @@ Item = AddHealth(Item, 40, 10)
 Item.Model = "models/healthvial.mdl"
 Item.QuestNeeded = "quest_zombieblood"
 Item.Message = "You have taken an antivirus"
-Item.SellPrice = 40
+Item.SellPrice = 30
 Item.Weight = 1
 Register.Item(Item)
 
@@ -47,7 +47,7 @@ local Item = QuickCreateItemTable(BaseFood, "item_bananna", "Bananna", "Restores
 Item = AddHealth(Item, 15, 10)
 Item.Model = "models/props/cs_italy/bananna.mdl"
 Item.Message = "You ate a Banana"
-Item.SellPrice = 15
+Item.SellPrice = 8
 Item.Weight = 1
 Register.Item(Item)
 
@@ -56,36 +56,36 @@ local Item = QuickCreateItemTable(BaseFood, "item_healthkit", "Health Kit", "Res
 Item = AddHealth(Item, 40, 1)
 Item.Model = "models/Items/HealthKit.mdl"
 Item.Message = "You've used a Health Kit"
-Item.SellPrice = 45
+Item.SellPrice = 35
 Item.Weight = 1
 Register.Item(Item)
 
 
-local Item = QuickCreateItemTable(BaseAmmo, "item_smallammo_small", "Small Rounds", "25 Small bullets", "icons/item_pistolammobox")
-Item = AddAmmo(Item, 25, "smg1")
+local Item = QuickCreateItemTable(BaseAmmo, "item_smallammo_small", "Small Rounds", "35 Small bullets", "icons/item_pistolammobox")
+Item = AddAmmo(Item, 35, "smg1")
 Item.Model = "models/Items/357ammobox.mdl"
-Item.SellPrice = 5
+Item.SellPrice = 2
 Item.Weight = 1
 Register.Item(Item)
 
-local Item = QuickCreateItemTable(BaseAmmo, "item_rifleammo_small", "Rifle Rounds", "35 Rifle bullets", "icons/item_rifleammo")
-Item = AddAmmo(Item, 35, "ar2")
+local Item = QuickCreateItemTable(BaseAmmo, "item_rifleammo_small", "Rifle Rounds", "50 Rifle bullets", "icons/item_rifleammo")
+Item = AddAmmo(Item, 50, "ar2")
 Item.Model = "models/Items/BoxSRounds.mdl"
-Item.SellPrice = 10
+Item.SellPrice = 3
 Item.Weight = 1
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseAmmo, "item_buckshotammo_small", "Buckshot", "20 Buckshot shells", "icons/item_buckshot")
 Item = AddAmmo(Item, 20, "buckshot")
 Item.Model = "models/Items/BoxBuckshot.mdl"
-Item.SellPrice = 8
+Item.SellPrice = 3
 Item.Weight = 1
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseAmmo, "item_sniperammo_small", "SniperRound", "8 Sniper Round", "icons/item_buckshot")
 Item = AddAmmo(Item, 8, "SniperRound")
 Item.Model = "models/Items/BoxBuckshot.mdl"
-Item.SellPrice = 8
+Item.SellPrice = 4
 Item.Weight = 1
 Register.Item(Item)
 

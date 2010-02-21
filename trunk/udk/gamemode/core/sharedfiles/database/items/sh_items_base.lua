@@ -39,9 +39,13 @@ function BaseFood:Use(usr, itemtable)
 	if !usr or !usr:IsValid() or usr:Health() >= usr:GetStat("stat_maxhealth") or usr:Health() <= 0 then return end
 	local intHealthToAdd = itemtable.AddedHealth
 	local intMessage = itemtable.Message
+	local intSound = itemtable.UseSound
 	intHealthToAdd = usr:CallSkillHook("food_mod",intHealthToAdd) 
 	if intMessage then
 		usr:CreateNotification(intMessage)
+	end
+	if intSound then
+		usr:EmitSound( sound(intSound) )
 	end
 	local intHealthGiven = 0
 	local function AddHealth()
@@ -68,6 +72,7 @@ BaseEquiptment.Slot = "slot_primaryweapon"
 BaseEquiptment.Level = 1
 BaseEquiptment.Buffs = {}
 function BaseEquiptment:Use(usr, tblItemTable)
+	if usr:Health() <= 0 or usr:GetLevel() < tblItemTable.Level then return false end
 	usr:SetPaperDoll(tblItemTable.Slot, tblItemTable.Name)
 	return true
 end

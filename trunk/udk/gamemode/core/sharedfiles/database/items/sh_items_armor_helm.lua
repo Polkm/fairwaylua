@@ -63,25 +63,25 @@ Register.Item(Item)
 local Item = QuickCreateItemTable(BaseArmor, "armor_helm_scannergoggles", "Scanner Goggles", "Scan like a scanner", "icons/armor_scannergogles")
 Item = AddModel(Item, "models/Gibs/Shield_Scanner_Gib1.mdl", Vector(-0.3, -0.3, 0.1), Angle(121.1, -83.6, -95.7))
 Item = AddStats(Item, "slot_helm", 2)
-Item = AddBuff(Item, "stat_strength", 3)
-Item.Weight = 1
+Item = AddBuff(Item, "stat_strength", 2)
 Item.Level = 5
-Item.SellPrice = 350
+Item.Weight = 1
+Item.SellPrice = 295
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_helm_gasmask", "Gas-Mask", "Protects your respiratory system from toxic substances.", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/BarneyHelmet_faceplate.mdl", Vector(-1.7, 0.1, -0.1), Angle(-0.7, 2, -0.7))
 Item = AddStats(Item, "slot_helm", 1)
-Item = AddBuff(Item, "stat_agility", 2)
-Item.Weight = 1
+Item = AddBuff(Item, "stat_agility", 3)
 Item.Level = 5
-Item.SellPrice = 270
+Item.Weight = 1
+Item.SellPrice = 293
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_helm_bones", "Skull Mask", "How Ghastly!", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(-1.2, 0.1, -0.3), Angle(14.1, 2, -0.7))
 Item = AddStats(Item, "slot_helm", 5)
-Item = AddBuff(Item, "stat_strength", 2)
+Item = AddBuff(Item, "stat_strength", 3)
 Item.Level = 10
 Item.Weight = 1
 Item.SellPrice = 455
@@ -89,23 +89,23 @@ Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_helm_headcrab", "Headcrab", "Headcrab, Apply directly to the forhead.", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/headcrabclassic.mdl", Vector(1.7, 0.1, -6.1), Angle(-10, 0, 0))
-Item = AddStats(Item, "slot_helm", 10)
-Item.Weight = 3
+Item = AddStats(Item, "slot_helm", 12)
 Item.Level = 15
+Item.Weight = 2
 Item.SellPrice = 1200
 Register.Item(Item)
 
-local Item = QuickCreateItemTable(BaseArmor, "armor_helm_cyborg", "Biomechanical Eye", "I see london, I see...", "icons/hat_cheifshat")
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_cyborg", "Biomechanical Eye", "I see london, I see ...", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/Gibs/manhack_gib03.mdl", Vector(-1.2, 1.9, -0.6), Angle(0.7, 2, -0.7))
 Item = AddModel(Item, "models/Gibs/manhack_gib02.mdl", Vector(2.1, -0.6, 2.8), Angle(-0.7, -180, -0.7))
 Item = AddStats(Item, "slot_helm", 22)
-Item = AddBuff(Item, "stat_dexterity", 15)
-Item.Level = 23
+Item = AddBuff(Item, "stat_dexterity", 8)
+Item.Level = 21
 Item.Weight = 1
 Item.SellPrice = 6245
 Register.Item(Item)
 
-local Item = QuickCreateItemTable(BaseArmor, "armor_helm_antlionhelm", "Antlion Shell Helm", "Smells alittle funky, but it gets the job done!", "icons/hat_cheifshat")
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_antlionhelm", "Antlion Shell Helm", "Smells a little funky, but it gets the job done!", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(3.2, -0.1, -0.3), Angle(85, 0.7, 4.7))
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(-5, 0.1, 3.7), Angle(-44.8, 0.7, -3.3))
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(-1.2, 0.3, 3.5), Angle(-4.7, 3.3, 178.7))
@@ -118,8 +118,8 @@ Item = AddModel(Item, "models/Gibs/Antlion_gib_small_1.mdl", Vector(3.7, 3.9, 2.
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(-1.9, 0.3, 7.5), Angle(-106.4, -0.7, 7.4))
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(4.8, -0.6, 5.5), Angle(-180, 0.7, -3.3))
 Item = AddStats(Item, "slot_helm", 30)
-Item = AddBuff(Item, "stat_maxhealth", 10)
-Item.Level = 27
+Item = AddBuff(Item, "stat_maxhealth", 8)
+Item.Level = 23
 Item.Weight = 1
 Item.SellPrice = 7350
 Item.Set = "armor_antlion"
@@ -136,20 +136,9 @@ Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(2.3, 0.1, 3.
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(1.4, 0.6, 3.9), Angle(52.9, 170.6, 0.7))
 Item = AddStats(Item, "slot_helm", 33)
 Item = AddBuff(Item, "stat_strength", 16)
-Item.Level = 43
+Item.Level = 33
 Item.Weight = 1
-Item.SellPrice = 15030
-Register.Item(Item)
-
-local Item = QuickCreateItemTable(BaseArmor, "armor_helm_tyrant", "Platehelm of the Tyrant", "Ribcage of the Wraith", "Made from those who are dead, forged for reaping.", "icons/hat_cheifshat")
-Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-1.4, 0.3, -2.8), Angle(78.3, -0.7, 0.7))
-Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-7.2, 0.1, 2.3), Angle(177.3, -0.7, 0))
-Item = AddModel(Item, "models/BarneyHelmet_faceplate.mdl",Vector(0.1, 0.1, 0.1), Angle(-32.8, 2, -0.7), nil, "debug/env_cubemap_model.vtf")
-Item = AddStats(Item, "slot_helm", 66)
-Item = AddBuff(Item, "stat_maxhealth", 50)
-Item.Level = 50
-Item.Weight = 1
-Item.SellPrice = 15050
+Item.SellPrice = 12030
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_helm_bio", "Cyber Optics of the Overseer", "Created from light and durable metal, increases ranged combat", "icons/hat_cheifshat")
@@ -159,9 +148,20 @@ Item = AddModel(Item, "models/manhack.mdl", Vector(1.5, -2.1, 0.3), Angle(30.1, 
 Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl",Vector(2.7, 0.3, 3.9), Angle(38.1, -180, 2))
 Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(6.8, 0.3, 4.5), Angle(32.8, -180, -0.7))
 Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(7.4, 2.1, 2.1), Angle(16.7, -180, 90.3))
-Item = AddStats(Item, "slot_helm", 38)
-Item = AddBuff(Item, "stat_dexterity", 30)
-Item.Level = 50
+Item = AddStats(Item, "slot_helm", 50)
+Item = AddBuff(Item, "stat_dexterity", 31)
+Item.Level = 39
 Item.Weight = 1
-Item.SellPrice = 15050
+Item.SellPrice = 17120
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_tyrant", "Platehelm of the Tyrant", "Ribcage of the Wraith", "Made from those who are dead, forged for reaping.", "icons/hat_cheifshat")
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-1.4, 0.3, -2.8), Angle(78.3, -0.7, 0.7))
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-7.2, 0.1, 2.3), Angle(177.3, -0.7, 0))
+Item = AddModel(Item, "models/BarneyHelmet_faceplate.mdl",Vector(0.1, 0.1, 0.1), Angle(-32.8, 2, -0.7), nil, "debug/env_cubemap_model.vtf")
+Item = AddStats(Item, "slot_helm", 52)
+Item = AddBuff(Item, "stat_maxhealth", 35)
+Item.Level = 40
+Item.Weight = 2
+Item.SellPrice = 17050
 Register.Item(Item)
