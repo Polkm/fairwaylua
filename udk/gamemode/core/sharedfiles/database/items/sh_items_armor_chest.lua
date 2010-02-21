@@ -32,6 +32,7 @@ Item = AddModel(Item, "models/Gibs/Scanner_gib02.mdl", Vector(7, 5, 4.6), Angle(
 Item = AddModel(Item, "models/Gibs/Scanner_gib04.mdl", Vector(-3.7, 8.4, 0.6), Angle(-11.4, 110.4, 117.1))
 Item = AddStats(Item, "slot_chest", 25)
 Item = AddBuff(Item, "stat_maxhealth", 10)
+Item.Level = 14
 Item.Weight = 2
 Item.SellPrice = 1020
 Register.Item(Item)
@@ -41,9 +42,9 @@ Item = AddModel(Item, "models/Gibs/manhack_gib03.mdl", Vector(-3.9, -1.7, 0.8), 
 Item = AddModel(Item, "models/Gibs/manhack_gib03.mdl", Vector(0.1, 1, 4.6), Angle(-157.2, 158.6, 0))
 Item = AddModel(Item, "models/Gibs/manhack_gib02.mdl", Vector(10.4, -0.1, -0.8), Angle(162.6, -14.1, 12.7))
 Item = AddModel(Item, "models/Gibs/manhack_gib02.mdl", Vector(1.7, 9.9, -2.1), Angle(-18.1, -27.4, 0))
-Item = AddStats(Item, "slot_chest", 42)
+Item = AddStats(Item, "slot_chest", 40)
 Item = AddBuff(Item, "stat_dexterity", 10)
-Item.Level = 24
+Item.Level = 20
 Item.Weight = 4
 Item.SellPrice = 8020
 Register.Item(Item)
@@ -61,7 +62,7 @@ Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(5, -5.9, 1.2
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(4.1, -1.4, -0.1), Angle(-172, 0.7, 157.2))
 Item = AddStats(Item, "slot_chest", 48)
 Item = AddBuff(Item, "stat_maxhealth", 17)
-Item.Level = 27
+Item.Level = 25
 Item.Weight = 5
 Item.SellPrice = 9020
 Item.Set = "armor_antlion"
@@ -75,26 +76,11 @@ Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(1, 1, -5.2), Angle(3.3, -1
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(12.2, -6.6, -3.5), Angle(139.9, -15.4, 87.7))
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(11.5, -4.1, -2.8), Angle(149.2, 12.7, 87.7))
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(14.2, -1.7, -4.3), Angle(134.5, 3.3, 87.7))
-Item = AddStats(Item, "slot_chest", 73)
+Item = AddStats(Item, "slot_chest", 62)
 Item = AddBuff(Item, "stat_strength", 23)
-Item.Level = 45
+Item.Level = 32
 Item.Weight = 7
 Item.SellPrice = 24156
-Register.Item(Item) 
-
-
- local Item = QuickCreateItemTable(BaseArmor, "armor_chest_tyrant", "Chest Armor of the Tyrant", "Made from the finest materials, for protection.", "icons/junk_box1")
-Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-4.6, -1.9, 1), Angle(50.2, 0.7, 7.4))--front
-Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(0.1, 4.3, 0.6), Angle(180, -178.7, 169.3))
-Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-5.9, -1.9, 7.2), Angle(-82.3, 75.6, 105.1))
-Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-1.4, -3.5, 0.1), Angle(93, -161.3, 27.4))
-Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-1.7, 0.3, -0.6), Angle(77, -125.1, 54.2))--back
-Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-6.8, 2.1, 4.8), Angle(-163.9, -0.7, 7.4))
-Item = AddStats(Item, "slot_chest", 150)
-Item = AddBuff(Item, "stat_maxhealth", 70)
-Item.Level = 50
-Item.Weight = 8
-Item.SellPrice = 26112
 Register.Item(Item)
 
  local Item = QuickCreateItemTable(BaseArmor, "armor_chest_bio", "Chest Enhancers of the Overseer", "Created from light and durable metal, increases ranged combat", "icons/junk_box1")
@@ -106,7 +92,21 @@ Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(12.2, 19.3, 6.8), 
 Item = AddModel(Item, "models/Gibs/manhack_gib01.mdl", Vector(6.8, -5.1, -12.8), Angle(40.8, 145.2, 52.9))
 Item = AddStats(Item, "slot_chest", 73)
 Item = AddBuff(Item, "stat_dexterity", 35)
-Item.Level = 50
+Item.Level = 42
 Item.Weight = 1
 Item.SellPrice = 26112
+Register.Item(Item)
+
+ local Item = QuickCreateItemTable(BaseArmor, "armor_chest_tyrant", "Chest Armor of the Tyrant", "Made from the finest materials, for protection.", "icons/junk_box1")
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-4.6, -1.9, 1), Angle(50.2, 0.7, 7.4))--front
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(0.1, 4.3, 0.6), Angle(180, -178.7, 169.3))
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-5.9, -1.9, 7.2), Angle(-82.3, 75.6, 105.1))
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-1.4, -3.5, 0.1), Angle(93, -161.3, 27.4))
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-1.7, 0.3, -0.6), Angle(77, -125.1, 54.2))--back
+Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-6.8, 2.1, 4.8), Angle(-163.9, -0.7, 7.4))
+Item = AddStats(Item, "slot_chest", 97)
+Item = AddBuff(Item, "stat_maxhealth", 70)
+Item.Level = 45
+Item.Weight = 8
+Item.SellPrice = 27144
 Register.Item(Item)
