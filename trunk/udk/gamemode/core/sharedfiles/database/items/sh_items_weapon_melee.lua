@@ -149,6 +149,14 @@ Item.SellPrice = 1859
 Item.CanCutWood = true
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_powerhammer", "Power Hammer", "Uses combine thumper tech to add explosive damage.", "icons/weapon_axe")
+Item = AddModel(Item, "models/Combine_turrets/Floor_turret_gib4.mdl", Vector(-7.8, -4.88, 8.29), Angle(29.63, 151.46, -15.37), nil, nil, Vector(1, 1, 1))
+Item = AddStats(Item, 48.5, 2)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item.Level = 22
+Item.Weight = 1
+Register.Item(Item)
+
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_hammer", "Bros. Hammer", "STOP, Hammer Time'", "icons/weapon_axe")
 Item = AddModel(Item, "models/props/CS_militia/axe.mdl", Vector(0.3, -5, -0.1), Angle(-0.7, 78.3, -82.3))
 Item = AddModel(Item, "models/props/CS_militia/axe.mdl", Vector(1.2, 0, 0), Angle(180, 0.2, 0))
