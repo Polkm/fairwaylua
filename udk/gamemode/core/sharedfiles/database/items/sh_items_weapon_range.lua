@@ -147,3 +147,19 @@ Item.AmmoType = "SniperRound"
 Register.Item(Item)
 
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_hellfire", "Hellfire Shotgun", "Send your foes back to hell.", "icons/weapon_shotgun")
+Item = AddModel(Item, "models/Weapons/w_shotgun.mdl", Vector(-13.9, 1.4, -0.6), Angle(15.4, -174.6, -6))
+Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(9, -1, 6.1), Angle(26.1, -180, -8.7))
+Item = AddModel(Item, "models/Gibs/HGIBS_spine.mdl", Vector(0.8, -1, -3.9), Angle(166.6, 89, 87.7))
+Item = AddModel(Item, "models/Gibs/HGIBS_spine.mdl", Vector(0.6, -2.1, -5.9), Angle(180, 89, 75.6))
+Item = AddModel(Item, "models/Gibs/HGIBS_spine.mdl", Vector(0.1, -1, -3.7), Angle(180, 83.6, 78.3))
+Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(14.6, 4.6, 0.3), Angle(145.2, -8.7, -99.7))
+Item = AddStats(Item, 12, 0.1, 1.5, 12, 8)  --(144)
+Item = AddSound(Item, "weapons/shotgun/shotgun_fire7.wav", "weapons/shotgun/shotgun_cock.wav")
+Item.Level = 28
+Item.Weight = 3
+Item.SellPrice = 6200
+Item.HoldType = "shotgun"
+Item.AmmoType = "buckshot"
+Register.Item(Item)
+
