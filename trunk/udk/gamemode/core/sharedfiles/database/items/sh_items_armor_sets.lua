@@ -6,7 +6,7 @@ end
 
 local tblEquipmentSet = {}
 tblEquipmentSet.Name = "armor_antlion"
-tblEquipmentSet.PrintName = "Antlion Armor"
+tblEquipmentSet.PrintName = "Antlion Warrior"
 tblEquipmentSet.Items = {}
 tblEquipmentSet.Items[1] = "armor_chest_antlion"
 tblEquipmentSet.Items[2] = "armor_helm_antlionhelm"
