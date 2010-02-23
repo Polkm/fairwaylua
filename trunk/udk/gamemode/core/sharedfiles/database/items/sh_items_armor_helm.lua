@@ -125,7 +125,7 @@ Item.SellPrice = 7350
 Item.Set = "armor_antlion"
 Register.Item(Item)
 
-local Item = QuickCreateItemTable(BaseArmor, "armor_helm_skele", "Bone Helm", "Smells rotten...", "icons/hat_cheifshat")
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_skele", "Horned Crown of the Wraith", "Made from those who are dead, forged for reaping.", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(-1.2, 0.1, -0.3), Angle(14.1, 2, -0.7))
 Item = AddModel(Item, "models/Items/battery.mdl", Vector(1.7, 1, -9), Angle(30.1, 170.6, -3.3))
 Item = AddModel(Item, "models/Items/battery.mdl", Vector(1.7, -0.8, -9), Angle(31.4, -163.9, -0.7))
@@ -135,10 +135,10 @@ Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(-1.2, 0.1, 1
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(2.3, 0.1, 3.5), Angle(90.3, -173.3, 10))--back
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(1.4, 0.6, 3.9), Angle(52.9, 170.6, 0.7))
 Item = AddStats(Item, "slot_helm", 33)
-Item = AddBuff(Item, "stat_strength", 16)
-Item.Level = 33
+Item = AddBuff(Item, "stat_strength", 30)
+Item.Level = 43
 Item.Weight = 1
-Item.SellPrice = 12030
+Item.SellPrice = 15030
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_helm_bio", "Cyber Optics of the Overseer", "Created from light and durable metal, increases ranged combat", "icons/hat_cheifshat")
@@ -155,7 +155,7 @@ Item.Weight = 1
 Item.SellPrice = 17120
 Register.Item(Item)
 
-local Item = QuickCreateItemTable(BaseArmor, "armor_helm_tyrant", "Platehelm of the Tyrant", "Ribcage of the Wraith", "Made from those who are dead, forged for reaping.", "icons/hat_cheifshat")
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_tyrant", "Platehelm of the Tyrant", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-1.4, 0.3, -2.8), Angle(78.3, -0.7, 0.7))
 Item = AddModel(Item, "models/props_combine/stalkerpod_lid.mdl", Vector(-7.2, 0.1, 2.3), Angle(177.3, -0.7, 0))
 Item = AddModel(Item, "models/BarneyHelmet_faceplate.mdl",Vector(0.1, 0.1, 0.1), Angle(-32.8, 2, -0.7), nil, "debug/env_cubemap_model.vtf")

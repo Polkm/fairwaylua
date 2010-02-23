@@ -68,7 +68,7 @@ Item.SellPrice = 9020
 Item.Set = "armor_antlion"
 Register.Item(Item)
 
-local Item = QuickCreateItemTable(BaseArmor, "armor_chest_skele", "Bone Chest", "How many people died to make this...", "icons/junk_box1")
+local Item = QuickCreateItemTable(BaseArmor, "armor_chest_skele", "Ribcage of the Wraith", "Made from those who are dead, forged for reaping.", "icons/junk_box1")
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(1.9, -3.5, 2.8), Angle(6, -0.7, -0.7))
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(1, 7.5, 0.3), Angle(3.3, 11.4, -3.3))
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(2.8, 5.7, -5.2), Angle(3.3, 22.1, 2))
@@ -76,12 +76,12 @@ Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(1, 1, -5.2), Angle(3.3, -1
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(12.2, -6.6, -3.5), Angle(139.9, -15.4, 87.7))
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(11.5, -4.1, -2.8), Angle(149.2, 12.7, 87.7))
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(14.2, -1.7, -4.3), Angle(134.5, 3.3, 87.7))
-Item = AddStats(Item, "slot_chest", 62)
-Item = AddBuff(Item, "stat_strength", 23)
-Item.Level = 32
+Item = AddStats(Item, "slot_chest", 73)
+Item = AddBuff(Item, "stat_strength", 35)
+Item.Level = 50
 Item.Weight = 7
 Item.SellPrice = 24156
-Register.Item(Item)
+Register.Item(Item) 
 
  local Item = QuickCreateItemTable(BaseArmor, "armor_chest_bio", "Chest Enhancers of the Overseer", "Created from light and durable metal, increases ranged combat", "icons/junk_box1")
 Item = AddModel(Item, "models/props_combine/tprotato2_chunk05.mdl", Vector(-3.3, 11.6, 16.4), Angle(19.4, -2, 147.9))--front

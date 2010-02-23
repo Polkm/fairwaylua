@@ -50,15 +50,15 @@ Item.SellPrice = 6100
 Item.Set = "armor_antlion"
 Register.Item(Item)
 
-local Item = QuickCreateItemTable(BaseArmor, "armor_shoulder_skele", "Bone Sholders", "Extremely Sharp attire.", "icons/hat_cheifshat")
+local Item = QuickCreateItemTable(BaseArmor, "armor_shoulder_skele", "Pauldrons of the Wraith", "Made from those who are dead, forged for reaping.", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(7.7, 1.2, -2.1), Angle(-83.6, 158.6, 55.5))
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(15.3, 1.2, 0.3), Angle(3.3, 180, -3.3))
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(5, -4.6, -0.3), Angle(-147.9, -169.3, 87.7))
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(1.7, -0.6, -0.6), Angle(-147.9, -169.3, 87.7))
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(14.8, 6.4, -1.4), Angle(-147.9, 7.4, 87.7))
 Item = AddStats(Item, "slot_shoulder", 38)
-Item = AddBuff(Item, "stat_strength", 10)
-Item.Level = 33
+Item = AddBuff(Item, "stat_strength", 20)
+Item.Level = 50
 Item.Weight = 4
 Item.SellPrice = 9786
 Register.Item(Item) 

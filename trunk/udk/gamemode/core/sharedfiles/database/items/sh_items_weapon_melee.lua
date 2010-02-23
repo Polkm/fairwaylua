@@ -231,6 +231,25 @@ Item.SellPrice = 400
 Item.CanCutWood = false
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_harpoon2", "Harpoon", "Whats that? Ew.. theres bits from its last use on it...", "icons/weapon_axe")
+Item = AddModel(Item, "models/props_junk/harpoon002a.mdl", Vector(9, -1, 0.3), Angle(15.4, 75.6, -75.6))
+Item = AddStats(Item, 15, 1.6)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item.Weight = 1
+Item.CanCutWood = true
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_anttalon", "Antlion Talon", "Stolen from an Antlion guard's leg!!", "icons/weapon_axe")
+Item = AddModel(Item, "models/Gibs/Antlion_gib_medium_3a.mdl", Vector(-0.8, -9.9, -5.7), Angle(162.6, 134.5, 59.6))
+Item = AddModel(Item, "models/Gibs/Antlion_gib_small_1.mdl", Vector(3.5, -0.8, 11.3), Angle(-138.5, 7.4, 63.6))
+Item = AddModel(Item, "models/Gibs/Antlion_gib_small_1.mdl", Vector(4.8, -1.4, 4.1), Angle(-146.5, 7.4, 63.6))
+Item = AddStats(Item, 80, 1.5)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item.Level = 25
+Item.Weight = 1
+Item.CanCutWood = false
+Register.Item(Item)
+
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_skele", "The Soul Devourer", "Ja'vek the Soul Devourer.", "icons/weapon_axe")
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(-0.8, 0.1, 4.1), Angle(8.7, 6, 90.3))--skull
 Item = AddModel(Item, "models/Gibs/HGIBS_spine.mdl", Vector(-0.3, 5, -10.1), Angle(-7.4, -83.6, -123.8))--spine
