@@ -72,7 +72,7 @@ BaseEquiptment.Slot = "slot_primaryweapon"
 BaseEquiptment.Level = 1
 BaseEquiptment.Buffs = {}
 function BaseEquiptment:Use(usr, tblItemTable)
-	if usr:Health() <= 0 or usr:GetLevel() < tblItemTable.Level then return false end
+	if usr:Health() <= 0 then return false end
 	usr:SetPaperDoll(tblItemTable.Slot, tblItemTable.Name)
 	return true
 end
