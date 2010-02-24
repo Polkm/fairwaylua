@@ -34,6 +34,17 @@ Item.Weight = 2
 Item.SellPrice = 5800
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseArmor, "armor_shoulder_car", "Car Axels", "Allows you to turn ike a car!", "icons/hat_cheifshat")
+Item = AddModel(Item, "models/props_vehicles/carparts_axel01a.mdl", Vector(0, 0.73, 5.37), Angle(0, -180, -133.9), nil, nil, Vector(0.5, 0.2, 0.5)) --left
+Item = AddModel(Item, "models/props_vehicles/carparts_axel01a.mdl", Vector(0, 6.1, -6.34), Angle(0, 0, -96.59), nil, nil, Vector(0.5, 0.2, 0.5))
+Item = AddStats(Item, "slot_shoulder", 20)
+Item = AddBuff(Item, "stat_dexterity", 3)
+Item = AddBuff(Item, "stat_strength", 3)
+Item.Level = 20
+Item.Weight = 2
+Item.SellPrice = 1
+Register.Item(Item)
+
 local Item = QuickCreateItemTable(BaseArmor, "armor_shoulder_antlion", "Antlion Shell Pauldrons", "They're Sticky... Why are they Sticky?!", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(5.2, 0.6, -3.9), Angle(-117.1, -145, 2)) --left
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(2.1, -0.1, -1.4), Angle(153.2, 180, -180))

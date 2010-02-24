@@ -24,6 +24,17 @@ Item.Weight = 2
 Item.SellPrice = 420
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseArmor, "armor_chest_car", "Engine Chest", "My chest goes vroom, vroom, vroom", "icons/amor_junkyarmor")
+Item = AddModel(Item, "models/vehicle/vehicle_engine_block.mdl", Vector(4.15, 0, 0.73), Angle(90, 0, 0), nil, nil, Vector(0.5, 0.5, 0.5))
+Item = AddModel(Item, "models/props_vehicles/carparts_wheel01a.mdl", Vector(-5.37, -5.85, 0.13), Angle(0, 0, -90), nil, nil, Vector(0.2, 0.2, 0.2))
+Item = AddModel(Item, "models/props_lab/tpplugholder_single.mdl", Vector(6.1, -6.1, -10.24), Angle(90, -90, -90), nil, nil, Vector(0.5, 0.5, 0.5))
+Item = AddModel(Item, "models/props_lab/tpplug.mdl", Vector(8.29, 0.4, -5.12), Angle(90, 0, 0), nil, nil, Vector(0.5, 0.5, 0.5))
+Item = AddStats(Item, "slot_chest", 15)
+Item = AddBuff(Item, "stat_maxhealth", 5)
+Item.Weight = 2
+Item.SellPrice = 420
+Register.Item(Item)
+
  local Item = QuickCreateItemTable(BaseArmor, "armor_chest_refinedjunkarmor", "Refined Junky Armor", "Protects your Body while still being cool", "icons/junk_box1")
 Item = AddModel(Item, "models/Gibs/Shield_Scanner_Gib2.mdl", Vector(-0.2, 0.2, -3.3), Angle(-95.9, -10.5, 0))
 Item = AddModel(Item, "models/Gibs/Shield_Scanner_Gib4.mdl", Vector(-2.3, -0.3, -5), Angle(-79.6, -4.7, 12.7))
