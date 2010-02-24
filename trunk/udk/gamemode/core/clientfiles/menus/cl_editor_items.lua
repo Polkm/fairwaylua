@@ -262,7 +262,7 @@ function PANEL:PrintNewDementions()
 	if strMat then strMat = '"' .. tostring(strMat) .. '"' end
 	if !strMat then strMat = "nil" end
 	local vecScale = GAMEMODE.ItemEditorSettings.CurrentEditingScale
-	local intX, intY, intZ = math.Round(vecScale.x * 10) / 10, math.Round(vecScale.y * 10) / 10, math.Round(vecScale.z * 10) / 10
+	local intX, intY, intZ = math.Round(vecScale.x * 100) / 100, math.Round(vecScale.y * 100) / 100, math.Round(vecScale.z * 100) / 100
 	local strScale = tostring(intX .. ", " .. intY .. ", " .. intZ)
 	print("Vector(" .. strVector .. "), Angle(" .. strAngle .. "), nil, " .. strMat .. ", Vector(" .. strScale .. ")")
 	SetClipboardText("Vector(" .. strVector .. "), Angle(" .. strAngle .. "), nil, " .. strMat .. ", Vector(" .. strScale .. ")")
