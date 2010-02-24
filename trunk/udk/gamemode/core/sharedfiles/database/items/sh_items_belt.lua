@@ -30,6 +30,17 @@ Item.Weight = 2
 Item.SellPrice = 300
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseArmor, "armor_belt_leather", "Leather Belt", "4str 4stam leather belt? UGH Level 14? UGHHUGH", "icons/item_cash")
+Item = AddModel(Item, "models/props_c17/pulleywheels_large01.mdl", Vector(0, 0, 0), Angle(0, 0, 0))--Waist
+Item = AddModel(Item, "models/props_vehicles/apc_tire001.mdl", Vector(0, 0, 0), Angle(0, 0, 0))--Buckle
+Item = AddStats(Item, "slot_waist", 0)
+Item = AddBuff(Item, "stat_strength", 4)
+Item = AddBuff(Item, "stat_maxhealth", 4)
+Item.Level = 14
+Item.Weight = 1
+Item.SellPrice = 1444
+Register.Item(Item)
+
 local Item = QuickCreateItemTable(BaseArmor, "armor_belt_cyborg", "Biomechanical Spine", "Resistance is Futile.", "icons/item_cash")
 Item = AddModel(Item, "models/Gibs/manhack_gib02.mdl", Vector(10.6, -5.5, -1.9), Angle(90.3, -54.2, 2))--left
 Item = AddStats(Item, "slot_waist", 5)
