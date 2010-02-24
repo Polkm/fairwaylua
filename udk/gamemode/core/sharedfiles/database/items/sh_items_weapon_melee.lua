@@ -24,7 +24,24 @@ Item = AddModel(Item, "models/props/CS_militia/axe.mdl", Vector(-0.3, -5.2, -1),
 Item = AddStats(Item, 8, 1.5)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
-Item.CanCutWood = true
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_base", "<name>", "<desc>", "icons/weapon_axe")
+Item = AddModel(Item, "<insert model>", Vector(0, 0, 0), Angle(0, 0, 0))
+Item = AddStats(Item, 1, 1)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item.Weight = 1
+Item.Level = 1
+Item.SellPrice = 1
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_exhaust", "Car Exhaust", "How the hell is that car going to move?", "icons/weapon_axe")
+Item = AddModel(Item, "models/props_vehicles/carparts_muffler01a.mdl", Vector(15.12, -7.8, -1.95), Angle(-90, 0, 0), nil, "Models/props_building_details/courtyard_template001c_bars_dark.vtf", Vector(0.6, 0.8, 0.8))
+Item = AddStats(Item, 60, 1.5)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item.Weight = 4
+Item.Level = 15
+Item.SellPrice = 970
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_axe_enchanted", "Axe(Enchanted)", "Enchanted version of the axe, now it is 10 fold better", "icons/weapon_axe")
@@ -32,7 +49,6 @@ Item = AddModel(Item, "models/props/CS_militia/axe.mdl", Vector(-0.3, -5.2, -1),
 Item = AddStats(Item, 50, 3)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
-Item.CanCutWood = true
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_cleaver", "Cleaver", "For chopping meat", "icons/weapon_cleaver")
@@ -42,7 +58,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
 Item.Level = 3
 Item.SellPrice = 75
-Item.CanCutWood = true
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_leadpipe", "Lead Pipe", "And now you even get lead poisoning!", "icons/weapon_pipe")
@@ -52,7 +67,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
 Item.Level = 5
 Item.SellPrice = 250
-Item.CanCutWood = true
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_fryingpan", "Frying Pan", "Its was for cooking ... not any more", "icons/junk_pan2")
@@ -62,7 +76,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
 Item.Level = 7
 Item.SellPrice = 420
-Item.CanCutWood = true
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_emptool", "Emp Tool", "Alyx Must've dropped this back in black mesa.", "icons/weapon_axe")
@@ -71,7 +84,6 @@ Item = AddStats(Item, 7.5, 4.0)
 Item = AddSound(Item, "weapons/stunstick/stunstick_swing1.wav")
 Item.Level = 7
 Item.Weight = 1
-Item.CanCutWood = false
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_knife", "Knife", "Cutting knifeS", "icons/weapon_cleaver")
@@ -81,7 +93,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
 Item.Level = 10
 Item.SellPrice = 545
-Item.CanCutWood = true
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_meathook", "Meathook", "It's covered in zombie blood", "icons/weapon_axe")
@@ -92,7 +103,6 @@ Item.Weight = 1
 Item.SellPrice = 524
 Item.Dropable = false
 Item.Giveable = false
-Item.CanCutWood = false
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_harpoon", "Harpoon", "Whats that? Ew.. theres bits from its last use on it...", "icons/weapon_axe")
@@ -102,7 +112,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Level = 12
 Item.Weight = 3
 Item.SellPrice = 675
-Item.CanCutWood = false
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_circularsaw", "Circular Saw", "Zing Zing Ziiiingg!", "icons/junk_saw")
@@ -112,7 +121,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
 Item.Level = 13
 Item.SellPrice = 815
-Item.CanCutWood = true
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_anttalon", "Antlion Talon", "Stolen from an Antlion!", "icons/weapon_axe")
@@ -124,7 +132,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Level = 14
 Item.Weight = 2
 Item.SellPrice = 1240
-Item.CanCutWood = false
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_claw", "Claw", "Slightly Rusty, even better!", "icons/weapon_axe")
@@ -135,7 +142,6 @@ Item = AddStats(Item, 27, 3)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Level = 14
 Item.Weight = 1
-Item.CanCutWood = false
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_dualaxe", "War Axe", "Abit heavy... bit it sure can chop off heads!", "icons/weapon_axe")
@@ -146,7 +152,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Level = 17
 Item.Weight = 5
 Item.SellPrice = 1859
-Item.CanCutWood = true
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_powerhammer", "Power Hammer", "Uses combine thumper tech to add explosive damage.", "icons/weapon_axe")
@@ -182,7 +187,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 9
 Item.Level = 36
 Item.SellPrice = 15200
-Item.CanCutWood = false
 Register.Item(Item)
 
 --These here are weaposn made by comuniteh so yea we have to reveiw them and stuff before we add to game.
@@ -194,7 +198,6 @@ Item = AddStats(Item, 8, 2.3)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
 Item.SellPrice = 1
-Item.CanCutWood = false
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_pickaxe", "Pickaxe", "Goldrush!", "icons/weapon_axe")
@@ -202,7 +205,6 @@ Item = AddModel(Item, "models/props_mining/pickaxe01.mdl", Vector(-0.1, -0.6, -5
 Item = AddStats(Item, 14, 2.0)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
-Item.CanCutWood = true
 Register.Item(Item)
 
 --Not sure abotu this one looks too big
@@ -211,7 +213,6 @@ Item = AddModel(Item, "models/props_c17/signpole001.mdl", Vector(-0.6, 0.49, -12
 Item = AddStats(Item, 20, 2.0)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
-Item.CanCutWood = false
 Register.Item(Item)
 
 //Raught
@@ -228,7 +229,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Level = 12
 Item.Weight = 1
 Item.SellPrice = 400
-Item.CanCutWood = false
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_harpoon2", "Harpoon", "Whats that? Ew.. theres bits from its last use on it...", "icons/weapon_axe")
@@ -236,7 +236,6 @@ Item = AddModel(Item, "models/props_junk/harpoon002a.mdl", Vector(9, -1, 0.3), A
 Item = AddStats(Item, 15, 1.6)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
-Item.CanCutWood = true
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_anttalon", "Antlion Talon", "Stolen from an Antlion guard's leg!!", "icons/weapon_axe")
@@ -247,7 +246,6 @@ Item = AddStats(Item, 80, 1.5)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Level = 25
 Item.Weight = 1
-Item.CanCutWood = false
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_skele", "The Soul Devourer", "Ja'vek the Soul Devourer.", "icons/weapon_axe")
@@ -261,7 +259,6 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Level = 50
 Item.Weight = 1
 Item.SellPrice = 36310
-Item.CanCutWood = false
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_tyrant", "Mace of Defence", "Forged by an unstoppable force.", "icons/weapon_axe")
@@ -273,5 +270,4 @@ Item = AddBuff(Item, "stat_maxhealth", 50)
 Item.Level = 50
 Item.Weight = 1
 Item.SellPrice = 36310
-Item.CanCutWood = false
 Register.Item(Item)
