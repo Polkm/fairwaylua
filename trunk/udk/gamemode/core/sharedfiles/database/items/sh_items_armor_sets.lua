@@ -76,6 +76,7 @@ Register.EquipmentSet(tblEquipmentSet)
 local tblEquipmentSet = {}
 tblEquipmentSet.Name = "overseer"
 tblEquipmentSet.PrintName = "The Overseer"
+tblEquipmentSet.Items = {}
 tblEquipmentSet.Items[1] = "armor_chest_bio"
 tblEquipmentSet.Items[2] = "armor_helm_bio"
 tblEquipmentSet.Items[3] = "armor_shoulder_bio"
