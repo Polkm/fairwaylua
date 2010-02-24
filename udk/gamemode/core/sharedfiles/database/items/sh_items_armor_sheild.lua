@@ -57,7 +57,7 @@ local Item = QuickCreateItemTable(BaseArmor, "armor_shield_imprvsaw", "The Mutil
 Item = AddModel(Item, "models/props_junk/sawblade001a.mdl", Vector(1.2, 8.4, 3), Angle(101, -55.5, -135.8))
 Item = AddModel(Item, "models/props_junk/sawblade001a.mdl", Vector(-0.6, 0.1, 0.3), Angle(180, -27.4, -178.7))
 Item = AddModel(Item, "models/props_borealis/door_wheel001a.mdl", Vector(0.8, 0.6, -0.1), Angle(-87.7, 40.8, -135.8))
-Item = AddStats(Item, "slot_offhand", 30)
+Item = AddStats(Item, "slot_offhand", 35)
 Item = AddBuff(Item, "stat_strength", 5)
 Item.Level = 12
 Item.Weight = 1
@@ -81,7 +81,7 @@ Item = AddModel(Item, "models/Gibs/HGIBS_spine.mdl", Vector(-0.3, 5, -10.1), Ang
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(5.7, -14.6, 3.5), Angle(-83.6, -0.7, -72.9))--scorp spike
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(3.9, 0.6, 1.7), Angle(4.7, 2, -90.3))--blade
 Item = AddModel(Item, "models/Gibs/manhack_gib05.mdl", Vector(3.9, 0.6, -1.9), Angle(4.7, 2, -90.3))
-Item = AddStats(Item, "slot_offhand", 0)
+Item = AddStats(Item, "slot_offhand", 5)
 Item = AddBuff(Item, "stat_strength", 30)
 Item.Level = 31
 Item.Weight = 1
@@ -90,7 +90,7 @@ Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_shield_tyrant", "Shield of the Tyrant", "Forged from an unmoveable object.", "icons/junk_cog")
 Item = AddModel(Item, "models/combine_apc_destroyed_gib04.mdl", Vector(12.2, -71.1, -65.1), Angle(166.6, 75.6, 34.1))
-//Item = AddModel(Item, "models/props_combine/breentp_rings.mdl", Vector(47.9, 70.5, -46.7), Angle(-22.1, 158.6, -180))
+--Item = AddModel(Item, "models/props_combine/breentp_rings.mdl", Vector(47.9, 70.5, -46.7), Angle(-22.1, 158.6, -180))
 Item = AddStats(Item, "slot_offhand", 113)
 Item = AddBuff(Item, "stat_maxhealth", 45)
 Item.Level = 40
