@@ -31,8 +31,8 @@ Item.SellPrice = 300
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_belt_leather", "Leather Belt", "4str 4stam leather belt? UGH Level 14? UGHHUGH", "icons/item_cash")
-Item = AddModel(Item, "models/props_c17/pulleywheels_large01.mdl", Vector(0, 0, 0), Angle(0, 0, 0))--Waist
-Item = AddModel(Item, "models/props_vehicles/apc_tire001.mdl", Vector(0, 0, 0), Angle(0, 0, 0))--Buckle
+Item = AddModel(Item, "models/props_c17/pulleywheels_large01.mdl", Vector(17.8, 0.24, -0.52), Angle(90, 0, 0), nil, nil, Vector(0.4, 0.4, 0.33))--Waist
+Item = AddModel(Item, "models/props_vehicles/apc_tire001.mdl", Vector(6.1, 0, -0.24), Angle(-90, 0, 0), nil, nil, Vector(0.1, 0.1, 0.1))--Buckle
 Item = AddStats(Item, "slot_waist", 0)
 Item = AddBuff(Item, "stat_strength", 4)
 Item = AddBuff(Item, "stat_maxhealth", 4)
