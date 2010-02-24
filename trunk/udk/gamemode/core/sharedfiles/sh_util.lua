@@ -47,9 +47,9 @@ end
 
 function StringatizeVector(vecVector)
 	local tblVector = {}
-	tblVector[1] = math.Round(vecVector.x)
-	tblVector[2] = math.Round(vecVector.y)
-	tblVector[3] = math.Round(vecVector.z)
+	tblVector[1] = math.Round(vecVector.x * 100) / 100
+	tblVector[2] = math.Round(vecVector.y * 100) / 100
+	tblVector[3] = math.Round(vecVector.z * 100) / 100
 	return table.concat(tblVector, "!")
 end
 

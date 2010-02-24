@@ -221,13 +221,13 @@ end
 
 function PANEL:AddScaleControls()
 	local cpcNewCollapseCat = CreateGenericCollapse(nil, "Scale Controls", intGlobalPadding, false)
-	local nmsNewXSlider = CreateGenericSlider(nil, "Wide", 0, 10, 1)
+	local nmsNewXSlider = CreateGenericSlider(nil, "Wide", 0, 5, 2)
 	nmsNewXSlider.ValueChanged = function(self, value) GAMEMODE.ItemEditorSettings.CurrentEditingScale.x = value end
 	cpcNewCollapseCat.List:AddItem(nmsNewXSlider)
-	local nmsNewYSlider = CreateGenericSlider(nil, "Long", 0, 10, 1)
+	local nmsNewYSlider = CreateGenericSlider(nil, "Long", 0, 5, 2)
 	nmsNewYSlider.ValueChanged = function(self, value) GAMEMODE.ItemEditorSettings.CurrentEditingScale.y = value end
 	cpcNewCollapseCat.List:AddItem(nmsNewYSlider)
-	local nmsNewZSlider = CreateGenericSlider(nil, "Tall", 0, 10, 1)
+	local nmsNewZSlider = CreateGenericSlider(nil, "Tall", 0, 5, 2)
 	nmsNewZSlider.ValueChanged = function(self, value) GAMEMODE.ItemEditorSettings.CurrentEditingScale.z = value end
 	cpcNewCollapseCat.List:AddItem(nmsNewZSlider)
 	cpcNewCollapseCat.UpdateNewValues = function(vecNewScale)
