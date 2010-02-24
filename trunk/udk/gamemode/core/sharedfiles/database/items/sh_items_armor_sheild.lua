@@ -21,6 +21,14 @@ Item.Weight = 1
 Item.SellPrice = 505
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseArmor, "armor_sheild_car", "Car Door", "A car door that you stole from the junk yard.", "icons/junk_cog")
+Item = AddModel(Item, "models/props_vehicles/carparts_door01a.mdl", Vector(6.34, -2.44, 4.88), Angle(0, 180, 0), nil, "", Vector(0.8, 0.8, 0.9))
+Item = AddStats(Item, "slot_offhand", 38)
+Item.Weight = 1
+Item.Level = 14
+Item.SellPrice = 905
+Register.Item(Item)
+
 local Item = QuickCreateItemTable(BaseArmor, "armor_sheild_saw", "Saw Sheild", "Protects", "icons/junk_sawblade")
 Item = AddModel(Item, "models/props_junk/sawblade001a.mdl", Vector(0.3, 1, -2.1), Angle(-89, 68.9, 4.7))
 Item = AddStats(Item, "slot_offhand", 20)

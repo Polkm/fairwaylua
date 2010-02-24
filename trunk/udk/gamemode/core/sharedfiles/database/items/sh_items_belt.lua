@@ -50,6 +50,18 @@ Item.Weight = 1
 Item.SellPrice = 5205
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseArmor, "armor_belt_car", "Steering belt", "Steer me in the right direction", "icons/item_cash")
+Item = AddModel(Item, "models/props_borealis/door_wheel001a.mdl", Vector(4.88, 0, 0), Angle(-90, 79.02, 0), nil, nil, Vector(0.7, 0.7, 0.7))--left
+Item = AddStats(Item, "slot_waist", 13)
+Item = AddBuff(Item, "stat_dexterity", 1)
+Item = AddBuff(Item, "stat_strength", 1)
+Item = AddBuff(Item, "stat_maxhealth", 5)
+Item.Level = 1
+Item.Weight = 1
+Item.SellPrice = 1
+Register.Item(Item)
+
+
 local Item = QuickCreateItemTable(BaseArmor, "armor_belt_antlion", "Antlion Shell Codpiece", "I don't want Antlion pieces near there!", "icons/item_cash")
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(15.5, 0.6, 2.8), Angle(85, 0.7, 2))--left
 Item = AddStats(Item, "slot_waist", 10)

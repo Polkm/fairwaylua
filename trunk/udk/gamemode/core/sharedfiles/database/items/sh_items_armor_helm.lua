@@ -22,6 +22,13 @@ Item.Weight = 1
 Item.SellPrice = 25
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_car", "A mini Car", "Cars a very useful for protecting your head.", "icons/hat_cheifshat")
+Item = AddModel(Item, "models/props_vehicles/car004a_physics.mdl", Vector(-2.68, 0, 3.41), Angle(0, 0, 0), nil, nil, Vector(0.1, 0.1, 0.1))
+Item = AddStats(Item, "slot_helm", 25)
+Item.Weight = 1
+Item.SellPrice = 25
+Register.Item(Item)
+
 local Item = QuickCreateItemTable(BaseArmor, "red_chefs_hat", "Red Chefs Hat", "A rare item of coolness!", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  clrRed)
 Item = AddStats(Item, "slot_helm", 1)

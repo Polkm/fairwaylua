@@ -17,6 +17,21 @@ AddBuff(tblEquipmentSet, "stat_strength", 2)
 Register.EquipmentSet(tblEquipmentSet)
 
 local tblEquipmentSet = {}
+tblEquipmentSet.Name = "armor_car"
+tblEquipmentSet.PrintName = "Vroom Vroom Set"
+tblEquipmentSet.Items = {}
+tblEquipmentSet.Items[1] = "armor_chest_car"
+tblEquipmentSet.Items[2] = "armor_helm_car"
+tblEquipmentSet.Items[3] = "armor_shoulder_car"
+tblEquipmentSet.Items[4] = "armor_belt_car"
+tblEquipmentSet.Items[5] = "armor_shield_car"
+tblEquipmentSet.Items[6] = "weapon_melee_exhaust"
+AddBuff(tblEquipmentSet, "stat_maxhealth", 10)
+AddBuff(tblEquipmentSet, "stat_strength", 8)
+AddBuff(tblEquipmentSet, "stat_dexterity", 8)
+Register.EquipmentSet(tblEquipmentSet)
+
+local tblEquipmentSet = {}
 tblEquipmentSet.Name = "armor_cyborg"
 tblEquipmentSet.PrintName = "Biomechanical Being"
 tblEquipmentSet.Items = {}
