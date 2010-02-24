@@ -36,16 +36,15 @@ BaseFood = DeriveTable(BaseItem)
 BaseFood.AddedHealth = 25
 BaseFood.AddTime = 10
 function BaseFood:Use(usr, itemtable)
-	if !usr or !usr:IsValid() or usr:Health() >= usr:GetStat("stat_maxhealth") or usr:Health() <= 0 then return end
+	if !ValidEntity(usr) or usr:Health() >= usr:GetStat("stat_maxhealth") or usr:Health() <= 0 then return end
 	local intHealthToAdd = itemtable.AddedHealth
-	local intMessage = itemtable.Message
-	local intSound = itemtable.UseSound
 	intHealthToAdd = usr:CallSkillHook("food_mod",intHealthToAdd) 
-	if intMessage then
-		usr:CreateNotification(intMessage)
+	if itemtable.Message then usr:CreateNotification(itemtable.Message) end
+		if itemtable.UseSound && file.Exists("../sound/"..itemtable.UseSound) then
+		usr:EmitSound(Sound(itemtable.UseSound))
 	end
-	if intSound then
-		usr:EmitSound( sound(intSound) )
+	if itemtable.AltUseSound && !file.Exists("../sound/"..itemtable.UseSound) then
+		usr:EmitSound(Sound(itemtable.AltUseSound))
 	end
 	local intHealthGiven = 0
 	local function AddHealth()
@@ -58,11 +57,26 @@ function BaseFood:Use(usr, itemtable)
 	usr:AddItem(itemtable.Name, -1)
 end
 
+BaseBook = DeriveTable(BaseItem)
+BaseBook.GainExp = nil
+function BaseBook:Use(usr, itemtable)
+	if !ValidEntity(usr) or usr:Health() <= 0 then return end
+	if itemtable.Message then usr:CreateNotification(itemtable.Message) end
+	if itemtable.UseSound && file.Exists("../sound/"..itemtable.UseSound) then
+		usr:EmitSound(Sound(itemtable.UseSound))
+	end
+	if itemtable.AltUseSound && !file.Exists("../sound/"..itemtable.UseSound) then
+		usr:EmitSound(Sound(itemtable.AltUseSound))
+	end
+	if itemtable.GainExp then usr:GiveExp(itemtable.GainExp, true) end
+	usr:AddItem(itemtable.Name, -1)
+end
+
 BaseAmmo = DeriveTable(BaseItem)
 BaseAmmo.AmmoType = "pistol"
 BaseAmmo.AmmoAmount = 20
 function BaseAmmo:Use(usr, itemtable)
-	if !usr or !usr:IsValid() or usr:Health() <= 0 then return false end
+	if !ValidEntity(usr) or usr:Health() <= 0 then return false end
 	usr:GiveAmmo(itemtable.AmmoAmount, itemtable.AmmoType)
 	usr:AddItem(itemtable.Name, -1)
 end
@@ -72,7 +86,7 @@ BaseEquiptment.Slot = "slot_primaryweapon"
 BaseEquiptment.Level = 1
 BaseEquiptment.Buffs = {}
 function BaseEquiptment:Use(usr, tblItemTable)
-	if usr:Health() <= 0 then return false end
+	if !ValidEntity(usr) or usr:Health() <= 0 or usr:GetLevel() < tblItemTable.Level then return false end
 	usr:SetPaperDoll(tblItemTable.Slot, tblItemTable.Name)
 	return true
 end
@@ -91,13 +105,15 @@ BaseWeapon.ClipSize = 5
 BaseWeapon.Sound = "weapons/pistol/pistol_fire2.wav"
 BaseWeapon.ReloadSound = nil
 function BaseWeapon:Use(usr, itemtable)
-	if !itemtable then return end
+	if !itemtable then return false end
+	if (usr.NextWeaponSwitch or 0) > CurTime() then return false end
 	if !BaseEquiptment:Use(usr, itemtable) then return false end
 	usr:StripWeapons()
 	if usr.Data.Paperdoll[itemtable.Slot] == itemtable.Name then
 		usr:Give("weapon_primaryweapon")
 		usr:GetWeapon("weapon_primaryweapon"):SetWeapon(itemtable)
 	end
+	usr.NextWeaponSwitch = CurTime() + 1
 end
 
 
