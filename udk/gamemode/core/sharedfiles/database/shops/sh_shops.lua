@@ -20,6 +20,7 @@ Shop.Inventory = {}
 Shop.Inventory["armor_helm_chefshat"] = {}
 Shop.Inventory["armor_helm_junkhelmet"] = {}
 Shop.Inventory["armor_helm_scannergoggles"] = {}
+Shop.Inventory["armor_belt_leather"] = {}
 Shop.Inventory["armor_chest_junkarmor"] = {}
 Shop.Inventory["armor_sheild_cog"] = {}
 Shop.Inventory["armor_sheild_saw"] = {}
