@@ -18,6 +18,22 @@ local function AddSound(tblAddTable, strShootSound, strReloadSound)
 	return tblAddTable
 end
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_tesla", "Tesla Cannon", "Nikola Teslas' Monster", "icons/weapon_pistol")
+Item = AddModel(Item, "models/props_c17/substation_stripebox01a.mdl", Vector(4.15, 0.73, 0), Angle(-96.59, 92.2, 91.1), nil, nil, Vector(0.11, 0.11, 0.38))
+Item = AddModel(Item, "models/props_c17/substation_circuitbreaker01a.mdl", Vector(-18.54, 0, 9.51), Angle(-83.41, -88.9, 180), nil, "", Vector(0.06, 0.06, 0.06))
+Item = AddModel(Item, "models/magnusson_teleporteroff.mdl", Vector(-0.49, 9.27, -14.63), Angle(0, 88.9, 0), nil, "Models/props_pipes/GutterMetal01a.vtf", Vector(0.29, 0.43, 0.26))
+Item = AddModel(Item, "models/Items/combine_rifle_ammo01.mdl", Vector(-0.19, 0.62, 2.79), Angle(-180, -84.51, -178.9), nil, nil, Vector(1, 1, 2.38))
+Item = AddModel(Item, "models/props_c17/utilityconnecter002.mdl", Vector(-0.49, 4.15, 9.02), Angle(-180, 90, 90), nil, nil, Vector(0.76, 0.85, 1.02))
+Item = AddModel(Item, "models/props_c17/utilityconnecter003.mdl", Vector(-2.68, -17.32, 2.93), Angle(0, 180, 90), nil, "Models/props_lab/cornerunit_cloud.vtf", Vector(1, 1.17, 1))
+Item = AddModel(Item, "models/props_c17/utilityconnecter006.mdl", Vector(10.65, -1.19, 0.06), Angle(0, 180, 90), nil, "Models/Magnusson_Teleporter/magnusson_teleporter_fxglow1.vtf", Vector(0.9, 0.69, 0.7))
+Item = AddStats(Item, 12, 0.03, 4, 50) --(7.5)
+Item = AddSound(Item, "ambient/levels/labs/electric_explosion4.wav", "weapons/cguard/charging.wav")
+Item.Weight = 15
+Item.SellPrice = 26378
+Item.HoldType = "rpg"
+Item.AmmoType = "ar2"
+Register.Item(Item)
+
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junkpistol", "Junky Pistol", "Looks like its all rusted.", "icons/weapon_pistol")
 Item = AddModel(Item, "models/Weapons/W_pistol.mdl", Vector(-3, 0, 3.5), Angle(0, 180, 0))
 Item = AddModel(Item, "models/props_junk/garbage_metalcan001a.mdl", Vector(0, 0, -7.2), Angle(90, 0, 0))
