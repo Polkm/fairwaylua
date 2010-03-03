@@ -244,6 +244,14 @@ Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_crowbar", "Crowbar", "So that's where I left it.", "icons/weapon_axe")
+Item = AddModel(Item, "models/weapons/w_crowbar.mdl", Vector(-4.63, 0, -0.98), Angle(79.02, -167.93, 79.02), nil, nil, Vector(0.8, 0.8, 0.8))
+Item = AddStats(Item, 36, 1)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item.Weight = 1
+Item.level = 15
+Register.Item(Item)
+
 --Not sure about this one looks too big
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_metalpole", "Metal Pole", "This belongs to some poor streetsign somewhere.", "icons/weapon_axe")
 Item = AddModel(Item, "models/props_c17/signpole001.mdl", Vector(-0.6, 0.49, -12.2), Angle(-5.49, 150.37, 3.29), nil, nil, Vector(0.7, 0.7, 0.4))
