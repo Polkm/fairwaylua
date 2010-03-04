@@ -29,18 +29,6 @@ Item.Weight = 1
 Item.SellPrice = 25
 Register.Item(Item)
 
-local Item = QuickCreateItemTable(BaseArmor, "armor_helm_daft", "daft", "It means you cool like that", "icons/hat_cheifshat")
-Item = AddModel(Item, "models/props/de_nuke/IndustrialLight01.mdl", Vector(2.2, 0, 6.83), Angle(3.29, -180, -3.29), nil, nil, Vector(0.5, 0.5, 0.5))
-Item = AddModel(Item, "models/Gibs/Scanner_gib01.mdl", Vector(-3.9, 0, -5.12), Angle(37.32, -180, 0), nil, nil, Vector(0.76, 1.19, 0.76))
-Item = AddModel(Item, "models/Gibs/Scanner_gib02.mdl", Vector(1.46, 0, 0), Angle(4.39, -180, 40.61), nil, nil, Vector(1, 1, 1))
-Item = AddModel(Item, "models/props_lab/labpart.mdl", Vector(6.1, -0.24, -7.07), Angle(3.29, -180, -0.7), nil, "", Vector(0.5, 0.5, 0.5))
-Item = AddStats(Item, "slot_helm", 15)
-Item.Level = 15
-Item.Weight = 1
-Item.SellPrice = 25
-Register.Item(Item)
-
-
 local Item = QuickCreateItemTable(BaseArmor, "red_chefs_hat", "Red Chefs Hat", "A rare item of coolness!", "icons/hat_cheifshat")
 Item = AddModel(Item, "models/chefHat.mdl", Vector(4.6, 0.1, 3.7), Angle(-0.7, -180, -0.7),  clrRed)
 Item = AddStats(Item, "slot_helm", 1)
@@ -183,4 +171,40 @@ Item = AddBuff(Item, "stat_maxhealth", 35)
 Item.Level = 40
 Item.Weight = 2
 Item.SellPrice = 17050
+Register.Item(Item)
+
+--Keitaro
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_robot", "Robot Mask", "Action to be taken. Annihilate", "icons/hat_cheifshat")
+Item = AddModel(Item, "models/props_lab/monitor01a.mdl", Vector(-2.68, 0, 0.24), Angle(10.98, 0, 0), nil, nil, Vector(0.6, 0.6, 0.6))
+Item = AddModel(Item, "models/props_wasteland/prison_cagedlight001a.mdl", Vector(-0.49, 6.34, 0), Angle(-84.51, 0, -90), nil, nil, Vector(0.7, 0.7, 0.87))
+Item = AddModel(Item, "models/props_wasteland/light_spotlight02_lamp.mdl", Vector(6.34, -2.4, 3.41), Angle(0, 0, 0), nil, nil, Vector(0.2, 0.3, 0.3))
+Item = AddModel(Item, "models/props_wasteland/light_spotlight02_lamp.mdl", Vector(6.34, 2.4, 3.41), Angle(0, 0, 0), nil, nil, Vector(0.2, 0.3, 0.3))
+Item = AddStats(Item, "slot_helm", 25)
+Item.Weight = 1
+Item.SellPrice = 25
+Register.Item(Item)
+
+--Keitaro
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_daft", "Helm of the Daft", "Harder, Better ...", "icons/hat_cheifshat")
+Item = AddModel(Item, "models/props/de_nuke/IndustrialLight01.mdl", Vector(2.2, 0, 7.56), Angle(3.29, -180, -3.29), nil, nil, Vector(0.5, 0.5, 0.5))
+Item = AddModel(Item, "models/Gibs/Scanner_gib01.mdl", Vector(-3.9, 0, -5.12), Angle(37.32, -180, 0), nil, nil, Vector(0.76, 1.19, 0.76))
+Item = AddModel(Item, "models/Gibs/Scanner_gib02.mdl", Vector(1.46, 0, 0), Angle(4.39, -180, 40.61), nil, nil, Vector(1, 1, 1))
+Item = AddModel(Item, "models/props_lab/labpart.mdl", Vector(6.1, -0.24, -7.07), Angle(3.29, -180, -0.7), nil, nil, Vector(0.5, 0.5, 0.5))
+Item = AddStats(Item, "slot_helm", 35)
+Item.Level = 14
+Item.Weight = 3
+Item.SellPrice = 416
+Register.Item(Item)
+
+--Keitaro
+local Item = QuickCreateItemTable(BaseArmor, "armor_helm_punk", "Punks' Headgear", " ... Faster, Stronger.", "icons/hat_cheifshat")
+Item = AddModel(Item, "models/dav0r/hoverball.mdl", Vector(-1.71, 0, 1.46), Angle(-0.7, 0, -0.7), nil, "debug/env_cubemap_model.vtf", Vector(1.1, 1.1, 1.1))
+Item = AddModel(Item, "models/Gibs/gunship_gibs_midsection.mdl", Vector(-1.46, -0.07, 5.12), Angle(-100.98, 0, -0.7), nil, "models/gibs/metalgibs/metal_gibs.vtf", Vector(0.1, 0.19, 0.2))
+Item = AddModel(Item, "models/Gibs/Scanner_gib01.mdl", Vector(-9.75, 0.1, 2.3), Angle(-27.85, 0, -0.7), nil, nil, Vector(1, 1.17, 1))
+Item = AddModel(Item, "models/Gibs/Scanner_gib02.mdl", Vector(1.95, 3.9, 3.9), Angle(-50.49, -5.49, 47.2), nil, "models/gibs/metalgibs/metal_gibs.vtf", Vector(1, 1, 1))
+Item = AddStats(Item, "slot_helm", 13)
+Item = AddBuff(Item, "stat_strength", 5)
+Item = AddBuff(Item, "stat_agility", 5)
+Item.Weight = 3
+Item.SellPrice = 416
 Register.Item(Item)
