@@ -18,6 +18,19 @@ local function AddSound(tblAddTable, strShootSound, strReloadSound)
 	return tblAddTable
 end
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_plasma", "Plasma Rifle", "Stolen from another game!!", "icons/weapon_pistol")
+Item = AddModel(Item, "models/props_c17/substation_stripebox01a.mdl", Vector(1.95, -1.46, 22.44), Angle(-87.8, 180, -7.68), nil, nil, Vector(0.06, 0.08, 0.31))
+Item = AddModel(Item, "models/props_c17/playground_teetertoter_stan.mdl", Vector(11.71, -0.24, -1.95), Angle(90, 0, 0), nil, nil, Vector(0.96, 1.01, 0.5))
+Item = AddModel(Item, "models/props_c17/lamp_bell_on.mdl", Vector(-0.24, -0.24, -3.9), Angle(180, -90, 0), nil, nil, Vector(0.43, 0.31, 0.5))
+Item = AddModel(Item, "models/Combine_turrets/combine_cannon_stand.mdl", Vector(-0.49, 1.71, 2.93), Angle(0, 0, -90), nil, nil, Vector(0.47, 0.17, 0.18))
+Item = AddStats(Item, 9, 0.09, 23, 50) --(7.5)
+Item = AddSound(Item, "weapons/physcannon/energy_sing_flyby1.wav", "weapons/crossbow/bolt_load1.wav")
+Item.Weight = 1
+Item.SellPrice = 15
+Item.HoldType = "crossbow"
+Item.AmmoType = "ar2"
+Register.Item(Item)
+
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_tesla", "Tesla Cannon", "Nikola Teslas' Monster", "icons/weapon_pistol")
 Item = AddModel(Item, "models/props_c17/substation_stripebox01a.mdl", Vector(4.15, 0.73, 0), Angle(-96.59, 92.2, 91.1), nil, nil, Vector(0.11, 0.11, 0.38))
 Item = AddModel(Item, "models/props_c17/substation_circuitbreaker01a.mdl", Vector(-18.54, 0, 9.51), Angle(-83.41, -88.9, 180), nil, "", Vector(0.06, 0.06, 0.06))
@@ -32,6 +45,35 @@ Item.Weight = 15
 Item.SellPrice = 26378
 Item.HoldType = "rpg"
 Item.AmmoType = "ar2"
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_chaingun", "Chaingun", "Cry some more!", "icons/weapon_pistol")  --Change icon
+Item = AddModel(Item, "models/props_c17/TrapPropeller_Lever.mdl", Vector(0.98, -2.2, -1.22), Angle(-180, 90, -90), nil, nil, Vector(1, 1, 1)) --Handle one
+Item = AddModel(Item, "models/props_c17/signpole001.mdl", Vector(0, 0, 0), Angle(180, 0, 0), nil, nil, Vector(0.63, 0.63, 0.4))
+Item = AddModel(Item, "models/props_c17/signpole001.mdl", Vector(-1.95, -1.95, 0), Angle(180, 0, 0), nil, nil, Vector(0.63, 0.63, 0.4))
+Item = AddModel(Item, "models/props_c17/signpole001.mdl", Vector(-1.95, -4.63, 0), Angle(180, 0, 0), nil, nil, Vector(0.63, 0.63, 0.4))
+Item = AddModel(Item, "models/props_c17/signpole001.mdl", Vector(0, -6.34, 0), Angle(180, 0, 0), nil, nil, Vector(0.63, 0.63, 0.4))
+Item = AddModel(Item, "models/props_c17/signpole001.mdl", Vector(1.95, -1.95, 0), Angle(180, 0, 0), nil, nil, Vector(0.63, 0.63, 0.4))
+Item = AddModel(Item, "models/props_c17/signpole001.mdl", Vector(1.95, -4.63, 0), Angle(180, 0, 0), nil, nil, Vector(0.63, 0.63, 0.4))
+Item = AddModel(Item, "models/props_c17/streetsign004e.mdl", Vector(0, 40, -3.66), Angle(0, 0, -90), nil, "Models/props_c17/Metalladder001.vtf", Vector(0.3, 2.79, 0.41))
+Item = AddModel(Item, "models/props_c17/streetsign004e.mdl", Vector(0, 33.9, -3.66), Angle(0, 0, -90), nil, "Models/props_c17/Metalladder001.vtf", Vector(0.3, 2.79, 0.41))
+Item = AddModel(Item, "models/props_c17/streetsign004e.mdl", Vector(0, 26.83, -3.66), Angle(0, 0, -90), nil, "Models/props_c17/Metalladder001.vtf", Vector(0.3, 2.79, 0.41))
+Item = AddModel(Item, "models/props_c17/streetsign004e.mdl", Vector(0, 19.76, -3.66), Angle(0, 0, -90), nil, "Models/props_c17/Metalladder001.vtf", Vector(0.3, 5, 0.41))
+Item = AddModel(Item, "models/props_c17/playground_teetertoter_stan.mdl", Vector(9.51, 0, -2.2), Angle(90, 90, 0), nil, "Models/Combine_Turrets/combine_cannon.vtf", Vector(0.43, 1, 0.43)) --Handle two
+Item = AddModel(Item, "models/Gibs/metal_gib4.mdl", Vector(-1.95, 1.95, 0), Angle(-90, 0, 0), nil, nil, Vector(1, 1, 1))
+Item = AddModel(Item, "models/Gibs/metal_gib2.mdl", Vector(0, -10.73, 0), Angle(0, 0, 90), nil, nil, Vector(1, 1, 1))
+Item = AddModel(Item, "models/Gibs/metal_gib2.mdl", Vector(-15.85, 0, 0), Angle(-90, 0, 90), nil, nil, Vector(1, 0.58, 1))
+Item = AddModel(Item, "models/props_lab/miniteleportarc.mdl", Vector(-2.2, 0, -3.9), Angle(-180, -90, 0), nil, nil, Vector(0.43, 0.43, 1.36))
+Item = AddModel(Item, "models/weapons/w_eq_flashbang.mdl", Vector(12.44, 3.17, 1.22), Angle(90, -38.41, -180), nil, "", Vector(1, 1, 1))
+Item = AddModel(Item, "models/props_junk/metal_paintcan001a.mdl", Vector(0, -3.66, -6.59), Angle(0, 0, 0), nil, "Models/props_lab/door_klab01.vtf", Vector(1, 1, 1.37))
+Item = AddModel(Item, "models/props_lab/box01b.mdl", Vector(6.59, 6.83, 6.59), Angle(0, -90, -90), nil, "Models/props_lab/door_klab01.vtf", Vector(1, 1, 1))
+Item = AddModel(Item, "models/props_junk/PopCan01a.mdl", Vector(4.15, -2.2, -10.24), Angle(0, 0, 0), nil, "Models/props_lab/door_klab01.vtf", Vector(1.16, 1.45, 1.4))
+Item = AddStats(Item, 11, 0.13, 24.3, 200) --Edit Stats
+Item = AddSound(Item, "weapons/smg1/smg1_fire1.wav", "weapons/smg1/smg1_reload.wav")
+Item.Weight = 1 --Edit Weight
+Item.SellPrice = 15
+Item.HoldType = "shotgun"
+Item.AmmoType = "smg1"
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junkpistol", "Junky Pistol", "Looks like its all rusted.", "icons/weapon_pistol")
