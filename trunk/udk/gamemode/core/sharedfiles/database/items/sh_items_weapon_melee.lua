@@ -316,3 +316,19 @@ Item.Level = 50
 Item.Weight = 1
 Item.SellPrice = 36310
 Register.Item(Item)
+
+
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_Crystal", "Crystal Sword", "Crystalized Ice formed into a sword.", "icons/weapon_axe")
+Item = AddModel(Item, "models/Items/item_item_crate_chunk01.mdl", Vector(-1, -22.93, 0), Angle(0, -90, -90), Color(20, 20, 200, 230), "debug/env_cubemap_model.vtf", Vector(0.5, 1, 0.3))
+Item = AddModel(Item, "models/Items/item_item_crate_chunk01.mdl", Vector(-2.48, 0, 0), Angle(-180, 0, 0), Color(20, 20, 200, 230), "debug/env_cubemap_model.vtf", Vector(0.5, 1, 0.3))
+Item = AddModel(Item, "models/Items/ammocrate_ar2.mdl", Vector(0, -1.14, -17.5), Angle(-90, 90, 0), nil, "Models/Combine_Turrets/combine_cannon.vtf", Vector(0.06, 0.12, 0.12))
+Item = AddModel(Item, "models/Items/ammocrate_ar2.mdl", Vector(0, 1.14, 19.51), Angle(-90, -90, 0), nil, "Models/Combine_Turrets/combine_cannon.vtf", Vector(0.06, 0.12, 0.02))
+Item = AddModel(Item, "models/Items/battery.mdl", Vector(1.5, 0, -25.85), Angle(0, 0, 90), nil, "Models/Magnusson_Teleporter/magnusson_teleporter_fxglow1.vtf", Vector(0.3, 0.3, 0.69))
+Item = AddModel(Item, "models/Items/battery.mdl", Vector(-0.5, 0, -25.85), Angle(180, 0, 90), nil, "Models/Magnusson_Teleporter/magnusson_teleporter_fxglow1.vtf", Vector(0.3, 0.3, 0.69))
+Item = AddStats(Item, 145, 2)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item.Level = 42
+Item.Weight = 3
+Item.SellPrice = 32100
+Register.Item(Item)
