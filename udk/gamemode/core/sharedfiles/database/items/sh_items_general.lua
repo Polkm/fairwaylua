@@ -43,7 +43,7 @@ function Item:Use(usr, itemtable)
 			local intNadeDur = 3
 			entNade:SetOwner(usr)
 			entNade:Fire("SetTimer", intNadeDur)
-			entNade.OverrideDamge = 20
+			entNade.OverrideDamge = 50
 			entNade:SetPos(vecNadePos)
 			entNade:SetAngles(usr:EyeAngles())
 			entNade:Spawn()

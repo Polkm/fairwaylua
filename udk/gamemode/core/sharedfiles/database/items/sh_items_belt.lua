@@ -15,7 +15,7 @@ local function AddBuff(tblAddTable, strBuff, intAmount)
 end
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_belt_backpack", "Small Backpacks", "It will add inventory space", "icons/item_cash")
-Item = AddModel(Item, "models/weapons/w_defuser.mdl", Vector(-3.9, -0.3, -14.2), Angle(-0.7, -6, 2))
+Item = AddModel(Item, "models/weapons/w_defuser.mdl", Vector(-6.83, 0.24, -0.73), Angle(-84.51, -86.71, -5.49), nil, "", Vector(1, 1, 1))
 Item = AddStats(Item, "slot_waist", 0)
 Register.Item(Item)
 
@@ -56,11 +56,10 @@ Item = AddStats(Item, "slot_waist", 13)
 Item = AddBuff(Item, "stat_dexterity", 1)
 Item = AddBuff(Item, "stat_strength", 1)
 Item = AddBuff(Item, "stat_maxhealth", 5)
-Item.Level = 1
+Item.Level = 22
 Item.Weight = 1
-Item.SellPrice = 1
+Item.SellPrice = 5867
 Register.Item(Item)
-
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_belt_antlion", "Antlion Shell Codpiece", "I don't want Antlion pieces near there!", "icons/item_cash")
 Item = AddModel(Item, "models/Gibs/Antlion_gib_small_2.mdl", Vector(0, 0, 3.66), Angle(0, -90, 0), nil, nil, Vector(1, 1, 1))--left
@@ -69,6 +68,7 @@ Item = AddBuff(Item, "stat_maxhealth", 10)
 Item.Level = 25
 Item.Weight = 1
 Item.SellPrice = 6302
+Item.Set = "armor_antlion"
 Register.Item(Item)
 
 local Item = QuickCreateItemTable(BaseArmor, "armor_belt_skele", "Gutguard of the Wraith", "Made from those who are dead, forged for reaping.", "icons/item_cash")
