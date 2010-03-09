@@ -41,7 +41,7 @@ Item = AddStats(Item, 50, 3)
 Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
 Item.Weight = 1
 Register.Item(Item)
-
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_cleaver", "Cleaver", "For chopping meat", "icons/weapon_cleaver")
 Item = AddModel(Item, "models/props_lab/Cleaver.mdl", Vector(-1.3, 0.7, 0.2), Angle(98.5, 0, 98.5), nil, nil, Vector(0.8, 0.8, 0.8))
 Item = AddStats(Item, 15, 1.3)
@@ -51,6 +51,27 @@ Item.Weight = 1
 Item.SellPrice = 75
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_cleaver2", "(Weak) Cleaver", "For chopping meat", "icons/weapon_cleaver")
+Item = AddModel(Item, "models/props_lab/Cleaver.mdl", Vector(-1.3, 0.7, 0.2), Angle(98.5, 0, 98.5), Color(120, 20, 20, 255), nil, Vector(0.8, 0.8, 0.8))
+Item = AddStats(Item, 15, 1.3)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item = AddBuff(Item, "stat_strength", 1)
+Item.Level = 3
+Item.Weight = 1
+Item.SellPrice = 75
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_cleaver3", "(Tempered) Cleaver", "For chopping meat", "icons/weapon_cleaver")
+Item = AddModel(Item, "models/props_lab/Cleaver.mdl", Vector(-1.3, 0.7, 0.2), Angle(98.5, 0, 98.5), nil, nil, Vector(0.8, 0.8, 0.8))
+Item = AddStats(Item, 15, 1.3)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item = AddBuff(Item, "stat_strength", 1)
+Item = AddBuff(Item, "stat_agility", 1)
+Item.Level = 3
+Item.Weight = 1
+Item.SellPrice = 75
+Register.Item(Item)
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_skullmace", "Skull Mace", "Smack people with a skull :D", "icons/weapon_axe")
 Item = AddModel(Item, "models/Gibs/HGIBS.mdl", Vector(1, -0.6, 20.2), Angle(-161.3, -71.6, -166.6))
 Item = AddModel(Item, "models/Gibs/HGIBS_spine.mdl", Vector(-0.3, 1.7, -9.5), Angle(-3.3, 89, -10))
@@ -61,7 +82,7 @@ Item.Level = 4
 Item.Weight = 1
 Item.SellPrice = 235
 Register.Item(Item)
-
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_leadpipe", "Lead Pipe", "And now you even get lead poisoning!", "icons/weapon_pipe")
 Item = AddModel(Item, "models/props_canal/mattpipe.mdl", Vector(-0.6, 0.8, -5.9), Angle(4.7, 56.9, -176))
 Item = AddStats(Item, 10, 2.5)
@@ -72,6 +93,29 @@ Item.SellPrice = 250
 Item.CanCutWood = true
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_leadpipe2", "Lead Pipe", "And now you even get lead poisoning!", "icons/weapon_pipe")
+Item = AddModel(Item, "models/props_canal/mattpipe.mdl", Vector(-0.6, 0.8, -5.9), Angle(4.7, 56.9, -176))
+Item = AddStats(Item, 10, 2.5)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item = AddBuff(Item, "stat_agility", 3)
+Item.Level = 5
+Item.Weight = 1
+Item.SellPrice = 250
+Item.CanCutWood = true
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_leadpipe3", "Lead Pipe", "And now you even get lead poisoning!", "icons/weapon_pipe")
+Item = AddModel(Item, "models/props_canal/mattpipe.mdl", Vector(-0.6, 0.8, -5.9), Angle(4.7, 56.9, -176))
+Item = AddStats(Item, 10, 2.5)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item = AddBuff(Item, "stat_strength", 4)
+Item.Level = 5
+Item.Weight = 1
+Item.SellPrice = 250
+Item.CanCutWood = true
+Register.Item(Item)
+------
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_fryingpan", "Frying Pan", "Its was for cooking ... not any more", "icons/junk_pan2")
 Item = AddModel(Item, "models/props_interiors/pot02a.mdl", Vector(0.8, 8, -0.5), Angle(0, 0, 90))
 Item = AddStats(Item, 10, 3)
@@ -82,6 +126,31 @@ Item.SellPrice = 420
 Item.CanCutWood = true
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_fryingpan2", "Frying Pan", "Its was for cooking ... not any more", "icons/junk_pan2")
+Item = AddModel(Item, "models/props_interiors/pot02a.mdl", Vector(0.8, 8, -0.5), Angle(0, 0, 90))
+Item = AddStats(Item, 10, 3)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item = AddBuff(Item, "stat_luck", 2)
+Item.Level = 6
+Item.Weight = 1
+Item.SellPrice = 420
+Item.CanCutWood = true
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_fryingpan3", "Frying Pan", "Its was for cooking ... not any more", "icons/junk_pan2")
+Item = AddModel(Item, "models/props_interiors/pot02a.mdl", Vector(0.8, 8, -0.5), Angle(0, 0, 90))
+Item = AddStats(Item, 10, 3)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item = AddBuff(Item, "stat_strength", 1)
+Item = AddBuff(Item, "stat_agility", 1)
+Item = AddBuff(Item, "stat_maxhealth", 5)
+Item.Level = 6
+Item.Weight = 1
+Item.SellPrice = 420
+Item.CanCutWood = true
+Register.Item(Item)
+------
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_emptool", "Emp Tool", "Alyx Must've dropped this back in black mesa.", "icons/weapon_axe")
 Item = AddModel(Item, "models/alyx_EmpTool_prop.mdl", Vector(-1.9, -1, 0.3), Angle(86.3, -99.7, -134.5))
 Item = AddStats(Item, 12.5, 4.0)
@@ -91,6 +160,30 @@ Item.Weight = 1
 Item.SellPrice = 743
 Item.CanCutWood = false
 Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_emptool2", "Emp Tool", "Alyx Must've dropped this back in black mesa.", "icons/weapon_axe")
+Item = AddModel(Item, "models/alyx_EmpTool_prop.mdl", Vector(-1.9, -1, 0.3), Angle(86.3, -99.7, -134.5))
+Item = AddStats(Item, 12.5, 4.0)
+Item = AddSound(Item, "weapons/stunstick/stunstick_swing1.wav")
+Item = AddBuff(Item, "stat_agility", 4)
+Item.Level = 7
+Item.Weight = 1
+Item.SellPrice = 743
+Item.CanCutWood = false
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_emptool3", "Emp Tool", "Alyx Must've dropped this back in black mesa.", "icons/weapon_axe")
+Item = AddModel(Item, "models/alyx_EmpTool_prop.mdl", Vector(-1.9, -1, 0.3), Angle(86.3, -99.7, -134.5))
+Item = AddStats(Item, 12.5, 4.0)
+Item = AddSound(Item, "weapons/stunstick/stunstick_swing1.wav")
+Item = AddBuff(Item, "stat_agility", 2)
+Item = AddBuff(Item, "stat_strength", 1)
+Item.Level = 7
+Item.Weight = 1
+Item.SellPrice = 743
+Item.CanCutWood = false
+Register.Item(Item)
+------
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_knife", "Knife", "Cutting knifeS", "icons/weapon_cleaver")
 Item = AddModel(Item, "models/weapons/w_knife_ct.mdl", Vector(-3.7, -0.3, 1.7), Angle(-8.7, 75.6, 31.4))
@@ -151,7 +244,7 @@ Item.Level = 14
 Item.Weight = 1
 Item.SellPrice = 3750
 Register.Item(Item)
-
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_antlionclaw", "Antlion Claw", "Claws made from antlion gibs", "icons/weapon_axe")
 Item = AddModel(Item, "models/Gibs/Antlion_gib_Large_3.mdl", Vector(-0.8, 0.8, -3.7), Angle(-180, -34.1, -91.7), nil, nil, Vector(0.25, 0.25, 0.25))
 Item = AddModel(Item, "models/Gibs/Antlion_gib_medium_3a.mdl", Vector(0.1, 6.1, 4.3), Angle(158.6, 67.6, -113.1), nil, nil, Vector(0.25, 0.25, 0.25))
@@ -164,6 +257,35 @@ Item.Weight = 1
 Item.SellPrice = 4122
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_antlionclaw2", "(Strong) Antlion Claw", "Claws made from antlion gibs", "icons/weapon_axe")
+Item = AddModel(Item, "models/Gibs/Antlion_gib_Large_3.mdl", Vector(-0.8, 0.8, -3.7), Angle(-180, -34.1, -91.7), Color(20, 20, 120, 255), nil, Vector(0.25, 0.25, 0.25))
+Item = AddModel(Item, "models/Gibs/Antlion_gib_medium_3a.mdl", Vector(0.1, 6.1, 4.3), Angle(158.6, 67.6, -113.1), Color(20, 20, 120, 255), nil, Vector(0.25, 0.25, 0.25))
+Item = AddModel(Item, "models/Gibs/Antlion_gib_medium_3a.mdl", Vector(0.1, 7, 4.3), Angle(165.3, 64.9, -110.4), Color(20, 20, 120, 255), nil, Vector(0.25, 0.25, 0.25))
+Item = AddModel(Item, "models/Gibs/Antlion_gib_medium_3a.mdl", Vector(-1, 5.9, 4.3), Angle(170.6, 86.3, -113.1), Color(20, 20, 120, 255), nil, Vector(0.25, 0.25, 0.25))
+Item = AddStats(Item, 42, 2)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+vItem = AddBuff(Item, "stat_strength", 5)
+Item = AddBuff(Item, "stat_maxhealth", 3)
+Item.Level = 16
+Item.Weight = 1
+Item.SellPrice = 4122
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_antlionclaw3", "(Healthy) Antlion Claw", "Claws made from antlion gibs", "icons/weapon_axe")
+Item = AddModel(Item, "models/Gibs/Antlion_gib_Large_3.mdl", Vector(-0.8, 0.8, -3.7), Angle(-180, -34.1, -91.7), Color(120, 20, 20, 255), nil, Vector(0.25, 0.25, 0.25))
+Item = AddModel(Item, "models/Gibs/Antlion_gib_medium_3a.mdl", Vector(0.1, 6.1, 4.3), Angle(158.6, 67.6, -113.1), Color(120, 20, 20, 255), nil, Vector(0.25, 0.25, 0.25))
+Item = AddModel(Item, "models/Gibs/Antlion_gib_medium_3a.mdl", Vector(0.1, 7, 4.3), Angle(165.3, 64.9, -110.4), Color(120, 20, 20, 255), nil, Vector(0.25, 0.25, 0.25))
+Item = AddModel(Item, "models/Gibs/Antlion_gib_medium_3a.mdl", Vector(-1, 5.9, 4.3), Angle(170.6, 86.3, -113.1), Color(120, 20, 20, 255), nil, Vector(0.25, 0.25, 0.25))
+Item = AddStats(Item, 42, 2)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item = AddBuff(Item, "stat_strength", 2)
+Item = AddBuff(Item, "stat_maxhealth", 10)
+Item.Level = 16
+Item.Weight = 1
+Item.SellPrice = 4122
+Register.Item(Item)
+------
+
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_dualaxe", "War Axe", "Abit heavy... bit it sure can chop off heads!", "icons/weapon_axe")
 Item = AddModel(Item, "models/props/CS_militia/axe.mdl", Vector(-0.3, -5.2, -1), Angle(-0.7, 78.3, -82.3))
 Item = AddModel(Item, "models/props/CS_militia/axe.mdl", Vector(1.2, 0, 0), Angle(180, 0.2, 0))
@@ -173,7 +295,7 @@ Item.Level = 17
 Item.Weight = 5
 Item.SellPrice = 4530
 Register.Item(Item)
-
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_exhaust", "Car Exhaust", "How the hell is that car going to move?", "icons/weapon_axe")
 Item = AddModel(Item, "models/props_vehicles/carparts_muffler01a.mdl", Vector(15.12, -7.8, -1.95), Angle(-90, 0, 0), nil, "Models/props_building_details/courtyard_template001c_bars_dark.vtf", Vector(0.6, 0.8, 0.8))
 Item = AddStats(Item, 60, 1.5)
@@ -183,6 +305,29 @@ Item.Weight = 4
 Item.SellPrice = 5590
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_exhaust2", "(Sturdy) Car Exhaust", "How the hell is that car going to move?", "icons/weapon_axe")
+Item = AddModel(Item, "models/props_vehicles/carparts_muffler01a.mdl", Vector(15.12, -7.8, -1.95), Angle(-90, 0, 0), Color(120, 20, 20, 255), "Models/props_building_details/courtyard_template001c_bars_dark.vtf", Vector(0.6, 0.8, 0.8))
+Item = AddStats(Item, 60, 1.5)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item = AddBuff(Item, "stat_strength", 7)
+Item = AddBuff(Item, "stat_maxhealth", 6)
+Item.Level = 20
+Item.Weight = 4
+Item.SellPrice = 5590
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_exhaust3", "(Deft) Car Exhaust", "How the hell is that car going to move?", "icons/weapon_axe")
+Item = AddModel(Item, "models/props_vehicles/carparts_muffler01a.mdl", Vector(15.12, -7.8, -1.95), Angle(-90, 0, 0), Color(20, 220, 20, 255), "Models/props_building_details/courtyard_template001c_bars_dark.vtf", Vector(0.6, 0.8, 0.8))
+Item = AddStats(Item, 60, 1.5)
+Item = AddSound(Item, "weapons/iceaxe/iceaxe_swing1.wav")
+Item = AddBuff(Item, "stat_maxhealth", 2)
+Item = AddBuff(Item, "stat_agility", 2)
+Item = AddBuff(Item, "stat_strength", 4)
+Item.Level = 20
+Item.Weight = 4
+Item.SellPrice = 5590
+Register.Item(Item)
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_powerhammer", "Power Hammer", "Uses combine thumper tech to add explosive damage.", "icons/weapon_axe")
 Item = AddModel(Item, "models/Combine_turrets/Floor_turret_gib4.mdl", Vector(-7.8, -4.88, 8.29), Angle(29.63, 151.46, -15.37), nil, nil, Vector(1, 1, 1))
 Item = AddStats(Item, 48.5, 2)
@@ -320,10 +465,10 @@ Register.Item(Item)
 
 
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_melee_Crystal", "Crystal Sword", "Crystalized Ice formed into a sword.", "icons/weapon_axe")
-Item = AddModel(Item, "models/Items/item_item_crate_chunk01.mdl", Vector(-1, -22.93, 0), Angle(0, -90, -90), Color(20, 20, 200, 230), "debug/env_cubemap_model.vtf", Vector(0.5, 1, 0.3))
-Item = AddModel(Item, "models/Items/item_item_crate_chunk01.mdl", Vector(-2.48, 0, 0), Angle(-180, 0, 0), Color(20, 20, 200, 230), "debug/env_cubemap_model.vtf", Vector(0.5, 1, 0.3))
-Item = AddModel(Item, "models/Items/ammocrate_ar2.mdl", Vector(0, -1.14, -17.5), Angle(-90, 90, 0), nil, "Models/Combine_Turrets/combine_cannon.vtf", Vector(0.06, 0.12, 0.12))
-Item = AddModel(Item, "models/Items/ammocrate_ar2.mdl", Vector(0, 1.14, 19.51), Angle(-90, -90, 0), nil, "Models/Combine_Turrets/combine_cannon.vtf", Vector(0.06, 0.12, 0.02))
+Item = AddModel(Item, "models/Items/item_item_crate_chunk01.mdl", Vector(-1, -22.93, 0), Angle(0, -90, -90), Color(20, 20, 100, 255), nil, Vector(0.5, 1, 0.3))
+Item = AddModel(Item, "models/Items/item_item_crate_chunk01.mdl", Vector(-2.48, 0, 0), Angle(-180, 0, 0), Color(20, 20, 100, 255), nil, Vector(0.5, 1, 0.3))
+Item = AddModel(Item, "models/Items/ammocrate_ar2.mdl", Vector(0, -1.14, -17.5), Angle(-90, 90, 0), nil, "Models/Magnusson_Teleporter/magnusson_teleporter_fxglow1.vtf", Vector(0.06, 0.12, 0.12))
+Item = AddModel(Item, "models/Items/ammocrate_ar2.mdl", Vector(0, 1.14, 19.51), Angle(-90, -90, 0), nil, "Models/Magnusson_Teleporter/magnusson_teleporter_fxglow1.vtf", Vector(0.06, 0.12, 0.02))
 Item = AddModel(Item, "models/Items/battery.mdl", Vector(1.5, 0, -25.85), Angle(0, 0, 90), nil, "Models/Magnusson_Teleporter/magnusson_teleporter_fxglow1.vtf", Vector(0.3, 0.3, 0.69))
 Item = AddModel(Item, "models/Items/battery.mdl", Vector(-0.5, 0, -25.85), Angle(180, 0, 90), nil, "Models/Magnusson_Teleporter/magnusson_teleporter_fxglow1.vtf", Vector(0.3, 0.3, 0.69))
 Item = AddStats(Item, 145, 2)
