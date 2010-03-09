@@ -12,6 +12,10 @@ local function AddStats(tblAddTable, intPower, intAccuracy, intFireRate, intClip
 	tblAddTable.NumOfBullets = intNumOfBullets or 1
 	return tblAddTable
 end
+local function AddBuff(tblAddTable, strBuff, intAmount)
+	tblAddTable.Buffs[strBuff] = intAmount
+	return tblAddTable
+end
 local function AddSound(tblAddTable, strShootSound, strReloadSound)
 	tblAddTable.Sound = strShootSound
 	tblAddTable.ReloadSound = strReloadSound
@@ -76,6 +80,7 @@ Item.HoldType = "shotgun"
 Item.AmmoType = "smg1"
 Register.Item(Item)
 
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junkpistol", "Junky Pistol", "Looks like its all rusted.", "icons/weapon_pistol")
 Item = AddModel(Item, "models/Weapons/W_pistol.mdl", Vector(-3, 0, 3.5), Angle(0, 180, 0))
 Item = AddModel(Item, "models/props_junk/garbage_metalcan001a.mdl", Vector(0, 0, -7.2), Angle(90, 0, 0))
@@ -87,6 +92,31 @@ Item.HoldType = "pistol"
 Item.AmmoType = "smg1"
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junkpistol2", "Junky Pistol", "Looks like its all rusted.", "icons/weapon_pistol")
+Item = AddModel(Item, "models/Weapons/W_pistol.mdl", Vector(-3, 0, 3.5), Angle(0, 180, 0))
+Item = AddModel(Item, "models/props_junk/garbage_metalcan001a.mdl", Vector(0, 0, -7.2), Angle(90, 0, 0))
+Item = AddStats(Item, 5, 0.01, 1.5, 9) --(7.5)
+Item = AddSound(Item, "weapons/pistol/pistol_fire2.wav", "weapons/pistol/pistol_reload1.wav")
+Item = AddBuff(Item, "stat_agility", 1)
+Item.Weight = 1
+Item.SellPrice = 15
+Item.HoldType = "pistol"
+Item.AmmoType = "smg1"
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junkpistol3", "Junky Pistol", "Looks like its all rusted.", "icons/weapon_pistol")
+Item = AddModel(Item, "models/Weapons/W_pistol.mdl", Vector(-3, 0, 3.5), Angle(0, 180, 0))
+Item = AddModel(Item, "models/props_junk/garbage_metalcan001a.mdl", Vector(0, 0, -7.2), Angle(90, 0, 0))
+Item = AddStats(Item, 5, 0.01, 1.5, 9) --(7.5)
+Item = AddSound(Item, "weapons/pistol/pistol_fire2.wav", "weapons/pistol/pistol_reload1.wav")
+Item = AddBuff(Item, "stat_dexterity", 1)
+Item.Weight = 1
+Item.SellPrice = 15
+Item.HoldType = "pistol"
+Item.AmmoType = "smg1"
+Register.Item(Item)
+------
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junksmg", "Junky SMG", "Made from old parts and crap like that.", "icons/weapon_pistol")
 Item = AddModel(Item, "models/Weapons/w_smg1.mdl", Vector(7.5, -1.7, 3.2), Angle(-12.7, -0.7, -0.7))
 Item = AddModel(Item, "models/props_junk/garbage_plasticbottle002a.mdl", Vector(1.2, 0.3, 0.3), Angle(0.7, 91.7, -87.7), nil, "Models/props_c17/FurnitureMetal002a.vtf")
@@ -101,6 +131,38 @@ Item.HoldType = "smg"
 Item.AmmoType = "smg1"
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junksmg2", "Junky SMG", "Made from old parts and crap like that.", "icons/weapon_pistol")
+Item = AddModel(Item, "models/Weapons/w_smg1.mdl", Vector(7.5, -1.7, 3.2), Angle(-12.7, -0.7, -0.7))
+Item = AddModel(Item, "models/props_junk/garbage_plasticbottle002a.mdl", Vector(1.2, 0.3, 0.3), Angle(0.7, 91.7, -87.7), nil, "Models/props_c17/FurnitureMetal002a.vtf")
+Item = AddModel(Item, "models/props_junk/garbage_metalcan001a.mdl", Vector(1.4, -1, -7), Angle(180, -90.3, 90.3))
+Item = AddModel(Item, "models/props_junk/GlassBottle01a.mdl", Vector(1, 2.1, -4.1), Angle(180, -90.3, -90.3))
+Item = AddStats(Item, 3.7, 0.04, 7, 35) --(25.9)
+Item = AddSound(Item, "weapons/smg1/smg1_fire1.wav", "weapons/smg1/smg1_reload.wav")
+Item = AddBuff(Item, "stat_dexterity", 1)
+Item = AddBuff(Item, "stat_agility", 1)
+Item.Weight = 3
+Item.Level = 4
+Item.SellPrice = 80
+Item.HoldType = "smg"
+Item.AmmoType = "smg1"
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junksmg3", "Junky SMG", "Made from old parts and crap like that.", "icons/weapon_pistol")
+Item = AddModel(Item, "models/Weapons/w_smg1.mdl", Vector(7.5, -1.7, 3.2), Angle(-12.7, -0.7, -0.7))
+Item = AddModel(Item, "models/props_junk/garbage_plasticbottle002a.mdl", Vector(1.2, 0.3, 0.3), Angle(0.7, 91.7, -87.7), nil, "Models/props_c17/FurnitureMetal002a.vtf")
+Item = AddModel(Item, "models/props_junk/garbage_metalcan001a.mdl", Vector(1.4, -1, -7), Angle(180, -90.3, 90.3))
+Item = AddModel(Item, "models/props_junk/GlassBottle01a.mdl", Vector(1, 2.1, -4.1), Angle(180, -90.3, -90.3))
+Item = AddStats(Item, 3.7, 0.04, 7, 35) --(25.9)
+Item = AddSound(Item, "weapons/smg1/smg1_fire1.wav", "weapons/smg1/smg1_reload.wav")
+Item = AddBuff(Item, "stat_dexterity", 2)
+Item.Weight = 3
+Item.Level = 4
+Item.SellPrice = 80
+Item.HoldType = "smg"
+Item.AmmoType = "smg1"
+Register.Item(Item)
+------
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junkrifle", "Junky Rifle", "Crafted with the junkiest materials around.", "icons/weapon_sniper1")
 Item = AddModel(Item, "models/Weapons/w_annabelle.mdl", Vector(-12.4, 1.9, 1.4), Angle(10, -176, -7.4))
 Item = AddModel(Item, "models/healthvial.mdl", Vector(-1.4, 1, -7.9), Angle(83.6, -2, 180))
@@ -115,6 +177,37 @@ Item.HoldType = "smg"
 Item.AmmoType = "ar2"
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junkrifle2", "Junky Rifle", "Crafted with the junkiest materials around.", "icons/weapon_sniper1")
+Item = AddModel(Item, "models/Weapons/w_annabelle.mdl", Vector(-12.4, 1.9, 1.4), Angle(10, -176, -7.4))
+Item = AddModel(Item, "models/healthvial.mdl", Vector(-1.4, 1, -7.9), Angle(83.6, -2, 180))
+Item = AddModel(Item, "models/Items/battery.mdl", Vector(-0.1, -0.8, -2.8), Angle(95.7, 178.7, -178.7))
+Item = AddModel(Item, "models/props_c17/utilityconnecter006.mdl", Vector(1.2, -11.3, 1), Angle(-0.7, -93, 6))
+Item = AddStats(Item, 17.5, 0.02, 2, 25) --(35)
+Item = AddSound(Item, "weapons/ar1/ar1_dist2.wav", "weapons/crossbow/reload1.wav")
+Item = AddBuff(Item, "stat_dexterity", 3)
+Item.Weight = 3
+Item.Level = 8
+Item.SellPrice = 350
+Item.HoldType = "smg"
+Item.AmmoType = "ar2"
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_junkrifle3", "Junky Rifle", "Crafted with the junkiest materials around.", "icons/weapon_sniper1")
+Item = AddModel(Item, "models/Weapons/w_annabelle.mdl", Vector(-12.4, 1.9, 1.4), Angle(10, -176, -7.4))
+Item = AddModel(Item, "models/healthvial.mdl", Vector(-1.4, 1, -7.9), Angle(83.6, -2, 180))
+Item = AddModel(Item, "models/Items/battery.mdl", Vector(-0.1, -0.8, -2.8), Angle(95.7, 178.7, -178.7))
+Item = AddModel(Item, "models/props_c17/utilityconnecter006.mdl", Vector(1.2, -11.3, 1), Angle(-0.7, -93, 6))
+Item = AddStats(Item, 17.5, 0.02, 2, 25) --(35)
+Item = AddSound(Item, "weapons/ar1/ar1_dist2.wav", "weapons/crossbow/reload1.wav")
+Item = AddBuff(Item, "stat_dexterity", 2)
+Item.Weight = 3
+Item.Level = 8
+Item.SellPrice = 350
+Item.HoldType = "smg"
+Item.AmmoType = "ar2"
+Register.Item(Item)
+------
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_heavymacgun", "Heavy Mac Gun", "Someone order a heeping pile of bullet?", "icons/weapon_heavymacgun")
 Item = AddModel(Item, "models/Airboatgun.mdl", Vector(4.3, 0.6, 4.3), Angle(-2, -2, 0))
 Item = AddStats(Item, 5.3, 0.06, 8, 50) --(42.4)
@@ -126,6 +219,31 @@ Item.HoldType = "shotgun"
 Item.AmmoType = "smg1"
 Register.Item(Item)
 
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_heavymacgun2", "Heavy Mac Gun", "Someone order a heeping pile of bullet?", "icons/weapon_heavymacgun")
+Item = AddModel(Item, "models/Airboatgun.mdl", Vector(4.3, 0.6, 4.3), Angle(-2, -2, 0))
+Item = AddStats(Item, 5.3, 0.06, 8, 50) --(42.4)
+Item = AddSound(Item, "weapons/ar2/fire1.wav", "weapons/ar2/npc_ar2_reload.wav")
+Item = AddBuff(Item, "stat_dexterity", 4)
+Item.Weight = 3
+Item.Level = 10
+Item.SellPrice = 480
+Item.HoldType = "shotgun"
+Item.AmmoType = "smg1"
+Register.Item(Item)
+
+local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_heavymacgun3", "Heavy Mac Gun", "Someone order a heeping pile of bullet?", "icons/weapon_heavymacgun")
+Item = AddModel(Item, "models/Airboatgun.mdl", Vector(4.3, 0.6, 4.3), Angle(-2, -2, 0))
+Item = AddStats(Item, 5.3, 0.06, 8, 50) --(42.4)
+Item = AddSound(Item, "weapons/ar2/fire1.wav", "weapons/ar2/npc_ar2_reload.wav")
+Item = AddBuff(Item, "stat_dexterity", 2)
+Item = AddBuff(Item, "stat_agility", 2)
+Item.Weight = 3
+Item.Level = 10
+Item.SellPrice = 480
+Item.HoldType = "shotgun"
+Item.AmmoType = "smg1"
+Register.Item(Item)
+------
 local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_drumshotgun", "Junky Shoty", "Has a drumclip for extra ammo.", "icons/weapon_shotgun")
 Item = AddModel(Item, "models/Weapons/w_shotgun.mdl", Vector(-14.6, 1.4, -0.6), Angle(15.4, -174.6, -6))
 Item = AddModel(Item, "models/props_lab/jar01a.mdl", Vector(-1.4, -0.3, -0.1), Angle(-97, -11.4, 10), nil, "Models/props_c17/FurnitureMetal002a.vtf")
@@ -221,3 +339,17 @@ Item.HoldType = "shotgun"
 Item.AmmoType = "buckshot"
 Register.Item(Item)
 
+--Community Items
+
+ local Item = QuickCreateItemTable(BaseWeapon, "weapon_ranged_plasma", "Plasma Rifle", "Stolen from another game!!", "icons/weapon_pistol")
+Item = AddModel(Item, "models/props_c17/substation_stripebox01a.mdl", Vector(1.95, -1.46, 22.44), Angle(-87.8, 180, -7.68), nil, nil, Vector(0.06, 0.08, 0.31))
+Item = AddModel(Item, "models/props_c17/playground_teetertoter_stan.mdl", Vector(11.71, -0.24, -1.95), Angle(90, 0, 0), nil, nil, Vector(0.96, 1.01, 0.5))
+Item = AddModel(Item, "models/props_c17/lamp_bell_on.mdl", Vector(-0.24, -0.24, -3.9), Angle(180, -90, 0), nil, nil, Vector(0.43, 0.31, 0.5))
+Item = AddModel(Item, "models/Combine_turrets/combine_cannon_stand.mdl", Vector(-0.49, 1.71, 2.93), Angle(0, 0, -90), nil, nil, Vector(0.47, 0.17, 0.18))
+Item = AddStats(Item, 15, 0.04, 14, 100) --(7.5)
+Item = AddSound(Item, "weapons/physcannon/energy_sing_flyby1.wav", "weapons/crossbow/bolt_load1.wav")
+Item.Weight = 1
+Item.SellPrice = 15
+Item.HoldType = "crossbow"
+Item.AmmoType = "ar2"
+Register.Item(Item)
