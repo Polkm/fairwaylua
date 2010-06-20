@@ -7,9 +7,9 @@ GM.TeamBased 	= false
 
 --Data Management
 GM.Data = {}
-GM.Data.Units = {}
-function RegisterUnit(tblDataTable)
-	GM.Data.Units[tblDataTable.Name] = tblDataTable
+GM.Data.Classes = {}
+function RegisterClass(tblDataTable)
+	GM.Data.Classes[tblDataTable.Name] = tblDataTable
 end
 GM.Data.Equiptment = {}
 function RegisterEquiptment(tblDataTable)
@@ -17,12 +17,6 @@ function RegisterEquiptment(tblDataTable)
 end
 
 local Player = FindMetaTable("Player")
-function Player:GetIdealCamPos()
-	return self:GetPos() + GAMEMODE.IdealCammeraPosition
-end
-function Player:GetIdealCamAngle()
-	return GAMEMODE.IdealCammeraAngle
-end
 
 function GM:GetPlacement(intUnits)
 	local intSpace = intUnits * 15

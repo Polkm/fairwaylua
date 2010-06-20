@@ -4,10 +4,9 @@ local intCircleSize = 50
 ENT.boolAnimPlayed = false
 
 function ENT:Initialize()
-	self.GunProp = ents.Create("prop_physics")
+	self.GunProp = ClientsideModel("models/weapons/w_smg1.mdl", RENDERGROUP_OPAQUE)
 	self.GunProp:SetPos(util.LocalToWorld(self, Vector(3, 4, 8), 0))
 	self.GunProp:SetAngles(self:GetAngles() + Angle(0, 0, -90))
-	self.GunProp:SetModel("models/weapons/w_smg1.mdl")
 	self.GunProp:SetParent(self)
 	self.GunProp:Spawn()
 end
@@ -33,7 +32,9 @@ function ENT:OnRemove()
 	end
 	timer.Simple(5, function()
 		for _, gib in pairs(tblGibs) do
-			gib:Remove()
+			if ValidEntity(gib) then
+				gib:Remove()
+			end
 		end
 	end)
 end
@@ -41,55 +42,44 @@ end
 function ENT:Think()
 	local strWeapon = self:GetNWString("weapon")
 	local strClass = self:GetNWString("class")
-	if self.GunProp && self.GunProp:IsValid() && strWeapon then
+	
+	if ValidEntity(self.GunProp) and strWeapon and strWeapon != "" then
 		local tblWeaponTable = GAMEMODE.Data.Equiptment[strWeapon]
-		if tblWeaponTable && tblWeaponTable.Model then
-			if tostring(self.GunProp:GetModel()) != tostring(tblWeaponTable.Model) then
+		if tblWeaponTable then
+			if tblWeaponTable and tblWeaponTable.Model and tostring(self.GunProp:GetModel()) != tostring(tblWeaponTable.Model) then
 				self.GunProp:SetModel(tblWeaponTable.Model)
-				local tblAnimTable = GAMEMODE.Data.Equiptment[self:GetNWString("weapon")].HoldPosition
-				self.GunProp:SetPos(util.LocalToWorld(self, tblAnimTable.Position, 0))
-				self.GunProp:SetAngles(self:GetAngles() + tblAnimTable.Angles)
 			end
+			local tblAnimTable = tblWeaponTable.HoldPosition
+			self.GunProp:SetPos(util.LocalToWorld(self, tblAnimTable.Position, 0))
+			self.GunProp:SetAngles(self:GetAngles() + tblAnimTable.Angles)
 		end
 	end
-	if strClass && GAMEMODE.Data.Units[strClass] then
-		local tblUnitTable = GAMEMODE.Data.Units[strClass]
+	if strClass and GAMEMODE.Data.Classes[strClass] then
+		local tblUnitTable = GAMEMODE.Data.Classes[strClass]
 		if intCircleSize != tblUnitTable.CircleSize then
 			intCircleSize = tblUnitTable.CircleSize
 		end
 	end
-	if self:GetNWString("anim") == "fire" && !self.boolAnimPlayed then
-		self.boolAnimPlayed = true
-		self:Anim(self:GetNWString("anim"))
-	elseif self:GetNWString("anim") == "idle" then
+	
+	
+	if self:GetNWString("anim") != "idle" and self.boolAnimPlayed then
+		self:Anim(self:GetNWString("anim"), self:GetNWInt("animTime"))
 		self.boolAnimPlayed = false
+	elseif self:GetNWString("anim") == "idle" then
+		self.boolAnimPlayed = true
 		if timer.IsTimer(tostring(self) .. "AnimTimer") then
 			timer.Destroy(tostring(self) .. "AnimTimer")
-			local tblAnimTable = GAMEMODE.Data.Equiptment[self:GetNWString("weapon")].HoldPosition
+			
 			self.GunProp:SetPos(util.LocalToWorld(self, tblAnimTable.Position, 0))
 			self.GunProp:SetAngles(self:GetAngles() + tblAnimTable.Angles)
 		end
 	end
 end
 
-function ENT:Anim(strAnim)
-	local tblAnimTable = GAMEMODE.Data.Equiptment[self:GetNWString("weapon")].FireAnim
-	local intKeyFrame = 1
-	timer.Create(tostring(self) .. "AnimTimer", 0.1, #tblAnimTable, function()
-		if !self or !self:IsValid() then return end
-		self.GunProp:SetPos(util.LocalToWorld(self, tblAnimTable[intKeyFrame].Position, 0))
-		self.GunProp:SetAngles(self:GetAngles() + tblAnimTable[intKeyFrame].Angles)
-		intKeyFrame = intKeyFrame + 1
-		if intKeyFrame > #tblAnimTable then
-			self.boolAnimPlayed = false
-		end
-	end)
-end
-
 function ENT:Draw()
 	self:DrawModel()
-	if !self:GetOwner() or !self:GetOwner():IsValid() or !self:GetOwner():Team() then return end
-	if LocalPlayer():Team() == self:GetOwner():Team() then
+	if !ValidEntity(self:GetOwner()) then return end
+	if LocalPlayer() == self:GetOwner() then
 		if math.Round(self.LastHieght) != math.Round(self:GetPos().z) then
 			local trace = {}
 			trace.start = self:GetPos() + Vector(0, 0, 5)

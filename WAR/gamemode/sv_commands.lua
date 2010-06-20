@@ -24,10 +24,10 @@ function Player:MoveSellectedSquad(vecPostion)
 	local SurfaceNeeded = 0
 	if !self.SellectedSquads then return end
 	for _, Squad in pairs(self.SellectedSquads) do
-		TotalUnits = TotalUnits + #Squad.Units
 		Squad.HomePos = vecPostion
+		TotalUnits = TotalUnits + #Squad.Units
+		SurfaceNeeded = math.sqrt(TotalUnits * (1000 / ((TotalUnits / 200) + 1)))
 		for _, Unit in pairs(Squad.Units) do
-			SurfaceNeeded = math.sqrt(TotalUnits * (1000 / ((TotalUnits / 200) + 1)))
 			local vecTargetPosition = vecPostion + Vector(math.random(-SurfaceNeeded, SurfaceNeeded), math.random(-SurfaceNeeded, SurfaceNeeded), 15)
 			Unit:SeaseFire()
 			Unit:MoveTo(vecTargetPosition)
@@ -43,8 +43,8 @@ function Player:AttackWithSellected(tblSquadTable)
 	if tblSquadTable && tblSquadTable.Units then
 		for _, Squad in pairs(self.SellectedSquads) do
 			for _, Unit in pairs(Squad.Units) do
-				local entRandomTarget = table.Random(tblSquadTable.Units)
-				Unit:Attack(entRandomTarget)
+				--print(Unit:FindIdealTarget(tblSquadTable.Units))
+				Unit:Attack(Unit:FindIdealTarget(tblSquadTable.Units))
 			end
 		end
 	end
@@ -56,3 +56,9 @@ concommand.Add("WAR_AttackSquad", function(ply, command, args)
 		ply:AttackWithSellected(entTarget.SquadTable)
 	end
 end)
+
+concommand.Add("WAR_Dev_AddSquad", function(ply, command, args)
+	ply:CreateSquad("melontrooper", ply:GetPos(), "shotgun")
+end)
+
+

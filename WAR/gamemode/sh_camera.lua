@@ -1,27 +1,21 @@
 GM.IdealCammeraDistance = 500
+GM.AddativeCamDistance = 0
 GM.IdealCammeraAngle = Vector(45, 45, -85)
+GM.AddativeCamAngle = Vector(0, 0, 0)
 GM.CammeraSmoothness = 15
 GM.OverSholder = false
 GM.AimHelper = false
 GM.ScrollDelta = 0
 
 local Player = FindMetaTable("Player")
+
 function Player:GetIdealCamPos()
 	local vecPosition = self:GetPos()
 	local intDistance = GAMEMODE.IdealCammeraDistance + self.AddativeCamDistance
-	if GAMEMODE.OverSholder then
-		vecPosition = vecPosition + Vector(0, 0, 120)
-		vecPosition = vecPosition + (self:GetAngles():Forward() * -intDistance)
-	else
-		vecPosition = vecPosition + Vector(0, 0, 0)
-		vecPosition = vecPosition + ((GAMEMODE.IdealCammeraAngle + self.AddativeCamAngle):Normalize() * -intDistance)
-	end
-	return vecPosition
+	return vecPosition + ((GAMEMODE.IdealCammeraAngle + self.AddativeCamAngle):Normalize() * -intDistance)
+	
 end
 function Player:GetIdealCamAngle()
-	if GAMEMODE.OverSholder then
-		return self:GetAngles()
-	end
 	return (GAMEMODE.IdealCammeraAngle + self.AddativeCamAngle):Angle()
 end
 
@@ -38,6 +32,7 @@ if SERVER then
 		entViewEntity:SetNoDraw(true)
 		plySpawned:SetViewEntity(entViewEntity)
 		plySpawned:SetEyeAngles(Angle(0, 45, 0))
+		plySpawned:SetNoDraw(true)
 	end
 	hook.Add("PlayerSpawn", "PlayerSpawnHook", PlayerSpawnHook)
 else
@@ -59,7 +54,7 @@ else
 		client.AddativeCamAngle = Vector(0, 0, 0)
 		if !client.AddativeCamDistance then client.AddativeCamDistance = 0 end
 		if GAMEMODE.ScrollDelta != 0 then
-			client.AddativeCamDistance = math.Clamp(client.AddativeCamDistance + GAMEMODE.ScrollDelta, -100, 300)
+			client.AddativeCamDistance = math.Clamp(client.AddativeCamDistance + GAMEMODE.ScrollDelta, -100, 1000)
 			GAMEMODE.ScrollDelta = 0
 		end
 		GAMEMODE.CammeraPosition = GAMEMODE.CammeraPosition + ((client:GetIdealCamPos() - GAMEMODE.CammeraPosition) / GAMEMODE.CammeraSmoothness)
