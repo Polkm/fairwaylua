@@ -16,10 +16,12 @@ function ENT:OnRemove()
 		self.GunProp:Remove()
 	end
 	local tblGibs = {}
+	local strClass = self:GetNWString("class")
+	local tblUnitTable = GAMEMODE.Data.Classes[strClass]
 	for i = 1, 3 do
 		local gib = ents.Create("prop_physics")
 		gib:SetPos(self:GetPos())
-		gib:SetModel(self.GibModels[math.random(1, #self.GibModels)])
+		gib:SetModel(tblUnitTable.GibModels[math.random(1, #tblUnitTable.GibModels)])
 		local intBoxSize = 2
 		gib:PhysicsInitBox(Vector(-intBoxSize, -intBoxSize, -intBoxSize), Vector(intBoxSize, intBoxSize, intBoxSize))
 		gib:SetMoveType(MOVETYPE_VPHYSICS)
