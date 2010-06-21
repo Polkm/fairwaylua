@@ -58,7 +58,6 @@ concommand.Add("WAR_AttackSquad", function(ply, command, args)
 end)
 
 concommand.Add("WAR_Dev_AddSquad", function(ply, command, args)
-	ply:CreateSquad("melontrooper", ply:GetPos(), "shotgun")
+	ply:CreateSquad(args[1] or "melontrooper", ply:GetPos(), "smg")
 end)
-
 
