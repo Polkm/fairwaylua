@@ -5,6 +5,17 @@ include('shared.lua')
 siltBoxMenu = nil
 local pnlControlPanel = nil
 ---------------------
+GM.ColorPallet = {}
+GM.ColorPallet["Light Blue"] = Color(195, 217, 255, 255)
+GM.ColorPallet["Blue"] = Color(0, 169, 255, 255)
+GM.ColorPallet["Green"] = Color(86, 239, 35, 255)
+GM.ColorPallet["Mint"] = Color(205, 235, 139, 255)
+GM.ColorPallet["Red"] = Color(176, 43, 44, 255)
+GM.ColorPallet["Orange"] = Color(255, 116, 0, 255)
+GM.ColorPallet["Yellow"] = Color(240, 240, 121, 255)
+GM.ColorPallet["Light Tan"] = Color(249, 247, 237, 255)
+GM.ColorPallet["Shadow"] = Color(54, 57, 61, 255)
+---------------------
 
 function GM:Initialize()
 	spawnmenu.PopulateFromEngineTextFiles()

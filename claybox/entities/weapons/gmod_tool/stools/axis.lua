@@ -51,7 +51,7 @@ function TOOL:LeftClick(tblTrace)
 		Phys1:SetAngle(TargetAngle)
 		
 		--Move the object so that the hitpos on our object is at the second hitpos
-		local TargetPos = WPos2 + (Phys1:GetPos() - self:GetPos(1))
+		--local TargetPos = WPos2 + (Phys1:GetPos() - self:GetPos(1))
 		local TargetPos = WPos2 + (Phys1:GetPos() - self:GetPos(1)) + (Norm2)
 
 		--Offset slightly so it can rotate
@@ -89,90 +89,74 @@ function TOOL:RightClick(tblTrace)
 	
 	local iNum = self:NumObjects()
 	
-	// Don't allow us to choose the world as the first object
-	if (iNum == 0 && !tblTrace.Entity:IsValid()) then return false end
+	--Don't allow us to choose the world as the first object
+	if iNum == 0 and !tblTrace.Entity:IsValid() then return false end
 	
-	local Phys = tblTrace.Entity:GetPhysicsObjectNum( tblTrace.PhysicsBone )
-	self:SetObject( iNum + 1, tblTrace.Entity, tblTrace.HitPos, Phys, tblTrace.PhysicsBone, tblTrace.HitNormal )
+	local Phys = tblTrace.Entity:GetPhysicsObjectNum(tblTrace.PhysicsBone)
+	self:SetObject(iNum + 1, tblTrace.Entity, tblTrace.HitPos, Phys, tblTrace.PhysicsBone, tblTrace.HitNormal)
 	
-	if ( iNum > 0 ) then
-	
-		// Clientside can bail out now
-		if ( CLIENT ) then
-		
+	if iNum > 0 then
+		--Clientside can bail out now
+		if CLIENT then
 			self:ClearObjects()
 			self:ReleaseGhostEntity()
-			
 			return true
-		
 		end
 		
-		// Get client's CVars
-		local forcelimit	= self:GetClientNumber( "forcelimit", 0 ) 
-		local torquelimit 	= self:GetClientNumber( "torquelimit", 0 ) 
-		local friction		= self:GetClientNumber( "hingefriction", 0 ) 
-		local nocollide		= self:GetClientNumber( "nocollide", 0 ) 
+		--Get client's CVars
+		local forcelimit = self:GetClientNumber("forcelimit", 0) 
+		local torquelimit = self:GetClientNumber("torquelimit", 0) 
+		local friction = self:GetClientNumber("hingefriction", 0) 
+		local nocollide	= self:GetClientNumber("nocollide", 0) 
 		
-		local Ent1,  Ent2  = self:GetEnt(1),	 self:GetEnt(2)
-		local Bone1, Bone2 = self:GetBone(1),	 self:GetBone(2)
-		local WPos1, WPos2 = self:GetPos(1),	 self:GetPos(2)
-		local LPos1, LPos2 = self:GetLocalPos(1),self:GetLocalPos(2)
-		local Norm1, Norm2 = self:GetNormal(1),	 self:GetNormal(2)
+		local Ent1, Ent2 = self:GetEnt(1), self:GetEnt(2)
+		local Bone1, Bone2 = self:GetBone(1), self:GetBone(2)
+		local WPos1, WPos2 = self:GetPos(1), self:GetPos(2)
+		local LPos1, LPos2 = self:GetLocalPos(1), self:GetLocalPos(2)
+		local Norm1, Norm2 = self:GetNormal(1),	self:GetNormal(2)
 		local Phys1, Phys2 = self:GetPhys(1), self:GetPhys(2)
 		
-		// Note: To keep stuff ragdoll friendly try to treat things as physics objects rather than entities
+		--Note: To keep stuff ragdoll friendly try to treat things as physics objects rather than entities
 		local Ang1, Ang2 = Norm1:Angle(), (Norm2 * -1):Angle()
-		local TargetAngle = Phys1:AlignAngles( Ang1, Ang2 )
+		local TargetAngle = Phys1:AlignAngles(Ang1, Ang2)
 		
-		//Phys1:SetAngle( TargetAngle )
+		--Phys1:SetAngle(TargetAngle)
 		
 		local TargetPos = WPos2 + (Phys1:GetPos() - self:GetPos(1)) + (Norm2)
-
-
+		
 		Phys1:Wake()
 
-		// Set the hinge Axis perpendicular to the trace hit surface
-		LPos1 = Phys1:WorldToLocal( WPos2 + Norm2 )
+		--Set the hinge Axis perpendicular to the trace hit surface
+		LPos1 = Phys1:WorldToLocal(WPos2 + Norm2)
 
-		local constraint = constraint.Axis( Ent1, Ent2, Bone1, Bone2, LPos1, LPos2, forcelimit, torquelimit, friction, nocollide )
+		local constraint = constraint.Axis(Ent1, Ent2, Bone1, Bone2, LPos1, LPos2, forcelimit, torquelimit, friction, nocollide)
 
 		undo.Create("Axis")
-		undo.AddEntity( constraint )
-		undo.SetPlayer( self:GetOwner() )
+		undo.AddEntity(constraint)
+		undo.SetPlayer(self:GetOwner())
 		undo.Finish()
 
-		self:GetOwner():AddCleanup( "constraints", constraint )
+		self:GetOwner():AddCleanup("constraints", constraint)
 
-		// Clear the objects so we're ready to go again
+		--Clear the objects so we're ready to go again
 		self:ClearObjects()
 		self:ReleaseGhostEntity()
-
-
 	else
-	
-		self:StartGhostEntity( tblTrace.Entity )
-		self:SetStage( iNum+1 )
-	
+		self:StartGhostEntity(tblTrace.Entity)
+		self:SetStage(iNum + 1)
 	end
-
 end
 
-function TOOL:Reload( tblTrace )
-
-	if (!tblTrace.Entity:IsValid() || tblTrace.Entity:IsPlayer() ) then return false end
-	if ( CLIENT ) then return true end
-	
-	local  bool = constraint.RemoveConstraints( tblTrace.Entity, "Axis" )
+function TOOL:Reload(tblTrace)
+	if !tblTrace.Entity:IsValid() or tblTrace.Entity:IsPlayer() then return false end
+	if CLIENT then return true end
+	local bool = constraint.RemoveConstraints(tblTrace.Entity, "Axis")
 	return bool
-	
 end
 
 function TOOL:Think()
-
-	if (self:NumObjects() != 1) then return end
-	
+	if self:NumObjects() != 1 then return end
 	self:UpdateGhostEntity()
-
 end
 
 function TOOL.BuildCPanel(panel)

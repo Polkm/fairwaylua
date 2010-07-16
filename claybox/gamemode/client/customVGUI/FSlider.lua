@@ -1,7 +1,13 @@
 local matGradiantDown = surface.GetTextureID("gui/gradient_down")
 local PANEL = {}
+PANEL.Diffrence = 25
+
+local function ShadeColor(clrColor, intDifrence)
+	return Color(math.Clamp(clrColor.r + intDifrence, 0, 255), math.Clamp(clrColor.g + intDifrence, 0, 255), math.Clamp(clrColor.b + intDifrence, 0, 255), clrColor.a)
+end
 
 function PANEL:Init()
+	self.BarColor = GAMEMODE.ColorPallet["Blue"]
 	self.Wang = vgui.Create ("DNumberWang", self)
 	self.Wang.OnValueChanged = function(wang, val) self:ValueChanged(val) end
 	
@@ -11,22 +17,22 @@ function PANEL:Init()
 	self.Slider:SetTrapInside(true)
 	self.Slider:SetImage("gui/slidergrabber")
 	self.Slider.Paint = function()
-		local intScrollWidth, intHieght = self.Slider.Knob:GetPos() + 2
-		local intRadius = intScrollWidth < 16 and 2 or 8
-		--draw.RoundedBoxEx(intRadius, 0, 0, self.Slider:GetWide(), self.Slider:GetTall(), Color(100, 100, 100, 255), true, false, false, true)
-		surface.SetDrawColor(0, 0, 0, 100)
+		local intScrollWidth, intHieght = self.Slider.Knob:GetPos() + 3
+		local intRadius = 2
+		draw.RoundedBox(intRadius, 0, 0, self.Slider:GetWide(), self.Slider:GetTall(), Color(100, 100, 100, 255))
+		surface.SetDrawColor(0, 0, 0, 50)
 		surface.SetTexture(matGradiantDown)
 		surface.DrawTexturedRect(intRadius, 0, self.Slider:GetWide() - intRadius, self.Slider:GetTall())
 		
-		draw.RoundedBoxEx(intRadius, 0, 0, intScrollWidth, self.Slider:GetTall(), Color(0, 129, 183, 255), false, false, false, false)
-		--draw.RoundedBoxEx(intRadius, 1, 1, intScrollWidth - 2, self.Slider:GetTall() - 2, Color(0, 201, 255, 255), true, false, false, true)
-		--draw.RoundedBoxEx(intRadius, 2, self.Slider:GetTall() / 2, intScrollWidth - 4, (self.Slider:GetTall() / 2) - 2, Color(0, 169, 255, 255), true, false, false, true)
+		draw.RoundedBox(intRadius, 0, 0, intScrollWidth, self.Slider:GetTall(), ShadeColor(self.BarColor, -self.Diffrence))
+		draw.RoundedBox(intRadius, 1, 1, intScrollWidth - 2, self.Slider:GetTall() - 2, ShadeColor(self.BarColor, self.Diffrence))
+		draw.RoundedBox(intRadius, 2, self.Slider:GetTall() / 2, intScrollWidth - 4, (self.Slider:GetTall() / 2) - 2, self.BarColor)
 	end
 	--Derma_Hook(self.Slider, "Paint", "Paint", "NumSlider")
 	
 	self.Label = vgui.Create ("DLabel", self)
 	self.Label:SetFont("UiBold")
-	self.Label:SetTextColor(Color(50, 50, 50, 255))
+	self.Label:SetTextColor(GAMEMODE.ColorPallet["Shadow"])
 	
 	self:SetTall(20)
 end
@@ -67,6 +73,10 @@ function PANEL:SetText(strText)
 	self.Label:SetText(strText)
 end
 
+function PANEL:SetBarColor(clrColor)
+	self.BarColor = clrColor or GAMEMODE.ColorPallet["Blue"]
+end
+
 function PANEL:PerformLayout()
 	self.Wang:SizeToContents()
 	self.Wang:SetPos(self:GetWide() - self.Wang:GetWide(), 0)
@@ -96,4 +106,7 @@ end
 function PANEL:GetTextArea()
 	return self.Wang:GetTextArea()
 end
-derma.DefineControl("FSlider", "Number for sliding", PANEL, "Panel")
+
+derma.DefineControl("FSlider", "Number for sliding", table.Copy(PANEL), "Panel")
+--Should we realy be this communist?
+derma.DefineControl("DNumSlider", "Number for sliding", PANEL, "Panel")
