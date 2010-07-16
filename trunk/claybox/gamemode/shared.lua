@@ -43,8 +43,8 @@ if SERVER then
 			resource.AddFile(dir .. "/" .. f)
 		end
 	end
-	resource.AddDir("matierials/gui", ".vmt")
-	resource.AddDir("matierials/gui", ".vtf")
+	resource.AddDir("materials/gui", ".vmt")
+	resource.AddDir("materials/gui", ".vtf")
 else
 	for _, strPaths in pairs(ClientPaths) do
 		local Path = string.Replace(GM.Folder,"gamemodes/","").."/" .. strPaths .. "/"
