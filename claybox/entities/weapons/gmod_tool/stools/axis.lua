@@ -51,11 +51,7 @@ function TOOL:LeftClick(tblTrace)
 		Phys1:SetAngle(TargetAngle)
 		
 		--Move the object so that the hitpos on our object is at the second hitpos
-		--local TargetPos = WPos2 + (Phys1:GetPos() - self:GetPos(1))
-		local TargetPos = WPos2 + (Phys1:GetPos() - self:GetPos(1)) + (Norm2)
-
-		--Offset slightly so it can rotate
-		TargetPos = TargetPos + Norm2
+		local TargetPos = WPos2 + (Phys1:GetPos() - self:GetPos(1)) + (Norm2 * 2)
 		
 		--Set the position
 		Phys1:SetPos(TargetPos)
@@ -86,14 +82,28 @@ end
 
 function TOOL:RightClick(tblTrace)
 	if tblTrace.Entity:IsValid() and tblTrace.Entity:IsPlayer() then return end
+	--todo: Don't attempt to constrain the first object if it's already constrained to a static object
 	
 	local iNum = self:NumObjects()
-	
 	--Don't allow us to choose the world as the first object
 	if iNum == 0 and !tblTrace.Entity:IsValid() then return false end
+	--Don't do jeeps (crash protection until we get it fixed)
+	if iNum == 0 and tblTrace.Entity:GetClass() == "prop_vehicle_jeep" then return false end
+	--If there's no physics object then we can't constraint it!
+	if SERVER and !util.IsValidPhysicsObject(tblTrace.Entity, tblTrace.PhysicsBone) then return false end
 	
 	local Phys = tblTrace.Entity:GetPhysicsObjectNum(tblTrace.PhysicsBone)
-	self:SetObject(iNum + 1, tblTrace.Entity, tblTrace.HitPos, Phys, tblTrace.PhysicsBone, tblTrace.HitNormal)
+	if iNum == 0 then
+		--Vector maths :D
+		local ent = tblTrace.Entity
+		local vecCenter = ent:LocalToWorld(ent:OBBCenter())
+		local vecHitPos = tblTrace.HitPos
+		local vecSurface = Vector(math.abs(tblTrace.HitNormal.x), math.abs(tblTrace.HitNormal.y), math.abs(tblTrace.HitNormal.z))
+		local vectCenterPos = vecCenter + (vecSurface * (vecHitPos - vecCenter))
+		self:SetObject(iNum + 1, tblTrace.Entity, vectCenterPos, Phys, tblTrace.PhysicsBone, tblTrace.HitNormal)
+	else
+		self:SetObject(iNum + 1, tblTrace.Entity, tblTrace.HitPos, Phys, tblTrace.PhysicsBone, tblTrace.HitNormal)
+	end
 	
 	if iNum > 0 then
 		--Clientside can bail out now
@@ -102,12 +112,12 @@ function TOOL:RightClick(tblTrace)
 			self:ReleaseGhostEntity()
 			return true
 		end
-		
+	
 		--Get client's CVars
-		local forcelimit = self:GetClientNumber("forcelimit", 0) 
-		local torquelimit = self:GetClientNumber("torquelimit", 0) 
-		local friction = self:GetClientNumber("hingefriction", 0) 
-		local nocollide	= self:GetClientNumber("nocollide", 0) 
+		local forcelimit = self:GetClientNumber("forcelimit", 0)
+		local torquelimit = self:GetClientNumber("torquelimit", 0)
+		local friction = self:GetClientNumber("hingefriction", 0)
+		local nocollide	= self:GetClientNumber("nocollide", 0)
 		
 		local Ent1, Ent2 = self:GetEnt(1), self:GetEnt(2)
 		local Bone1, Bone2 = self:GetBone(1), self:GetBone(2)
@@ -120,24 +130,28 @@ function TOOL:RightClick(tblTrace)
 		local Ang1, Ang2 = Norm1:Angle(), (Norm2 * -1):Angle()
 		local TargetAngle = Phys1:AlignAngles(Ang1, Ang2)
 		
-		--Phys1:SetAngle(TargetAngle)
+		Phys1:SetAngle(TargetAngle)
 		
-		local TargetPos = WPos2 + (Phys1:GetPos() - self:GetPos(1)) + (Norm2)
+		--Move the object so that the hitpos on our object is at the second hitpos
+		local TargetPos = WPos2 + (Phys1:GetPos() - self:GetPos(1)) + (Norm2 * 2)
 		
+		--Set the position
+		Phys1:SetPos(TargetPos)
+		--Wake up the physics object so that the entity updates
 		Phys1:Wake()
-
 		--Set the hinge Axis perpendicular to the trace hit surface
 		LPos1 = Phys1:WorldToLocal(WPos2 + Norm2)
 
+		--Create a constraint axis
 		local constraint = constraint.Axis(Ent1, Ent2, Bone1, Bone2, LPos1, LPos2, forcelimit, torquelimit, friction, nocollide)
 
 		undo.Create("Axis")
 		undo.AddEntity(constraint)
 		undo.SetPlayer(self:GetOwner())
 		undo.Finish()
-
+		
 		self:GetOwner():AddCleanup("constraints", constraint)
-
+		
 		--Clear the objects so we're ready to go again
 		self:ClearObjects()
 		self:ReleaseGhostEntity()
@@ -145,6 +159,7 @@ function TOOL:RightClick(tblTrace)
 		self:StartGhostEntity(tblTrace.Entity)
 		self:SetStage(iNum + 1)
 	end
+	return true
 end
 
 function TOOL:Reload(tblTrace)
@@ -177,4 +192,8 @@ function TOOL.BuildCPanel(panel)
 	panel:AddControl("Slider", {Label = "#AxisTool_torquelimit", Description = "#AxisTool_torquelimit_desc", Type = "Float", Min = 0, Max = 50000, Command = "axis_torquelimit"})
 	panel:AddControl("Slider", {Label = "#AxisTool_friction", Description = "#AxisTool_friction_desc", Type = "Float", Min = 0, Max = 100, Command = "axis_hingefriction"})
 	panel:AddControl("CheckBox", {Label = "#AxisTool_nocollide", Description = "#AxisTool_nocollide_desc", Command = "axis_nocollide"})
+end
+
+if CLIENT then
+	language.Add("Tool_axis_0", "Left click: Prop or ragdoll, Right click: Prop or ragdoll to do center axis")
 end
