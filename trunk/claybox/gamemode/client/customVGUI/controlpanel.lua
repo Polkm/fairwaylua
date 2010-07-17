@@ -96,6 +96,7 @@ function PANEL:AddControl(strControl, tblData)
 		pnlControl:SetConVar(tblData.command)
 		pnlControl:SizeToContents()
 		if tblData.description then pnlControl:SetTooltip(tblData.description) end
+		if tblData.color then pnlControl:SetBarColor(tblData.color) end
 		self:AddItem(pnlControl, nil)
 		return pnlControl
 	end

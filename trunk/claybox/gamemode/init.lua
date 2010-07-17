@@ -11,30 +11,61 @@ function GM:PlayerLoadout(ply)
 end
 
 function SpawnObject(player, command, arguments)
-	if (arguments[1] == nil) then return end
-	if (!util.IsValidModel(arguments[1])) then return end
+	if arguments[1] == nil then return end
+	if !util.IsValidModel(arguments[1]) then return end
 	
 	local strModel = arguments[1]
 	local iSkin = arguments[2] or 0
-
+	local tblTrace = util.TraceLine(util.GetPlayerTrace(player))
+	
+	local entProp
 	if util.IsValidProp(strModel) then 
-		local prop = ents.Create("prop_physics")
-		prop:SetModel(strModel)
-		local pos = util.TraceLine(util.GetPlayerTrace(player)).HitPos
-		pos.Z = pos.Z + (prop:OBBMaxs().Z - prop:OBBCenter().Z)
-		prop:SetPos(pos)
-		prop:Spawn()
-		return
+		entProp = ents.Create("prop_physics")
+		DoPropSpawnedEffect(entProp)
+		undo.Create("Prop")
+		undo.SetPlayer(player)
+		undo.AddEntity(entProp)
+		undo.Finish("Prop (" .. tostring(strModel) .. ")")
+		player:AddCleanup("props", entProp)
+		player:SendLua("achievements.SpawnedProp()")
+	elseif util.IsValidRagdoll(strModel) then 
+		entProp = ents.Create("prop_ragdoll")
+		undo.Create("Ragdoll")
+		undo.SetPlayer(player)
+		undo.AddEntity(entProp)
+		undo.Finish("Ragdoll (" .. tostring(model) .. ")")
+		player:AddCleanup("ragdolls", entProp)
+		player:SendLua("achievements.SpawnedRagdoll()")
+	else
+		entProp = ents.Create("prop_effect")
+		undo.Create("Effect")
+		undo.SetPlayer(player)
+		undo.AddEntity(entProp)
+		undo.Finish("Effect (" .. tostring(model) .. ")")
+		player:AddCleanup("effects", entProp)
 	end
 	
-	if util.IsValidRagdoll(strModel) then 
-		local Ent = ents.Create("prop_ragdoll")
-		Ent:SetModel(strModel)
-		local pos = util.TraceLine(util.GetPlayerTrace(player)).HitPos
-		pos.Z = pos.Z + (Ent:OBBMaxs().Z / 2)
-		Ent:SetPos(pos)
-		Ent:Spawn()
-		return
+	entProp:SetModel(strModel)
+	entProp:SetPos(tblTrace.HitPos)
+	if entProp:GetClass() == "prop_ragdoll" then
+		entProp:SetAngles(Angle(entProp:GetAngles().p - 90, entProp.y, entProp.r))
+		tblTrace.HitPos = tblTrace.HitPos --Wut?
+	end
+	entProp:Spawn()
+	
+	local vecFlushPoint = tblTrace.HitPos - tblTrace.HitNormal * 512 --Find a point that is definitely out of the object in the direction of the floor
+	vecFlushPoint = entProp:NearestPoint(vecFlushPoint) --Find the nearest point inside the object to that point
+	vecFlushPoint = entProp:GetPos() - vecFlushPoint --Get the difference
+	vecFlushPoint = tblTrace.HitPos + vecFlushPoint --Add it to our target pos
+	if entProp:GetClass() != "prop_ragdoll" then
+		entProp:SetPos(vecFlushPoint)
+	else
+		--With ragdolls we need to move each physobject
+		local vecOffset = vecFlushPoint - entProp:GetPos()
+		for i = 0, entProp:GetPhysicsObjectCount() - 1 do
+			local phys = entProp:GetPhysicsObjectNum(i)
+			phys:SetPos(phys:GetPos() + vecOffset)
+		end
 	end
 end
 concommand.Add("silt_spawnobject", SpawnObject)
