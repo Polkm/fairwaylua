@@ -81,7 +81,7 @@ function PANEL:SetViewSize(intSize)
 					else
 						pnlButton:SetSize(16 + (self.ViewSize * 16), 16 + (self.ViewSize * 16))
 					end
-					pnlButton:InvalidateLayout()
+					pnlButton:InvalidateLayout(true)
 				end
 				pnlCategory:InvalidateLayout()
 			end
@@ -131,30 +131,25 @@ function PANEL:BuildList()
 	self.ContentList:Clear(true)
 	local tblProps = library.GetSpawnListSet(self.ToolType)
 	for strSpawnList, tblSpawnListTable in pairs(tblProps.SpawnLists) do
-		local pnlSpawnListCategory = vgui.Create("DCollapsibleCategory")
+		local pnlSpawnListCategory = vgui.Create("FColapse")
 		pnlSpawnListCategory:SetTall(50)
 		pnlSpawnListCategory:SetExpanded(1)
 		pnlSpawnListCategory:SetPadding(0)
 		pnlSpawnListCategory:SetLabel(tblSpawnListTable.Name)
-		pnlSpawnListCategory.SpawnList = true
-		local lstSpawnList = vgui.Create("DPanelList")
-		lstSpawnList:SetAutoSize(true)
 		if self.ViewType == "List" or self.ViewType == "Detail" then
-			lstSpawnList:SetPadding(0)
-			lstSpawnList:SetSpacing(0)
+			pnlSpawnListCategory.Contents:SetPadding(0)
+			pnlSpawnListCategory.Contents:SetSpacing(0)
 		else
-			lstSpawnList:SetPadding(2)
-			lstSpawnList:SetSpacing(2)
+			pnlSpawnListCategory.Contents:SetPadding(2)
+			pnlSpawnListCategory.Contents:SetSpacing(2)
 		end
 		if self.ViewType == "Detail" then
-			lstSpawnList:EnableHorizontal(false)
+			pnlSpawnListCategory.Contents:EnableHorizontal(false)
 		else
-			lstSpawnList:EnableHorizontal(true)
+			pnlSpawnListCategory.Contents:EnableHorizontal(true)
 		end
-		lstSpawnList:EnableVerticalScrollbar(true)
-		pnlSpawnListCategory:SetContents(lstSpawnList)
 		for intKey, strSpawnItem in pairs(tblSpawnListTable.Content) do
-			lstSpawnList:AddItem(self:BuildSpawnButton(strSpawnItem))
+			pnlSpawnListCategory:AddContents(self:BuildSpawnButton(strSpawnItem))
 		end
 		self.ContentList:AddItem(pnlSpawnListCategory)
 	end
@@ -183,7 +178,6 @@ function PANEL:PerformLayout()
 	end
 end
 local pnlCreationSheet = vgui.RegisterTable(PANEL, "Panel")
-
 
 local function fncAddSpawnListContentToolsTab(strName, strIcon, intOrder, strToolTip, tblTools)
 	if strName == "Main" then strName = "Tools" end
@@ -250,10 +244,16 @@ end
 hook.Add("AddSpawnListContentNodes", "AddToolTabs", function()
 	hook.Call("AddToolMenuTabs", GAMEMODE)
 	hook.Call("PopulateToolMenu", GAMEMODE)
+	local tblOptionsItems = {}
 	--Add all the custom tool tabs
 	for _, tblToolTab in pairs(spawnmenu.GetTools()) do
 		if tblToolTab.Name != "Utilities" and tblToolTab.Name != "Options" and tblToolTab.Name != "PostProcessing" then
 			fncAddSpawnListContentToolsTab(tblToolTab.Name, tblToolTab.Icon, 0, nil, tblToolTab.Items)
+		elseif tblToolTab.Name == "Options" or tblToolTab.Name == "Utilities" then
+			tblOptionsItems[tblToolTab.Name] = {}
+			tblOptionsItems[tblToolTab.Name].Icon = tblToolTab.Icon
+			tblOptionsItems[tblToolTab.Name].Items = tblToolTab.Items
 		end
 	end
+	hook.Call("AddToolOptionCatagories", GAMEMODE, tblOptionsItems)
 end)
