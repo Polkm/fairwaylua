@@ -1,4 +1,4 @@
-local matGradiantDown = surface.GetTextureID("gui/gradient_down")
+local matGradiant = surface.GetTextureID("VGUI/gradient-u")
 local PANEL = {}
 PANEL.Diffrence = 25
 
@@ -21,7 +21,7 @@ function PANEL:Init()
 		local intRadius = 2
 		draw.RoundedBox(intRadius, 0, 0, self.Slider:GetWide(), self.Slider:GetTall(), Color(100, 100, 100, 255))
 		surface.SetDrawColor(0, 0, 0, 50)
-		surface.SetTexture(matGradiantDown)
+		surface.SetTexture(matGradiant)
 		surface.DrawTexturedRect(intRadius, 0, self.Slider:GetWide() - intRadius, self.Slider:GetTall())
 		
 		draw.RoundedBox(intRadius, 0, 0, intScrollWidth, self.Slider:GetTall(), ShadeColor(self.BarColor, -self.Diffrence))

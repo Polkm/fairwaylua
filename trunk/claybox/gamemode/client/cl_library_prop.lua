@@ -70,15 +70,13 @@ function PANEL:SetViewSize(intSize)
 					else
 						pnlButton:SetIconSize(16 + (self.ViewSize * 16))
 					end
-					pnlButton:InvalidateLayout()
+					pnlButton:InvalidateLayout(true)
 				end
-				if pnlCategory:GetExpanded() then
-					pnlCategory.animSlide:Start(pnlCategory:GetAnimTime(), {From = pnlCategory:GetTall()})
-					pnlCategory.animSlide:Start(pnlCategory:GetAnimTime(), {From = pnlCategory:GetTall()})
-				end
+				pnlCategory:InvalidateLayout(true)
+				pnlCategory:GetParent():InvalidateLayout()
+				pnlCategory:GetParent():GetParent():InvalidateLayout()
 			end
 		end
-		--self:PerformLayout()
 		return true
 	end
 	return false
@@ -114,39 +112,25 @@ function PANEL:BuildList()
 	self.ContentList:Clear(true)
 	local tblProps = library.GetSpawnListSet("Props")
 	for strSpawnList, tblSpawnListTable in pairs(tblProps.SpawnLists) do
-		local pnlSpawnListCategory = vgui.Create("DCollapsibleCategory")
+		local pnlSpawnListCategory = vgui.Create("FColapse")
 		pnlSpawnListCategory:SetTall(50)
 		pnlSpawnListCategory:SetExpanded(0)
-		pnlSpawnListCategory:SetPadding(0)
 		pnlSpawnListCategory:SetLabel(tblSpawnListTable.Name)
 		pnlSpawnListCategory.SpawnList = true
-		local lstSpawnList = vgui.Create("DPanelList")
-		lstSpawnList:SetAutoSize(true)
-		lstSpawnList:SetPadding(0)
-		lstSpawnList:SetSpacing(0)
 		if self.ViewType == "Detail" then
-			lstSpawnList:EnableHorizontal(false)
+			pnlSpawnListCategory.Contents:EnableHorizontal(false)
 		else
-			lstSpawnList:EnableHorizontal(true)
+			pnlSpawnListCategory.Contents:EnableHorizontal(true)
 		end
-		lstSpawnList:EnableVerticalScrollbar(true)
-		pnlSpawnListCategory:SetContents(lstSpawnList)
 		pnlSpawnListCategory.LoadedSpawnShit = false
-		pnlSpawnListCategory.Toggle = function(mcode)
+		pnlSpawnListCategory.OnToggle = function()
 			if !pnlSpawnListCategory.LoadedSpawnShit then
 				for intKey, strSpawnItem in pairs(tblSpawnListTable.Content) do
-					lstSpawnList:AddItem(self:BuildSpawnButton(strSpawnItem))
+					pnlSpawnListCategory:AddContents(self:BuildSpawnButton(strSpawnItem))
 				end
 				pnlSpawnListCategory.LoadedSpawnShit = true
+				self:PerformLayout()
 			end
-			pnlSpawnListCategory:SetExpanded(!pnlSpawnListCategory:GetExpanded())
-			pnlSpawnListCategory.animSlide:Start(pnlSpawnListCategory:GetAnimTime(), {From = pnlSpawnListCategory:GetTall()})
-			pnlSpawnListCategory:InvalidateLayout(true)
-			pnlSpawnListCategory:GetParent():InvalidateLayout()
-			pnlSpawnListCategory:GetParent():GetParent():InvalidateLayout()
-			local cookie = '1'
-			if !pnlSpawnListCategory:GetExpanded() then cookie = '0' end
-			pnlSpawnListCategory:SetCookie("Open", cookie)
 		end
 		self.ContentList:AddItem(pnlSpawnListCategory)
 	end
@@ -166,7 +150,7 @@ function PANEL:PerformLayout()
 	self.ContentList:StretchToParent(0, self.Topbar:GetTall() + 4, 0, 0)
 	
 	for _, pnlCategory in pairs(self.ContentList:GetItems()) do
-		pnlCategory.Contents:StretchToParent(0, nil, 0, nil)
+		pnlCategory:PerformLayout()
 		if self.ViewType == "Detail" then
 			for _, pnlSpawnItem in pairs(pnlCategory.Contents:GetItems()) do
 				pnlSpawnItem:StretchToParent(0, nil, 0, nil)

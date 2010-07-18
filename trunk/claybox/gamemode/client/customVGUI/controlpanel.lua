@@ -66,6 +66,7 @@ function PANEL:AddPanel(pnl)
 end
 
 function PANEL:AddControl(strControl, tblData)
+	local strOriginalControl = strControl
 	strControl = string.lower(strControl)
 	tblData = table.LowerKeyNames(tblData)
 
@@ -241,7 +242,7 @@ function PANEL:AddControl(strControl, tblData)
 		if pnlControl and tblData.description then pnlControl:SetTooltip(tblData.description) end
 		return pnlControl
 	end
-	local pnlControl = vgui.Create(strControl, self)
+	local pnlControl = vgui.Create(strOriginalControl, self)
 	if pnlControl then
 		if pnlControl.ControlValues then
 			pnlControl:ControlValues(tblData) 
